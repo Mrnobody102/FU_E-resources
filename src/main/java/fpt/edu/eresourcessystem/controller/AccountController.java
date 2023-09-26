@@ -27,6 +27,6 @@ public class AccountController {
     public String login(@ModelAttribute Account account) throws AccountNotExistedException {
         if(account != null){
             return "home";
-        }else throw new AccountNotExistedException("Account not existed.");
+        } else throw new AccountNotExistedException("Account not existed.");
     }
 }
