@@ -19,11 +19,12 @@ public class Account {
     private String accountId;
 
     @Indexed(unique = true)
-    private String email;
+    private String username;
+
+    private String password;
 
     @Indexed(unique = true)
-    private String ISBN;
+    private String email;
 
     private String role;
-
 }
