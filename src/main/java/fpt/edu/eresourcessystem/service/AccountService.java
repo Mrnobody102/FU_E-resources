@@ -10,6 +10,7 @@ import java.util.List;
 public interface AccountService {
     void addAccount(Account account);
     Account updateAccount(Account account) throws AccountNotExistedException;
+    Account findByUsername(String username) throws AccountNotFoundException;
     Account findByEmail(String email) throws AccountNotFoundException;
     List<Account> findAll();
     Page<Account> findAll(int pageIndex, int pageSize, String search);

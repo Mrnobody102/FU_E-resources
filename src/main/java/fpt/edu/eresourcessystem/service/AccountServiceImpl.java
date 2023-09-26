@@ -27,17 +27,23 @@ public class AccountServiceImpl implements AccountService{
     public Account updateAccount(Account account) throws AccountNotExistedException {
         Account savedAccount = accountRepository.findById(account.getAccountId())
                 .orElseThrow(() -> new AccountNotExistedException("Account Not Existed."));
-        savedAccount.setISBN(account.getISBN());
+        savedAccount.setUsername(account.getUsername());
+        savedAccount.setPassword(account.getPassword());
         savedAccount.setEmail(account.getEmail());
         savedAccount.setRole(account.getRole());
         return accountRepository.save(savedAccount);
     }
 
-
+    @Override
+    public Account findByUsername(String username) throws  AccountNotFoundException{
+        return accountRepository.findByUsername(username).orElseThrow(
+                () -> new AccountNotFoundException("Account not existed.")
+        );
+    }
 
     @Override
     public Account findByEmail(String email) throws  AccountNotFoundException{
-        return accountRepository.findByEmail().orElseThrow(
+        return accountRepository.findByEmail(email).orElseThrow(
                 () -> new AccountNotFoundException("Account not existed.")
         );
     }
