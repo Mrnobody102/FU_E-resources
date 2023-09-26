@@ -11,7 +11,7 @@ import fpt.edu.eresourcessystem.service.AccountService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/resourse/accounts")
+@RequestMapping("/resource/accounts")
 public class AccountRestController {
     private final AccountService accountService;
 
@@ -39,6 +39,7 @@ public class AccountRestController {
     Page<Account> findAccountByPage(@PathVariable Integer pageIndex, String search){
         return null;
     }
+
     @DeleteMapping("delete")
     public String delete(String id){
         return null;

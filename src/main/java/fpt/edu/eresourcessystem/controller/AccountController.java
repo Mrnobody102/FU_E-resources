@@ -6,13 +6,11 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 import fpt.edu.eresourcessystem.service.AccountService;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.common.AccountNotExistedException;
 
 @Controller
-@RequestMapping("/resourse/accounts")
 @PropertySources(value = {@PropertySource("constants.properties")})
 public class AccountController {
     @Value("${page-size}")

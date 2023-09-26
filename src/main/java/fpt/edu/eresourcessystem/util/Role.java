@@ -2,7 +2,7 @@ package fpt.edu.eresourcessystem.util;
 
 public enum Role {
     STUDENT("Student"),
-    TEACHER("Teacher"),
+    LECTURER("Lecturer"),
     LIBRARY_MANAGER("Library Manager");
 
     private final String displayName;
