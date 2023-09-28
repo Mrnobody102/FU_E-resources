@@ -1,8 +1,8 @@
 package fpt.edu.eresourcessystem.service;
 
 import org.springframework.data.domain.Page;
-import fpt.edu.eresourcessystem.common.AccountNotExistedException;
-import fpt.edu.eresourcessystem.common.AccountNotFoundException;
+import fpt.edu.eresourcessystem.exception.AccountNotExistedException;
+import fpt.edu.eresourcessystem.exception.AccountNotFoundException;
 import fpt.edu.eresourcessystem.model.Account;
 
 import java.util.List;

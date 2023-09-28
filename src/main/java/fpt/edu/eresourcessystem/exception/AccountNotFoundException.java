@@ -1,4 +1,4 @@
-package fpt.edu.eresourcessystem.common;
+package fpt.edu.eresourcessystem.exception;
 
 public class AccountNotFoundException extends Exception{
     public AccountNotFoundException(String message) {

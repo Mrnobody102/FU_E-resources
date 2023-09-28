@@ -1,38 +1,32 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import fpt.edu.eresourcessystem.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.time.LocalDate;
+import java.util.List;
 
-@Document("accounts")
+@Document("courses")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account {
+public class Course {
     @Id
-    private String accountId;
+    private String courseId;
 
     @Indexed(unique = true)
-    private String username;
-
-    private String password;
+    private String courseCode;
 
     @Indexed(unique = true)
-    private String email;
+    private String courseName;
+    private String description;  // or perhaps a URL to the content if stored externally
 
-    private String firstName;
-    private String lastName;
-    private LocalDate birthOfDate;
-    private String address;
-    private Role role;
+    private List<String> documents;
 }
