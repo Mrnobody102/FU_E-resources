@@ -11,7 +11,7 @@ import fpt.edu.eresourcessystem.service.AccountService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/resource/accounts")
+@RequestMapping("/manager/accounts")
 public class AccountRestController {
     private final AccountService accountService;
 

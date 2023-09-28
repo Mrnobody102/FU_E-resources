@@ -24,7 +24,7 @@ public class AccountController {
     @GetMapping("/login")
     public String login(@ModelAttribute Account account) throws AccountNotExistedException {
         if(account != null){
-            return "home";
+            return "student/home";
         } else throw new AccountNotExistedException("Account not existed.");
     }
 }

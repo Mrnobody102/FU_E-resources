@@ -1,0 +1,14 @@
+/* styles.css */
+
+/* main */
+
+li {
+    list-style: none;
+    padding: 12px 0 12px 0;
+    border-bottom: #dbdbdb 1px solid;
+}
+
+li a {
+    color: var(--text-color);
+}
+

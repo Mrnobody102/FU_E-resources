@@ -36,6 +36,7 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public Account findByUsername(String username) throws  AccountNotFoundException{
+        // nên validate trước khi throw luôn
         return accountRepository.findByUsername(username).orElseThrow(
                 () -> new AccountNotFoundException("Account not existed.")
         );
