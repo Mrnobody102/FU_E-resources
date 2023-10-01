@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Course</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../static/css/base.css" />
+    <link rel="stylesheet" href="/css/lib-manager.css" />
+</head>
+
+<body>
+    <div class="app_container">
+        <!-- Header -->
+        <header>
+            <div class="header_system-name">
+                <h2>FPT University E-Resource System</h2>
+            </div>
+            <div class="header_account">
+                <a href="">Logout</a>
+                <a href="">lampt@fpt.edu.vn</a>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="main_content">
+                <h1>Add Subject</h1>
+                <hr />
+            <div>
+                <table>
+                    <tr>
+                        <th>Subject Code</th>
+                        <td><input type="text" id="subjectCode"  placeholder="Enter Subject Code"></td>
+
+                    </tr>
+                    <tr>
+                        <th>Subject Name</th>
+                        <td><input type="text" id="subjectName" placeholder="Enter Subject Name"></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td><input type="text" id="description" placeholder="Enter Description "></td>
+
+                    </tr>
+                    <tr>
+                        <th>Document</th>
+                        <td><input type="file" id="document" multiple required></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td> 
+                            <button type="button" value="Save" onClick="return check_submit()">Save</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2023 - FPT Education. All rights reserved.</p>
+            <a href="#">About us</a>
+        </footer>
+    </div>
+
+    <script src="/static/js/lib-manager.js"></script>
+    <script src="/static/js/course.js"></script>
+</body>
+
+</html>
