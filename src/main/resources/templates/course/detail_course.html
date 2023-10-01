@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add Course</title>
+    <title>Details Subject</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="../../static/css/base.css" />
+    <link rel="stylesheet" href="/css/base.css" />
     <link rel="stylesheet" href="/css/lib-manager.css" />
 </head>
 
@@ -25,35 +25,34 @@
 
         <!-- Content -->
         <main class="main_content">
-                <h1>Add Subject</h1>
+                <h1>Detail Subject</h1>
                 <hr />
             <div>
                 <table>
                     <tr>
                         <th>Subject Code</th>
-                        <td><input type="text" id="subjectCode"  placeholder="Enter Subject Code"></td>
-
+                        <td>HCM202</td>
                     </tr>
                     <tr>
                         <th>Subject Name</th>
-                        <td><input type="text" id="subjectName" placeholder="Enter Subject Name"></td>
+                        <td>Tư tưởng Hồ Chí Minh</td>
                     </tr>
                     <tr>
                         <th>Description</th>
-                        <td><input type="text" id="description" placeholder="Enter Description"></td>
-
-                    </tr>
+                        <td> Tư tưởng Hồ Chí Minh là kết tinh của truyền thống hàng nghìn năm dựng nước và giữ nước của dân tộc Việt Nam. 
                     <tr>
                         <th>Document</th>
-                        <td><input type="file" id="document" multiple required></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td></td>
                         <td> 
-                            <button type="button" value="Save" onClick="return check_submit()">Save</button>
+                            <input type="button" value="Delete" onclick="myFunction()">
+                            <input type="button" value="Edit">
                         </td>
                     </tr>
                 </table>
+
             </div>
         </main>
 
@@ -64,8 +63,12 @@
         </footer>
     </div>
 
-    <script src="/static/js/lib-manager.js"></script>
-    <script src="/static/js/course.js"></script>
+    <script src="/js/lib-manager.js"></script>
+    <script>
+        function myFunction() {
+          confirm("Do you want to delete?");
+        }
+        </script>
 </body>
 
 </html>
