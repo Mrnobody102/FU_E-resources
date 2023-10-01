@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Details Subject</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../static/css/base.css" />
+    <link rel="stylesheet" href="/css/lib-manager.css" />
+</head>
+
+<body>
+    <div class="app_container">
+        <!-- Header -->
+        <header>
+            <div class="header_system-name">
+                <h2>FPT University E-Resource System</h2>
+            </div>
+            <div class="header_account">
+                <a href="">Logout</a>
+                <a href="">lampt@fpt.edu.vn</a>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="main_content">
+                <h1>Detail Subject</h1>
+                <hr />
+            <div>
+                <table>
+                    <tr>
+                        <th>Subject Code</th>
+                        <td>HCM202</td>
+                    </tr>
+                    <tr>
+                        <th>Subject Name</th>
+                        <td>Tư tưởng Hồ Chí Minh</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td> Tư tưởng Hồ Chí Minh là kết tinh của truyền thống hàng nghìn năm dựng nước và giữ nước của dân tộc Việt Nam. 
+                    <tr>
+                        <th>Document</th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td> 
+                            <input type="button" value="Delete" onclick="myFunction()">
+                            <input type="button" value="Edit">
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2023 - FPT Education. All rights reserved.</p>
+            <a href="#">About us</a>
+        </footer>
+    </div>
+
+    <script src="/js/lib-manager.js"></script>
+    <script>
+        function myFunction() {
+          confirm("Do you want to delete?");
+        }
+        </script>
+</body>
+
+</html>
