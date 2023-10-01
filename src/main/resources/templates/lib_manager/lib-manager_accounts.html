@@ -1,10 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User management</title>
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/lib-manager.css" />
+  </head>
+  <body>
+    <div class="app_container">
+      <!-- Header -->
+      <header>
+        <div class="header_system-name">
+          <h2>FPT University E-Resource System</h2>
+        </div>
+        <div class="header_account">
+          <a href="">Logout</a>
+          <a href="">lampt@fpt.edu.vn</a>
+        </div>
+      </header>
 
-</body>
+      <!-- Content -->
+      <main class="main_content">
+        <section>
+          <div class="user-management-head">
+            <a href="lib-manager_dashboard.html">Home</a>
+            <span> &gt; <a href="#"> User Management</a> </span>
+          </div>
+          <div class="topnav">
+            
+            <div class="search-container">
+              <form action="/action_page.php">
+                <label for="search-text">User</label>
+                <input type="text" placeholder="Search.." name="search" id="search-text"/>
+                <button type="submit">
+                  <i class="fa fa-search"></i> Search
+                </button>
+                <button class="btn-add" type="button" href="#">Add new user</button>
+              </form>
+              
+            </div>
+          </div>
+          <div>
+            <table class="list-model-table">
+              <tr class="table-head">
+                <th>Login</th>
+                <th>IsActive</th>
+                <th>RoleName</th>
+                <th>Campus</th>
+              </tr>
+              <tr>
+                <td>thuongdthe150682@fpt.edu.vn</td>
+                <td><input type="checkbox" id="1" name="IsActive" /></td>
+                <td>Student</td>
+                <td>HN</td>
+              </tr>
+              <tr>
+                <td>thuongdthe150682@fpt.edu.vn</td>
+                <td><input type="checkbox" id="1" name="IsActive" /></td>
+                <td>Student</td>
+                <td>HN</td>
+              </tr>
+              <tr>
+                <td>thuongdthe150682@fpt.edu.vn</td>
+                <td><input type="checkbox" id="1" name="IsActive" /></td>
+                <td>Student</td>
+                <td>HN</td>
+              </tr>
+              <tr>
+                <td>thuongdthe150682@fpt.edu.vn</td>
+                <td><input type="checkbox" id="1" name="IsActive" /></td>
+                <td>Student</td>
+                <td>HN</td>
+              </tr>
+            </table>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer>
+        <p>&copy; 2023 - FPT Education. All rights reserved.</p>
+        <a href="#">About us</a>
+      </footer>
+    </div>
+
+    <script src="/js/lib-manager.js"></script>
+  </body>
 </html>

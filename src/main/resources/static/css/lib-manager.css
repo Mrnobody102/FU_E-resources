@@ -1,14 +1,65 @@
 /* styles.css */
 
 /* main */
-
+* {
+  box-sizing: border-box;
+}
 li {
-    list-style: none;
-    padding: 12px 0 12px 0;
-    border-bottom: #dbdbdb 1px solid;
+  list-style: none;
+  padding: 12px 0 12px 0;
+  border-bottom: #dbdbdb 1px solid;
 }
 
 li a {
-    color: var(--text-color);
+  color: var(--text-color);
 }
 
+section {
+  margin-left: 1em;
+}
+
+.topnav a.active {
+  background-color: #2196f3;
+  color: white;
+}
+
+/* .topnav .search-container {
+  float: right;
+} */
+
+.topnav input[type="text"] {
+  padding: 0.5em 1em;
+  font-size: 1em;
+  border: 1px solid #ddd;
+}
+
+.topnav .search-container button {
+  padding: 0.5em 1em;
+  margin-top: 8px;
+  background: #2be007;
+  border-radius: 0.3em;
+  font-size: 1em;
+  border: none;
+  cursor: pointer;
+}
+.btn-add {
+    background: aquamarine;
+}
+.topnav .search-container button:hover {
+    background: #ccc;
+  }F
+.list-model-table th,
+.list-model-table td {
+  border: 1px solid #ddd;
+  text-align: left;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+th,
+td {
+  padding: 0.5em;
+}

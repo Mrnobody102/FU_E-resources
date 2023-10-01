@@ -1,6 +1,5 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.common.AccountNotExistedException;
 import fpt.edu.eresourcessystem.model.Account;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 public class LibraryManagerDashboardController {
     @GetMapping("/library-manager/dashboard")
 
-    public String getLibraryManageDashboard(@ModelAttribute Account account) throws AccountNotExistedException {
+    public String getLibraryManageDashboard(@ModelAttribute Account account){
         return "lib_manager/lib_manager_dashboard";
     }
 }
