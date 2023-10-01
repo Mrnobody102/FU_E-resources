@@ -43,7 +43,7 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public Account findByEmail(String email) throws  AccountNotFoundException{
+    public Account findByEmail(String email) throws AccountNotFoundException{
         return accountRepository.findByEmail(email).orElseThrow(
                 () -> new AccountNotFoundException("Account not existed.")
         );
@@ -61,6 +61,7 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public boolean deleteById(String id) {
+
         return false;
     }
 

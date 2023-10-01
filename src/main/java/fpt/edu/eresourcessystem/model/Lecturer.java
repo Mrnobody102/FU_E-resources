@@ -15,8 +15,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Lecturer extends Account{
-    @Id
-    private String accountId;  // Reference to Account
+public class Lecturer {
+    private String lecturerId;  // Reference to Account
     private List<String> managedCourses;
+
 }

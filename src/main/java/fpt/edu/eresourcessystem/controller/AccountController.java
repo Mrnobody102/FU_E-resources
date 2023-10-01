@@ -11,11 +11,10 @@ import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.exception.AccountNotExistedException;
 
 @Controller
-@PropertySources(value = {@PropertySource("constants.properties")})
+@PropertySources(value = {@PropertySource("classpath:webconfig.properties")})
 public class AccountController {
     @Value("${page-size}")
-    private Integer pageSize;
-    private final AccountService accountService;
+    private Integer pageSize;    private final AccountService accountService;
 
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
@@ -24,7 +23,7 @@ public class AccountController {
     @GetMapping("/login")
     public String login(@ModelAttribute Account account) throws AccountNotExistedException {
         if(account != null){
-            return "student";
+            return "auth/login";
         } else throw new AccountNotExistedException("Account not existed.");
     }
 }

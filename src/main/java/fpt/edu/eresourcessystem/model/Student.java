@@ -10,14 +10,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document("students")
+@Document("accounts")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student extends Account{
-    @Id
-    private String accountId;  // Reference to Account
+public class Student {
+    private String studentId;  // Reference to Account
     //Reference by String ID, increase performance
     private List<String> enrolledCourses;
     private List<String> savedDocuments;

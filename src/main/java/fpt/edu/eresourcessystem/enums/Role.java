@@ -5,3 +5,4 @@ public enum Role {
     LECTURER,
     MANAGER;
 }
+// create class account enum -> tạo nhiều enum

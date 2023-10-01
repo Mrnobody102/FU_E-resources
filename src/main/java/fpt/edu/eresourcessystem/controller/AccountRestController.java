@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.exception.AccountNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,11 @@ public class AccountRestController {
     @GetMapping("/list")
     public ResponseEntity<List<Account>> findAll(){
         return ResponseEntity.ok(accountService.findAll());
+    }
+
+    @GetMapping("/list/{username}")
+    public ObjectRespond findByUserName(@PathVariable String username) throws AccountNotFoundException {
+        return new ObjectRespond("success",accountService.findByUsername(username));
     }
 
     @GetMapping("/list/{pageIndex}")

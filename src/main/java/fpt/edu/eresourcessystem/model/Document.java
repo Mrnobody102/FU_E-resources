@@ -19,12 +19,10 @@ public class Document {
     private String documentId;
 
     private String title;
+    private String description;
+    private String courseId;  // Reference to the course the document is associated with
+    private String uploaderId;  // Reference to the user who uploaded the document
+
     private String content;  // or perhaps a URL to the content if stored externally
-
-    @DBRef
-    private Course course;  // Reference to the course the document is associated with
-
-    @DBRef
-    private Account uploader;  // Reference to the user who uploaded the document
-
+    // để nhiều trường có thể lưu nhiều dạng tài liệu, file...
 }
