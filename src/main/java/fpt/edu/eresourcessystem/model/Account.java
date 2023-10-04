@@ -1,16 +1,12 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import fpt.edu.eresourcessystem.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import fpt.edu.eresourcessystem.enums.AccountEnum;
+import jakarta.annotation.Nonnull;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-
 import java.time.LocalDate;
 
 @Document("accounts")
@@ -30,9 +26,12 @@ public class Account {
     @Indexed(unique = true)
     private String email;
 
-    private String firstName;
-    private String lastName;
+    private String name;
     private LocalDate birthOfDate;
-    private String address;
-    private Role role;
+    private String gender;
+    private String campus;
+
+    private AccountEnum.Role role;
+
+    private boolean flagAdmin;
 }

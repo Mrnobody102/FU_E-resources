@@ -17,6 +17,4 @@ public interface AccountService {
     boolean deleteById(String id);
     boolean delete(Account product);
     Page<Account> findAll(int pageIndex, int pageSize);
-//    Page<Account> findProduct(int pageIndex, int pageSize);
-
 }

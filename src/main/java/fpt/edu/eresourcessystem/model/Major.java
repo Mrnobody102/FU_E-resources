@@ -11,20 +11,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document("courses")
+@Document("major")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Course {
+public class Major {
     @Id
-    private String courseId;
-
-    @Indexed(unique = true)
-    private String courseCode;
-
-    private String courseName;
+    private String majorId;
+    private String majorName;
     private String description;  // or perhaps a URL to the content if stored externally
 
-    private List<String> documents;
+    private List<String> courses;
 }

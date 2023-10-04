@@ -12,10 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/manager/courses")
-public class ManagerCourseRestController {
+public class ManagerCourseController {
     private final CourseService courseService;
 
-    public ManagerCourseRestController(CourseService courseService) {
+    public ManagerCourseController(CourseService courseService) {
         this.courseService = courseService;
     }
 

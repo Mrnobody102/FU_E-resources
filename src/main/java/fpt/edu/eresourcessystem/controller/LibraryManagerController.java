@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping
 public class LibraryManagerController {
-    @GetMapping("/library-manager/dashboard")
+    @GetMapping("/manager")
 
     public String getLibraryManageDashboard(@ModelAttribute Account account) throws AccountNotExistedException {
         return "lib_manager/lib-manager_dashboard";
