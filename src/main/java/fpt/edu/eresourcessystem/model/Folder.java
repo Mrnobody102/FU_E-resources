@@ -18,7 +18,7 @@ public class Folder {
     @Id
     private String folderId;
     private String folderName;
-    private String folderDescription;  // or perhaps a URL to the content if stored externally
+    private String folderDescription;
 
     private List<String> documents;
 

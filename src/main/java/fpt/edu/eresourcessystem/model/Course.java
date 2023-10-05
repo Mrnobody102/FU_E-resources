@@ -21,9 +21,10 @@ public class Course {
     private String courseCode;
 
     private String courseName;
-    private String description;  // or perhaps a URL to the content if stored externally
+    private String description;
 
-    private List<String> documents;
+    private List<String> documents; //list of documentId
+    private List<String> folders; //list of folderId
 
     //Audit Log
     @CreatedBy
