@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 
 @Data
@@ -20,11 +21,15 @@ public class Manager extends Account{
 
     //Audit Log
     @CreatedBy
+    @Field("managerCreatedBy")
     private String createdBy;
     @CreatedDate
+    @Field("managerCreatedDate")
     private String createdDate;
     @LastModifiedBy
+    @Field("managerLastModifiedBy")
     private String lastModifiedBy;
     @LastModifiedDate
+    @Field("managerLastModifiedDate")
     private String lastModifiedDate;
 }
