@@ -53,3 +53,35 @@ footer {
 footer a {
     color: white;
 }
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #111d5e;
+    color: white;
+    padding: 5px 0;
+    text-align: center;
+    z-index: 999; /* Đảm bảo header hiển thị phía trên cùng của nội dung */
+}
+
+/* CSS cho footer */
+footer {
+    /* position: fixed; */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #111d5e;
+    color: white;
+    padding: 5px 0;
+    text-align: center;
+    z-index: 999; /* Đảm bảo footer hiển thị phía dưới cùng của nội dung */
+}
+
+/* CSS cho nội dung chính */
+.main_content {
+    padding-top: 60px; /* Đảm bảo nội dung không bị che bởi header */
+    padding-bottom: 60px; /* Đảm bảo nội dung không bị che bởi footer */
+    /* Thêm các thuộc tính khác cho nội dung chính của bạn */
+}
