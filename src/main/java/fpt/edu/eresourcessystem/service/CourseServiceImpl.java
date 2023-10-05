@@ -24,7 +24,8 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public Course updateCourse(Course Course) throws CourseNotExistedException {
+    public Course updateCourse(Course Course) throws
+            CourseNotExistedException {
         Course savedCourse = courseRepository.findById(Course.getCourseId())
                 .orElseThrow(() -> new CourseNotExistedException("Course Not Existed."));
         savedCourse.setCourseCode(Course.getCourseCode());

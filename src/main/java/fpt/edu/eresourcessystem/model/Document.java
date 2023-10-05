@@ -1,20 +1,15 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import lombok.Data;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.apache.catalina.User;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.annotation.*;
 
-@org.springframework.data.mongodb.core.mapping.Document("courses")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@org.springframework.data.mongodb.core.mapping.Document("document")
 public class Document {
     @Id
     private String documentId;
@@ -23,10 +18,21 @@ public class Document {
     private String description;
     private String status;
 
-    private String courseId;  // Reference to the course the document is associated with
-
+    private String folderId;  // Reference to the folder that contain it
     private String uploaderId;  // Reference to the user who uploaded the document
 
     private String content;  // doc, audio, video
     // để nhiều trường có thể lưu nhiều dạng tài liệu, file...
+
+    private String note;
+
+    //Audit Log
+    @CreatedBy
+    private String createdBy;
+    @CreatedDate
+    private String createdDate;
+    @LastModifiedBy
+    private String lastModifiedBy;
+    @LastModifiedDate
+    private String lastModifiedDate;
 }

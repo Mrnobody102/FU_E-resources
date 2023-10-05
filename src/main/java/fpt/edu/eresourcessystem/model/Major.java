@@ -1,21 +1,19 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import lombok.Data;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document("major")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Document("major")
 public class Major {
     @Id
     private String majorId;
@@ -23,4 +21,14 @@ public class Major {
     private String description;  // or perhaps a URL to the content if stored externally
 
     private List<String> courses;
+
+    //Audit Log
+    @CreatedBy
+    private String createdBy;
+    @CreatedDate
+    private String createdDate;
+    @LastModifiedBy
+    private String lastModifiedBy;
+    @LastModifiedDate
+    private String lastModifiedDate;
 }

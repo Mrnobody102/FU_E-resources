@@ -1,22 +1,34 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import lombok.Data;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document("accounts")
-@Getter
-@Setter
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Document("accounts")
 public class Lecturer {
     private String lecturerId;  // Reference to Account
-    private List<String> managedCourses;
+    private List<String> lecturerCourses;
+
+    //Audit Log
+    @CreatedBy
+    private String createdBy;
+    @CreatedDate
+    private String createdDate;
+    @LastModifiedBy
+    private String lastModifiedBy;
+    @LastModifiedDate
+    private String lastModifiedDate;
 
 }

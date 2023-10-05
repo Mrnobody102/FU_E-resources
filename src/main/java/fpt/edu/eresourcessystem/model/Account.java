@@ -2,16 +2,16 @@ package fpt.edu.eresourcessystem.model;
 
 
 import fpt.edu.eresourcessystem.enums.AccountEnum;
-import jakarta.annotation.Nonnull;
-import lombok.*;
-import org.springframework.data.annotation.Id;
+import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
 
 @Document("accounts")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {
@@ -34,4 +34,14 @@ public class Account {
     private AccountEnum.Role role;
 
     private boolean flagAdmin;
+
+    //Audit Log
+    @CreatedBy
+    private String createdBy;
+    @CreatedDate
+    private String createdDate;
+    @LastModifiedBy
+    private String lastModifiedBy;
+    @LastModifiedDate
+    private String lastModifiedDate;
 }
