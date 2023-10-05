@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E-Resource Manager</title>
+    <title>E-Resource Manager Dashboard</title>
     <!-- CSS -->
     <link rel="stylesheet" href="/css/base.css" />
     <link
@@ -19,8 +19,8 @@
           <h2>FPT University E-Resource System</h2>
         </div>
         <div class="header_account">
-          <a href="">Logout</a>
-          <a href="">lampt@fpt.edu.vn</a>
+          <a th:href="@{/logout}">Logout</a>
+          <a th:href="@{/profile}">lampt@fpt.edu.vn</a>
         </div>
       </header>
 
@@ -32,13 +32,13 @@
               <a href="">Campus</a>
             </li>
             <li class="func_item">
-              <a href="lib-manager_subjects.html">Major And Subjects</a>
+              <a th:href="@{/manager/courses/list}">Major And Subjects</a>
             </li>
             <li class="func_item">
               <a href="">Report</a>
             </li>
             <li class="func_item">
-              <a href="lib-manager_accounts.html">User management</a>
+              <a th:href="@{/manager/accounts/list}">User management</a>
             </li>
             <li class="func_item">
               <a href="">Remove Data</a>

@@ -6,11 +6,12 @@ import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.service.CourseService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/manager/courses")
 public class ManagerCourseController {
     private final CourseService courseService;
@@ -30,14 +31,9 @@ public class ManagerCourseController {
         courseService.updateCourse(course);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/list")
-    public ResponseEntity<List<Course>> findAll(){
-        return ResponseEntity.ok(courseService.findAll());
-    }
-
-    @GetMapping("/list/{pageIndex}")
-    Page<Course> findCourseByPage(@PathVariable Integer pageIndex, String search){
-        return null;
+    @GetMapping({"/list","/list/{pageIndex}"})
+    public String findAll(){
+        return "lib_manager/lib-manager_subjects";
     }
 
     @DeleteMapping("delete")

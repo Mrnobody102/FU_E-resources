@@ -15,22 +15,20 @@
           <h2>FPT University E-Resource System</h2>
         </div>
         <div class="header_account">
-          <a href="">Logout</a>
-          <a href="">lampt@fpt.edu.vn</a>
+          <a th:href="@{/logout}">Logout</a>
+          <a th:href="@{/profile}">lampt@fpt.edu.vn</a>
         </div>
       </header>
 
       <!-- Content -->
       <main class="main_content">
         <section>
-          <div class="user-management-head">
-            <a href="lib-manager_dashboard.html">Home</a>
-            <span> &gt; <a href="#"> User Management</a> </span>
-          </div>
-          <div class="topnav">
+
+
+          <div class="">
             
             <div class="search-container">
-              <form action="/action_page.php">
+              <form action="">
                 <label for="search-text">User</label>
                 <input type="text" placeholder="Search.." name="search" id="search-text"/>
                 <button type="submit">
@@ -40,6 +38,10 @@
               </form>
               
             </div>
+          </div>
+          <div class="user-management-head">
+            <a th:href="@{/manager}">Home</a>
+            <span> &gt; <a href="#"> User Management</a> </span>
           </div>
           <div>
             <table class="list-model-table">

@@ -15,19 +15,16 @@
           <h2>FPT University E-Resource System</h2>
         </div>
         <div class="header_account">
-          <a href="">Logout</a>
-          <a href="">lampt@fpt.edu.vn</a>
+          <a th:href="@{/logout}">Logout</a>
+          <a th:href="@{/profile}">lampt@fpt.edu.vn</a>
         </div>
       </header>
 
       <!-- Content -->
       <main class="main_content">
         <section>
-          <div class="user-management-head">
-            <a href="lib-manager_dashboard.html">Home</a>
-            <span> &gt; <a href="#"> Major And Subjects Management</a> </span>
-          </div>
-          <div class="topnav">
+
+          <div class="">
             <div class="search-container">
               <form action="/action_page.php">
                 <label for="search-text">User</label>
@@ -46,6 +43,10 @@
               </form>
             </div>
           </div>
+          <div class="user-management-head">
+            <a th:href="@{/manager}">Home</a>
+            <span> &gt; <a href="#"> Major And Subjects Management</a> </span>
+          </div>
           <div>
             <table class="list-model-table">
               <tr class="table-head">
@@ -54,22 +55,22 @@
                 <th>Descriptions</th>
               </tr>
               <tr>
-                <td><a href="../courses/detail">HCM202</a></td>
+                <td><a href="">HCM202</a></td>
                 <td>Course name</td>
                 <td>Hệ thống các quan điểm toàn diện và sâu sắc về những vấn đề cơ bản của cách mạng Việt Nam</td>
               </tr>
               <tr>
-                <td><a href="../courses/detail">HCM202</a></td>
+                <td><a href="">HCM202</a></td>
                 <td>Course name</td>
                 <td>Hệ thống các quan điểm toàn diện và sâu sắc về những vấn đề cơ bản của cách mạng Việt Nam</td>
               </tr>
               <tr>
-                <td><a href="../courses/detail">HCM202</a></td>
+                <td><a href="">HCM202</a></td>
                 <td>Course name</td>
                 <td>Hệ thống các quan điểm toàn diện và sâu sắc về những vấn đề cơ bản của cách mạng Việt Nam</td>
               </tr>
               <tr>
-                <td><a href="../courses/detail">HCM202</a></td>
+                <td><a href="">HCM202</a></td>
                 <td>Course name</td>
                 <td>Hệ thống các quan điểm toàn diện và sâu sắc về những vấn đề cơ bản của cách mạng Việt Nam</td>
               </tr>
