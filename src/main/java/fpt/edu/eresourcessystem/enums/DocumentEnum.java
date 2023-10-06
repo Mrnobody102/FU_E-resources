@@ -2,10 +2,10 @@ package fpt.edu.eresourcessystem.enums;
 
 public class DocumentEnum {
 
-    public enum DocumentPermissionEnum {
+    public enum DocumentAccessLevelEnum {
         PUBLIC,
-        PRIVATE,
-        ONLY_LECTURER;
+        ONLY_LECTURER,
+        PRIVATE;
     }
 
     public enum DocumentStateEnum {

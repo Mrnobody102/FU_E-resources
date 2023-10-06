@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User management</title>
     <link rel="stylesheet" href="/css/base.css" />
-    <link rel="stylesheet" href="/css/lib-manager.css" />
+    <link rel="stylesheet" href="/css/manager.css" />
   </head>
   <body>
     <div class="app_container">
@@ -23,26 +23,22 @@
       <!-- Content -->
       <main class="main_content">
         <section>
-
-
+          <div class="user-management-head">
+            <a th:href="@{/manager}">Home</a>
+            <span> &gt; <a href="#"> User Management</a> </span>
+          </div>
           <div class="">
-            
             <div class="search-container">
               <form action="">
-                <label for="search-text">User</label>
-                <input type="text" placeholder="Search.." name="search" id="search-text"/>
+                <input type="text" placeholder="Search user.." name="search" id="search-text"/>
                 <button type="submit">
                   <i class="fa fa-search"></i> Search
                 </button>
                 <button class="btn-add" type="button" href="#">Add new user</button>
               </form>
-              
             </div>
           </div>
-          <div class="user-management-head">
-            <a th:href="@{/manager}">Home</a>
-            <span> &gt; <a href="#"> User Management</a> </span>
-          </div>
+
           <div>
             <table class="list-model-table">
               <tr class="table-head">

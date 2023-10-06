@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/base.css" />
     <link
       rel="stylesheet"
-      href="/css/lib-manager.css"
+      href="/css/manager.css"
     />
   </head>
   <body>
@@ -28,20 +28,18 @@
       <main class="main_content">
         <section>
           <ul class="func_list">
+
             <li class="func_item">
-              <a href="">Campus</a>
-            </li>
-            <li class="func_item">
-              <a th:href="@{/manager/courses/list}">Major And Subjects</a>
-            </li>
-            <li class="func_item">
-              <a href="">Report</a>
+              <a href="">Settings</a>
             </li>
             <li class="func_item">
               <a th:href="@{/manager/accounts/list}">User management</a>
             </li>
             <li class="func_item">
-              <a href="">Remove Data</a>
+              <a th:href="@{/manager/courses/list}">Courses management</a>
+            </li>
+            <li class="func_item">
+              <a href="">Statistical Data</a>
             </li>
           </ul>
         </section>

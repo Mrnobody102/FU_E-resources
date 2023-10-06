@@ -25,7 +25,8 @@ public class LoginController {
     @GetMapping({"/","/login"})
     public String loginProcess(final Model model) throws AccountNotExistedException {
         model.addAttribute("account", new Account());
-        return "auth/login";
+//        return "auth/login";
+        return "student/home";
     }
 
     @PostMapping({"/login"})
@@ -34,9 +35,9 @@ public class LoginController {
                 return "auth/login";
             } else if("MANAGER".equals(account.getUsername())){
 
-                return "lib_manager/lib-manager_dashboard";
+                return "manager_dashboard";
             } else if ("LECTURER".equals(account.getUsername())) {
-                return "lecturer/lecturer_subjects";
+                return "lecturer_courses";
             }
             return  "student/home";
     }

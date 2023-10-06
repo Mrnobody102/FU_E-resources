@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LecturerCourseController {
     @GetMapping("/list")
     public String courseList(){
-        return "lecturer/lecturer_subjects";
+        return "lecturer_courses";
     }
 
 }

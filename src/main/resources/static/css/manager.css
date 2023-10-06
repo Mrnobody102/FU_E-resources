@@ -14,9 +14,9 @@ li a {
   color: var(--text-color);
 }
 
-section {
-  margin-left: 1em;
-}
+/*section {*/
+/*  margin-left: 1em;*/
+/*}*/
 
 .topnav a.active {
   background-color: #2196f3;
@@ -35,19 +35,21 @@ section {
 
 .topnav .search-container button {
   padding: 0.5em 1em;
-  margin-top: 8px;
-  background: #2be007;
+  /*margin-top: 8px;*/
+  background: #111d5e;
+  color: white;
   border-radius: 0.3em;
   font-size: 1em;
   border: none;
   cursor: pointer;
 }
 .btn-add {
-    background: aquamarine;
+  padding: 3px;
+
 }
 .topnav .search-container button:hover {
     background: #ccc;
-  }F
+  }
 .list-model-table th,
 .list-model-table td {
   border: 1px solid #ddd;

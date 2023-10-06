@@ -2,10 +2,10 @@
 :root {
     --white-color: #fff;
     --black-color: #000;
-    --text-color: #3E51FF;
+    --text-color: #111d5e;
     --border-color: #dbdbdb;
-    --primary-color: #3E51FF;
-    --primary-back-ground: #3E51FF;
+    --primary-color: #111d5e;
+    --primary-back-ground: #111d5e;
 }
 
 * {
@@ -20,6 +20,7 @@ html {
 
 a {
     text-decoration: none;
+    color: var(--primary-back-ground)
 }
 
 
@@ -55,11 +56,7 @@ footer a {
 }
 
 header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: #111d5e;
+    background-color: var(--primary-back-ground);
     color: white;
     padding: 5px 0;
     text-align: center;
@@ -81,7 +78,15 @@ footer {
 
 /* CSS cho nội dung chính */
 .main_content {
-    padding-top: 60px; /* Đảm bảo nội dung không bị che bởi header */
-    padding-bottom: 60px; /* Đảm bảo nội dung không bị che bởi footer */
-    /* Thêm các thuộc tính khác cho nội dung chính của bạn */
+
+    padding-top: 20px; /* Đảm bảo nội dung không bị che bởi header */
+    padding-bottom: 20px; /* Đảm bảo nội dung không bị che bởi footer */
+}
+
+section {
+    padding-inline-start: 40px;
+}
+
+ul {
+    padding-inline-start: 0px;
 }

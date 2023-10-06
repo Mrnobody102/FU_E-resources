@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class Document {
     // để nhiều trường có thể lưu nhiều dạng tài liệu, file...
 
     private String note;
+    private DocumentEnum.DocumentAccessLevelEnum accessLevel;
 
     //Audit Log
     @CreatedBy
