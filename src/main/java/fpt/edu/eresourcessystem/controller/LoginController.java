@@ -22,11 +22,10 @@ public class LoginController {
         this.accountService = accountService;
     }
 
-    @GetMapping({"/","/login"})
+    @GetMapping({"/login"})
     public String loginProcess(final Model model) throws AccountNotExistedException {
         model.addAttribute("account", new Account());
         return "auth/login";
-
     }
 
     @PostMapping({"/login"})
@@ -34,12 +33,13 @@ public class LoginController {
             if(null == account){
                 return "auth/login";
             } else if("MANAGER".equals(account.getUsername())){
-
-                return "manager_dashboard";
+                return "redirect:/manager";
             } else if ("LECTURER".equals(account.getUsername())) {
-                return "lecturer_courses";
+                return "redirect:/lecturer";
+            }else if ("STUDENT".equals(account.getUsername())) {
+                return "redirect:/student";
             }
-            return  "student/home";
+            return  "redirect:/guest";
     }
 
     @GetMapping({"/logout"})
@@ -48,8 +48,9 @@ public class LoginController {
         return "auth/login";
     }
 
-    @GetMapping({"/profile"})
-    public String profile(){
-        return "common/profile";
+    @GetMapping({"/", "/guest"})
+    public String guest(){
+        return "guess/home";
     }
+
 }

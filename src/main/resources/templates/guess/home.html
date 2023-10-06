@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Resource Manager Dashboard</title>
+  <!-- CSS -->
+  <link rel="stylesheet" th:href="@{/css/base.css}" />
+  <link
+          rel="stylesheet"
+          th:href="@{/css/manager.css}"
+  />
+</head>
+<body>
+<div class="app_container">
+
+  <div class="row" th:replace="fragments/header::guestHeaderSection"></div>
+  <!-- Content -->
+  <main class="main_content">
+    <div class="container">
+      <div class="container-content">
+        Guest Home
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div class="row" th:replace="fragments/footer :: footerSection"></div>
+</div>
+<script th:src="@{/js/lib-manager.js}"></script>
+</body>
+</html>
