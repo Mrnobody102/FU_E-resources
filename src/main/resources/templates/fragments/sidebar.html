@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+<link rel="stylesheet" th:href="@{/css/base.css}" />
+<link
+        rel="stylesheet"
+        th:href="@{/css/manager.css}"
+/>
+<body>
+<!-- Lecturer Sidebar  -->
+<div class="sidebar" th:fragment="lecturerSidebar">
+  <nav th:fragment="lecturerSidebar" id="sidebar">
+    <div class="sidebar-header" style="text-align: center;">
+      <h5>email@gmail.com</h5>
+    </div>
+
+    <ul class="list-unstyled components">
+
+      <li class="active">
+        <ul class="collapse list-unStyled" id="">
+          <li>
+            <a href="#">Notification</a>
+          </li>
+          <li>
+            <a href="#">My courses</a>
+          </li>
+          <li>
+            <a href="#">History</a>
+          </li>
+          <li>
+            <a href="#">Question&Answer</a>
+          </li>
+          <li>
+            <a href="#">Requests</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Recent</a>
+      </li>
+      <li>
+        <a href="#">Search</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<!-- Manager Sidebar  -->
+<div class="sidebar" th:fragment="managerSidebar">
+  <nav th:fragment="managerSidebar" id="sidebar">
+    <ul class="list-unstyled components func_list">
+
+      <li class="func_item">
+        <a href="">Settings</a>
+      </li>
+      <li class="func_item">
+        <a th:href="@{/manager/accounts/list}">User management</a>
+      </li>
+      <li class="func_item">
+        <a th:href="@{/manager/courses/list}">Courses management</a>
+      </li>
+      <li class="func_item">
+        <a href="">Statistical Data</a>
+      </li>
+    </ul>
+    <ul class="list-unstyled components">
+
+      <li class="active">
+        <ul class="collapse list-unStyled" id="">
+          <li>
+            <a href="#">Notification</a>
+          </li>
+          <li>
+            <a href="#">FeedBack</a>
+          </li>
+          <li>
+            <a href="#">Requests</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Recent</a>
+      </li>
+      <li>
+        <a href="#">Search</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+
+<!-- Student Sidebar  -->
+<div class="sidebar" th:fragment="studentSidebar">
+  <nav th:fragment="studentSidebar" id="sidebar">
+    <ul class="list-unstyled components func_list">
+      <li class="func_item">
+        <a th:href="@{/student/search}">Search</a>
+      </li>
+      <li class="func_item">
+        <a href="">My profile</a>
+      </li>
+      <li class="func_item">
+        <a href="">My course</a>
+      </li>
+      <li class="func_item">
+        <a href="">Saved document</a>
+      </li>
+      <li class="func_item">
+        <a href="">My note</a>
+      </li>
+      <li class="func_item">
+        <a href="">Question&Answer</a>
+      </li>
+    </ul>
+    <ul class="list-unstyled components">
+
+      <li class="active">
+        <ul class="collapse list-unStyled" id="">
+          <li>
+            <a href="#">Notification</a>
+          </li>
+          <li>
+            <a href="#">My FeedBack</a>
+          </li>
+          <li>
+            <a href="#">Requests</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Recent</a>
+      </li>
+
+    </ul>
+  </nav>
+</div>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#sidebarCollapse").on("click", function () {
+      $("#sidebar").toggleClass("active");
+    });
+  });
+</script>
+</body>
+</html>
