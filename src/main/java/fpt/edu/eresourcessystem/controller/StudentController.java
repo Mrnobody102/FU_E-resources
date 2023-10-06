@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping
 public class StudentController {
-    @GetMapping("/student")
+    @GetMapping("/home")
     public String getLibraryManageDashboard(@ModelAttribute Account account) {
-        return "manager_dashboard";
+        return "student/home";
     }
 }

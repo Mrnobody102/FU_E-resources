@@ -25,8 +25,8 @@ public class LoginController {
     @GetMapping({"/","/login"})
     public String loginProcess(final Model model) throws AccountNotExistedException {
         model.addAttribute("account", new Account());
-//        return "auth/login";
-        return "student/home";
+        return "auth/login";
+
     }
 
     @PostMapping({"/login"})
