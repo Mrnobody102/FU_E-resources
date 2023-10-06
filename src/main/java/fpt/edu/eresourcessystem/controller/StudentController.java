@@ -7,10 +7,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping
+@RequestMapping()
 public class StudentController {
-    @GetMapping("/home")
-    public String getLibraryManageDashboard(@ModelAttribute Account account) {
+    @GetMapping("/student")
+    public String getStudentHome(@ModelAttribute Account account) {
+        return "student/student";
+    }
+
+    @GetMapping("/student/search")
+    public String search(@ModelAttribute Account account) {
         return "student/home";
     }
 }

@@ -54,16 +54,7 @@
 <body>
 <div class="app_container ">
     <!-- Header -->
-    <header>
-        <div class="header_system-name">
-            <h2>FPT University E-Resource System</h2>
-        </div>
-        <div class="header_account">
-            <a th:href="@{/logout}">Logout</a>
-            <a th:href="@{/profile}">lampt@fpt.edu.vn</a>
-        </div>
-    </header>
-
+    <div class="row" th:replace="fragments/header::headerSection"></div>
 
     <!-- Content -->
     <main class="main_content mt-3">
@@ -75,822 +66,831 @@
         </div>
 
     </main>
-    <div class="home container my-1">
-        <div class="home-heading mb-5">
-            <h1>Documents of FPT</h1>
-        </div>
 
-        <div class="home-content">
-            <h2 class="home-content__heading mb-3">Recent viewed"<span class="heading-course"> PRF192 </span>"</h2>
-            <div class="home-course__list">
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
+    <div class="container">
+        <div class="container-content">
+            <div class="row" th:replace="fragments/sidebar::lecturerSidebar"></div>
+            <div class="home container my-1">
+                <div class="home-heading mb-5">
+                    <h1>Documents of FPT</h1>
                 </div>
 
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
+                <div class="home-content">
+                    <h2 class="home-content__heading mb-3">Recent viewed"<span class="heading-course"> PRF192 </span>"</h2>
+                    <div class="home-course__list">
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
                                 (11.269)
                             </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="home-content">
+                    <h2 class="home-content__heading mb-3">Student viewing</h2>
+                    <div class="home-course__list">
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="home-content">
+                    <h2 class="home-content__heading mb-3">Top Documents </h2>
+                    <div class="home-course__list">
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="home-content">
+                    <h2 class="home-content__heading mb-3">Top VIDEO</h2>
+                    <div class="home-course__list">
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="home-content">
+                    <h2 class="home-content__heading mb-3">Top course IT & Software</h2>
+                    <div class="home-course__list">
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="home-content">
+                    <h2 class="home-content__heading mb-3">Top course in Personal Development</h2>
+                    <div class="home-course__list">
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
+                        <div class="home-course">
+                            <div class="home-course__image">
+                                <a href="#">
+                                    <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="home-course__content">
+                                <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
+                                <span class="course-author">Mosh Hamedani</span><br>
+                                <span class="course-rp"><span> Document </span>
+                                (11.269)
+                            </span><br>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
-
         </div>
-        <div class="home-content">
-            <h2 class="home-content__heading mb-3">Student viewing</h2>
-            <div class="home-course__list">
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="home-content">
-            <h2 class="home-content__heading mb-3">Top Documents </h2>
-            <div class="home-course__list">
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
-        <div class="home-content">
-            <h2 class="home-content__heading mb-3">Top VIDEO</h2>
-            <div class="home-course__list">
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="home-content">
-            <h2 class="home-content__heading mb-3">Top course IT & Software</h2>
-            <div class="home-course__list">
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="home-content">
-            <h2 class="home-content__heading mb-3">Top course in Personal Development</h2>
-            <div class="home-course__list">
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-                <div class="home-course">
-                    <div class="home-course__image">
-                        <a href="#">
-                            <img src="https://img-c.udemycdn.com/course/240x135/4259956_25c8_4.jpg" alt="">
-                        </a>
-                    </div>
-                    <div class="home-course__content">
-                        <span class="course-name">Entity Framework in Depth: The complete Guide</span><br>
-                        <span class="course-author">Mosh Hamedani</span><br>
-                        <span class="course-rp"><span> Document </span>
-                                (11.269)
-                            </span><br>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
+
+
+
 
 </div>
 
