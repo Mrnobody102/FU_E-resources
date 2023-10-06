@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,77 +11,72 @@
   <body>
     <div class="app_container">
       <!-- Header -->
-      <header>
-        <div class="header_system-name">
-          <h2>FPT University E-Resource System</h2>
-        </div>
-        <div class="header_account">
-          <a th:href="@{/logout}">Logout</a>
-          <a th:href="@{/profile}">lampt@fpt.edu.vn</a>
-        </div>
-      </header>
+      <div class="row" th:replace="fragments/header::headerSection"></div>
 
       <!-- Content -->
       <main class="main_content">
-        <section>
-          <div class="user-management-head">
-            <a th:href="@{/manager}">Home</a>
-            <span> &gt; <a href="#"> User Management</a> </span>
-          </div>
-          <div class="">
-            <div class="search-container">
-              <form action="">
-                <input type="text" placeholder="Search user.." name="search" id="search-text"/>
-                <button type="submit">
-                  <i class="fa fa-search"></i> Search
-                </button>
-                <button class="btn-add" type="button" href="#">Add new user</button>
-              </form>
+        <div class="container">
+          <div class="container-content">
+            <div class="content-body">
+              <div class="user-management-head">
+                <a th:href="@{/manager}">Home</a>
+                <span> &gt; <a href="#"> User Management</a> </span>
+              </div>
+              <div class="">
+                <div class="search-container">
+                  <form action="">
+                    <input type="text" placeholder="Search user.." name="search" id="search-text"/>
+                    <button type="submit">
+                      <i class="fa fa-search"></i> Search
+                    </button>
+                    <button class="btn-add" type="button" href="#">Add new user</button>
+                  </form>
+                </div>
+              </div>
+
+              <div th:if="${accounts ne null}">
+                <table class="list-model-table">
+                  <tr class="table-head">
+                    <th>Login</th>
+                    <th>IsActive</th>
+                    <th>RoleName</th>
+                    <th>Campus</th>
+                  </tr>
+                  <tr>
+                    <td>thuongdthe150682@fpt.edu.vn</td>
+                    <td><input type="checkbox" id="1" name="IsActive" /></td>
+                    <td>Student</td>
+                    <td>HN</td>
+                  </tr>
+                  <tr>
+                    <td>thuongdthe150682@fpt.edu.vn</td>
+                    <td><input type="checkbox" id="1" name="IsActive" /></td>
+                    <td>Student</td>
+                    <td>HN</td>
+                  </tr>
+                  <tr>
+                    <td>thuongdthe150682@fpt.edu.vn</td>
+                    <td><input type="checkbox" id="1" name="IsActive" /></td>
+                    <td>Student</td>
+                    <td>HN</td>
+                  </tr>
+                  <tr>
+                    <td>thuongdthe150682@fpt.edu.vn</td>
+                    <td><input type="checkbox" id="1" name="IsActive" /></td>
+                    <td>Student</td>
+                    <td>HN</td>
+                  </tr>
+                </table>
+              </div>
             </div>
           </div>
 
-          <div>
-            <table class="list-model-table">
-              <tr class="table-head">
-                <th>Login</th>
-                <th>IsActive</th>
-                <th>RoleName</th>
-                <th>Campus</th>
-              </tr>
-              <tr>
-                <td>thuongdthe150682@fpt.edu.vn</td>
-                <td><input type="checkbox" id="1" name="IsActive" /></td>
-                <td>Student</td>
-                <td>HN</td>
-              </tr>
-              <tr>
-                <td>thuongdthe150682@fpt.edu.vn</td>
-                <td><input type="checkbox" id="1" name="IsActive" /></td>
-                <td>Student</td>
-                <td>HN</td>
-              </tr>
-              <tr>
-                <td>thuongdthe150682@fpt.edu.vn</td>
-                <td><input type="checkbox" id="1" name="IsActive" /></td>
-                <td>Student</td>
-                <td>HN</td>
-              </tr>
-              <tr>
-                <td>thuongdthe150682@fpt.edu.vn</td>
-                <td><input type="checkbox" id="1" name="IsActive" /></td>
-                <td>Student</td>
-                <td>HN</td>
-              </tr>
-            </table>
-          </div>
-        </section>
+        </div>
+
       </main>
 
       <!-- Footer -->
-      <footer>
-        <p>&copy; 2023 - FPT Education. All rights reserved.</p>
-        <a href="#">About us</a>
-      </footer>
+      <div class="row" th:replace="fragments/footer :: footerSection"></div>
     </div>
 
     <script src="/js/lib-manager.js"></script>

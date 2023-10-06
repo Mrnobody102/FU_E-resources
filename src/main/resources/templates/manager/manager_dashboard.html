@@ -1,57 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>E-Resource Manager Dashboard</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
     <link
-      rel="stylesheet"
-      href="/css/manager.css"
+            rel="stylesheet"
+            th:href="@{/css/manager.css}"
     />
   </head>
   <body>
     <div class="app_container">
-      <!-- Header -->
-      <header>
-        <div class="header_system-name">
-          <h2>FPT University E-Resource System</h2>
-        </div>
-        <div class="header_account">
-          <a th:href="@{/logout}">Logout</a>
-          <a th:href="@{/profile}">lampt@fpt.edu.vn</a>
-        </div>
-      </header>
 
+      <div class="row" th:replace="fragments/header::headerSection"></div>
       <!-- Content -->
       <main class="main_content">
-        <section>
-          <ul class="func_list">
-
-            <li class="func_item">
-              <a href="">Settings</a>
-            </li>
-            <li class="func_item">
-              <a th:href="@{/manager/accounts/list}">User management</a>
-            </li>
-            <li class="func_item">
-              <a th:href="@{/manager/courses/list}">Courses management</a>
-            </li>
-            <li class="func_item">
-              <a href="">Statistical Data</a>
-            </li>
-          </ul>
-        </section>
+        <div class="container">
+          <div class="container-content">
+            <div class="row" th:replace="fragments/sidebar::managerSidebar"></div>
+          </div>
+        </div>
       </main>
 
       <!-- Footer -->
-      <footer>
-        <p>&copy; 2023 - FPT Education. All rights reserved.</p>
-        <a href="#">About us</a>
-      </footer>
+      <div class="row" th:replace="fragments/footer :: footerSection"></div>
     </div>
-
-    <script src="/js/lib-manager.js"></script>
+    <script th:src="@{/js/lib-manager.js}"></script>
   </body>
 </html>
