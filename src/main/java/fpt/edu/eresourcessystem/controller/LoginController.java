@@ -1,6 +1,5 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.enums.AccountEnum;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
@@ -12,7 +11,6 @@ import fpt.edu.eresourcessystem.service.AccountService;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.exception.AccountNotExistedException;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @PropertySources(value = {@PropertySource("classpath:webconfig.properties")})
@@ -24,36 +22,34 @@ public class LoginController {
         this.accountService = accountService;
     }
 
-    @GetMapping({"/login"})
+    @GetMapping({"/","/login"})
     public String loginProcess(final Model model) throws AccountNotExistedException {
         model.addAttribute("account", new Account());
-        model.addAttribute("roles", AccountEnum.Role.values());
         return "auth/login";
+
     }
 
     @PostMapping({"/login"})
-    public String login(@ModelAttribute Account account, @RequestParam String roles){
+    public String login(@ModelAttribute Account account){
             if(null == account){
-                return "redirect:/login";
-            } else if ("MANAGER".equals(roles)){
-//                account.setRole(AccountEnum.Role.STUDENT);
-                return "redirect:/manager";
-            } else if ("LECTURER".equals(roles)) {
-                return "redirect:/lecturer";
-            }else if ("STUDENT".equals(roles)) {
-                return "redirect:/student";
+                return "auth/login";
+            } else if("LIBRARIAN".equals(account.getUsername())){
+
+                return "librarian_dashboard";
+            } else if ("LECTURER".equals(account.getUsername())) {
+                return "lecturer_courses";
             }
-            return  "redirect:/guest";
+            return  "student/home";
     }
 
     @GetMapping({"/logout"})
-    public String logout(){
-        return "redirect:/login";
+    public String logout(final Model model){
+        model.addAttribute("account", new Account());
+        return "auth/login";
     }
 
-    @GetMapping({"/", "/guest"})
-    public String guest(){
-        return "guess/home";
+    @GetMapping({"/profile"})
+    public String profile(){
+        return "common/profile";
     }
-
 }

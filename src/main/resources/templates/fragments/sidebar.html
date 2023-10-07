@@ -7,7 +7,7 @@
 <link rel="stylesheet" th:href="@{/css/base.css}" />
 <link
         rel="stylesheet"
-        th:href="@{/css/manager.css}"
+        th:href="@{/css/librarian.css}"
 />
 <body>
 <!-- Lecturer Sidebar  -->
@@ -47,19 +47,19 @@
     </ul>
   </nav>
 </div>
-<!-- Manager Sidebar  -->
-<div class="sidebar" th:fragment="managerSidebar">
-  <nav th:fragment="managerSidebar" id="sidebar">
+<!-- Librarian Sidebar  -->
+<div class="sidebar" th:fragment="librarianSidebar">
+  <nav th:fragment="librarianSidebar" id="sidebar">
     <ul class="list-unstyled components func_list">
 
       <li class="func_item">
         <a href="">Settings</a>
       </li>
       <li class="func_item">
-        <a th:href="@{/manager/accounts/list}">User management</a>
+        <a th:href="@{/templates/librarian/accounts/list}">User management</a>
       </li>
       <li class="func_item">
-        <a th:href="@{/manager/courses/list}">Courses management</a>
+        <a th:href="@{/templates/librarian/courses/list}">Courses management</a>
       </li>
       <li class="func_item">
         <a href="">Statistical Data</a>

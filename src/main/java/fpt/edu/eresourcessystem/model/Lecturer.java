@@ -22,6 +22,9 @@ public class Lecturer {
     private String lecturerId;  // Reference to Account
     private List<String> lecturerCourses;
 
+    private List<String> uploadPermission;
+    private List<String> documentId;
+
     //Audit Log
     @CreatedBy
     @Field("lecturerCreatedBy")

@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping
-public class ManagerController {
-    @GetMapping("/manager")
+public class LibrarianController {
+    @GetMapping("/librarian")
     public String getLibraryManageDashboard(@ModelAttribute Account account) {
-        return "manager/manager_dashboard";
+        return "librarian/librarian_dashboard";
     }
 }

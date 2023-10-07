@@ -4,7 +4,7 @@ public class AccountEnum {
     public enum Role {
         STUDENT,
         LECTURER,
-        MANAGER
+        LIBRARIAN
     }
 
     public enum Campus {
