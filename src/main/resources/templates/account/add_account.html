@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Account Manage</title>
     <link rel="stylesheet" href="/css/base.css"/>
-    <link rel="stylesheet" href="/css/manager.css"/>
+    <link rel="stylesheet" href="/css/librarian.css"/>
 </head>
 <body>
 <div class="app_container">
@@ -17,19 +17,19 @@
     <main class="main_content">
         <div class="container">
             <div class="container-content">
-                <div class="sidebar managerCourseSidebar">
+                <div class="sidebar librarianCourseSidebar">
                     <nav id="sidebar">
                         <ul class="list-unstyled components func_list">
                             <li class="func_item">
-                                <a th:href="@{/manager}">Home</a>
+                                <a th:href="@{/librarian}">Home</a>
                             </li>
                         </ul>
                     </nav>
                 </div>
                 <div class="content-body">
                     <div class="user-management-head">
-                        <a th:href="@{/manager/accounts/list}">Back</a>
-                        <span> &gt; <a th:href="@{/manager/accounts/add}"> Add Account</a> </span>
+                        <a th:href="@{/librarian/accounts/list}">Back</a>
+                        <span> &gt; <a th:href="@{/librarian/accounts/add}"> Add Account</a> </span>
                     </div>
 
                     <div class="add-content">
@@ -41,7 +41,7 @@
                                 <div class="alert alert-danger">Please account information again !!!</div>
                             </div>
                             <div class="add-form-content">
-                                <form method="post" role="form" th:action="@{/manager/accounts/add}"
+                                <form method="post" role="form" th:action="@{/librarian/accounts/add}"
                                       th:object="${account}" th:id="add-form">
                                     <table class="table-form add-table">
                                         <tr>

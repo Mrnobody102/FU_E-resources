@@ -23,6 +23,10 @@ a {
     color: var(--primary-back-ground)
 }
 
+body {
+    margin: 0px;
+}
+
 
 /* header */
 header {
