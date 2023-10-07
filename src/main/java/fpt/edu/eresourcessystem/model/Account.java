@@ -31,7 +31,7 @@ public class Account {
     private String gender;
     private String campus;
 
-    private AccountEnum.Role role;
+    private AccountEnum role;
 
     private boolean flagAdmin;
 

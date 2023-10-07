@@ -4,6 +4,6 @@ public class AccountEnum {
     public enum Role {
         STUDENT,
         LECTURER,
-        MANAGER;
+        MANAGER
     }
 }

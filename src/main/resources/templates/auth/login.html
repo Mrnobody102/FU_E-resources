@@ -36,13 +36,19 @@
                   method="post" role="form" th:action="@{/login}"
                   th:object="${account}" th:id="login-form">
                 <div class="container">
-                    <label ><b>Email</b></label>
-                    <input type="text" placeholder="Enter email" th:field="*{email}" th:id="email"required>
+                    <label th:for="email"><b>Email</b></label>
+                    <input type="text" placeholder="Enter email" th:field="*{email}" th:id="email">
 
-                    <label ><b>Password</b></label>
-                    <input type="text" placeholder="Enter Role" th:field="*{username}"
-                           required th:id="username">
-
+                    <label th:for="password"><b>Password</b></label>
+                    <input type="password" placeholder="Enter password" th:field="*{password}"
+                           th:id="password">
+                    <label th:for="roles"><b>Select role</b></label>
+                    <select th:name="roles" th:id="roles">
+                        <option th:each="role : ${roles}"
+                                th:text="${role}"
+                                th:value="${role}">
+                        </option>
+                    </select>
                     <button type="submit">Login</button>
                     <label>
                         <input type="checkbox" checked="checked" name="remember"> Remember me
@@ -50,7 +56,8 @@
                 </div>
 
                 <div class="container" style="background-color:#f1f1f1">
-                    <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                    <button type="button" class="login-with-google" >Login with Google</button>
+                    <button type="button" class="login-with-feId" >Login with FEID</button>
                     <span class="psw">Forgot <a href="#">password?</a></span>
                 </div>
             </form>
