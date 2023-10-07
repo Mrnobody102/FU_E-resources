@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User management</title>
     <link rel="stylesheet" th:href="@{/css/base.css}" />
-    <link rel="stylesheet" th:href="@{/css/manager.css}" />
+    <link rel="stylesheet" th:href="@{/css/librarian.css}" />
   </head>
   <body>
     <div class="app_container">
@@ -19,7 +19,7 @@
           <div class="container-content">
             <div class="content-body">
               <div class="user-management-head">
-                <a th:href="@{/manager}">Home</a>
+                <a th:href="@{/librarian}">Home</a>
                 <span> &gt; <a href="#"> User Management</a> </span>
               </div>
               <div class="">
@@ -29,8 +29,8 @@
                     <button class="btn" type="submit">
                       <i class="fa fa-search"></i> Search
                     </button>
-                    <a class="btn btn-add" type="button" th:href="@{/manager/accounts/add}">Add new user</a>
-                    <a class="btn btn-showAll" type="button" th:href="@{/manager/accounts/list}">Show AlL</a>
+                    <a class="btn btn-add" type="button" th:href="@{/librarian/accounts/add}">Add new user</a>
+                    <a class="btn btn-showAll" type="button" th:href="@{/librarian/accounts/list}">Show AlL</a>
                   </form>
                 </div>
               </div>
@@ -53,8 +53,8 @@
                       <td><input type="checkbox" name="IsAdmin" /></td>
                       <td th:text="${account.campus}"></td>
                       <td colspan="2">
-                        <a th:path="@{/manager/accounts/update}" th:id="${account.accountId}">Update</a>
-                        <a th:path="@{/manager/accounts/delete}" th:id="${account.accountId}">Delete</a>
+                        <a th:path="@{/librarian/accounts/update}" th:id="${account.accountId}">Update</a>
+                        <a th:path="@{/librarian/accounts/delete}" th:id="${account.accountId}">Delete</a>
                       </td>
                     </tr>
                   </th:block>
@@ -71,6 +71,6 @@
       <div class="row" th:replace="fragments/footer :: footerSection"></div>
     </div>
 
-<!--    <script src="/js/lib-manager.js"></script>-->
+<!--    <script src="/js/librarian.js"></script>-->
   </body>
 </html>

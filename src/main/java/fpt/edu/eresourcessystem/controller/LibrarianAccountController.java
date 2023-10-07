@@ -3,8 +3,6 @@ package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.ObjectRespond;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
-import fpt.edu.eresourcessystem.exception.AccountNotExistedException;
-import fpt.edu.eresourcessystem.exception.AccountNotFoundException;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.service.AccountService;
 import org.springframework.data.domain.Page;
@@ -19,11 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("manager/accounts")
-public class ManageAccountController {
+@RequestMapping("librarian/accounts")
+public class LibrarianAccountController {
     private final AccountService accountService;
 
-    public ManageAccountController(AccountService accountService) {
+    public LibrarianAccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
@@ -32,7 +30,7 @@ public class ManageAccountController {
         List<Account> accounts = new ArrayList<>();
         accounts = accountService.findAll();
         model.addAttribute("accounts",accounts);
-        return "manager/manager_accounts";
+        return "librarian/librarian_accounts";
     }
     @GetMapping("/add")
     public String addProcess(@ModelAttribute Account account, final Model model){
@@ -51,12 +49,12 @@ public class ManageAccountController {
     public String addAccount(@ModelAttribute Account account, final Model model){
         Account checkExist = accountService.findByEmail(account.getEmail());
         if(checkExist!=null){
-            return "redirect:/manager/accounts/add?error";
+            return "redirect:/librarian/accounts/add?error";
         }
         accountService.addAccount(account);
         RedirectAttributes attributes = new RedirectAttributesModelMap();
         attributes.addFlashAttribute("account", account);
-        return "redirect:/manager/accounts/add?success";
+        return "redirect:/librarian/accounts/add?success";
     }
 
     @GetMapping("/update")
