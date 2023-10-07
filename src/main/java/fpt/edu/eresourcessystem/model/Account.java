@@ -27,11 +27,11 @@ public class Account {
     private String email;
 
     private String name;
-    private LocalDate birthOfDate;
-    private String gender;
-    private String campus;
+    private LocalDate dateOfBirth;
+    private AccountEnum.Gender gender;
+    private AccountEnum.Campus campus;
 
-    private AccountEnum role;
+    private AccountEnum.Role role;
 
     private boolean flagAdmin;
 
