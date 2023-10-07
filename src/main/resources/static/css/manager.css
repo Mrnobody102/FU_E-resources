@@ -43,10 +43,7 @@ li a {
   border: none;
   cursor: pointer;
 }
-.btn-add {
-  padding: 3px;
 
-}
 .topnav .search-container button:hover {
     background: #ccc;
   }
@@ -64,4 +61,11 @@ table {
 th,
 td {
   padding: 0.5em;
+}
+.btn{
+  padding: 0.3em 1em;
+  border-radius: 0.2em;
+}
+.search-content {
+  padding: 0.3em 1em;
 }

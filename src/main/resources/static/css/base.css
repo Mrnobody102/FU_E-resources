@@ -47,6 +47,7 @@ header h2 {
 
 /* footer */
 footer {
+    clear: both;
     background-color: var(--primary-back-ground);
     color: white;
     text-align: center;
@@ -68,18 +69,15 @@ header {
 /* CSS cho footer */
 footer {
     /* position: fixed; */
-    position: fixed;
-    bottom: 0;
     background-color: #111d5e;
     color: white;
     text-align: center;
     width: 100%;
-    /*z-index: 999; !* Đảm bảo footer hiển thị phía dưới cùng của nội dung *!*/
+    z-index: 999; /* Đảm bảo footer hiển thị phía dưới cùng của nội dung */
 }
 
 /* CSS cho nội dung chính */
 .main_content {
-
     padding-top: 20px; /* Đảm bảo nội dung không bị che bởi header */
     padding-bottom: 20px; /* Đảm bảo nội dung không bị che bởi footer */
 }
@@ -141,5 +139,52 @@ a[data-toggle="collapse"] {
     height: 100%;
 }
 .content-body{
-    margin-left: 5%;
+    margin-left: 1%;
+    width: 70%;
+}
+
+.list-model-table{
+    width: 100%;
+}
+
+.list-model-table .table-head{
+    background: #7386D5;
+}
+
+.table-form tr td:first-child {
+    text-align: right;
+    font-size: 1em;
+    width: 15%;
+}
+.table-form{
+    width: 100%;
+    margin-left: 2em;
+    border-radius: 0.5em;
+    border: #888888 1px solid;
+    margin-bottom: 2em;
+    margin-right: 5%;
+}
+.table-form tr td input[type=text],
+.table-form tr td select{
+    font-size: 1em;
+    padding: 0.2em 0.5em;
+    width: 100%;
+}
+
+.btn-save {
+    background: #5cf5bc;
+    padding: 0.7em 2em;
+    font-size: 1.2em;
+    border: #dbdbdb;
+    border-radius: 0.5em;
+}
+.alert{
+    font-weight: bold;
+    font-style: italic;
+}
+.alert-info{
+    color: #04AA6D;
+}
+.alert-danger{
+    color: #ce0945;
 }

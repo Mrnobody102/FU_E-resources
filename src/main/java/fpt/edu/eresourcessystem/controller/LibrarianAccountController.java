@@ -2,6 +2,7 @@ package fpt.edu.eresourcessystem.controller;
 
 
 import fpt.edu.eresourcessystem.dto.ObjectRespond;
+import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.exception.AccountNotExistedException;
 import fpt.edu.eresourcessystem.exception.AccountNotFoundException;
 import fpt.edu.eresourcessystem.model.Account;
@@ -11,41 +12,62 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("librarian/accounts")
-public class LibrarianAccountController {
+@RequestMapping("manager/accounts")
+public class ManageAccountController {
     private final AccountService accountService;
 
-    public LibrarianAccountController(AccountService accountService) {
+    public ManageAccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
     @GetMapping({"/list"})
     public String manageAccount(final Model model){
         List<Account> accounts = new ArrayList<>();
-        model.addAttribute("accounts",null);
-        return "librarian/librarian_accounts";
+        accounts = accountService.findAll();
+        model.addAttribute("accounts",accounts);
+        return "manager/manager_accounts";
     }
+    @GetMapping("/add")
+    public String addProcess(@ModelAttribute Account account, final Model model){
+        if(null!=account){
+            model.addAttribute("account",account);
+        }else {
+            model.addAttribute("account", new Account());
+        }
+        model.addAttribute("roles", AccountEnum.Role.values());
+        model.addAttribute("campuses", AccountEnum.Campus.values());
+        model.addAttribute("genders", AccountEnum.Gender.values());
+        return "account/add_account";
 
+    }
     @PostMapping("/add")
-    public ObjectRespond addAccount(Account account){
+    public String addAccount(@ModelAttribute Account account, final Model model){
+        Account checkExist = accountService.findByEmail(account.getEmail());
+        if(checkExist!=null){
+            return "redirect:/manager/accounts/add?error";
+        }
         accountService.addAccount(account);
-        return new ObjectRespond("success", account);
+        RedirectAttributes attributes = new RedirectAttributesModelMap();
+        attributes.addFlashAttribute("account", account);
+        return "redirect:/manager/accounts/add?success";
     }
 
-    @PutMapping("/update")
-    public ResponseEntity updateAccount(Account account) throws AccountNotExistedException {
-        accountService.updateAccount(account);
+    @GetMapping("/update")
+    public ResponseEntity updateAccount(Account account){
+//        accountService.updateAccount(account);
         return ResponseEntity.ok().build();
     }
 
 
     @GetMapping("/list/{username}")
-    public ObjectRespond findByUserName(@PathVariable String username) throws AccountNotFoundException {
+    public ObjectRespond findByUserName(@PathVariable String username) {
         return new ObjectRespond("success",accountService.findByUsername(username));
     }
 
