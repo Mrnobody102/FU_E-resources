@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User management</title>
     <link rel="stylesheet" href="/css/base.css" />
-    <link rel="stylesheet" href="/css/manager.css" />
+    <link rel="stylesheet" href="/css/librarian.css" />
   </head>
   <body>
     <div class="app_container">
@@ -19,7 +19,7 @@
           <div class="container-content">
             <div class="content-body">
               <div class="user-management-head">
-                <a th:href="@{/manager}">Home</a>
+                <a th:href="@{/templates/librarian}">Home</a>
                 <span> &gt; <a href="#"> User Management</a> </span>
               </div>
               <div class="">
@@ -79,6 +79,6 @@
       <div class="row" th:replace="fragments/footer :: footerSection"></div>
     </div>
 
-    <script src="/js/lib-manager.js"></script>
+    <script src="/js/librarian.js"></script>
   </body>
 </html>

@@ -16,20 +16,20 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document("accounts")
-public class Manager extends Account{
-    private String managerId;  // Reference to Account
+public class Librarian extends Account{
+    private String librarianId;  // Reference to Account
 
     //Audit Log
     @CreatedBy
-    @Field("managerCreatedBy")
+    @Field("librarianCreatedBy")
     private String createdBy;
     @CreatedDate
-    @Field("managerCreatedDate")
+    @Field("librarianCreatedDate")
     private String createdDate;
     @LastModifiedBy
-    @Field("managerLastModifiedBy")
+    @Field("librarianLastModifiedBy")
     private String lastModifiedBy;
     @LastModifiedDate
-    @Field("managerLastModifiedDate")
+    @Field("librarianLastModifiedDate")
     private String lastModifiedDate;
 }

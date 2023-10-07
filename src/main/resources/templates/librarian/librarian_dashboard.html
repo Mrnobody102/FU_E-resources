@@ -4,12 +4,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E-Resource Manager Dashboard</title>
+    <title>E-Resource Librarian Dashboard</title>
     <!-- CSS -->
     <link rel="stylesheet" th:href="@{/css/base.css}" />
     <link
             rel="stylesheet"
-            th:href="@{/css/manager.css}"
+            th:href="@{/css/librarian.css}"
     />
   </head>
   <body>
@@ -20,7 +20,7 @@
       <main class="main_content">
         <div class="container">
           <div class="container-content">
-            <div class="row" th:replace="fragments/sidebar::managerSidebar"></div>
+            <div class="row" th:replace="fragments/sidebar::librarianSidebar"></div>
           </div>
         </div>
       </main>
@@ -28,6 +28,6 @@
       <!-- Footer -->
       <div class="row" th:replace="fragments/footer :: footerSection"></div>
     </div>
-    <script th:src="@{/js/lib-manager.js}"></script>
+    <script th:src="@{/js/librarian.js}"></script>
   </body>
 </html>

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/manager/courses")
-public class ManagerCourseController {
+@RequestMapping("/librarian/courses")
+public class LibrarianCourseController {
     private final CourseService courseService;
 
-    public ManagerCourseController(CourseService courseService) {
+    public LibrarianCourseController(CourseService courseService) {
         this.courseService = courseService;
     }
 
@@ -31,13 +31,13 @@ public class ManagerCourseController {
 
     @GetMapping({"/list"})
     public String showCourse(){
-        return "manager/manager_courses";
+        return "librarian/librarian_courses";
     }
 
 //    @GetMapping({"/list","/list/{pageIndex}"})
 //    public String showCourse(@PathVariable String pageIndex){
 //
-//        return "manager/manager_courses";
+//        return "librarian/librarian_courses";
 //    }
 
     //Just for test detail screen

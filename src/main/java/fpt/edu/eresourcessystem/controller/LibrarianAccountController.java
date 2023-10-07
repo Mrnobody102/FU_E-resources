@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("manager/accounts")
-public class ManageAccountController {
+@RequestMapping("librarian/accounts")
+public class LibrarianAccountController {
     private final AccountService accountService;
 
-    public ManageAccountController(AccountService accountService) {
+    public LibrarianAccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
@@ -28,7 +28,7 @@ public class ManageAccountController {
     public String manageAccount(final Model model){
         List<Account> accounts = new ArrayList<>();
         model.addAttribute("accounts",null);
-        return "manager/manager_accounts";
+        return "librarian/librarian_accounts";
     }
 
     @PostMapping("/add")
