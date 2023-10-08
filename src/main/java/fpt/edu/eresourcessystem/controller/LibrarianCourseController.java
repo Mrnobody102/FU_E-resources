@@ -2,26 +2,48 @@ package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.ObjectRespond;
 import fpt.edu.eresourcessystem.exception.CourseNotExistedException;
+import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
+import fpt.edu.eresourcessystem.service.AccountService;
 import fpt.edu.eresourcessystem.service.CourseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/librarian/courses")
 public class LibrarianCourseController {
     private final CourseService courseService;
+    private final AccountService accountService;
 
-    public LibrarianCourseController(CourseService courseService) {
+    public LibrarianCourseController(CourseService courseService, AccountService accountService) {
         this.courseService = courseService;
+        this.accountService = accountService;
+    }
+
+    //Just for test add course screen
+    @GetMapping({"/add"})
+    public String addProcess(final Model model){
+        List<Account> lecturers = accountService.findAllLecturer();
+        model.addAttribute("course", new Course());
+        model.addAttribute("lecturers", lecturers);
+        return "course/add_course";
     }
 
     @PostMapping("/add")
-    public ObjectRespond addCourse(Course course){
-        courseService.addCourse(course);
-        return new ObjectRespond("success", course);
+    public String addCourse(@ModelAttribute Course course, @RequestParam String lesson, @RequestParam String lecturer){
+        Course checkExist = courseService.findByCourseId(course.getCourseId());
+        if(null==checkExist){
+            courseService.addCourse(course);
+            return "redirect:/librarian/courses/add?success";
+        }else return "redirect:/librarian/courses/add?error";
+
     }
+
+
 
     @PutMapping("/update")
     public ResponseEntity updateCourse(Course course) throws CourseNotExistedException {
@@ -30,7 +52,9 @@ public class LibrarianCourseController {
     }
 
     @GetMapping({"/list"})
-    public String showCourse(){
+    public String showCourse(final Model model){
+        List<Course> courses = courseService.findAll();
+        model.addAttribute("courses", courses);
         return "librarian/librarian_courses";
     }
 
@@ -45,13 +69,6 @@ public class LibrarianCourseController {
     public String showDetailCourse(){
 
         return "course/detail_course";
-    }
-
-    //Just for test add course screen
-    @GetMapping({"/add"})
-    public String addCourse(){
-
-        return "course/add_course";
     }
 
     @DeleteMapping("delete")

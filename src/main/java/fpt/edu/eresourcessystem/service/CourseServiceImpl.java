@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service("courseService")
@@ -24,22 +25,19 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public Course updateCourse(Course Course) throws
-            CourseNotExistedException {
-        Course savedCourse = courseRepository.findById(Course.getCourseId())
-                .orElseThrow(() -> new CourseNotExistedException("Course Not Existed."));
-        savedCourse.setCourseCode(Course.getCourseCode());
-        savedCourse.setCourseName(Course.getCourseName());
-        savedCourse.setDescription(Course.getDescription());
-        savedCourse.setDocuments(Course.getDocuments());
-        return courseRepository.save(savedCourse);
+    public Course updateCourse(Course course){
+        Optional<Course> savedCourse = courseRepository.findById(course.getCourseId());
+        if(savedCourse.isPresent()){
+            courseRepository.save(course);
+        }
+
+        return null;
     }
 
     @Override
-    public Course findByCourseId(String email) throws  CourseNotFoundException{
-        return courseRepository.findByCourseId(email).orElseThrow(
-                () -> new CourseNotFoundException("Course not existed.")
-        );
+    public Course findByCourseId(String courseId){
+        Optional<Course> course = courseRepository.findByCourseId(courseId);
+        return course.orElse(null);
     }
 
     @Override

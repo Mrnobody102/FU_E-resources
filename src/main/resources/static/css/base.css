@@ -169,6 +169,7 @@ a[data-toggle="collapse"] {
     margin-right: 5%;
 }
 .table-form tr td input[type=text],
+.table-form tr td textarea,
 .table-form tr td select{
     font-size: 1em;
     padding: 0.2em 0.5em;

@@ -1,73 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add Course</title>
-    <!-- CSS -->
-    <link rel="stylesheet" href="/css/base.css" />
-    <link rel="stylesheet" href="/css/librarian.css" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Course Manage</title>
+    <link rel="stylesheet" href="/css/base.css"/>
+    <link rel="stylesheet" href="/css/librarian.css"/>
 </head>
-
 <body>
-    <div class="app_container">
-        <!-- Header -->
-        <header>
-            <div class="header_system-name">
-                <h2>FPT University E-Resource System</h2>
+<div class="app_container">
+    <!-- Header -->
+    <div class="row" th:replace="fragments/header::headerSection"></div>
+
+    <!-- Content -->
+    <main class="main_content">
+        <div class="container">
+            <div class="container-content">
+                <div class="sidebar librarianCourseSidebar">
+                    <nav id="sidebar">
+                        <ul class="list-unstyled components func_list">
+                            <li class="func_item">
+                                <a th:href="@{/librarian}">Home</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="content-body">
+                    <div class="user-management-head">
+                        <a th:href="@{/librarian/courses/list}">Back</a>
+                        <span> &gt; <a th:href="@{/librarian/courses/add}"> Add Course</a> </span>
+                    </div>
+
+                    <div class="add-content">
+                        <div class="add-form">
+                            <div th:if="${param.success}">
+                                <div class="alert alert-info">Save course successful !!!</div>
+                            </div>
+                            <div th:if="${param.error}">
+                                <div class="alert alert-danger">Please check course information again !!!</div>
+                            </div>
+                            <div class="add-form-content">
+                                <form method="post" role="form" th:action="@{/librarian/courses/add}"
+                                      th:object="${course}" th:id="add-form">
+                                    <table class="table-form add-table">
+                                        <tr>
+                                            <td><label th:for="courseId">Course ID</label></td>
+                                            <td><input type="text"
+                                                       class="form-control" th:field="*{courseId}"
+                                                       placeholder="Enter course ID" required>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><label th:for="courseCode">Course Code</label></td>
+                                            <td><input type="text"
+                                                       class="form-control" th:field="*{courseCode}"
+                                                       placeholder="Enter course code" required>
+                                                <p class="text-danger" th:errors="*{courseCode}"
+                                                   th:if="${#fields.hasErrors('courseCode')}"></p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label th:for="courseName">Course Name</label></td>
+                                            <td><input type="text"
+                                                       class="form-control" th:field="*{courseName}"
+                                                       placeholder="Enter course name" required>
+                                                <p class="text-danger" th:errors="*{courseName}"
+                                                   th:if="${#fields.hasErrors('courseName')}"></p>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><label th:for="description">Description</label></td>
+                                            <td><textarea type="text"
+                                                       class="form-control" th:field="*{description}"
+                                                          placeholder="Enter description" ></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label th:for="lesson">Lessons</label></td>
+                                            <td><input type="text"
+                                                       class="form-control" name="lesson" th:id="lesson"
+                                                          placeholder="Enter lessons"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label th:for="lecturer">Lecturers</label></td>
+                                            <td><textarea type="text"
+                                                          class="form-control" name="lecturer" th:id="lecturer"
+                                                          readonly></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label th:for="lecturerSelection">Lecturers</label></td>
+                                            <td><select name="lecturerSelection" th:id="lecturerSelection">
+                                                <option th:each="lecturer : ${lecturers}"
+                                                        th:text="|${lecturer.accountId} ( ${lecturer.name} )|"
+                                                        th:value="${lecturer.accountId}">
+                                                </option>
+                                            </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <button type="submit" class="btn btn-save">Save</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <div class="header_account">
-                <a href="">Logout</a>
-                <a href="">lampt@fpt.edu.vn</a>
-            </div>
-        </header>
 
-        <!-- Content -->
-        <main class="main_content">
-            <section>
-                <h1>Add Subject</h1>
-                <hr />
-            <div>
-                <table>
-                    <tr>
-                        <th>Subject Code</th>
-                        <td><input type="text" id="subjectCode"  placeholder="Enter Subject Code"></td>
+        </div>
 
-                    </tr>
-                    <tr>
-                        <th>Subject Name</th>
-                        <td><input type="text" id="subjectName" placeholder="Enter Subject Name"></td>
-                    </tr>
-                    <tr>
-                        <th>Description</th>
-                        <td><textarea type="text" id="description" placeholder="Enter Description"></textarea></td>
 
-                    </tr>
-                    <tr>
-                        <th>Document</th>
-                        <td><input type="file" id="document" multiple required></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td> 
-                            <button type="button" value="Save" onClick="return check_submit()">Save</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            </section>
-        </main>
+    </main>
 
-        <!-- Footer -->
-        <footer>
-            <p>&copy; 2023 - FPT Education. All rights reserved.</p>
-            <a href="#">About us</a>
-        </footer>
-    </div>
-
-    <script src="/static/js/librarian.js"></script>
-    <script src="/static/js/course.js"></script>
+    <!-- Footer -->
+    <div class="row" th:replace="fragments/footer :: footerSection"></div>
+</div>
 </body>
-
 </html>
