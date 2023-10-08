@@ -35,9 +35,9 @@ public class LoginController {
     public String login(@ModelAttribute Account account, @RequestParam String roles){
         if(null == account){
             return "redirect:/login";
-        } else if ("MANAGER".equals(roles)){
+        } else if ("LIBRARIAN".equals(roles)){
 //                account.setRole(AccountEnum.Role.STUDENT);
-            return "redirect:/manager";
+            return "redirect:/librarian";
         } else if ("LECTURER".equals(roles)) {
             return "redirect:/lecturer";
         }else if ("STUDENT".equals(roles)) {
