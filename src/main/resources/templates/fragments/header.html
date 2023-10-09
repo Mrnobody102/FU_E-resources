@@ -1,7 +1,19 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
+<body th:fragment="headerLibrarianSection">
+<!--     Header -->
+<header>
+    <div class="header_system-name">
+        <h2>FPT University E-Resource System</h2>
+    </div>
+    <div class="header_account">
+        <a th:href="@{/logout}">Logout</a>
+        <a th:href="@{/profile}">lampt@fpt.edu.vn</a>
+    </div>
+</header>
+<script th:src="@{/js/librarian.js}"></script>
+</body>
 <body th:fragment="headerLecturerSection">
 <!--     Header -->
 <header>

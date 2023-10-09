@@ -30,7 +30,7 @@ public class LibrarianAccountController {
         List<Account> accounts = new ArrayList<>();
         accounts = accountService.findAll();
         model.addAttribute("accounts",accounts);
-        return "librarian/librarian_accounts";
+        return "librarian/account/librarian_accounts";
     }
     @GetMapping("/add")
     public String addProcess(@ModelAttribute Account account, final Model model){
@@ -42,7 +42,7 @@ public class LibrarianAccountController {
         model.addAttribute("roles", AccountEnum.Role.values());
         model.addAttribute("campuses", AccountEnum.Campus.values());
         model.addAttribute("genders", AccountEnum.Gender.values());
-        return "account/add_account";
+        return "librarian/account/add_account";
 
     }
     @PostMapping("/add")

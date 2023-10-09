@@ -11,7 +11,7 @@
   <body>
     <div class="app_container">
       <!-- Header -->
-      <div class="row" th:replace="fragments/header::headerSection"></div>
+      <div class="row" th:replace="fragments/header::headerLibrarianSection"></div>
 
       <!-- Content -->
       <main class="main_content">
@@ -32,7 +32,7 @@
             </div>
             <div class="body">
               <div class="user-management-head">
-                <a th:href="@{/librarian}">Home</a>
+                <a th:href="@{/templates/librarian}">Home</a>
                 <span> &gt; <a th:href="@{/librian/courses/list}"> Major And Subjects Management</a> </span>
               </div>
 

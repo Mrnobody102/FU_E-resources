@@ -28,7 +28,6 @@ public class AccountEnum {
         M("Male"),
         F("Female"),
         O("Other");
-
         private final String displayValue;
 
         Gender(String displayValue) {

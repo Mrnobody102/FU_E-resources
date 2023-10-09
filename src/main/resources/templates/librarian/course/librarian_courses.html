@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subject Management</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/librarian.css}" />
+  </head>
+  <body>
+    <div class="app_container">
+      <!-- Header -->
+      <div class="row" th:replace="fragments/header::headerLibrarianSection"></div>
+
+      <!-- Content -->
+      <main class="main_content">
+        <div class="container">
+          <div class="container-content">
+            <div class="sidebar librarianCourseSidebar">
+              <nav id="sidebar">
+                <ul class="list-unstyled components func_list">
+
+                  <li class="func_item">
+                    <a th:href="@{/librarian/courses/list}">Main Courses</a>
+                  </li>
+                  <li class="func_item">
+                    <a href="">Others</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div class="body">
+              <div class="user-management-head">
+                <a th:href="@{/templates/librarian}">Home</a>
+                <span> &gt; <a th:href="@{/librian/courses/list}"> Major And Subjects Management</a> </span>
+              </div>
+
+              <div class="">
+                <div class="search-container">
+                  <form action="">
+                    <input
+                            type="text"
+                            placeholder="Search course.."
+                            name="search"
+                            id="search-text"
+                    />
+                    <button type="submit">
+                      <i class="fa fa-search"></i> Search
+                    </button>
+                    <a class="btn-add" type="button" th:href="@{/librarian/courses/add}">
+                      Add new courses
+                    </a>
+                    <a class="btn-add" type="button" th:href="@{/librarian/courses/list}">
+                      Show All
+                    </a>
+                  </form>
+                </div>
+              </div>
+
+              <div th:if="${courses ne null}">
+                <table class="list-model-table">
+                  <tr class="table-head">
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Descriptions</th>
+                  </tr>
+                  <th:block th:each="course : ${courses}">
+                  <tr>
+                    <td><a th:href="|@{/user/courses/detail}?courseId= + ${course.courseId}|"
+                    th:text="${course.courseCode}"></a></td>
+                    <td th:text="${course.courseName}"></td>
+                    <td th:text="${course.description}"></td>
+                  </tr>
+                  </th:block>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+
+      </main>
+
+      <!-- Footer -->
+      <div class="row" th:replace="fragments/footer :: footerSection"></div>
+    </div>
+  </body>
+</html>

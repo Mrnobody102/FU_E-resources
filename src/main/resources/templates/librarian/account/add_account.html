@@ -11,7 +11,7 @@
 <body>
 <div class="app_container">
     <!-- Header -->
-    <div class="row" th:replace="fragments/header::headerSection"></div>
+    <div class="row" th:replace="fragments/header::headerLibrarianSection"></div>
 
     <!-- Content -->
     <main class="main_content">
@@ -21,7 +21,7 @@
                     <nav id="sidebar">
                         <ul class="list-unstyled components func_list">
                             <li class="func_item">
-                                <a th:href="@{/librarian}">Home</a>
+                                <a th:href="@{/templates/librarian}">Home</a>
                             </li>
                         </ul>
                     </nav>

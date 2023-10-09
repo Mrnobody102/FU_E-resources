@@ -16,6 +16,6 @@ public class StudentController {
 
     @GetMapping("/student/search")
     public String search(@ModelAttribute Account account) {
-        return "student/search";
+        return "student/student_storage";
     }
 }
