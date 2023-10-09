@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("librarian/accounts")
+@RequestMapping("/librarian/accounts")
 public class LibrarianAccountController {
     private final AccountService accountService;
 
@@ -57,12 +57,53 @@ public class LibrarianAccountController {
         return "redirect:/librarian/accounts/add?success";
     }
 
-    @GetMapping("/update")
-    public ResponseEntity updateAccount(Account account){
-//        accountService.updateAccount(account);
-        return ResponseEntity.ok().build();
+    @GetMapping({"/update/{accountId}", "update"})
+    public String updateProcess(@PathVariable(required = false) String accountId, final Model model){
+        if(null==accountId){
+            accountId="";
+        }
+        Account account = accountService.findByAccountId(accountId);
+//        System.out.println(account);
+        if(null==account){
+            return "redirect:librarian/accounts/update?error";
+        }else{
+            model.addAttribute("roles", AccountEnum.Role.values());
+            model.addAttribute("campuses", AccountEnum.Campus.values());
+            model.addAttribute("genders", AccountEnum.Gender.values());
+            model.addAttribute("account", account);
+            return "librarian/account/update_account";
+        }
+
     }
 
+    @PostMapping("/update")
+    public String updateAccount(@ModelAttribute Account account, final Model model){
+        Account check = accountService.findByAccountId(account.getAccountId());
+        if(null==check){
+            model.addAttribute("errorMessage","account not exist.");
+            return "exception/404";
+        }else{
+            Account result = accountService.updateAccount(account);
+//            System.out.println(result);
+            model.addAttribute("account", account);
+            model.addAttribute("roles", AccountEnum.Role.values());
+            model.addAttribute("campuses", AccountEnum.Campus.values());
+            model.addAttribute("genders", AccountEnum.Gender.values());
+            model.addAttribute("success","");
+            return "librarian/account/update_account";
+        }
+    }
+
+    @GetMapping("/delete/{accountId}")
+    public String delete(@PathVariable String accountId){
+        Account check = accountService.findByAccountId(accountId);
+        System.out.println(check);
+            if (null != check){
+                accountService.delete(check);
+                return "redirect:/librarian/accounts/list?success";
+            }
+            return "redirect:/librarian/accounts/list?error";
+    }
 
     @GetMapping("/list/{username}")
     public ObjectRespond findByUserName(@PathVariable String username) {
@@ -74,9 +115,5 @@ public class LibrarianAccountController {
         return null;
     }
 
-    @DeleteMapping("/delete")
-    public String delete(String id){
-        return null;
-    }
 
 }

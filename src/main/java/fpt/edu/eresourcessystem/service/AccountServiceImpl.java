@@ -3,8 +3,6 @@ package fpt.edu.eresourcessystem.service;
 import fpt.edu.eresourcessystem.dto.ObjectRespond;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import fpt.edu.eresourcessystem.exception.AccountNotExistedException;
-import fpt.edu.eresourcessystem.exception.AccountNotFoundException;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.repository.AccountRepository;
 
@@ -32,13 +30,13 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public ObjectRespond updateAccount(Account account){
+    public Account updateAccount(Account account){
         Optional<Account> savedAccount = accountRepository.findById(account.getAccountId());
-        if(null!=savedAccount){
-            accountRepository.save(account);
-            return new ObjectRespond("success", account);
+        if(savedAccount.isPresent()){
+            Account result = accountRepository.save(account);
+            return result;
         }
-        return new ObjectRespond("error", account);
+        return null;
     }
 
     @Override
@@ -48,7 +46,7 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public Account findById(String accountId) {
+    public Account findByAccountId(String accountId) {
         Optional<Account> account = accountRepository.findById(accountId);
         return account.orElse(null);
     }
@@ -78,7 +76,11 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public boolean delete(Account product) {
+    public boolean delete(Account account) {
+        if(accountRepository.findById(account.getAccountId()).isPresent()){
+            accountRepository.delete(account);
+            return true;
+        }
         return false;
     }
 

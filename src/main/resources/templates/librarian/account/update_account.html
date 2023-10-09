@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Account Update</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/librarian.css}"/>
+</head>
+<body>
+<div class="app_container">
+    <!-- Header -->
+    <div class="row" th:replace="fragments/header::headerLibrarianSection"></div>
+
+    <!-- Content -->
+    <main class="main_content">
+        <div class="container">
+            <div class="container-content">
+                <div class="sidebar librarianCourseSidebar">
+                    <nav id="sidebar">
+                        <ul class="list-unstyled components func_list">
+                            <li class="func_item">
+                                <a th:href="@{/librarian}">Home</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="content-body">
+                    <div class="user-management-head">
+                        <a th:href="@{/librarian/accounts/list}">Back</a>
+                        <span> &gt; <a th:href="@{'/librarian/accounts/account/'+${account.accountId}}"> Update Account</a> </span>
+                    </div>
+
+                    <div class="add-content">
+                        <div class="add-form">
+                            <div th:if="${success ne null}">
+                                <div class="alert alert-info">Save account successful !!!</div>
+                            </div>
+                            <div th:if="${error ne null}">
+                                <div class="alert alert-danger">Please account information again !!!
+                                    Account not exist or AccountId existed.
+                                </div>
+                            </div>
+                            <div class="add-form-content">
+                                <form method="post" role="form" th:action="@{/librarian/accounts/update}"
+                                      th:object="${account}" th:id="add-form">
+                                    <table class="table-form add-table">
+                                        <tr>
+                                            <td><label th:for="accountId">Account ID</label></td>
+                                            <td><input type="text"
+                                                       class="form-control" th:field="*{accountId}"
+                                                       placeholder="Enter account ID" readonly>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><label th:for="username">Username</label></td>
+                                            <td><input type="text"
+                                                       class="form-control" th:field="*{username}"
+                                                       placeholder="Enter username" required>
+                                                <p class="text-danger" th:errors="*{username}"
+                                                   th:if="${#fields.hasErrors('username')}"></p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label th:for="password">Password</label></td>
+                                            <td><input type="text"
+                                                       class="form-control" th:field="*{password}"
+                                                       placeholder="Enter password" required>
+                                                <p class="text-danger" th:errors="*{password}"
+                                                   th:if="${#fields.hasErrors('password')}"></p>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><label th:for="email">Email</label></td>
+                                            <td><input type="text"
+                                                       class="form-control" th:field="*{email}"
+                                                       placeholder="Enter email" required>
+                                                <p class="text-danger" th:errors="*{email}"
+                                                   th:if="${#fields.hasErrors('email')}"></p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label th:for="name">Full Name</label></td>
+                                            <td><input type="text"
+                                                       class="form-control" th:field="*{name}"
+                                                       placeholder="Enter name" required>
+                                                <p class="text-danger" th:errors="*{name}"
+                                                   th:if="${#fields.hasErrors('name')}"></p>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><label th:for="dateOfBirth">Date of birth</label></td>
+                                            <td><input type="date"
+                                                       class="form-control" th:field="*{dateOfBirth}"
+                                                       th:id="dateOfBirth"
+                                                       required>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label th:for="gender">Gender</label></td>
+                                            <td>
+                                                <th:block th:each="gender : ${genders}">
+                                                    <input type="radio" th:field="*{gender}"
+                                                           th:id="${gender.getDisplayValue()}"
+                                                           th:value="${gender}">
+                                                    <label th:for="${gender.getDisplayValue()}"
+                                                           th:text="${gender.getDisplayValue()}"></label>
+                                                </th:block>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label th:for="campus">Campus</label></td>
+                                            <td><select th:field="*{campus}" th:id="campus">
+                                                <option
+                                                        th:each="campus : ${campuses}"
+                                                        th:text="${campus.getDisplayValue()}"
+                                                        th:value="${campus}">
+                                                </option>
+                                            </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label th:for="role">Role</label></td>
+                                            <td>
+                                                <select th:field="*{role}" th:id="role">
+                                                    <option th:each="role : ${roles}"
+                                                            th:text="${role}"
+                                                            th:value="${role}">
+                                                    </option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <input type="checkbox" name="IsAdmin" th:field="*{flagAdmin}">
+                                                IsAdmin</p>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <button type="submit" class="btn btn-save">Save</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </main>
+
+    <!-- Footer -->
+    <div class="row" th:replace="fragments/footer :: footerSection"></div>
+</div>
+</body>
+</html>
