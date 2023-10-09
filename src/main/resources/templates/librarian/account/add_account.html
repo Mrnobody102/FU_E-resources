@@ -5,8 +5,8 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Account Manage</title>
-    <link rel="stylesheet" href="/css/base.css"/>
-    <link rel="stylesheet" href="/css/librarian.css"/>
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/librarian.css}"/>
 </head>
 <body>
 <div class="app_container">
@@ -21,7 +21,7 @@
                     <nav id="sidebar">
                         <ul class="list-unstyled components func_list">
                             <li class="func_item">
-                                <a th:href="@{/templates/librarian}">Home</a>
+                                <a th:href="@{/librarian}">Home</a>
                             </li>
                         </ul>
                     </nav>
@@ -44,13 +44,13 @@
                                 <form method="post" role="form" th:action="@{/librarian/accounts/add}"
                                       th:object="${account}" th:id="add-form">
                                     <table class="table-form add-table">
-                                        <tr>
-                                            <td><label th:for="accountId">Account ID</label></td>
-                                            <td><input type="text"
-                                                       class="form-control" th:field="*{accountId}"
-                                                       placeholder="Enter account ID" required>
-                                            </td>
-                                        </tr>
+<!--                                        <tr>-->
+<!--                                            <td><label th:for="accountId">Account ID</label></td>-->
+<!--                                            <td><input type="text"-->
+<!--                                                       class="form-control" th:field="*{accountId}"-->
+<!--                                                       placeholder="Enter account ID" required>-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
 
                                         <tr>
                                             <td><label th:for="username">Username</label></td>
