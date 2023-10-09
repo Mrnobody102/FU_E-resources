@@ -47,13 +47,14 @@
                                 <input type="password" class="auth-form__input" placeholder="Enter Password">
                             </div>
 
-                            <div class="auth-form__select" onclick="toggleDropdown()">
-                                <span>Major</span>
-                                <i class="fa fa-caret-down"></i>
-                            </div>
-                            <div class="dropdown-content"
-                                 style="display: none; opacity: 0;">
-                                <p th:each="role : ${roles}" th:text="${role}">Information Technology</p>
+                            <div class="auth-form__select">
+                                <label th:for="roles">Select role</label>
+                                <select class="auth-form__select-tag" th:name="roles" th:id="roles">
+                                    <option th:each="role : ${roles}"
+                                            th:text="${role}"
+                                            th:value="${role}">
+                                    </option>
+                                </select>
                             </div>
                             <div class="auth-form__aside">
                                 <div class="auth-form__help">
@@ -98,13 +99,13 @@
             <!--                <label th:for="password"><b>Password</b></label>-->
             <!--                <input type="password" placeholder="Enter password" th:field="*{password}"-->
             <!--                       th:id="password">-->
-            <!--                <label th:for="roles"><b>Select role</b></label>-->
-            <!--                <select th:name="roles" th:id="roles">-->
-            <!--                    <option th:each="role : ${roles}"-->
-            <!--                            th:text="${role}"-->
-            <!--                            th:value="${role}">-->
-            <!--                    </option>-->
-            <!--                </select>-->
+<!--                            <label th:for="roles"><b>Select role</b></label>-->
+<!--                            <select th:name="roles" th:id="roles">-->
+<!--                                <option th:each="role : ${roles}"-->
+<!--                                        th:text="${role}"-->
+<!--                                        th:value="${role}">-->
+<!--                                </option>-->
+<!--                            </select>-->
             <!--                <button type="submit">Login</button>-->
             <!--                <label>-->
             <!--                    <input type="checkbox" checked="checked" name="remember"> Remember me-->
@@ -121,7 +122,6 @@
         </div>
     </div>
 </main>
-
 </body>
 </html>
 </body>

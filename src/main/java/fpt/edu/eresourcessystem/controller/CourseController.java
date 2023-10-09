@@ -1,6 +1,5 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.dto.ObjectRespond;
 import fpt.edu.eresourcessystem.exception.CourseNotExistedException;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
@@ -15,11 +14,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/librarian/courses")
-public class LibrarianCourseController {
+public class CourseController {
     private final CourseService courseService;
     private final AccountService accountService;
 
-    public LibrarianCourseController(CourseService courseService, AccountService accountService) {
+    public CourseController(CourseService courseService, AccountService accountService) {
         this.courseService = courseService;
         this.accountService = accountService;
     }
@@ -30,7 +29,7 @@ public class LibrarianCourseController {
         List<Account> lecturers = accountService.findAllLecturer();
         model.addAttribute("course", new Course());
         model.addAttribute("lecturers", lecturers);
-        return "course/add_course";
+        return "librarian/course/librarian_add-course";
     }
 
     @PostMapping("/add")
@@ -55,7 +54,7 @@ public class LibrarianCourseController {
     public String showCourse(final Model model){
         List<Course> courses = courseService.findAll();
         model.addAttribute("courses", courses);
-        return "librarian/librarian_courses";
+        return "librarian/course/librarian_courses";
     }
 
 //    @GetMapping({"/list","/list/{pageIndex}"})
@@ -68,7 +67,7 @@ public class LibrarianCourseController {
     @GetMapping({"/list/1"})
     public String showDetailCourse(){
 
-        return "course/detail_course";
+        return "librarian/course/librarian_detail-course";
     }
 
     @DeleteMapping("delete")

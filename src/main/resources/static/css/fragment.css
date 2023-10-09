@@ -818,7 +818,7 @@ footer a {
 
 .home__course-code {
     margin-top: 0;
-    color: var(--primary-btn-color);
+    color: var(--title-color);
 }
 
 .home__course-name {

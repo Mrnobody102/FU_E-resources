@@ -40,13 +40,23 @@
 }
 
 .auth-form__select {
+	margin-top: 8px;
 	font-size: 1.5rem;
-	font-weight: bold;
+	border: 1px solid var(--border-color);
+	outline: none;
 	background-color: var(--second-back-ground);
 	border-radius: 2px;
 	padding: 12px;
 	display: flex;
 	justify-content: space-between;
+}
+
+.auth-form__select-tag {
+	padding: 4px 30px 4px 42px;
+}
+
+.auth-form__select-tag option {
+	font-size: 1.4rem;
 }
 
 .auth-form__input:focus {
