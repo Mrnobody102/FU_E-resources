@@ -5,15 +5,19 @@ import fpt.edu.eresourcessystem.enums.AccountEnum;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 @Document("accounts")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Account {
     @Id
     private String accountId;
@@ -27,6 +31,8 @@ public class Account {
     private String email;
 
     private String name;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateOfBirth;
     private AccountEnum.Gender gender;
     private AccountEnum.Campus campus;

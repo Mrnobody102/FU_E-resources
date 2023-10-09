@@ -19,7 +19,7 @@
           <div class="container-content">
             <div class="content-body">
               <div class="user-management-head">
-                <a th:href="@{/templates/librarian}">Home</a>
+                <a th:href="@{/librarian}">Home</a>
                 <span> &gt; <a href="#"> User Management</a> </span>
               </div>
               <div class="">
@@ -50,11 +50,12 @@
                       <td th:text="${account.email}"></td>
                       <td th:text="${account.name}"></td>
                       <td th:text="${account.role}"></td>
-                      <td><input type="checkbox" name="IsAdmin" /></td>
+                      <td>
+                        <span th:if="${account.flagAdmin}" th:text="Admin"></span></td>
                       <td th:text="${account.campus}"></td>
                       <td colspan="2">
-                        <a th:path="@{/librarian/accounts/update}" th:id="${account.accountId}">Update</a>
-                        <a th:path="@{/librarian/accounts/delete}" th:id="${account.accountId}">Delete</a>
+                        <a class="update-account" th:href="@{'/librarian/accounts/update/'+${account.accountId}}">Update</a>
+                        <a class="delete-account" th:id="${account.accountId}">Delete</a>
                       </td>
                     </tr>
                   </th:block>
@@ -70,7 +71,17 @@
       <!-- Footer -->
       <div class="row" th:replace="fragments/footer :: footerSection"></div>
     </div>
-
-<!--    <script src="/js/librarian.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <script src="/js/librarian.js"></script>
   </body>
 </html>
