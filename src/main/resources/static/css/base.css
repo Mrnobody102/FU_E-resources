@@ -10,7 +10,7 @@
     --gradient-color: #F39019;
     --primary-color: #d24402;
     --primary-color-rgb: 210, 68, 2;
-    --primary-btn-color: #AE1669;
+    --primary-btn-color: #419a1d;
     --primary-back-ground: rgb(210, 68, 2);
     --second-back-ground: rgb(240, 234, 234);
     --content-width: 87.5%;
@@ -144,13 +144,22 @@ li {
     width: 220px;
 }
 
-.btn .btn--hover:hover {
+.btn.btn--hover {
+    background-color: var(--second-back-ground);
+}
+
+.btn.btn--hover:hover {
     background-color: rgba(0 ,0 ,0 , 0.1);
 }
 
 .btn.btn--primary {
     background-color: var(--primary-btn-color);
     color: white;
+
+}
+
+.btn--primary:hover {
+    background-color: #22620a;
 }
 
 .btn.btn--disable {

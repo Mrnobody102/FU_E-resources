@@ -8,7 +8,7 @@ import fpt.edu.eresourcessystem.model.Account;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Repository("accountRepository")
 public interface AccountRepository extends
         MongoRepository<Account, String> {
 

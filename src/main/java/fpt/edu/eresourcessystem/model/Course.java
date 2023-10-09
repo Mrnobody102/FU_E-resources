@@ -25,7 +25,7 @@ public class Course {
 
     private List<String> documents; //list of documentId
     private List<String> folders; //list of folderId
-    private List<String> lessons;
+    private List<Topic> topics;
     private List<Lecturer> lecturers;
     //Audit Log
     @CreatedBy

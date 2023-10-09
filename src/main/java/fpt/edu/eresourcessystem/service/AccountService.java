@@ -13,13 +13,13 @@ public interface AccountService {
     List<Account> findAllLecturer();
 
     void addAccount(Account account);
-    ObjectRespond updateAccount(Account account);
+    Account updateAccount(Account account);
     Account findByUsername(String username) ;
-    Account findById(String accountId) ;
+    Account findByAccountId(String accountId) ;
     Account findByEmail(String email);
     List<Account> findAll();
     Page<Account> findByPage(int pageIndex, int pageSize, String search);
     boolean deleteById(String id);
-    boolean delete(Account product);
+    boolean delete(Account account);
     Page<Account> findAll(int pageIndex, int pageSize);
 }

@@ -10,7 +10,8 @@ import java.util.Optional;
 public interface CourseRepository extends
         MongoRepository<Course, String> {
 
-    Optional<Course> findByCourseId(String courseId);
+    Optional<Course> findById(String courseId);
     // nên chỉ định rõ kq trả về
 
+    Course findByCourseCode(String courseCode);
 }

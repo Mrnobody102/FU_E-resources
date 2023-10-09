@@ -1,7 +1,5 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.exception.CourseNotExistedException;
-import fpt.edu.eresourcessystem.exception.CourseNotFoundException;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
 import org.springframework.data.domain.Page;
@@ -20,8 +18,8 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public void addCourse(Course Course) {
-        courseRepository.insert(Course);
+    public void addCourse(Course course) {
+        courseRepository.insert(course);
     }
 
     @Override
@@ -30,13 +28,12 @@ public class CourseServiceImpl implements CourseService{
         if(savedCourse.isPresent()){
             courseRepository.save(course);
         }
-
         return null;
     }
 
     @Override
     public Course findByCourseId(String courseId){
-        Optional<Course> course = courseRepository.findByCourseId(courseId);
+        Optional<Course> course = courseRepository.findById(courseId);
         return course.orElse(null);
     }
 
@@ -50,14 +47,21 @@ public class CourseServiceImpl implements CourseService{
         return null;
     }
 
+
     @Override
-    public boolean deleteById(String id) {
+    public boolean delete(Course course) {
+        Optional<Course> check = courseRepository.findById(course.getCourseId());
+        if(check.isPresent()){
+            courseRepository.delete(course);
+            return true;
+        }
         return false;
     }
 
     @Override
-    public boolean delete(Course product) {
-        return false;
+    public Course findByCourseCode(String courseCode) {
+        Course course = courseRepository.findByCourseCode(courseCode);
+        return course;
     }
 
     @Override

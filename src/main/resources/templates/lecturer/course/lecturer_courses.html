@@ -4,86 +4,89 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My subjects</title>
-    <link rel="stylesheet" href="/css/base.css" />
-    <link rel="stylesheet" href="/css/styles/librarian.css" />
+    <title>Subject Management</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles/librarian.css}" />
   </head>
   <body>
     <div class="app_container">
-        <!-- Header -->
-        <header>
-          <div class="header_system-name">
-            <h2>FPT University E-Resource System</h2>
-          </div>
-          <div class="header_account">
-            <a th:href="@{/logout}">Logout</a>
-            <a th:href="@{/profile}">lampt@fpt.edu.vn</a>
-          </div>
-        </header>
-  
-        <!-- Content -->
-        <main class="main_content">
-          <section>
+      <!-- Header -->
+      <div class="row" th:replace="fragments/header::headerLibrarianSection"></div>
 
-            <div class="topnav">
-              <div class="search-container">
-                <form action="/action_page.php">
-                  <label for="search-text">User</label>
-                  <input
-                    type="text"
-                    placeholder="Search.."
-                    name="search"
-                    id="search-text"
-                  />
-                  <button type="submit">
-                    <i class="fa fa-search"></i> Search
-                  </button>
-                </form>
+      <!-- Content -->
+      <main class="main_content">
+        <div class="container">
+          <div class="container-content">
+            <div class="sidebar librarianCourseSidebar">
+              <nav id="sidebar">
+                <ul class="list-unstyled components func_list">
+
+                  <li class="func_item">
+                    <a th:href="@{/librarian/courses/list}">Main Courses</a>
+                  </li>
+                  <li class="func_item">
+                    <a href="">Others</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div class="body">
+              <div class="user-management-head">
+                <a th:href="@{/templates/librarian}">Home</a>
+                <span> &gt; <a th:href="@{/librian/courses/list}"> Major And Subjects Management</a> </span>
+              </div>
+
+              <div class="">
+                <div class="search-container">
+                  <form action="">
+                    <input
+                            type="text"
+                            placeholder="Search course.."
+                            name="search"
+                            id="search-text"
+                    />
+                    <button type="submit">
+                      <i class="fa fa-search"></i> Search
+                    </button>
+                    <a class="btn-add" type="button" th:href="@{/librarian/courses/add}">
+                      Add new courses
+                    </a>
+                    <a class="btn-add" type="button" th:href="@{/librarian/courses/list}">
+                      Show All
+                    </a>
+                  </form>
+                </div>
+              </div>
+
+              <div th:if="${courses ne null}">
+                <table class="list-model-table">
+                  <tr class="table-head">
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Descriptions</th>
+                  </tr>
+                  <th:block th:each="course : ${courses}">
+                  <tr>
+                    <td><a th:href="|@{/user/courses/detail}?courseId= + ${course.courseId}|"
+                    th:text="${course.courseCode}"></a></td>
+                    <td th:text="${course.courseName}"></td>
+                    <td th:text="${course.description}"></td>
+                  </tr>
+                  </th:block>
+                </table>
               </div>
             </div>
-            <div class="user-management-head">
-              <a th:href="@{/templates/lecturer}">Home</a>
-              <span> &gt; <a th:href="@{/lecturer/courses/list}"> Major And Subjects Management</a> </span>
-            </div>
-            <div>
-              <table class="list-model-table">
-                <tr class="table-head">
-                  <th>Code</th>
-                  <th>Name</th>
-                  <th>Descriptions</th>
-                </tr>
-                <tr>
-                  <td><a href="../courses/detail">HCM202</a></td>
-                  <td>Course name</td>
-                  <td>Hệ thống các quan điểm toàn diện và sâu sắc về những vấn đề cơ bản của cách mạng Việt Nam</td>
-                </tr>
-                <tr>
-                  <td><a href="../courses/detail">HCM202</a></td>
-                  <td>Course name</td>
-                  <td>Hệ thống các quan điểm toàn diện và sâu sắc về những vấn đề cơ bản của cách mạng Việt Nam</td>
-                </tr>
-                <tr>
-                  <td><a href="../courses/detail">HCM202</a></td>
-                  <td>Course name</td>
-                  <td>Hệ thống các quan điểm toàn diện và sâu sắc về những vấn đề cơ bản của cách mạng Việt Nam</td>
-                </tr>
-                <tr>
-                  <td><a href="../courses/detail">HCM202</a></td>
-                  <td>Course name</td>
-                  <td>Hệ thống các quan điểm toàn diện và sâu sắc về những vấn đề cơ bản của cách mạng Việt Nam</td>
-                </tr>
-              </table>
-            </div>
-          </section>
-        </main>
-  
-        <!-- Footer -->
-        <footer>
-          <p>&copy; 2023 - FPT Education. All rights reserved.</p>
-          <a href="#">About us</a>
-        </footer>
-      </div>
-  
-      <script src="/js/librarian.js"></script>
+          </div>
+
+        </div>
+
+
+
+
+      </main>
+
+      <!-- Footer -->
+      <div class="row" th:replace="fragments/footer :: footerSection"></div>
+    </div>
   </body>
 </html>

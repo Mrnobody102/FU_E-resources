@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Course Manage</title>
+    <title>Course Add</title>
     <link rel="stylesheet" href="/css/base.css"/>
-    <link rel="stylesheet" href="/css/styles/librarian.css"/>
+    <link rel="stylesheet" href="/css/librarian.css"/>
 </head>
 <body>
 <div class="app_container">
     <!-- Header -->
-    <div class="row" th:replace="fragments/header::headerSection"></div>
+    <div class="row" th:replace="fragments/header::headerLibrarianSection"></div>
 
     <!-- Content -->
     <main class="main_content">
@@ -21,7 +21,7 @@
                     <nav id="sidebar">
                         <ul class="list-unstyled components func_list">
                             <li class="func_item">
-                                <a th:href="@{/templates/librarian}">Home</a>
+                                <a th:href="@{/librarian}">Home</a>
                             </li>
                         </ul>
                     </nav>
@@ -44,13 +44,13 @@
                                 <form method="post" role="form" th:action="@{/librarian/courses/add}"
                                       th:object="${course}" th:id="add-form">
                                     <table class="table-form add-table">
-                                        <tr>
-                                            <td><label th:for="courseId">Course ID</label></td>
-                                            <td><input type="text"
-                                                       class="form-control" th:field="*{courseId}"
-                                                       placeholder="Enter course ID" required>
-                                            </td>
-                                        </tr>
+<!--                                        <tr>-->
+<!--                                            <td><label th:for="courseId">Course ID</label></td>-->
+<!--                                            <td><input type="text"-->
+<!--                                                       class="form-control" th:field="*{courseId}"-->
+<!--                                                       placeholder="Enter course ID" required>-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
 
                                         <tr>
                                             <td><label th:for="courseCode">Course Code</label></td>
@@ -96,7 +96,7 @@
                                             <td><label th:for="lecturerSelection">Lecturers</label></td>
                                             <td><select name="lecturerSelection" th:id="lecturerSelection">
                                                 <option th:each="lecturer : ${lecturers}"
-                                                        th:text="|${lecturer.accountId} ( ${lecturer.name} )|"
+                                                        th:text="|${lecturer.username} ( ${lecturer.name} )|"
                                                         th:value="${lecturer.accountId}">
                                                 </option>
                                             </select>

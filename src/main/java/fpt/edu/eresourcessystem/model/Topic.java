@@ -8,22 +8,20 @@ import lombok.NonNull;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
-
 @Data
-@Document("lessons")
+@Document("topics")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Lesson {
+public class Topic {
     @Id
-    private Long lessonId;
+    private Long topicId;
 
     @NonNull
-    private String lessonTitle;
+    private String topicTitle;
 
     private String courseId;
 
-    private String lessonDescription;
+    private String topicDescription;
 
     @CreatedBy
     private String createdBy;

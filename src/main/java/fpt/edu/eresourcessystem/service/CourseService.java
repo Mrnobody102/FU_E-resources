@@ -10,11 +10,13 @@ import java.util.List;
 public interface CourseService {
     void addCourse(Course Course);
     Course updateCourse(Course Course);
-    Course findByCourseId(String username);
+    Course findByCourseId(String courseId);
     List<Course> findAll();
     Page<Course> findAll(int pageIndex, int pageSize, String search);
-    boolean deleteById(String id);
-    boolean delete(Course product);
+    boolean delete(Course course);
+
+    Course findByCourseCode(String courseCode);
+
     Page<Course> findAll(int pageIndex, int pageSize);
 
 }
