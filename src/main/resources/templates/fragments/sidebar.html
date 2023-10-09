@@ -47,6 +47,7 @@
     </ul>
   </nav>
 </div>
+
 <!-- Librarian Sidebar  -->
 <div class="sidebar" th:fragment="librarianSidebar">
   <nav th:fragment="librarianSidebar" id="sidebar">
@@ -91,9 +92,34 @@
 </div>
 
 
-<!-- Student Sidebar  -->
+<!-- Student storage Sidebar  -->
 <div class="sidebar" th:fragment="studentSidebar">
   <nav th:fragment="studentSidebar" id="sidebar">
+    <ul class="list-unstyled components func_list">
+      <li class="func_item">
+        <a th:href="@{/student/search}">Search</a>
+      </li>
+      <li class="func_item">
+        <a href="">My courses</a>
+      </li>
+      <li class="func_item">
+        <a href="">Saved document</a>
+      </li>
+      <li class="func_item">
+        <a href="">My notes</a>
+      </li>
+      <li class="func_item">
+        <a href="">My questions</a>
+      </li>
+    </ul>
+
+  </nav>
+</div>
+
+
+<!-- Filter Sidebar  -->
+<div class="sidebar" th:fragment="filterSidebar">
+  <nav th:fragment="filterSidebar" id="filterSidebar">
     <ul class="list-unstyled components func_list">
       <li class="func_item">
         <a th:href="@{/student/search}">Search</a>
@@ -136,6 +162,7 @@
     </ul>
   </nav>
 </div>
+
 <script type="text/javascript">
   $(document).ready(function () {
     $("#sidebarCollapse").on("click", function () {

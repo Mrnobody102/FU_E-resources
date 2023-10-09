@@ -2,42 +2,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>E-Resource Lecturer Home</title>
-  <link rel="stylesheet" th:href="@{/css/base.css}" />
-
-  <link rel="stylesheet" th:href="@{/css/librarian.css}" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>E-Resource Lecturer Home</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
 <body>
 <div class="app_container">
-  <!-- Header -->
-  <div class="row" th:replace="fragments/header::headerSection"></div>
+    <!-- Header -->
+    <div class="row" th:replace="fragments/header::studentHeaderSection"></div>
 
-  <!-- Content -->
-  <div class="container">
-    <div class="container-content">
-      <div class="row" th:replace="fragments/sidebar::studentSidebar"></div>
-      <div class="content">
-        <div class="profile-content">
-          <h1 class="profile-title">Student Home</h1>
-          <div class="profile-form ">
-            <div class="profile-form-title">
-              <Profile class="title-form"></Profile>
-            </div>
-            <div th:if="${param.success}">
-              <div class="alert alert-info">Save content successful !!!</div>
-            </div>
-            <div th:if="${param.error}">
-              <div class="alert alert-danger">Error !!!</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Footer -->
-  <div class="row" th:replace="fragments/footer :: footerSection"></div>
+    <!--  Main-->
+    <div class="row" th:replace="fragments/main"></div>
+
+    <!-- Footer -->
+    <div class="row" th:replace="fragments/footer :: footerSection"></div>
 </div>
 
 <script th:src="@{/js/librarian.js}"></script>

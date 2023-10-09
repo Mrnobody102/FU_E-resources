@@ -53,7 +53,7 @@ public class LoginController {
 
     @GetMapping({"/", "/guest"})
     public String guest(){
-        return "guess/home";
+        return "guest/home";
     }
 
 }

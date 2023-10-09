@@ -14,10 +14,6 @@ li a {
   color: var(--text-color);
 }
 
-/*section {*/
-/*  margin-left: 1em;*/
-/*}*/
-
 .topnav a.active {
   background-color: #2196f3;
   color: white;
