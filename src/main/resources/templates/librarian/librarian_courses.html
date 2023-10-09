@@ -5,8 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Subject Management</title>
-    <link rel="stylesheet" href="/css/base.css" />
-    <link rel="stylesheet" href="/css/librarian.css" />
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/librarian.css}" />
   </head>
   <body>
     <div class="app_container">
@@ -22,7 +22,7 @@
                 <ul class="list-unstyled components func_list">
 
                   <li class="func_item">
-                    <a href="">Main Courses</a>
+                    <a th:href="@{/librarian/courses/list}">Main Courses</a>
                   </li>
                   <li class="func_item">
                     <a href="">Others</a>
@@ -32,13 +32,13 @@
             </div>
             <div class="body">
               <div class="user-management-head">
-                <a th:href="@{/templates/librarian}">Home</a>
-                <span> &gt; <a href="#"> Major And Subjects Management</a> </span>
+                <a th:href="@{/librarian}">Home</a>
+                <span> &gt; <a th:href="@{/librian/courses/list}"> Major And Subjects Management</a> </span>
               </div>
 
               <div class="">
                 <div class="search-container">
-                  <form action="/action_page.php">
+                  <form action="">
                     <input
                             type="text"
                             placeholder="Search course.."
@@ -48,8 +48,11 @@
                     <button type="submit">
                       <i class="fa fa-search"></i> Search
                     </button>
-                    <a class="btn-add" type="button" th:href="@{/templates/librarian/courses/add}">
+                    <a class="btn-add" type="button" th:href="@{/librarian/courses/add}">
                       Add new courses
+                    </a>
+                    <a class="btn-add" type="button" th:href="@{/librarian/courses/list}">
+                      Show All
                     </a>
                   </form>
                 </div>
@@ -62,26 +65,14 @@
                     <th>Name</th>
                     <th>Descriptions</th>
                   </tr>
+                  <th:block th:each="course : ${courses}">
                   <tr>
-                    <td><a th:href="@{/templates/librarian/courses/list/1}">HCM202</a></td>
-                    <td>Course name</td>
-                    <td>Hệ thống các quan điểm toàn diện và sâu sắc về những vấn đề cơ bản của cách mạng Việt Nam</td>
+                    <td><a th:href="|@{/user/courses/detail}?courseId= + ${course.courseId}|"
+                    th:text="${course.courseCode}"></a></td>
+                    <td th:text="${course.courseName}"></td>
+                    <td th:text="${course.description}"></td>
                   </tr>
-                  <tr>
-                    <td><a href="">HCM202</a></td>
-                    <td>Course name</td>
-                    <td>Hệ thống các quan điểm toàn diện và sâu sắc về những vấn đề cơ bản của cách mạng Việt Nam</td>
-                  </tr>
-                  <tr>
-                    <td><a href="">HCM202</a></td>
-                    <td>Course name</td>
-                    <td>Hệ thống các quan điểm toàn diện và sâu sắc về những vấn đề cơ bản của cách mạng Việt Nam</td>
-                  </tr>
-                  <tr>
-                    <td><a href="">HCM202</a></td>
-                    <td>Course name</td>
-                    <td>Hệ thống các quan điểm toàn diện và sâu sắc về những vấn đề cơ bản của cách mạng Việt Nam</td>
-                  </tr>
+                  </th:block>
                 </table>
               </div>
             </div>
@@ -97,7 +88,5 @@
       <!-- Footer -->
       <div class="row" th:replace="fragments/footer :: footerSection"></div>
     </div>
-
-    <script src="/js/librarian.js"></script>
   </body>
 </html>

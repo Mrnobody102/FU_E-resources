@@ -9,6 +9,9 @@ import fpt.edu.eresourcessystem.model.Account;
 import java.util.List;
 
 public interface AccountService {
+
+    List<Account> findAllLecturer();
+
     void addAccount(Account account);
     ObjectRespond updateAccount(Account account);
     Account findByUsername(String username) ;

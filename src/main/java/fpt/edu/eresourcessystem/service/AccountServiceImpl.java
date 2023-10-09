@@ -21,6 +21,12 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    public List<Account> findAllLecturer() {
+        List<Account> lecturers = accountRepository.findAllLecturer();
+        return lecturers;
+    }
+
+    @Override
     public void addAccount(Account account) {
         accountRepository.insert(account);
     }
