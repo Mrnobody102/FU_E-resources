@@ -35,4 +35,14 @@ $(document).ready(function() {
         }
     });
 
+    $(".delete-course").click(function(){
+
+        var courseId = $(this).attr("id");
+
+        var result = confirm("Do you want delete this course?" + courseId);
+
+        if(result){
+            window.location = "/librarian/courses/delete/"+courseId;
+        }
+    });
 });
