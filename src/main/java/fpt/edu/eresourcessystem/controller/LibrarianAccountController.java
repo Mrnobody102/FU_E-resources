@@ -6,7 +6,6 @@ import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.service.AccountService;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +56,7 @@ public class LibrarianAccountController {
         return "redirect:/librarian/accounts/add?success";
     }
 
-    @GetMapping({"/update/{accountId}", "update"})
+    @GetMapping({"/update/{accountId}", "/update"})
     public String updateProcess(@PathVariable(required = false) String accountId, final Model model){
         if(null==accountId){
             accountId="";
@@ -78,12 +77,18 @@ public class LibrarianAccountController {
 
     @PostMapping("/update")
     public String updateAccount(@ModelAttribute Account account, final Model model){
-        Account check = accountService.findByAccountId(account.getAccountId());
-        if(null==check){
+        Account checkExist = accountService.findByAccountId(account.getAccountId());
+        if(null==checkExist){
             model.addAttribute("errorMessage","account not exist.");
             return "exception/404";
         }else{
-            Account result = accountService.updateAccount(account);
+
+            Account checkEmailDuplicate = accountService.findByEmail(account.getEmail());
+            if( checkEmailDuplicate != null &&
+                    !checkExist.getEmail().toLowerCase().equals(account.getEmail())){
+                return "redirect:/librarian/courses/update?error";
+            }
+            accountService.updateAccount(account);
 //            System.out.println(result);
             model.addAttribute("account", account);
             model.addAttribute("roles", AccountEnum.Role.values());
