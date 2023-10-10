@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
     <meta charset="UTF-8" />
@@ -13,18 +14,15 @@
 <body>
     <div class="app_container">
         <!-- Header -->
-        <header>
-            <div class="header_system-name">
-                <h2>FPT University E-Resource System</h2>
-            </div>
-            <div class="header_account">
-                <a href="">Logout</a>
-                <a href="">lampt@fpt.edu.vn</a>
-            </div>
-        </header>
+        <div class="row" th:replace="fragments/header::headerLibrarianSection"></div>
 
         <!-- Content -->
         <main class="main_content">
+            <div class="course-details-head">
+                <a th:href="@{/librarian/courses/list}">Back</a>
+                <span> &gt; <a th:href="@{'/librarian/courses/detail/' + ${course.courseId}}"
+                               th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
+            </div>
             <section>
                 <h1>Detail Subject</h1>
                 <hr />
@@ -45,10 +43,11 @@
                         <th>Topics</th>
                         <td th:if="course.topics ne null">
                             <th:block th:each="topic : ${course.topics}">
-                                <p th:text="${topic.topicTitle}"></p>
-                                <span th:text="${topic.topicDescription}"></span>
+                                <p th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></p>
                             </th:block>
                         </td>
+                        <td><a class="update-course-topic" th:href="@{'/librarian/courses/addTopic/' + ${course.courseId}}">Edit</a>
+                        <td/>
                     </tr>
                     <tr>
                         <th>Lecturers</th>
@@ -57,6 +56,8 @@
                                 <p th:text="|${lecturer.username} ( ${lecturer.name} )|"></p>
                             </th:block>
                         </td>
+                        <td><a class="update-course-topic" th:href="@{'/librarian/courses/updateLecturers/'+${course.courseId}}">Edit</a>
+                        <td/>
                     </tr>
                     <tr>
                         <td></td>

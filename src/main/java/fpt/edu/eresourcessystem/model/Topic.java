@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 public class Topic {
     @Id
-    private Long topicId;
+    private String topicId;
 
     @NonNull
     private String topicTitle;

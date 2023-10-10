@@ -2,12 +2,17 @@ package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
+import fpt.edu.eresourcessystem.model.Lecturer;
+import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.service.AccountService;
 import fpt.edu.eresourcessystem.service.CourseService;
+import fpt.edu.eresourcessystem.service.LecturerService;
+import fpt.edu.eresourcessystem.service.TopicService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -16,9 +21,15 @@ public class LibrarianCourseController {
     private final CourseService courseService;
     private final AccountService accountService;
 
-    public LibrarianCourseController(CourseService courseService, AccountService accountService) {
+    private final LecturerService lecturerService;
+
+    private final TopicService topicService;
+
+    public LibrarianCourseController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService) {
         this.courseService = courseService;
         this.accountService = accountService;
+        this.lecturerService = lecturerService;
+        this.topicService = topicService;
     }
 
     //Just for test add course screen
@@ -107,5 +118,51 @@ public class LibrarianCourseController {
         return "redirect:/librarian/courses/list?error";
     }
 
+    @GetMapping({"/updateLecturers/{courseId}"})
+    public  String updateLecturersProcess(@PathVariable String courseId,@RequestParam String search, final Model model){
+        List<Lecturer> courseLecturers = lecturerService.findByCourseId(courseId);
+        List<Account> lecturers = accountService.searchLecturer(search);
+        model.addAttribute("courseLecturers", courseLecturers);
+        model.addAttribute("lecturers", lecturers);
+        return "librarian/course/librarian_add-lecturer-to-course";
+    }
 
+    @PostMapping({"/addLecturers/{courseId}"})
+    public  String addLecturersProcess(@PathVariable String courseId,@RequestParam String accountId, final Model model){
+        List<Lecturer> courseLecturers = lecturerService.findByCourseId(courseId);
+        List<Account> lecturers = accountService.searchLecturer("");
+        model.addAttribute("courseLecturers", courseLecturers);
+        model.addAttribute("lecturers", lecturers);
+        return "librarian/course/librarian_add-lecturer-to-course";
+    }
+
+    @GetMapping({"/addTopic/{courseId}", "/topics/{courseId}"})
+    public String addTopicProcess(@PathVariable String courseId, final Model model){
+        Course course = courseService.findByCourseId(courseId);
+        List<Topic> topics = course.getTopics();
+        model.addAttribute("course", course);
+        model.addAttribute("topics", topics);
+        Topic topic = new Topic();
+        topic.setCourseId(courseId);
+        model.addAttribute("topic",topic);
+        return "librarian/course/librarian_add-topic-to-course";
+    }
+
+    @PostMapping({"/addTopic"})
+    public String addTopic(@ModelAttribute Topic topic, final Model model){
+        Course course = courseService.findByCourseId(topic.getCourseId());
+        List<Topic> topics = course.getTopics();
+        if(null==topics){
+            topics= new ArrayList<>();
+        }
+        topics.add(topic);
+        course.setTopics(topics);
+        // save topic to course
+        courseService.updateCourse(course);
+        // save topic to topic table
+        topicService.addTopic(topic);
+        model.addAttribute("course", course);
+        model.addAttribute("topic",new Topic());
+        return "librarian/course/librarian_add-topic-to-course";
+    }
 }
