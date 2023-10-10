@@ -22,4 +22,11 @@ public interface AccountRepository extends
     void removeAccountByAccountId(String accountId);
     @Query("SELECT FROM Accounts WHERE a.role = 'LIBRARIAN'")
     List<Account> findAllLecturer();
+
+    @Query("SELECT FROM Accounts WHERE a.role = 'LECTURER' AND (a.username LIKE  ?1  OR " +
+            "a.email LIKE ?1 )")
+    List<Account> searchLecturer(String search);
+
+
+
 }

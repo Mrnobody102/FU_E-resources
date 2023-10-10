@@ -11,6 +11,7 @@ import java.util.List;
 public interface AccountService {
 
     List<Account> findAllLecturer();
+    List<Account> searchLecturer(String search);
 
     void addAccount(Account account);
     Account updateAccount(Account account);
