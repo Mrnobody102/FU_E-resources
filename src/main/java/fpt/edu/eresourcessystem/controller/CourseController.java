@@ -17,7 +17,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/librarian/courses")
-public class LibrarianCourseController {
+public class CourseController {
     private final CourseService courseService;
     private final AccountService accountService;
 
@@ -25,7 +25,7 @@ public class LibrarianCourseController {
 
     private final TopicService topicService;
 
-    public LibrarianCourseController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService) {
+    public CourseController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService) {
         this.courseService = courseService;
         this.accountService = accountService;
         this.lecturerService = lecturerService;
@@ -103,7 +103,7 @@ public class LibrarianCourseController {
     public String showCourseDetail(@PathVariable String courseId, final Model model){
         Course course = courseService.findByCourseId(courseId);
         model.addAttribute("course" , course);
-        return "librarian/course/librarian_detail_course";
+        return "librarian/course/librarian_course-detail";
     }
 
 
@@ -162,7 +162,10 @@ public class LibrarianCourseController {
         // save topic to topic table
         topicService.addTopic(topic);
         model.addAttribute("course", course);
-        model.addAttribute("topic",new Topic());
+
+        Topic modelTopic = new Topic();
+        topic.setCourseId(course.getCourseId());
+        model.addAttribute("topic",modelTopic);
         return "librarian/course/librarian_add-topic-to-course";
     }
 }

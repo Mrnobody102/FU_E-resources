@@ -7,8 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Details Subject</title>
   <!-- CSS -->
-  <link rel="stylesheet" href="/css/base.css" />
-  <link rel="stylesheet" href="/css/librarian.css" />
+  <link rel="stylesheet" th:href="@{/css/base.css}" />
+  <link rel="stylesheet" th:href="@{/css/librarian.css}" />
 </head>
 
 <body>
@@ -64,7 +64,7 @@
                    <tr>
                        <td><label th:for="courseId">Course ID</label></td>
                        <td><input type="text"
-                            class="form-control" th:field="*{courseId}"
+                            class="form-control hidden" th:field="*{courseId}"
                                   placeholder="Enter course ID" readonly>
                        </td>
                    </tr>
