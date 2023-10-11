@@ -38,7 +38,7 @@ public class CourseController {
         List<Account> lecturers = accountService.findAllLecturer();
         model.addAttribute("course", new Course());
         model.addAttribute("lecturers", lecturers);
-        return "librarian/course/librarian_add_course";
+        return "librarian/course/librarian_add-course";
     }
 
     @PostMapping("/add")
@@ -65,7 +65,7 @@ public class CourseController {
             List<Account> lecturers = accountService.findAllLecturer();
             model.addAttribute("lecturers", lecturers);
             model.addAttribute("course", course);
-            return "librarian/course/librarian_update_course";
+            return "librarian/course/librarian_update-course";
         }
     }
 
@@ -88,7 +88,7 @@ public class CourseController {
             List<Account> lecturers = accountService.findAllLecturer();
             model.addAttribute("lecturers", lecturers);
             model.addAttribute("success","");
-            return "librarian/course/librarian_update_course";
+            return "librarian/course/librarian_update-course";
         }
     }
 
