@@ -1,6 +1,5 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("topicService")
 public class TopicServiceImpl implements TopicService{
@@ -36,7 +36,42 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
-    public void addTopic(Topic topic) {
-        topicRepository.insert(topic);
+    public Topic addTopic(Topic topic) {
+        if(null==topic.getTopicId()) {
+            Topic result = topicRepository.save(topic);
+            return result;
+        }else{
+            Optional<Topic> checkExist = topicRepository.findById(topic.getTopicId());
+            if(!checkExist.isPresent()){
+                Topic result = topicRepository.save(topic);
+                return result;
+            }return null;
+        }
+    }
+
+    @Override
+    public Topic findById(String topicId) {
+        Optional<Topic> topic = topicRepository.findById(topicId);
+        return topic.orElse(null);
+    }
+
+    @Override
+    public Topic updateTopic(Topic topic) {
+        Optional<Topic> checkExist = topicRepository.findById(topic.getTopicId());
+       if(checkExist.isPresent()){
+           Topic result = topicRepository.save(topic);
+           return result;
+       }
+       return null;
+    }
+
+    @Override
+    public boolean delete(Topic topic) {
+        Optional<Topic> check = topicRepository.findById(topic.getTopicId());
+        if(check.isPresent()){
+            topicRepository.delete(topic);
+            return true;
+        }
+        return false;
     }
 }

@@ -1,11 +1,11 @@
 // script.js
 
 // Xử lý sự kiện khi nút thêm tài liệu được nhấn
-document.querySelector('form').addEventListener('submit', function (event) {
-    event.preventDefault();
-    // Thêm mã JavaScript xử lý khi nút được nhấn
-    alert('Tài liệu đã được thêm thành công!');
-});
+// document.querySelector('form').addEventListener('submit', function (event) {
+//     event.preventDefault();
+//     // Thêm mã JavaScript xử lý khi nút được nhấn
+//     alert('Tài liệu đã được thêm thành công!');
+// });
 
 
 $(document).ready(function() {
@@ -41,6 +41,14 @@ $(document).ready(function() {
 
         if(result){
             window.location = "/librarian/courses/delete/"+courseId;
+        }
+    });
+
+    $("body").on("click", ".delete-topic", function() {
+        var courseTopic = $(this).attr("id");
+        var result = confirm("Do you want delete this topic?"+ courseTopic);
+        if(result){
+            window.location = "/librarian/courses/deleteTopic"+courseTopic;
         }
     });
 });

@@ -10,5 +10,11 @@ public interface TopicService {
 
     List<Topic> findByCourseId(String courseId);
 
-    void addTopic(Topic topic);
+    Topic addTopic(Topic topic);
+
+    Topic findById(String topicId);
+
+    Topic updateTopic(Topic topic);
+
+    boolean delete(Topic topic);
 }

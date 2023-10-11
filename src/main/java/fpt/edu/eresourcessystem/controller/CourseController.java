@@ -107,11 +107,14 @@ public class CourseController {
     }
 
 
-    @DeleteMapping("/delete/{courseId}")
+    @GetMapping ("/delete/{courseId}")
     public String delete(@PathVariable String courseId){
         Course checkExist = courseService.findByCourseId(courseId);
 //        System.out.println(checkExist);
         if (null != checkExist){
+            for (Topic topic: checkExist.getTopics()) {
+                topicService.delete(topic);
+            }
             courseService.delete(checkExist);
             return "redirect:/librarian/courses/list?success";
         }
@@ -150,6 +153,8 @@ public class CourseController {
 
     @PostMapping({"/addTopic"})
     public String addTopic(@ModelAttribute Topic topic, final Model model){
+        System.out.println(topic);
+        topic = topicService.addTopic(topic);
         Course course = courseService.findByCourseId(topic.getCourseId());
         List<Topic> topics = course.getTopics();
         if(null==topics){
@@ -160,12 +165,59 @@ public class CourseController {
         // save topic to course
         courseService.updateCourse(course);
         // save topic to topic table
-        topicService.addTopic(topic);
+
         model.addAttribute("course", course);
 
         Topic modelTopic = new Topic();
         topic.setCourseId(course.getCourseId());
         model.addAttribute("topic",modelTopic);
+        return "librarian/course/librarian_add-topic-to-course";
+    }
+
+    @GetMapping({"/updateTopic/{topicId}"})
+    public String editTopicProcess(@PathVariable String topicId, final Model model){
+        Topic topic = topicService.findById(topicId);
+        Course course = courseService.findByCourseId(topic.getCourseId());
+        List<Topic> topics = course.getTopics();
+        model.addAttribute("course", course);
+        model.addAttribute("topics", topics);
+        model.addAttribute("topic",topic);
+        return "librarian/course/librarian_update-topic-of-course";
+    }
+
+
+    @PostMapping({"/updateTopic/{topicId}"})
+    public String editTopic(@PathVariable String topicId ,@ModelAttribute Topic topic, final Model model){
+        Topic checkTopicExist = topicService.findById(topicId);
+        if(null!=checkTopicExist){
+            Course course = courseService.findByCourseId(topic.getCourseId());
+            course.updateTopic(topic);
+            courseService.updateCourse(course);
+            topicService.updateTopic(topic);
+            List<Topic> topics = course.getTopics();
+            model.addAttribute("course", course);
+            model.addAttribute("topics", topics);
+            model.addAttribute("topic",topic);
+            return "librarian/course/librarian_update-topic-of-course";
+        }return "librarian/course/librarian_add-topic-to-course";
+
+    }
+
+    @GetMapping({"/deleteTopic/{courseId}/{topicId}"})
+    public String deleteTopic( @PathVariable String courseId, @PathVariable String topicId, final Model model){
+        Topic topic = topicService.findById(topicId);
+        if(null != topic){
+            Course course = courseService.findByCourseId(courseId);
+            course.deleteTopic(topic);
+            courseService.updateCourse(course);
+            topicService.delete(topic);
+
+            Topic modelTopic = new Topic();
+            topic.setCourseId(course.getCourseId());
+            model.addAttribute("course", course);
+            model.addAttribute("topic", modelTopic);
+            return "librarian/course/librarian_add-topic-to-course";
+        }
         return "librarian/course/librarian_add-topic-to-course";
     }
 }

@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.service;
 import fpt.edu.eresourcessystem.exception.CourseNotExistedException;
 import fpt.edu.eresourcessystem.exception.CourseNotFoundException;
 import fpt.edu.eresourcessystem.model.Course;
+import fpt.edu.eresourcessystem.model.Topic;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -19,4 +20,5 @@ public interface CourseService {
 
     Page<Course> findAll(int pageIndex, int pageSize);
 
+    Course removeTopic(Topic topic);
 }

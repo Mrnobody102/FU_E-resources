@@ -40,31 +40,34 @@
                         <th>Description</th>
                         <td th:text="${course.description}"> </td>
                     <tr>
-                        <th>Topics</th>
+                        <th>Topics
+                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addTopic/' + ${course.courseId}}">Edit</a>
+                            </p>
+                        </th>
                         <td th:if="course.topics ne null">
                             <th:block th:each="topic : ${course.topics}">
                                 <p th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></p>
                             </th:block>
                         </td>
-                        <td><a class="update-course-topic" th:href="@{'/librarian/courses/addTopic/' + ${course.courseId}}">Edit</a>
-                        <td/>
+
                     </tr>
                     <tr>
-                        <th>Lecturers</th>
+                        <th>Lecturers
+                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/updateLecturers/'+${course.courseId}}">Edit</a>
+                            </p>
+                        </th>
                         <td th:if="course.lecturers ne null">
                             <th:block th:each="lecturer : ${course.lecturers}">
                                 <p th:text="|${lecturer.username} ( ${lecturer.name} )|"></p>
                             </th:block>
                         </td>
-                        <td><a class="update-course-topic" th:href="@{'/librarian/courses/updateLecturers/'+${course.courseId}}">Edit</a>
-                        <td/>
                     </tr>
                     <tr>
-                        <td></td>
+                        <th></th>
                         <td>
                             <a class="update-course" th:href="@{'/librarian/courses/update/'+${course.courseId}}">Edit course information</a>
-                            <a class="delete-course" th:id="${course.courseId}">Delete</a>
-                            <a class="update-topics" th:href="@{'/librarian/courses/topics/'+${course.courseId}}">Edit topics</a>
+                            | <a class="delete-course" th:id="${course.courseId}">Delete</a>
+                            | <a class="update-topics" th:href="@{'/librarian/courses/topics/'+${course.courseId}}">Edit topics</a>
                         </td>
                     </tr>
                 </table>

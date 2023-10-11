@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.model.Course;
+import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -67,5 +68,17 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public Page<Course> findAll(int pageIndex, int pageSize) {
         return null;
+    }
+
+    @Override
+    public Course removeTopic(Topic topic) {
+        Course course = findByCourseId(topic.getCourseId());
+        if(null!=course){
+            // check delete success
+            boolean checkDeleteSuccess = course.deleteTopic(topic);
+            if(checkDeleteSuccess){
+                return updateCourse(course);
+            }return null;
+        }return null;
     }
 }

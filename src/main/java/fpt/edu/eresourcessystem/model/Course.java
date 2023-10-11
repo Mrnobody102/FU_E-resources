@@ -7,6 +7,7 @@ import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -36,4 +37,29 @@ public class Course {
     private String lastModifiedBy;
     @LastModifiedDate
     private String lastModifiedDate;
+
+
+    public boolean updateTopic(Topic topic){
+        if(null != this.topics ){
+            for (int i=0; i<topics.size();i++) {
+                if(topics.get(i).getTopicId().equals(topic.getTopicId())){
+                    topics.set(i, topic);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean deleteTopic(Topic topic){
+        if(null != this.topics ){
+            for (int i=0; i<topics.size();i++) {
+                if(topics.get(i).getTopicId().equals(topic.getTopicId())){
+                    topics.remove(i);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

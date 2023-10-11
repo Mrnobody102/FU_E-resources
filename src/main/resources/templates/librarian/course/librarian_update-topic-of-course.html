@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Details Subject</title>
+  <title>Update Topic</title>
   <!-- CSS -->
   <link rel="stylesheet" th:href="@{/css/base.css}" />
   <link rel="stylesheet" th:href="@{/css/librarian.css}" />
@@ -30,7 +30,7 @@
     <div class="course-details-head">
       <a th:href="@{'/librarian/courses/detail/' + ${course.courseId}}"
          th:text="|${course.courseCode} - ${course.courseName}|"></a>
-      <span> &gt; <a th:href="@{'/librarian/courses/addTopic/' + ${course.courseId}}">Add topic</a> </span>
+      <span> &gt; <a th:href="@{'/librarian/courses/updateTopic/' + ${topic.topicId}}">Update topic</a> </span>
     </div>
     <section>
       <h1>Detail Subject</h1>
@@ -52,26 +52,30 @@
               <tr>
                 <th>Topics</th>
                 <td th:if="course.topics ne null">
-                  <th:block th:each="topic : ${course.topics}">
-                    <p> <a th:href="@{'/librarian/courses/updateTopic/' + ${topic.topicId}}">Edit</a>
+                  <th:block  th:each="topic : ${course.topics}">
+                    <p> <a  th:href="@{'/librarian/courses/updateTopic/'+ ${topic.topicId}}">Edit</a>
                       | <a class="delete-topic" th:id="'/' + ${course.courseId} + '/' + ${topic.topicId}">Remove</a>
-                    <a th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></a>
-                    </p>
+                      <a th:text="|${topic.topicTitle} : ${topic.topicDescription}|"> </a>
                   </th:block>
                 </td>
               </tr>
             </table>
-            <form method="post" role="form" th:action="@{/librarian/courses/addTopic}"
+            <form method="post" role="form" th:action="@{'/librarian/courses/updateTopic/' + ${topic.topicId}}"
                   th:object="${topic}" th:id="add-form">
-              <h3>Add topic</h3>
+              <h3>Update topic</h3>
               <table class="table-form add-table">
-                   <tr>
-                       <td><label th:for="courseId">Course ID</label></td>
-                       <td><input type="text"
-                            class="form-control hidden" th:field="*{courseId}" th:id="courseId"
-                                  placeholder="Enter course ID" readonly>
-                       </td>
-                   </tr>
+                <tr>
+                  <td><label th:for="courseId">Course ID</label></td>
+                  <td><input type="text" th:id="courseId"
+                             class="form-control hidden" th:field="*{courseId}" readonly>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label th:for="topicId">Topic ID</label></td>
+                  <td><input type="text"
+                             class="form-control hidden" th:field="*{topicId}" readonly>
+                  </td>
+                </tr>
                 <tr>
                   <td><label th:for="topicTitle">Topic Title</label></td>
                   <td><input type="text"
