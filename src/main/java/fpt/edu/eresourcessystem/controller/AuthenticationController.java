@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @PropertySources(value = {@PropertySource("classpath:webconfig.properties")})
-public class LoginController {
+public class AuthenticationController {
     @Value("${page-size}")
     private Integer pageSize;    private final AccountService accountService;
 
-    public LoginController(AccountService accountService) {
+    public AuthenticationController(AccountService accountService) {
         this.accountService = accountService;
     }
 
@@ -28,7 +28,7 @@ public class LoginController {
     public String loginProcess(final Model model) throws AccountNotExistedException {
         model.addAttribute("account", new Account());
         model.addAttribute("roles", AccountEnum.Role.values());
-        return "auth/login";
+        return "common/login";
     }
 
     @PostMapping({"/login"})
@@ -53,7 +53,7 @@ public class LoginController {
 
     @GetMapping({"/", "/guest"})
     public String guest(){
-        return "guest/home";
+        return "guest/guest_home";
     }
 
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping
 public class LecturerController {
     @GetMapping("/lecturer")
-    public String getLecturerHome(@ModelAttribute Account account) {
+    public String getLibraryManageDashboard(@ModelAttribute Account account) {
         return "lecturer/lecturer";
     }
 }

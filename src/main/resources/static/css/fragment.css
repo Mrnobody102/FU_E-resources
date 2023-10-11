@@ -325,7 +325,7 @@
 
 .auth-form__heading {
     font-size: 2rem;
-    font-weight: 500;
+    font-weight: bold;
     color: var(--text-color);
 }
 
@@ -345,6 +345,27 @@
     border-radius: 2px;
     border: 1px solid var(--border-color);
     outline: none;
+}
+
+
+.auth-form__select {
+    margin-top: 8px;
+    font-size: 1.5rem;
+    border: 1px solid var(--border-color);
+    outline: none;
+    background-color: var(--second-back-ground);
+    border-radius: 2px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.auth-form__select-tag {
+    padding: 4px 30px 4px 42px;
+}
+
+.auth-form__select-tag option {
+    font-size: 1.4rem;
 }
 
 .auth-form__input:focus {
@@ -386,21 +407,34 @@
     font-size: 1.8rem;
 }
 
-.auth-form__socials--facebook {
+.auth-form__socials--feid {
     color: white;
     background-color: #3A5A98;
 }
 
-.auth-form__socials-facebook-icon {
+.auth-form__socials--feid:hover {
+    background-color: #1e3a72;
+}
+
+.auth-form__socials-feid-icon {
     margin-right: 20px;
     padding: 10px;
     font-size: 1.6rem;
 }
 
+.auth-form__socials--google {
+    background-color: #e12020;
+    color: white;
+}
+
+.auth-form__socials--google:hover {
+    background-color: #9f1717;
+}
+
 .auth-form__socials-google-icon {
     margin-right: 30px;
     padding: 10px;
-    color: black;
+    color: white;
     font-size: 1.5rem;
 }
 
@@ -408,12 +442,6 @@
     padding-right: 10px;
     line-height: 1.5rem;
 }
-
-.auth-form__socials--google {
-    background-color: white;
-    color: var(--text-color);
-}
-
 /* .auth-form__aside {
 
 } */
@@ -427,8 +455,16 @@
     color: var(--primary-color);
 }
 
+.auth-form__help-forgot-password:hover {
+    text-decoration: underline;
+}
+
 .auth-form__help-need-help {
     color: gray;
+}
+
+.auth-form__help-need-help:hover {
+    text-decoration: underline;
 }
 
 .auth-form__help-link {
@@ -818,7 +854,7 @@ footer a {
 
 .home__course-code {
     margin-top: 0;
-    color: var(--primary-btn-color);
+    color: var(--title-color);
 }
 
 .home__course-name {

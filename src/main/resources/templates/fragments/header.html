@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!--LIBRARIAN HEADER-->
 <body th:fragment="headerLibrarianSection">
 <!--     Header -->
 <header>
@@ -14,6 +16,9 @@
 </header>
 <script th:src="@{/js/librarian.js}"></script>
 </body>
+
+<!--LECTURER HEADER-->
+
 <body th:fragment="headerLecturerSection">
 <!--     Header -->
 <header>
@@ -27,6 +32,8 @@
 </header>
 <script th:src="@{/js/librarian.js}"></script>
 </body>
+
+<!--STUDENT HEADER-->
 
 <body th:fragment="studentHeaderSection">
 <!--     Header -->
@@ -82,7 +89,8 @@
                     <div class="header__navbar-user-option-list header__bridge">
                         <div class="header__navbar-user-profile">
                             <div class="header__navbar-user-profile-img-wrapper">
-                                <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-profile-img">
+                                <img th:src="@{/images/sample_account/avt.jpg}" alt=""
+                                     class="header__navbar-user-profile-img">
                             </div>
                             <div style="min-width: max-content">
                                 <p>Vũ Thanh Tùng</p>
@@ -90,7 +98,7 @@
                             </div>
                         </div>
                         <div class="student__log-out">
-                            <a href="#">
+                            <a th:href="@{/logout}">
                                 Log out
                             </a>
                         </div>
@@ -178,6 +186,8 @@
     </div>
 </header>
 </body>
+
+<!--GUEST HEADER-->
 
 <body th:fragment="guestHeaderSection">
 <!--     Header -->
