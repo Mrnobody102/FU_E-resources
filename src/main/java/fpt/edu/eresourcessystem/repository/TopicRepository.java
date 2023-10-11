@@ -14,4 +14,5 @@ public interface TopicRepository extends MongoRepository<Topic,String> {
     List<Topic> findAll();
 
     Optional<Topic> findById(String topicId);
+
 }

@@ -26,8 +26,8 @@ public class Course {
 
     private List<String> documents; //list of documentId
     private List<String> folders; //list of folderId
-    private List<Topic> topics;
-    private List<Lecturer> lecturers;
+    private List<String> topics;
+    private List<String> lecturers;
     //Audit Log
     @CreatedBy
     private String createdBy;
@@ -37,29 +37,4 @@ public class Course {
     private String lastModifiedBy;
     @LastModifiedDate
     private String lastModifiedDate;
-
-
-    public boolean updateTopic(Topic topic){
-        if(null != this.topics ){
-            for (int i=0; i<topics.size();i++) {
-                if(topics.get(i).getTopicId().equals(topic.getTopicId())){
-                    topics.set(i, topic);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean deleteTopic(Topic topic){
-        if(null != this.topics ){
-            for (int i=0; i<topics.size();i++) {
-                if(topics.get(i).getTopicId().equals(topic.getTopicId())){
-                    topics.remove(i);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }

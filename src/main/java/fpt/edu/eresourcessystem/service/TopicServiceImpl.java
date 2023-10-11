@@ -30,7 +30,6 @@ public class TopicServiceImpl implements TopicService{
     @Override
     public List<Topic> findByCourseId(String courseId) {
         Query query = new Query(Criteria.where("courseId").is(courseId));
-        query.fields().include("topics");
         List<Topic> topics =  mongoTemplate.find(query, Topic.class);
         return  topics;
     }
@@ -66,10 +65,10 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
-    public boolean delete(Topic topic) {
-        Optional<Topic> check = topicRepository.findById(topic.getTopicId());
+    public boolean delete(String topicId) {
+        Optional<Topic> check = topicRepository.findById(topicId);
         if(check.isPresent()){
-            topicRepository.delete(topic);
+            topicRepository.deleteById(topicId);
             return true;
         }
         return false;

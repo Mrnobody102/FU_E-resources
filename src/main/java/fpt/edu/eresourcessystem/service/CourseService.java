@@ -20,5 +20,7 @@ public interface CourseService {
 
     Page<Course> findAll(int pageIndex, int pageSize);
 
+    boolean addTopic(Topic topic);
+
     Course removeTopic(Topic topic);
 }

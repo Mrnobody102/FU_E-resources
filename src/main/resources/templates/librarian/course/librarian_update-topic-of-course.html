@@ -51,8 +51,8 @@
               </tr>
               <tr>
                 <th>Topics</th>
-                <td th:if="course.topics ne null">
-                  <th:block  th:each="topic : ${course.topics}">
+                <td th:if="topics ne null">
+                  <th:block  th:each="topic : ${topics}">
                     <p> <a  th:href="@{'/librarian/courses/updateTopic/'+ ${topic.topicId}}">Edit</a>
                       | <a class="delete-topic" th:id="'/' + ${course.courseId} + '/' + ${topic.topicId}">Remove</a>
                       <a th:text="|${topic.topicTitle} : ${topic.topicDescription}|"> </a>

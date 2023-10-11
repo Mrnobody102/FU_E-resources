@@ -6,6 +6,7 @@ import fpt.edu.eresourcessystem.repository.CourseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,14 +72,54 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
+    public boolean addTopic(Topic topic) {
+        // check course exist
+            Optional<Course> course = courseRepository.findById(topic.getCourseId());
+            if(course.isPresent()) {
+                Course courseExisted = course.get();
+
+                // get topics of course
+                if (null == topic.getTopicId()) {
+                    return false;
+                }
+                List<String> topics = courseExisted.getTopics();
+                if (null == courseExisted.getTopics()) {
+                    topics = new ArrayList<>();
+                }
+
+                // check topic existed in course
+                boolean checkTopicExist = false;
+                for (int i = 0; i < topics.size(); i++) {
+                    if (topics.get(i).equals(topic.getTopicId())) {
+                        checkTopicExist = true;
+                    }
+                }
+                // check topic not existed in course
+                if (!checkTopicExist) {
+                    // add topic to course
+                    topics.add(topic.getTopicId());
+                    courseExisted.setTopics(topics);
+                    courseRepository.save(courseExisted);
+                }
+            }
+                return false;
+    }
+
+
+    @Override
     public Course removeTopic(Topic topic) {
         Course course = findByCourseId(topic.getCourseId());
-        if(null!=course){
+        if (null != course) {
             // check delete success
-            boolean checkDeleteSuccess = course.deleteTopic(topic);
-            if(checkDeleteSuccess){
-                return updateCourse(course);
-            }return null;
-        }return null;
+            if (null != course.getTopics()) {
+                for (int i = 0; i < course.getTopics().size(); i++) {
+                    if (course.getTopics().get(i).equals(topic.getTopicId())) {
+                        course.getTopics().remove(i);
+                        return courseRepository.save(course);
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

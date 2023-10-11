@@ -102,7 +102,9 @@ public class CourseController {
     @GetMapping({"/detail/{courseId}"})
     public String showCourseDetail(@PathVariable String courseId, final Model model){
         Course course = courseService.findByCourseId(courseId);
+        List<Topic> topics = topicService.findByCourseId(courseId);
         model.addAttribute("course" , course);
+        model.addAttribute("topics" , topics);
         return "librarian/course/librarian_course-detail";
     }
 
@@ -112,8 +114,8 @@ public class CourseController {
         Course checkExist = courseService.findByCourseId(courseId);
 //        System.out.println(checkExist);
         if (null != checkExist){
-            for (Topic topic: checkExist.getTopics()) {
-                topicService.delete(topic);
+            for (String topicId: checkExist.getTopics()) {
+                topicService.delete(topicId);
             }
             courseService.delete(checkExist);
             return "redirect:/librarian/courses/list?success";
@@ -142,7 +144,8 @@ public class CourseController {
     @GetMapping({"/addTopic/{courseId}", "/topics/{courseId}"})
     public String addTopicProcess(@PathVariable String courseId, final Model model){
         Course course = courseService.findByCourseId(courseId);
-        List<Topic> topics = course.getTopics();
+        List<Topic> topics = topicService.findByCourseId(courseId);
+//        System.out.println(topics);
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         Topic topic = new Topic();
@@ -155,19 +158,11 @@ public class CourseController {
     public String addTopic(@ModelAttribute Topic topic, final Model model){
         System.out.println(topic);
         topic = topicService.addTopic(topic);
+        courseService.addTopic(topic);
         Course course = courseService.findByCourseId(topic.getCourseId());
-        List<Topic> topics = course.getTopics();
-        if(null==topics){
-            topics= new ArrayList<>();
-        }
-        topics.add(topic);
-        course.setTopics(topics);
-        // save topic to course
-        courseService.updateCourse(course);
-        // save topic to topic table
-
+        List<Topic> topics = topicService.findByCourseId(topic.getCourseId());
         model.addAttribute("course", course);
-
+        model.addAttribute("topics", topics);
         Topic modelTopic = new Topic();
         topic.setCourseId(course.getCourseId());
         model.addAttribute("topic",modelTopic);
@@ -178,7 +173,7 @@ public class CourseController {
     public String editTopicProcess(@PathVariable String topicId, final Model model){
         Topic topic = topicService.findById(topicId);
         Course course = courseService.findByCourseId(topic.getCourseId());
-        List<Topic> topics = course.getTopics();
+        List<Topic> topics = topicService.findByCourseId(course.getCourseId());
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         model.addAttribute("topic",topic);
@@ -190,15 +185,8 @@ public class CourseController {
     public String editTopic(@PathVariable String topicId ,@ModelAttribute Topic topic, final Model model){
         Topic checkTopicExist = topicService.findById(topicId);
         if(null!=checkTopicExist){
-            Course course = courseService.findByCourseId(topic.getCourseId());
-            course.updateTopic(topic);
-            courseService.updateCourse(course);
             topicService.updateTopic(topic);
-            List<Topic> topics = course.getTopics();
-            model.addAttribute("course", course);
-            model.addAttribute("topics", topics);
-            model.addAttribute("topic",topic);
-            return "librarian/course/librarian_update-topic-of-course";
+            return "redirect:/librarian/courses/updateTopic/"+ topicId;
         }return "librarian/course/librarian_add-topic-to-course";
 
     }
@@ -207,14 +195,14 @@ public class CourseController {
     public String deleteTopic( @PathVariable String courseId, @PathVariable String topicId, final Model model){
         Topic topic = topicService.findById(topicId);
         if(null != topic){
+            courseService.removeTopic(topic);
+            topicService.delete(topicId);
             Course course = courseService.findByCourseId(courseId);
-            course.deleteTopic(topic);
-            courseService.updateCourse(course);
-            topicService.delete(topic);
-
+            List<Topic> topics = topicService.findByCourseId(courseId);
             Topic modelTopic = new Topic();
-            topic.setCourseId(course.getCourseId());
+            topic.setCourseId(courseId);
             model.addAttribute("course", course);
+            model.addAttribute("topics", topics);
             model.addAttribute("topic", modelTopic);
             return "librarian/course/librarian_add-topic-to-course";
         }

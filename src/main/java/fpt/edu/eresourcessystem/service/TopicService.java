@@ -16,5 +16,5 @@ public interface TopicService {
 
     Topic updateTopic(Topic topic);
 
-    boolean delete(Topic topic);
+    boolean delete(String topicId);
 }
