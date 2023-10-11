@@ -4,7 +4,12 @@ package fpt.edu.eresourcessystem.controller;
 import fpt.edu.eresourcessystem.dto.ObjectRespond;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.model.Account;
+import fpt.edu.eresourcessystem.model.Lecturer;
+import fpt.edu.eresourcessystem.model.Librarian;
+import fpt.edu.eresourcessystem.model.Student;
 import fpt.edu.eresourcessystem.service.AccountService;
+import fpt.edu.eresourcessystem.service.LecturerService;
+import fpt.edu.eresourcessystem.service.StudentService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,13 +25,19 @@ import java.util.List;
 public class AccountController {
     private final AccountService accountService;
 
-    public AccountController(AccountService accountService) {
+    private final LecturerService lecturerService;
+
+    private final StudentService studentService;
+
+    public AccountController(AccountService accountService, LecturerService lecturerService, StudentService studentService) {
         this.accountService = accountService;
+        this.lecturerService = lecturerService;
+        this.studentService = studentService;
     }
 
     @GetMapping({"/list"})
     public String manageAccount(final Model model) {
-        List<Account> accounts = new ArrayList<>();
+        List<Account> accounts;
         accounts = accountService.findAll();
         model.addAttribute("accounts", accounts);
         return "librarian/account/librarian_accounts";
@@ -53,6 +64,24 @@ public class AccountController {
             return "redirect:/librarian/accounts/add?error";
         }
         accountService.addAccount(account);
+        String role = String.valueOf(account.getRole());
+        switch (role){
+            case "LIBRARIAN":
+                break;
+            case "STUDENT":
+                Student student = new Student();
+                student.setAccountId(account.getAccountId());
+                studentService.addStudent(student);
+                break;
+            case "LECTURER":
+                Lecturer lecturer = new Lecturer();
+                lecturer.setAccountId(account.getAccountId());
+                lecturerService.addLecturer(lecturer);
+                break;
+            default:
+                return "redirect:/librarian/accounts/add?error";
+        }
+
         RedirectAttributes attributes = new RedirectAttributesModelMap();
         attributes.addFlashAttribute("account", account);
         return "redirect:/librarian/accounts/add?success";

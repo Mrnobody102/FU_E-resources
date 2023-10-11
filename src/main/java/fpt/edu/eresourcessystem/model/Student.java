@@ -1,26 +1,32 @@
 package fpt.edu.eresourcessystem.model;
 
+import com.mongodb.lang.NonNull;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.ToString;
+import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
+@Document("students")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("accounts")
+@ToString
 public class Student {
+    @Id
     private String studentId;  // Reference to Account
     //Reference by String ID, increase performance
+
+    @NonNull
+    private String accountId;
+
     private List<String> enrolledCourses;
     private List<String> savedDocuments;
+    private List<String> savedCourses;
 
     //Audit Log
     @CreatedBy

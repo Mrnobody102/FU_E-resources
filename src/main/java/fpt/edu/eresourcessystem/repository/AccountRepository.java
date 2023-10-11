@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository("accountRepository")
 public interface AccountRepository extends
         MongoRepository<Account, String> {
-
+    List<Account> findAll();
     Account findByUsername(String username);
     // nên chỉ định rõ kq trả về
 
