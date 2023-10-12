@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Course Update</title>
+  <link rel="stylesheet" href="/css/base.css"/>
+  <link rel="stylesheet" href="/css/librarian.css"/>
+</head>
+<body>
+<div class="app_container">
+  <!-- Header -->
+  <div class="row" th:replace="fragments/header::headerLecturerSection"></div>
+
+  <!-- Content -->
+  <main class="main_content">
+    <div class="container">
+      <div class="container-content">
+        <div class="sidebar librarianCourseSidebar">
+          <nav id="sidebar">
+            <ul class="list-unstyled components func_list">
+              <li class="func_item">
+                <a th:href="@{/lecturer}">Home</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="content-body">
+          <div class="user-management-head">
+            <a th:href="@{'/lecturer/courses/detail/' + ${course.courseId} }">Back</a>
+            <span> &gt; <a th:href="@{'/lecturer/courses/update/' + ${course.courseId}}"> Update Course</a> </span>
+          </div>
+
+          <div class="add-content">
+            <div class="add-form">
+              <div th:if="${success ne null}">
+                <div class="alert alert-info">Save course successful !!!</div>
+              </div>
+              <div th:if="${error ne null}">
+                <div class="alert alert-danger">Please check course information again !!!</div>
+              </div>
+              <div class="add-form-content">
+                <form method="post" role="form" th:action="@{/lecturer/courses/update}"
+                      th:object="${course}" th:id="add-form">
+                  <table class="table-form add-table">
+                       <tr>
+                           <td><label th:for="courseId">Course ID</label></td>
+                           <td><input type="text"
+                                class="form-control" th:field="*{courseId}"
+                                placeholder="Enter course ID"  readonly>
+                           </td>
+                       </tr>
+                    <tr>
+                      <td><label th:for="courseCode">Course Code</label></td>
+                      <td><input type="text"
+                                 class="form-control" th:field="*{courseCode}"
+                                 placeholder="Enter course code" required>
+                        <p class="text-danger" th:errors="*{courseCode}"
+                           th:if="${#fields.hasErrors('courseCode')}"></p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><label th:for="courseName">Course Name</label></td>
+                      <td><input type="text"
+                                 class="form-control" th:field="*{courseName}"
+                                 placeholder="Enter course name" required>
+                        <p class="text-danger" th:errors="*{courseName}"
+                           th:if="${#fields.hasErrors('courseName')}"></p>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td><label th:for="description">Description</label></td>
+                      <td><textarea type="text"
+                                    class="form-control" th:field="*{description}"
+                                    placeholder="Enter description" ></textarea>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><label th:for="topics">Topics</label></td>
+                      <td><input type="text"
+                                 class="form-control" name="lesson" th:id="topics"
+                                 placeholder="Enter topics"/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><label th:for="lecturer">Lecturers</label></td>
+                      <td><textarea type="text"
+                                    class="form-control" name="lecturer" th:id="lecturer"
+                                    readonly></textarea>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><label th:for="lecturerSelection">Lecturers</label></td>
+                      <td><select name="lecturerSelection" th:id="lecturerSelection">
+                        <option th:each="lecturer : ${lecturers}"
+                                th:text="|${lecturer.accountId} ( ${lecturer.name} )|"
+                                th:value="${lecturer.accountId}">
+                        </option>
+                      </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td>
+                        <button type="submit" class="btn btn-save">Save</button>
+                      </td>
+                    </tr>
+                  </table>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+  </main>
+
+  <!-- Footer -->
+  <div class="row" th:replace="fragments/footer :: footerSection"></div>
+</div>
+</body>
+</html>

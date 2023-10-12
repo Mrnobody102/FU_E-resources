@@ -18,4 +18,6 @@ public interface LecturerRepository extends MongoRepository<Lecturer, String> {
 
     @Query("SELECT l FROM Course c join c.lecturers l where c.courseId = ?1")
     List<Lecturer> findByCourseId(String courseId);
+    @Query("SELECT l FROM Lecturer l WHERE l.accountId = ?1")
+    Lecturer findByAccountId(String accountId);
 }

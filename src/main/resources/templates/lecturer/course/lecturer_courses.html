@@ -17,23 +17,10 @@
       <main class="main_content">
         <div class="container">
           <div class="container-content">
-            <div class="sidebar librarianCourseSidebar">
-              <nav id="sidebar">
-                <ul class="list-unstyled components func_list">
-
-                  <li class="func_item">
-                    <a th:href="@{/librarian/courses/list}">Main Courses</a>
-                  </li>
-                  <li class="func_item">
-                    <a href="">Others</a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
             <div class="body">
               <div class="user-management-head">
-                <a th:href="@{/templates/librarian}">Home</a>
-                <span> &gt; <a th:href="@{/librian/courses/list}"> Major And Subjects Management</a> </span>
+                <a th:href="@{/lecturer}">Home</a>
+                <span> &gt; <a th:href="@{/librian/courses/list}"> Courses </a> </span>
               </div>
 
               <div class="">
@@ -48,10 +35,10 @@
                     <button type="submit">
                       <i class="fa fa-search"></i> Search
                     </button>
-                    <a class="btn-add" type="button" th:href="@{/librarian/courses/add}">
-                      Add new courses
+                    <a class="btn-add" type="button" th:href="@{/lecturer/courses/manage_course/list}">
+                      My courses
                     </a>
-                    <a class="btn-add" type="button" th:href="@{/librarian/courses/list}">
+                    <a class="btn-add" type="button" th:href="@{/lecturer/courses/list}">
                       Show All
                     </a>
                   </form>
@@ -71,6 +58,9 @@
                     th:text="${course.courseCode}"></a></td>
                     <td th:text="${course.courseName}"></td>
                     <td th:text="${course.description}"></td>
+                    <td colspan="2">
+                      <a class="update-account" th:href="@{'/librarian/courses/detail/'+${course.courseId}}">View</a>
+                    </td>
                   </tr>
                   </th:block>
                 </table>

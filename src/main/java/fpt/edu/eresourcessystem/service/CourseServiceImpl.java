@@ -122,4 +122,10 @@ public class CourseServiceImpl implements CourseService{
         }
         return null;
     }
+
+    @Override
+    public List<Course> findByListId(List<String> courseIds) {
+        List<Course> courses = courseRepository.findByListId(courseIds);
+        return courses;
+    }
 }

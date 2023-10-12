@@ -23,4 +23,6 @@ public interface CourseService {
     boolean addTopic(Topic topic);
 
     Course removeTopic(Topic topic);
+
+    List<Course> findByListId(List<String> courseIds);
 }
