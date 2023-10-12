@@ -52,23 +52,23 @@ public class StudentController {
     @GetMapping("/student/courses/detail/{courseId}")
     public String viewCourseDetail(@PathVariable String courseId, final Model model){
         Account account = new Account();
-        account.setAccountId("Thuongdt");
+        account.setAccountId("652822485ab106356098b911");
         Student student = studentService.findByAccountId(account.getAccountId());
         Course course = courseService.findByCourseId(courseId);
         List<Topic> topics = topicService.findByCourseId(courseId);
         model.addAttribute("course" , course);
         model.addAttribute("topics" , topics);
-        if(studentService.checkCourseSaved(account.getAccountId(),courseId)){
+        if(studentService.checkCourseSaved(student.getStudentId(),courseId)){
             model.addAttribute("saved" , true);
         }else model.addAttribute("saved" , false);
         return "student/course/student_course-detail";
     }
 
-    @GetMapping("/student/course/saveCourse/{courseId}")
+    @GetMapping("/student/courses/save_course/{courseId}")
     public String saveCourse(@PathVariable String courseId, final Model model){
         // get account authorized
         Account account = new Account();
-        account.setAccountId("Thuongdt");
+        account.setAccountId("652822485ab106356098b911");
         Student student = studentService.findByAccountId(account.getAccountId());
         if(null!=courseService.findByCourseId(courseId)){
             studentService.saveACourse(student.getStudentId(),courseId);
@@ -76,12 +76,23 @@ public class StudentController {
         return "redirect:/student/courses/detail/"+courseId+"?success";
     }
 
+    @GetMapping("/student/courses/unsaved_course/{courseId}")
+    public String unsavedCourse(@PathVariable String courseId, final Model model){
+        // get account authorized
+        Account account = new Account();
+        account.setAccountId("652822485ab106356098b911");
+        Student student = studentService.findByAccountId(account.getAccountId());
+        if(null!=courseService.findByCourseId(courseId)){
+            studentService.unsavedACourse(student.getStudentId(),courseId);
+        }
+        return "redirect:/student/courses/detail/"+courseId+"?success";
+    }
 
     @GetMapping("/student/course/saveCourse/list")
     public String viewCourseSaved(final Model model){
         // get account authorized
         Account account = new Account();
-        account.setAccountId("Thuongdt");
+        account.setAccountId("652822485ab106356098b911");
         Student student = studentService.findByAccountId(account.getAccountId());
         List<String> savedCourses = student.getSavedCourses();
         List<Course> courses = new ArrayList<>();

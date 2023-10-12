@@ -61,7 +61,7 @@ public class StudentServiceImpl implements StudentService{
             savedCourses = new ArrayList<>();
         }
         // check course existed in saved course
-        for (String cId: student.get().getSavedCourses()) {
+        for (String cId: savedCourses) {
             if(courseId.equals(cId)){
                 return false;
             }
@@ -70,5 +70,28 @@ public class StudentServiceImpl implements StudentService{
         student.get().setSavedCourses(savedCourses);
         updateStudentSavedCourse(student.get());
         return true;
+    }
+
+    @Override
+    public boolean unsavedACourse(String studentId, String courseId) {
+        Optional<Student> student = studentRepository.findById(studentId);
+        if(!student.isPresent()){
+            return false;
+        }
+        List<String> savedCourses = student.get().getSavedCourses();
+        // check student have saved any course
+        if(null == savedCourses ){
+            savedCourses = new ArrayList<>();
+        }
+        // check course existed in saved course and delete
+        for (String cId: savedCourses) {
+            if(courseId.equals(cId)){
+                savedCourses.remove(cId);
+                student.get().setSavedCourses(savedCourses);
+                updateStudentSavedCourse(student.get());
+                return true;
+            }
+        }
+        return false;
     }
 }

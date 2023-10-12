@@ -2,6 +2,7 @@ package fpt.edu.eresourcessystem.model;
 
 
 import fpt.edu.eresourcessystem.enums.AccountEnum;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class Account {
     private String password;
 
     @Indexed(unique = true)
+    @NotNull(message = "{email.not.null}")
     private String email;
 
     private String name;

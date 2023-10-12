@@ -164,7 +164,7 @@ public class CourseController {
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         Topic modelTopic = new Topic();
-        topic.setCourseId(course.getCourseId());
+        modelTopic.setCourseId(course.getCourseId());
         model.addAttribute("topic",modelTopic);
         return "librarian/course/librarian_add-topic-to-course";
     }
@@ -200,7 +200,7 @@ public class CourseController {
             Course course = courseService.findByCourseId(courseId);
             List<Topic> topics = topicService.findByCourseId(courseId);
             Topic modelTopic = new Topic();
-            topic.setCourseId(courseId);
+            modelTopic.setCourseId(courseId);
             model.addAttribute("course", course);
             model.addAttribute("topics", topics);
             model.addAttribute("topic", modelTopic);
