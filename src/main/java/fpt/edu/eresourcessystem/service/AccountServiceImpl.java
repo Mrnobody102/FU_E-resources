@@ -2,6 +2,8 @@ package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.dto.ObjectRespond;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.repository.AccountRepository;
@@ -69,8 +71,11 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public Page<Account> findByPage(int pageIndex, int pageSize, String search) {
-        return null;
+    public Page<Account> findByUsernameLikeOrEmailLike(String username, String email, int pageIndex, int pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+        Page<Account> page = accountRepository.findByUsernameLikeOrEmailLike( username ,  email ,
+                pageable);
+        return page;
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import fpt.edu.eresourcessystem.exception.AccountNotExistedException;
 import fpt.edu.eresourcessystem.exception.AccountNotFoundException;
 import fpt.edu.eresourcessystem.model.Account;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface AccountService {
     Account findByAccountId(String accountId) ;
     Account findByEmail(String email);
     List<Account> findAll();
-    Page<Account> findByPage(int pageIndex, int pageSize, String search);
+    Page<Account> findByUsernameLikeOrEmailLike(String username, String email, int pageIndex, int pageSize);
     boolean deleteById(String id);
     boolean delete(Account account);
     Page<Account> findAll(int pageIndex, int pageSize);

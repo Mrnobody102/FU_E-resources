@@ -24,13 +24,14 @@
               </div>
               <div class="">
                 <div class="search-container">
-                  <form action="">
-                    <input class="search-content" type="text" placeholder="Search user.." name="search" id="search-text"/>
+                  <form method="get" th:action = "@{/librarian/accounts/list/1}">
+                    <input class="search-content" type="text" placeholder="Search user.." th:name="search"
+                           th:id="search-text" th:value="${search}"  />
                     <button class="btn" type="submit">
                       <i class="fa fa-search"></i> Search
                     </button>
                     <a class="btn btn-add" type="button" th:href="@{/librarian/accounts/add}">Add new user</a>
-                    <a class="btn btn-showAll" type="button" th:href="@{/librarian/accounts/list}">Show AlL</a>
+                    <a class="btn btn-showAll" type="button" th:href="@{/librarian/accounts/list/1}">Show AlL</a>
                   </form>
                 </div>
               </div>
@@ -60,6 +61,27 @@
                     </tr>
                   </th:block>
                 </table>
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span> |
+                      </a>
+                    </li>
+
+                    <li th:if="totalPage ne null" th:each = "pageIndex: ${#numbers.sequence(1,totalPage)}"  class="page-item">
+                      <a th:text = "${pageIndex}" class="page-link page-number"  href="#"></a> |
+                    </li>
+
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Next">
+                        <span class="sr-only">Next</span>
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
               </div>
             </div>
           </div>

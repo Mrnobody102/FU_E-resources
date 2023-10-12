@@ -7,22 +7,18 @@
 //     alert('Tài liệu đã được thêm thành công!');
 // });
 
-
 $(document).ready(function() {
 
-    // $(".page-number").click(function() {
-    //
-    //     var firstName = $("#firstName").val();
-    //     var lastName = $("#lastName").val();
-    //
-    //     var pageIndex = $(this).html();
-    //
-    //     alert("/admin/contacts/" + pageIndex + "?firstName=" + firstName + "&lastName=" + lastName);
-    //
-    //     window.location = "/admin/contacts/" + pageIndex + "?firstName=" + firstName + "&lastName=" + lastName;
-    //
-    // });
+    $(".page-number").click(function() {
 
+        var search = $("#search-text").val();
+        var pageIndex = $(this).html();
+
+        // alert("/librarian/accounts/" + pageIndex + "?search=" + search);
+
+        window.location = "/librarian/accounts/list/" + pageIndex + "?search=" + search;
+
+    });
 
     $(".delete-account").click(function(){
 

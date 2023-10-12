@@ -10,6 +10,10 @@ import fpt.edu.eresourcessystem.model.Student;
 import fpt.edu.eresourcessystem.service.AccountService;
 import fpt.edu.eresourcessystem.service.LecturerService;
 import fpt.edu.eresourcessystem.service.StudentService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +26,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/librarian/accounts")
+@PropertySource("web-setting.properties")
 public class AccountController {
+    @Value("${page-size}")
+    private Integer pageSize;
     private final AccountService accountService;
 
     private final LecturerService lecturerService;
@@ -37,9 +44,9 @@ public class AccountController {
 
     @GetMapping({"/list"})
     public String manageAccount(final Model model) {
-        List<Account> accounts;
-        accounts = accountService.findAll();
-        model.addAttribute("accounts", accounts);
+//        List<Account> accounts;
+//        accounts = accountService.findAll();
+//        model.addAttribute("accounts", accounts);
         return "librarian/account/librarian_accounts";
     }
 
@@ -162,15 +169,14 @@ public class AccountController {
         return "redirect:/librarian/accounts/list?error";
     }
 
-    @GetMapping("/list/{username}")
-    public ObjectRespond findByUserName(@PathVariable String username) {
-        return new ObjectRespond("success", accountService.findByUsername(username));
-    }
-
     @GetMapping("/list/{pageIndex}")
-    Page<Account> findAccountByPage(@PathVariable Integer pageIndex, String search) {
-        return null;
+    String findAccountByPage(@PathVariable Integer pageIndex,
+    @RequestParam(required = false, defaultValue = "") String search, final Model model, HttpServletRequest request) {
+        Page<Account> page = accountService.findByUsernameLikeOrEmailLike(search, search, pageIndex, pageSize);
+        System.out.println(search);
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("accounts", page.getContent());
+        model.addAttribute("search", search);
+        return "librarian/account/librarian_accounts";
     }
-
-
 }

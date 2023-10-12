@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@PropertySources(value = {@PropertySource("classpath:webconfig.properties")})
+@PropertySources(value = {@PropertySource("classpath:web-setting.properties")})
 public class AuthenticationController {
     @Value("${page-size}")
     private Integer pageSize;    private final AccountService accountService;
