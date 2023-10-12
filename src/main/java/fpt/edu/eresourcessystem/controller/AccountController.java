@@ -119,6 +119,27 @@ public class AccountController {
                     !checkExist.getEmail().toLowerCase().equals(account.getEmail())) {
                 return "redirect:/librarian/courses/update?error";
             }
+            String role = String.valueOf(account.getRole());
+            switch (role){
+                case "LIBRARIAN":
+                    break;
+                case "STUDENT":
+                    if(null==studentService.findByAccountId(account.getAccountId())){
+                        Student student = new Student();
+                        student.setAccountId(account.getAccountId());
+                        studentService.addStudent(student);
+                    }
+                    break;
+                case "LECTURER":
+                    if(null==lecturerService.findByAccountId(account.getAccountId())){
+                        Lecturer lecturer = new Lecturer();
+                        lecturer.setAccountId(account.getAccountId());
+                        lecturerService.addLecturer(lecturer);
+                    }
+                    break;
+                default:
+                    return "redirect:/librarian/accounts/add?error";
+            }
             accountService.updateAccount(account);
 //            System.out.println(result);
             model.addAttribute("account", account);
