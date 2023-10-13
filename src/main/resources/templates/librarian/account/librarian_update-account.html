@@ -47,7 +47,7 @@
                     </div>
                     <div class="add-form-content">
                         <form method="post" role="form" th:action="@{/librarian/accounts/update}"
-                              th:object="${account}" th:id="add-form">
+                              th:object="${account}" th:id="update-account">
                             <table class="table-form lib_table">
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="accountId">Account ID</label></td>
@@ -59,7 +59,7 @@
 
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="username">Username</label></td>
-                                    <td><input type="text"
+                                    <td><input type="text  th:id="username"
                                                class="lib_input form-control" th:field="*{username}"
                                                placeholder="Enter username" required>
                                         <p class="text-danger" th:errors="*{username}"
@@ -68,7 +68,7 @@
                                 </tr>
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="password">Password</label></td>
-                                    <td><input type="text"
+                                    <td><input type="text" th:id="password"
                                                class="lib_input form-control" th:field="*{password}"
                                                placeholder="Enter password" required>
                                         <p class="text-danger" th:errors="*{password}"
@@ -78,7 +78,7 @@
 
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="email">Email</label></td>
-                                    <td><input type="text"
+                                    <td><input type="text" th:id="email"
                                                class="lib_input form-control" th:field="*{email}"
                                                placeholder="Enter email" required>
                                         <p class="text-danger" th:errors="*{email}"
@@ -87,7 +87,7 @@
                                 </tr>
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="name">Full Name</label></td>
-                                    <td><input type="text"
+                                    <td><input type="text" th:id="name"
                                                class="lib_input form-control" th:field="*{name}"
                                                placeholder="Enter name" required>
                                         <p class="text-danger" th:errors="*{name}"
@@ -97,9 +97,9 @@
 
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="dateOfBirth">Date of birth</label></td>
-                                    <td><input type="date"
+                                    <td><input type="date" th:id="dateOfBirth"
                                                class="lib_input form-control" th:field="*{dateOfBirth}"
-                                               th:id="dateOfBirth"
+
                                                required>
                                     </td>
                                 </tr>
@@ -140,7 +140,7 @@
                                 <tr class="lib_input-wrapper">
                                     <td></td>
                                     <td>
-                                        <input type="checkbox" name="IsAdmin" th:field="*{flagAdmin}">
+                                        <input type="checkbox" name="IsAdmin" th:field="*{flagAdmin}" th:id="isAdmin">
                                         IsAdmin
                                     </td>
                                 </tr>
