@@ -14,7 +14,7 @@
 <body>
 <div class="app_container">
   <!-- Header -->
-  <div class="row" th:replace="fragments/header::headerLecturerSection"></div>
+  <div class="row" th:replace="~{fragments/header::headerLecturerSection}"></div>
 
   <!-- Content -->
   <main class="main_content">
@@ -55,7 +55,7 @@
                   <th:block  th:each="topic : ${topics}">
                     <p> <a  th:href="@{'/lecturer/courses/updateTopic/'+ ${topic.topicId}}">Edit</a>
                       | <a class="delete-topic" th:id="'/' + ${course.courseId} + '/' + ${topic.topicId}">Remove</a>
-                      <a th:text="|${topic.topicTitle} : ${topic.topicDescription}|"> </a>
+                      <a th:text="|${topic.topicTitle} : ${topic.topicDescription}|"> </a> </p>
                   </th:block>
                 </td>
               </tr>

@@ -11,6 +11,7 @@
     --primary-color: #d24402;
     --primary-color-rgb: 210, 68, 2;
     --primary-btn-color: #419a1d;
+    --lib-dashboard-color: #0a53be;
     --primary-back-ground: rgb(210, 68, 2);
     --second-back-ground: rgb(240, 234, 234);
     --content-width: 87.5%;
@@ -45,6 +46,15 @@ li {
     list-style: none;
 }
 
+/*input::placeholder,*/
+/*input::-webkit-datetime-edit-fields-wrapper {*/
+/*    padding-left: 6px;*/
+/*}*/
+
+.app__container-content-wrapper {
+    display: flex;
+    justify-content: center;
+}
 
 /* Responsive */
 
@@ -61,6 +71,7 @@ li {
 
 .grid__row {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     margin-left: -12px;
     margin-right: -12px;

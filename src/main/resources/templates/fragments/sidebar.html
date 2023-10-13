@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-<link rel="stylesheet" th:href="@{/css/base.css}" />
-<link
-        rel="stylesheet"
-        th:href="@{/css/styles/librarian.css}"
-/>
+>
 <body>
 <!-- Lecturer Sidebar  -->
 <div class="sidebar" th:fragment="lecturerSidebar">
@@ -49,119 +41,63 @@
 </div>
 
 <!-- Librarian Sidebar  -->
-<div class="sidebar" th:fragment="librarianSidebar">
-  <nav th:fragment="librarianSidebar" id="sidebar">
-    <ul class="list-unstyled components func_list">
-
-      <li class="func_item">
-        <a href="">Settings</a>
-      </li>
-      <li class="func_item">
-        <a th:href="@{/librarian/accounts/list}">User management</a>
-      </li>
-      <li class="func_item">
-        <a th:href="@{/librarian/courses/list}">Courses management</a>
-      </li>
-      <li class="func_item">
-        <a href="">Statistical Data</a>
-      </li>
-    </ul>
-    <ul class="list-unstyled components">
-
-      <li class="active">
-        <ul class="collapse list-unStyled" id="">
-          <li>
-            <a href="#">Notification</a>
-          </li>
-          <li>
-            <a href="#">FeedBack</a>
-          </li>
-          <li>
-            <a href="#">Requests</a>
-          </li>
+<nav th:fragment="librarianSidebar" id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+    <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+<!--                active-->
+                <a id="navAccounts" class="nav-link" aria-current="page" th:href="@{/librarian/accounts/list}">
+                    <i class="nav-link__icon fa fa-user" aria-hidden="true"></i>
+                    Accounts
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="navCourses" class="nav-link" th:href="@{/librarian/courses/list}">
+                    <i class="nav-link__icon fa fa-book" aria-hidden="true"></i>
+                    Courses
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="navDocuments" class="nav-link" th:href="@{/librarian/documents/list}">
+                    <i class="nav-link__icon fa fa-file" aria-hidden="true"></i>
+                    Documents
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="navRequests" class="nav-link" th:href="@{/librarian/requests/list}">
+                    <i class="nav-link__icon fa fa-paper-plane" aria-hidden="true"></i>
+                    Requests
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="navFeedbacks" class="nav-link" th:href="@{/librarian/feedbacks/list}">
+                    <i class="nav-link__icon fa fa-comments" aria-hidden="true"></i>
+                    Feedbacks
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="navStatistics" class="nav-link" th:href="@{/librarian/statistics}">
+                    <i class="nav-link__icon fa fa-database" aria-hidden="true"></i>
+                    Statistics
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="navNotifications" class="nav-link" th:href="@{/librarian/notifications}">
+                    <i class="nav-link__icon fa fa-bell" aria-hidden="true"></i>
+                    Notifications
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="navSettings" class="nav-link" th:href="@{/librarian/settings}">
+                    <i class="nav-link__icon fa fa-cog" aria-hidden="true"></i>
+                    Settings
+                </a>
+            </li>
         </ul>
-      </li>
-      <li>
-        <a href="#">Recent</a>
-      </li>
-      <li>
-        <a href="#">Search</a>
-      </li>
-    </ul>
-  </nav>
-</div>
+    </div>
+</nav>
 
 
-<!-- Student storage Sidebar  -->
-<div class="sidebar" th:fragment="studentSidebar">
-  <nav th:fragment="studentSidebar" id="sidebar">
-    <ul class="list-unstyled components func_list">
-      <li class="func_item">
-        <a th:href="@{/student/search}">Search</a>
-      </li>
-      <li class="func_item">
-        <a href="">My courses</a>
-      </li>
-      <li class="func_item">
-        <a href="">Saved document</a>
-      </li>
-      <li class="func_item">
-        <a href="">My notes</a>
-      </li>
-      <li class="func_item">
-        <a href="">My questions</a>
-      </li>
-    </ul>
-
-  </nav>
-</div>
-
-
-<!-- Filter Sidebar  -->
-<div class="sidebar" th:fragment="filterSidebar">
-  <nav th:fragment="filterSidebar" id="filterSidebar">
-    <ul class="list-unstyled components func_list">
-      <li class="func_item">
-        <a th:href="@{/student/search}">Search</a>
-      </li>
-      <li class="func_item">
-        <a href="">My profile</a>
-      </li>
-      <li class="func_item">
-        <a href="">My course</a>
-      </li>
-      <li class="func_item">
-        <a href="">Saved document</a>
-      </li>
-      <li class="func_item">
-        <a href="">My note</a>
-      </li>
-      <li class="func_item">
-        <a href="">Question&Answer</a>
-      </li>
-    </ul>
-    <ul class="list-unstyled components">
-
-      <li class="active">
-        <ul class="collapse list-unStyled" id="">
-          <li>
-            <a href="#">Notification</a>
-          </li>
-          <li>
-            <a href="#">My FeedBack</a>
-          </li>
-          <li>
-            <a href="#">Requests</a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">Recent</a>
-      </li>
-
-    </ul>
-  </nav>
-</div>
 
 <script type="text/javascript">
   $(document).ready(function () {

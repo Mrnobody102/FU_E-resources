@@ -16,13 +16,13 @@
 <body>
 <div class="app_container">
     <!-- Header -->
-    <div class="row" th:replace="fragments/header::studentHeaderSection"></div>
+    <div class="row" th:replace="~{fragments/header::studentHeaderSection}"></div>
 
     <!--  Main-->
-    <div class="row" th:replace="fragments/main"></div>
+    <div class="row" th:replace="~{fragments/main}"></div>
 
     <!-- Footer -->
-    <div class="row" th:replace="fragments/footer :: footerSection"></div>
+    <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 </div>
 
 <script th:src="@{/js/librarian.js}"></script>

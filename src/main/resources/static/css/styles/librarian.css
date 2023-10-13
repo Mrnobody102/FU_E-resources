@@ -1,67 +1,93 @@
-/* styles.css */
-
-/* main */
-* {
-  box-sizing: border-box;
-}
-li {
-  list-style: none;
-  padding: 12px 0 12px 0;
-  border-bottom: #dbdbdb 1px solid;
+.lib-main_menu {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
 }
 
-li a {
-  color: var(--text-color);
+.lib-main_menu-item {
+  border-bottom: var(--border-color) 1px solid;
+  padding: 16px 0 8px 2px;
 }
 
-.topnav a.active {
-  background-color: #2196f3;
-  color: white;
+.lib-main_menu-item i {
+  width: 36px;
 }
 
-/* .topnav .search-container {
-  float: right;
-} */
-
-.topnav input[type="text"] {
-  padding: 0.5em 1em;
-  font-size: 1em;
-  border: 1px solid #ddd;
-}
-
-.topnav .search-container button {
-  padding: 0.5em 1em;
-  /*margin-top: 8px;*/
-  background: #111d5e;
-  color: white;
-  border-radius: 0.3em;
-  font-size: 1em;
-  border: none;
-  cursor: pointer;
-}
-
-.topnav .search-container button:hover {
-    background: #ccc;
-  }
-.list-model-table th,
-.list-model-table td {
-  border: 1px solid #ddd;
-  text-align: left;
-}
-table {
-  border-collapse: collapse;
+.lib_data-list-wrapper {
   width: 100%;
-  margin-bottom: 1em;
 }
 
-th,
-td {
-  padding: 0.5em;
+.lib_search-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
-.btn{
-  padding: 0.3em 1em;
-  border-radius: 0.2em;
+
+.lib_search-content {
+  border: 1px solid var(--border-color);
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  height: 36px;
 }
-.search-content {
-  padding: 0.3em 1em;
+
+.lib_search-btn-wrapper {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-color);
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  margin-left: -0.5px;
+}
+
+.lib_show-all-btn {
+  margin-left: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.lib_search-btn:hover,
+.lib_show-all-btn:hover,
+.lib_btn-add:hover{
+  color: var(--lib-dashboard-color);
+}
+
+.lib_btn-add {
+  border: 1px solid var(--border-color);
+}
+
+.lib_btn-save {
+  background-color: var(--primary-btn-color);
+  color: white;
+}
+
+.lib_btn-save:hover {
+  color: var(--hover-color-2);
+}
+
+.lib_table {
+  width: 64%;
+}
+
+.lib_content {
+  margin-left: 36px;
+  margin-bottom: 18px;
+}
+
+.lib_input-label {
+  padding:8px 18px;
+}
+
+.lib_input {
+  height: 30px;
+  font-size: 1.3rem;
+}
+
+.lib_textarea {
+  font-size: 1.3rem;
+}
+
+.lib_course-info-topic {
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--second-back-ground);
 }

@@ -1,131 +1,130 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Update Topic</title>
-  <!-- CSS -->
-  <link rel="stylesheet" th:href="@{/css/base.css}" />
-  <link rel="stylesheet" th:href="@{/css/librarian.css}" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Librarian | Course | Update topic</title>
+
+
+  <link
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
+          rel="stylesheet"
+  />
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" th:href="@{/css/base.css}"/>
+  <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+  <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
 </head>
+<body class="app_container">
 
-<body>
-<div class="app_container">
-  <!-- Header -->
-  <div class="row" th:replace="fragments/header::headerLibrarianSection"></div>
+<header class="row" th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<div class="main_content">
+  <div class="grid app__container-content-wrapper">
+    <div class="app__container-content">
+      <div class="sidebar librarianCourseSidebar">
 
-  <!-- Content -->
-  <main class="main_content">
-    <div class="sidebar librarianCourseSidebar">
-      <nav id="sidebar">
-        <ul class="list-unstyled components func_list">
-          <li class="func_item">
-            <a th:href="@{/librarian}">Home</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <div class="course-details-head">
-      <a th:href="@{'/librarian/courses/detail/' + ${course.courseId}}"
-         th:text="|${course.courseCode} - ${course.courseName}|"></a>
-      <span> &gt; <a th:href="@{'/librarian/courses/updateTopic/' + ${topic.topicId}}">Update topic</a> </span>
-    </div>
-    <section>
-      <h1>Detail Subject</h1>
-      <hr />
-      <div class="add-content">
-        <div class="add-form">
-          <div th:if="${param.success}">
-            <div class="alert alert-info">Save course successful !!!</div>
-          </div>
-          <div th:if="${param.error}">
-            <div class="alert alert-danger">Please check course information again !!!</div>
-          </div>
-          <div class="add-form-content">
-            <table th:if="course ne null">
-              <tr>
-                <th>Course</th>
-                <td th:text="| ${course.courseCode} - ${course.courseName}|"></td>
-              </tr>
-              <tr>
-                <th>Topics</th>
-                <td th:if="topics ne null">
-                  <th:block  th:each="topic : ${topics}">
-                    <p> <a  th:href="@{'/librarian/courses/updateTopic/'+ ${topic.topicId}}">Edit</a>
-                      | <a class="delete-topic" th:id="'/' + ${course.courseId} + '/' + ${topic.topicId}">Remove</a>
-                      <a th:text="|${topic.topicTitle} : ${topic.topicDescription}|"> </a>
-                  </th:block>
-                </td>
-              </tr>
-            </table>
-            <form method="post" role="form" th:action="@{'/librarian/courses/updateTopic/' + ${topic.topicId}}"
-                  th:object="${topic}" th:id="add-form">
-              <h3>Update topic</h3>
-              <table class="table-form add-table">
+
+        <div class="course-details-head">
+          <a th:href="@{/librarian}">Home</a>
+          <span> >
+                    <a th:href="@{'/librarian/courses/detail/' + ${course.courseId}}"
+                       th:text="|${course.courseCode} - ${course.courseName}|"></a>
+                     </span>
+          <span> &gt; <a
+                  th:href="@{'/librarian/courses/addTopic/' + ${course.courseId}}">Add topic</a> </span>
+        </div>
+      </div>
+      <section>
+        <h1>Detail Subject</h1>
+        <hr />
+        <div class="add-content">
+          <div class="add-form">
+            <div th:if="${param.success}">
+              <div class="alert alert-info">Save course successful !!!</div>
+            </div>
+            <div th:if="${param.error}">
+              <div class="alert alert-danger">Please check course information again !!!</div>
+            </div>
+            <div class="add-form-content">
+              <table th:if="course ne null">
                 <tr>
-                  <td><label th:for="courseId">Course ID</label></td>
-                  <td><input type="text" th:id="courseId"
-                             class="form-control hidden" th:field="*{courseId}" readonly>
-                  </td>
+                  <th>Course</th>
+                  <td th:text="| ${course.courseCode} - ${course.courseName}|"></td>
                 </tr>
                 <tr>
-                  <td><label th:for="topicId">Topic ID</label></td>
-                  <td><input type="text"
-                             class="form-control hidden" th:field="*{topicId}" readonly>
-                  </td>
-                </tr>
-                <tr>
-                  <td><label th:for="topicTitle">Topic Title</label></td>
-                  <td><input type="text"
-                             class="form-control" th:field="*{topicTitle}"
-                             placeholder="Enter topic title" required>
-                    <p class="text-danger" th:errors="*{topicTitle}"
-                       th:if="${#fields.hasErrors('topicTitle')}"></p>
-                  </td>
-                </tr>
-                <tr>
-                  <td><label th:for="topicDescription">Topic Description</label></td>
-                  <td><input type="text"
-                             class="form-control" th:field="*{topicDescription}"
-                             placeholder="Enter description">
-                    <p class="text-danger" th:errors="*{topicDescription}"
-                       th:if="${#fields.hasErrors('topicDescription')}"></p>
-                  </td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>
-                    <button type="submit" class="btn btn-save">Save</button>
+                  <th>Topics</th>
+                  <td th:if="topics ne null">
+                    <th:block  th:each="topic : ${topics}">
+                      <p> <a  th:href="@{'/librarian/courses/updateTopic/'+ ${topic.topicId}}">Edit</a>
+                        | <a class="delete-topic" th:id="'/' + ${course.courseId} + '/' + ${topic.topicId}">Remove</a>
+                        <a th:text="|${topic.topicTitle} : ${topic.topicDescription}|"> </a>
+                      </p>
+                    </th:block>
                   </td>
                 </tr>
               </table>
-            </form>
+              <form method="post" role="form" th:action="@{'/librarian/courses/updateTopic/' + ${topic.topicId}}"
+                    th:object="${topic}" th:id="add-form">
+                <h3>Update topic</h3>
+                <table class="table-form add-table">
+                  <tr>
+                    <td><label th:for="courseId">Course ID</label></td>
+                    <td><input type="text" th:id="courseId"
+                               class="form-control hidden" th:field="*{courseId}" readonly>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label th:for="topicId">Topic ID</label></td>
+                    <td><input type="text"
+                               class="form-control hidden" th:field="*{topicId}" readonly>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label th:for="topicTitle">Topic Title</label></td>
+                    <td><input type="text"
+                               class="form-control" th:field="*{topicTitle}"
+                               placeholder="Enter topic title" required>
+                      <p class="text-danger" th:errors="*{topicTitle}"
+                         th:if="${#fields.hasErrors('topicTitle')}"></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><label th:for="topicDescription">Topic Description</label></td>
+                    <td><input type="text"
+                               class="form-control" th:field="*{topicDescription}"
+                               placeholder="Enter description">
+                      <p class="text-danger" th:errors="*{topicDescription}"
+                         th:if="${#fields.hasErrors('topicDescription')}"></p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <button type="submit" class="btn btn-save">Save</button>
+                    </td>
+                  </tr>
+                </table>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2023 - FPT Education. All rights reserved.</p>
-    <a href="#">About us</a>
-  </footer>
+      </section>
+    </div>
+  </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script
-        src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-<script src="/js/librarian.js"></script>
-</body>
 
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+
+<!--Custom script-->
+<script th:src="@{/js/librarian.js}"></script>
+
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
 </html>

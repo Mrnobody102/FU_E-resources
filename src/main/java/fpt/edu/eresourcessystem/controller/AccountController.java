@@ -72,7 +72,7 @@ public class AccountController {
         }
         accountService.addAccount(account);
         String role = String.valueOf(account.getRole());
-        switch (role){
+        switch (role) {
             case "LIBRARIAN":
                 break;
             case "STUDENT":
@@ -148,7 +148,6 @@ public class AccountController {
                     return "redirect:/librarian/accounts/add?error";
             }
             accountService.updateAccount(account);
-//            System.out.println(result);
             model.addAttribute("account", account);
             model.addAttribute("roles", AccountEnum.Role.values());
             model.addAttribute("campuses", AccountEnum.Campus.values());

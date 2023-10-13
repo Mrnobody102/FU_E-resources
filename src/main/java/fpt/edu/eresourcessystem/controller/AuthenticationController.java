@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @PropertySources(value = {@PropertySource("classpath:web-setting.properties")})
 public class AuthenticationController {
     @Value("${page-size}")
-    private Integer pageSize;    private final AccountService accountService;
+    private Integer pageSize;
+    private final AccountService accountService;
 
     public AuthenticationController(AccountService accountService) {
         this.accountService = accountService;
     }
+
 
     @GetMapping({"/login"})
     public String loginProcess(final Model model) throws AccountNotExistedException {
@@ -32,27 +34,27 @@ public class AuthenticationController {
     }
 
     @PostMapping({"/login"})
-    public String login(@ModelAttribute Account account, @RequestParam String roles){
-        if(null == account){
+    public String login(@ModelAttribute Account account, @RequestParam String roles) {
+        if (null == account) {
             return "redirect:/login";
-        } else if ("LIBRARIAN".equals(roles)){
+        } else if ("LIBRARIAN".equals(roles)) {
 //                account.setRole(AccountEnum.Role.STUDENT);
             return "redirect:/librarian";
         } else if ("LECTURER".equals(roles)) {
             return "redirect:/lecturer";
-        }else if ("STUDENT".equals(roles)) {
+        } else if ("STUDENT".equals(roles)) {
             return "redirect:/student";
         }
-        return  "redirect:/guest";
+        return "redirect:/guest";
     }
 
     @GetMapping({"/logout"})
-    public String logout(){
+    public String logout() {
         return "redirect:/login";
     }
 
     @GetMapping({"/", "/guest"})
-    public String guest(){
+    public String guest() {
         return "guest/guest_home";
     }
 

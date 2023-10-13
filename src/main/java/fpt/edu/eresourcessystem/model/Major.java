@@ -18,7 +18,7 @@ public class Major {
     @Id
     private String majorId;
     private String majorName;
-    private String description;  // or perhaps a URL to the content if stored externally
+    private String description;
 
     private List<String> courses;
 

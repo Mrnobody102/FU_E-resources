@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,7 +33,7 @@ public class CourseController {
 
     //Just for test add course screen
     @GetMapping({"/add"})
-    public String addProcess(final Model model){
+    public String addProcess(final Model model) {
         List<Account> lecturers = accountService.findAllLecturer();
         model.addAttribute("course", new Course());
         model.addAttribute("lecturers", lecturers);
@@ -42,26 +41,26 @@ public class CourseController {
     }
 
     @PostMapping("/add")
-    public String addCourse(@ModelAttribute Course course, @RequestParam String lesson, @RequestParam String lecturer){
+    public String addCourse(@ModelAttribute Course course, @RequestParam String lesson, @RequestParam String lecturer) {
 
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
-        if(null==checkExist){
+        if (null == checkExist) {
             courseService.addCourse(course);
             return "redirect:/librarian/courses/add?success";
-        }else return "redirect:/librarian/courses/add?error";
+        } else return "redirect:/librarian/courses/add?error";
 
     }
 
-    @GetMapping({"/update/{courseId}","/update"})
-    public String updateProcess(@PathVariable(required = false) String courseId,final Model model)  {
-        if(null==courseId){
-            courseId="";
+    @GetMapping({"/update/{courseId}", "/update"})
+    public String updateProcess(@PathVariable(required = false) String courseId, final Model model) {
+        if (null == courseId) {
+            courseId = "";
         }
         Course course = courseService.findByCourseId(courseId);
 //        System.out.println(account);
-        if(null==course){
+        if (null == course) {
             return "redirect:librarian/courses/update?error";
-        }else{
+        } else {
             List<Account> lecturers = accountService.findAllLecturer();
             model.addAttribute("lecturers", lecturers);
             model.addAttribute("course", course);
@@ -70,15 +69,15 @@ public class CourseController {
     }
 
     @PostMapping("/update")
-    public String updateCourse(@ModelAttribute Course course, final  Model model) {
+    public String updateCourse(@ModelAttribute Course course, final Model model) {
         Course checkExist = courseService.findByCourseId(course.getCourseId());
-        if(null==checkExist){
-            model.addAttribute("errorMessage","course not exist.");
+        if (null == checkExist) {
+            model.addAttribute("errorMessage", "course not exist.");
             return "exception/404";
-        }else{
+        } else {
             Course checkCodeDuplicate = courseService.findByCourseCode(course.getCourseCode());
-            if( checkCodeDuplicate != null &&
-                    !checkExist.getCourseCode().toLowerCase().equals(course.getCourseCode())){
+            if (checkCodeDuplicate != null &&
+                    !checkExist.getCourseCode().toLowerCase().equals(course.getCourseCode())) {
 //                return "redirect:/librarian/courses/update?error";
 
             }
@@ -87,34 +86,34 @@ public class CourseController {
             model.addAttribute("course", course);
             List<Account> lecturers = accountService.findAllLecturer();
             model.addAttribute("lecturers", lecturers);
-            model.addAttribute("success","");
+            model.addAttribute("success", "");
             return "librarian/course/librarian_update-course";
         }
     }
 
     @GetMapping({"/list"})
-    public String showCourse(final Model model){
+    public String showCourse(final Model model) {
         List<Course> courses = courseService.findAll();
         model.addAttribute("courses", courses);
         return "librarian/course/librarian_courses";
     }
 
     @GetMapping({"/detail/{courseId}"})
-    public String showCourseDetail(@PathVariable String courseId, final Model model){
+    public String showCourseDetail(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
         List<Topic> topics = topicService.findByCourseId(courseId);
-        model.addAttribute("course" , course);
-        model.addAttribute("topics" , topics);
+        model.addAttribute("course", course);
+        model.addAttribute("topics", topics);
         return "librarian/course/librarian_course-detail";
     }
 
 
-    @GetMapping ("/delete/{courseId}")
-    public String delete(@PathVariable String courseId){
+    @GetMapping("/delete/{courseId}")
+    public String delete(@PathVariable String courseId) {
         Course checkExist = courseService.findByCourseId(courseId);
 //        System.out.println(checkExist);
-        if (null != checkExist){
-            for (String topicId: checkExist.getTopics()) {
+        if (null != checkExist) {
+            for (String topicId : checkExist.getTopics()) {
                 topicService.delete(topicId);
             }
             courseService.delete(checkExist);
@@ -124,7 +123,7 @@ public class CourseController {
     }
 
     @GetMapping({"/updateLecturers/{courseId}"})
-    public  String updateLecturersProcess(@PathVariable String courseId,@RequestParam String search, final Model model){
+    public String updateLecturersProcess(@PathVariable String courseId, @RequestParam String search, final Model model) {
         List<Lecturer> courseLecturers = lecturerService.findByCourseId(courseId);
         List<Account> lecturers = accountService.searchLecturer(search);
         model.addAttribute("courseLecturers", courseLecturers);
@@ -133,7 +132,7 @@ public class CourseController {
     }
 
     @PostMapping({"/addLecturers/{courseId}"})
-    public  String addLecturersProcess(@PathVariable String courseId,@RequestParam String accountId, final Model model){
+    public String addLecturersProcess(@PathVariable String courseId, @RequestParam String accountId, final Model model) {
         List<Lecturer> courseLecturers = lecturerService.findByCourseId(courseId);
         List<Account> lecturers = accountService.searchLecturer("");
         model.addAttribute("courseLecturers", courseLecturers);
@@ -142,7 +141,7 @@ public class CourseController {
     }
 
     @GetMapping({"/addTopic/{courseId}", "/topics/{courseId}"})
-    public String addTopicProcess(@PathVariable String courseId, final Model model){
+    public String addTopicProcess(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
         List<Topic> topics = topicService.findByCourseId(courseId);
 //        System.out.println(topics);
@@ -150,12 +149,12 @@ public class CourseController {
         model.addAttribute("topics", topics);
         Topic topic = new Topic();
         topic.setCourseId(courseId);
-        model.addAttribute("topic",topic);
+        model.addAttribute("topic", topic);
         return "librarian/course/librarian_add-topic-to-course";
     }
 
     @PostMapping({"/addTopic"})
-    public String addTopic(@ModelAttribute Topic topic, final Model model){
+    public String addTopic(@ModelAttribute Topic topic, final Model model) {
         System.out.println(topic);
         topic = topicService.addTopic(topic);
         courseService.addTopic(topic);
@@ -165,36 +164,37 @@ public class CourseController {
         model.addAttribute("topics", topics);
         Topic modelTopic = new Topic();
         modelTopic.setCourseId(course.getCourseId());
-        model.addAttribute("topic",modelTopic);
+        model.addAttribute("topic", modelTopic);
         return "librarian/course/librarian_add-topic-to-course";
     }
 
     @GetMapping({"/updateTopic/{topicId}"})
-    public String editTopicProcess(@PathVariable String topicId, final Model model){
+    public String editTopicProcess(@PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
         Course course = courseService.findByCourseId(topic.getCourseId());
         List<Topic> topics = topicService.findByCourseId(course.getCourseId());
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
-        model.addAttribute("topic",topic);
+        model.addAttribute("topic", topic);
         return "librarian/course/librarian_update-topic-of-course";
     }
 
 
     @PostMapping({"/updateTopic/{topicId}"})
-    public String editTopic(@PathVariable String topicId ,@ModelAttribute Topic topic, final Model model){
+    public String editTopic(@PathVariable String topicId, @ModelAttribute Topic topic, final Model model) {
         Topic checkTopicExist = topicService.findById(topicId);
-        if(null!=checkTopicExist){
+        if (null != checkTopicExist) {
             topicService.updateTopic(topic);
-            return "redirect:/librarian/courses/updateTopic/"+ topicId;
-        }return "librarian/course/librarian_add-topic-to-course";
+            return "redirect:/librarian/courses/updateTopic/" + topicId;
+        }
+        return "librarian/course/librarian_add-topic-to-course";
 
     }
 
     @GetMapping({"/deleteTopic/{courseId}/{topicId}"})
-    public String deleteTopic( @PathVariable String courseId, @PathVariable String topicId, final Model model){
+    public String deleteTopic(@PathVariable String courseId, @PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
-        if(null != topic){
+        if (null != topic) {
             courseService.removeTopic(topic);
             topicService.delete(topicId);
             Course course = courseService.findByCourseId(courseId);

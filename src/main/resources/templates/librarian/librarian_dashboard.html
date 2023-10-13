@@ -1,37 +1,90 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E-Resource Librarian Dashboard</title>
-    <!-- CSS -->
-    <link rel="stylesheet" th:href="@{/css/base.css}" />
-    <link
-            rel="stylesheet"
-            th:href="@{/css/fragment.css}"
-    />
-    <link
-            rel="stylesheet"
-            th:href="@{/css/librarian.css}"
-    />
-  </head>
-  <body>
-    <div class="app_container">
+ lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard</title>
 
-      <div class="row" th:replace="fragments/header::headerLibrarianSection"></div>
-      <!-- Content -->
-      <main class="main_content">
-        <div class="container">
-          <div class="container-content">
-            <div class="row" th:replace="fragments/sidebar::librarianSidebar"></div>
-          </div>
+
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+</head>
+<body class="app_container">
+<header class="row" th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<div class="main_content">
+    <div class="grid app__container-content-wrapper">
+        <div class="app__container-content">
+            <div class="lib-main_menu">
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/librarian/accounts/list}">
+                        <i class="p-2 fa fa-user"></i>
+                        Accounts management</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/librarian/courses/list}">
+                        <i class="p-2 fa fa-book"></i>
+                        Courses management</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/librarian/documents/list}">
+                        <i class="p-2 fa fa-file"></i>
+                        Documents management</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/librarian/requests/list}">
+                        <i class="p-2 fa fa-paper-plane"></i>
+                        Requests management</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/librarian/feedbacks/list}">
+                        <i class="p-2 fa fa-comments"></i>
+                        Feedbacks management</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/librarian/statistics}">
+                        <i class="p-2 fa fa-database"></i>
+                        Statistics and Reports</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/lecturer}">
+                        <i class="p-2 fas fa-chalkboard-teacher"></i>
+                        Login as lecturer</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/student}">
+                        <i class="p-2 fa fa-graduation-cap" aria-hidden="true"></i>
+                        Login as student</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/librarian/settings}">
+                        <i class="p-2 fa fa-cog" aria-hidden="true"></i>
+                        Settings</a>
+                </div>
+            </div>
         </div>
-      </main>
-
-      <!-- Footer -->
-      <div class="row" th:replace="fragments/footer :: footerSection"></div>
     </div>
-    <script th:src="@{/js/librarian.js}"></script>
-  </body>
+</div>
+
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+
+<!--Custom script-->
+<script th:src="@{/js/librarian.js}"></script>
+
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
 </html>

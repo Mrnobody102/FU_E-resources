@@ -1,169 +1,174 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Account Update</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Librarian | Update account</title>
+
+
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+
+    <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
-    <link rel="stylesheet" th:href="@{/css/librarian.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
 </head>
-<body>
-<div class="app_container">
-    <!-- Header -->
-    <div class="row" th:replace="fragments/header::headerLibrarianSection"></div>
+<body class="app_container">
 
-    <!-- Content -->
-    <main class="main_content">
-        <div class="container">
-            <div class="container-content">
-                <div class="sidebar librarianCourseSidebar">
-                    <nav id="sidebar">
-                        <ul class="list-unstyled components func_list">
-                            <li class="func_item">
-                                <a th:href="@{/librarian}">Home</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="content-body">
-                    <div class="user-management-head">
-                        <a th:href="@{/librarian/accounts/list}">Back</a>
-                        <span> &gt; <a th:href="@{'/librarian/accounts/update/'+${account.accountId}}"> Update Account</a> </span>
+<header class="row" th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<div class="main_content">
+    <div class="grid app__container-content-wrapper">
+        <div class="app__container-content">
+            <div class="course-details-head">
+                <a th:href="@{/librarian}">Home</a>
+                <span> &gt; <a th:href="@{/librarian/accounts/list}">Users management</a></span>
+                <span> &gt; Update user</span>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Update account</h1>
+
+            </div>
+            <div class="lib_content">
+                <div class="add-form">
+                    <div th:if="${param.success}">
+                        <div class="alert alert-info">Save account successful !!!</div>
                     </div>
-
-                    <div class="add-content">
-                        <div class="add-form">
-                            <div th:if="${param.success}">
-                                <div class="alert alert-info">Save account successful !!!</div>
-                            </div>
-                            <div th:if="${param.error}">
-                                <div class="alert alert-danger">Please account information again !!!
-                                    Account not exist or AccountId existed.
-                                </div>
-                            </div>
-                            <div class="add-form-content">
-                                <form method="post" role="form" th:action="@{/librarian/accounts/update}"
-                                      th:object="${account}" th:id="add-form">
-                                    <table class="table-form add-table">
-                                        <tr>
-                                            <td><label th:for="accountId">Account ID</label></td>
-                                            <td><input type="text"
-                                                       class="form-control" th:field="*{accountId}"
-                                                       placeholder="Enter account ID" readonly>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td><label th:for="username">Username</label></td>
-                                            <td><input type="text"
-                                                       class="form-control" th:field="*{username}"
-                                                       placeholder="Enter username" required>
-                                                <p class="text-danger" th:errors="*{username}"
-                                                   th:if="${#fields.hasErrors('username')}"></p>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><label th:for="password">Password</label></td>
-                                            <td><input type="text"
-                                                       class="form-control" th:field="*{password}"
-                                                       placeholder="Enter password" required>
-                                                <p class="text-danger" th:errors="*{password}"
-                                                   th:if="${#fields.hasErrors('password')}"></p>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td><label th:for="email">Email</label></td>
-                                            <td><input type="text"
-                                                       class="form-control" th:field="*{email}"
-                                                       placeholder="Enter email" required>
-                                                <p class="text-danger" th:errors="*{email}"
-                                                   th:if="${#fields.hasErrors('email')}"></p>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><label th:for="name">Full Name</label></td>
-                                            <td><input type="text"
-                                                       class="form-control" th:field="*{name}"
-                                                       placeholder="Enter name" required>
-                                                <p class="text-danger" th:errors="*{name}"
-                                                   th:if="${#fields.hasErrors('name')}"></p>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td><label th:for="dateOfBirth">Date of birth</label></td>
-                                            <td><input type="date"
-                                                       class="form-control" th:field="*{dateOfBirth}"
-                                                       th:id="dateOfBirth"
-                                                       required>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><label th:for="gender">Gender</label></td>
-                                            <td>
-                                                <th:block th:each="gender : ${genders}">
-                                                    <input type="radio" th:field="*{gender}"
-                                                           th:id="${gender.getDisplayValue()}"
-                                                           th:value="${gender}">
-                                                    <label th:for="${gender.getDisplayValue()}"
-                                                           th:text="${gender.getDisplayValue()}"></label>
-                                                </th:block>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><label th:for="campus">Campus</label></td>
-                                            <td><select th:field="*{campus}" th:id="campus">
-                                                <option
-                                                        th:each="campus : ${campuses}"
-                                                        th:text="${campus.getDisplayValue()}"
-                                                        th:value="${campus}">
-                                                </option>
-                                            </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><label th:for="role">Role</label></td>
-                                            <td>
-                                                <select th:field="*{role}" th:id="role">
-                                                    <option th:each="role : ${roles}"
-                                                            th:text="${role}"
-                                                            th:value="${role}">
-                                                    </option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>
-                                                <input type="checkbox" name="IsAdmin" th:field="*{flagAdmin}">
-                                                IsAdmin</p>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td></td>
-                                            <td>
-                                                <button type="submit" class="btn btn-save">Save</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </form>
-                            </div>
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger">Please account information again !!!
+                            Account not exist or AccountId existed.
                         </div>
                     </div>
+                    <div class="add-form-content">
+                        <form method="post" role="form" th:action="@{/librarian/accounts/update}"
+                              th:object="${account}" th:id="add-form">
+                            <table class="table-form lib_table">
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label th:for="accountId">Account ID</label></td>
+                                    <td><input type="text"
+                                               class="lib_input form-control" th:field="*{accountId}"
+                                               placeholder="Enter account ID" readonly>
+                                    </td>
+                                </tr>
 
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label th:for="username">Username</label></td>
+                                    <td><input type="text"
+                                               class="lib_input form-control" th:field="*{username}"
+                                               placeholder="Enter username" required>
+                                        <p class="text-danger" th:errors="*{username}"
+                                           th:if="${#fields.hasErrors('username')}"></p>
+                                    </td>
+                                </tr>
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label th:for="password">Password</label></td>
+                                    <td><input type="text"
+                                               class="lib_input form-control" th:field="*{password}"
+                                               placeholder="Enter password" required>
+                                        <p class="text-danger" th:errors="*{password}"
+                                           th:if="${#fields.hasErrors('password')}"></p>
+                                    </td>
+                                </tr>
+
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label th:for="email">Email</label></td>
+                                    <td><input type="text"
+                                               class="lib_input form-control" th:field="*{email}"
+                                               placeholder="Enter email" required>
+                                        <p class="text-danger" th:errors="*{email}"
+                                           th:if="${#fields.hasErrors('email')}"></p>
+                                    </td>
+                                </tr>
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label th:for="name">Full Name</label></td>
+                                    <td><input type="text"
+                                               class="lib_input form-control" th:field="*{name}"
+                                               placeholder="Enter name" required>
+                                        <p class="text-danger" th:errors="*{name}"
+                                           th:if="${#fields.hasErrors('name')}"></p>
+                                    </td>
+                                </tr>
+
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label th:for="dateOfBirth">Date of birth</label></td>
+                                    <td><input type="date"
+                                               class="lib_input form-control" th:field="*{dateOfBirth}"
+                                               th:id="dateOfBirth"
+                                               required>
+                                    </td>
+                                </tr>
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label th:for="gender">Gender</label></td>
+                                    <td>
+                                        <th:block th:each="gender : ${genders}">
+                                            <input type="radio" th:field="*{gender}"
+                                                   th:id="${gender.getDisplayValue()}"
+                                                   th:value="${gender}">
+                                            <label class="me-3" th:for="${gender.getDisplayValue()}"
+                                                   th:text="${gender.getDisplayValue()}"></label>
+                                        </th:block>
+                                    </td>
+                                </tr>
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label th:for="campus">Campus</label></td>
+                                    <td><select class="lib_input" th:field="*{campus}" th:id="campus">
+                                        <option
+                                                th:each="campus : ${campuses}"
+                                                th:text="${campus.getDisplayValue()}"
+                                                th:value="${campus}">
+                                        </option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label th:for="role">Role</label></td>
+                                    <td>
+                                        <select class="lib_input" th:field="*{role}" th:id="role">
+                                            <option th:each="role : ${roles}"
+                                                    th:text="${role}"
+                                                    th:value="${role}">
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="lib_input-wrapper">
+                                    <td></td>
+                                    <td>
+                                        <input type="checkbox" name="IsAdmin" th:field="*{flagAdmin}">
+                                        IsAdmin
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <button type="submit" class="btn lib_btn-save">Save</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
                 </div>
             </div>
-
         </div>
-
-
-    </main>
-
-    <!-- Footer -->
-    <div class="row" th:replace="fragments/footer :: footerSection"></div>
+    </div>
 </div>
+
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+
+<!--Custom script-->
+<script th:src="@{/js/librarian.js}"></script>
+
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -19,7 +19,7 @@ public class Document {
     private String description;
     private String status;
 
-    private String folderId;  // Reference to the folder that contain it
+    private String topicId;  // Reference to the folder that contain it
     private String uploaderId;  // Reference to the user who uploaded the document
 
     private String content;  // doc, audio, video
