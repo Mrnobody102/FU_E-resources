@@ -52,20 +52,10 @@
             </div>
             <div class="lib_content">
                 <div class="lib_form">
-                    <div th:if="${param.success}">
-                        <div class="alert alert-info">Save account successful !!!</div>
-                    </div>
-                    <div th:if="${param.error}">
-                        <div class="alert alert-danger">Please check account information again !!!</div>
-                    </div>
+
                     <div class="lib_content-table">
                         <div class="lib_form-table">
-                            <div th:if="${param.success}">
-                                <div class="alert alert-info">Save account successful !!!</div>
-                            </div>
-                            <div th:if="${param.error}">
-                                <div class="alert alert-danger">Please account information again !!!</div>
-                            </div>
+
                             <div class="add-form-content">
                                 <form method="post" role="form" th:action="@{/librarian/accounts/add}"
                                       th:object="${account}" th:id="add-account">

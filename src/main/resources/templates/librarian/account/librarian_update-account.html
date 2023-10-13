@@ -19,6 +19,23 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+
+
+    <!-- SweetAlert từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+    <style>
+        label.error {
+            margin-top: 5px;
+            margin-left: 5px;
+            display: block;
+            color: red;
+            /*font-size: smaller;*/
+        }
+    </style>
+
 </head>
 <body class="app_container">
 
@@ -59,11 +76,9 @@
 
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="username">Username</label></td>
-                                    <td><input type="text  th:id="username"
-                                               class="lib_input form-control" th:field="*{username}"
+                                    <td><input type="text"  th:id="username" class="lib_input form-control" th:field="*{username}"
                                                placeholder="Enter username" required>
-                                        <p class="text-danger" th:errors="*{username}"
-                                           th:if="${#fields.hasErrors('username')}"></p>
+
                                     </td>
                                 </tr>
                                 <tr class="lib_input-wrapper">
@@ -71,8 +86,7 @@
                                     <td><input type="text" th:id="password"
                                                class="lib_input form-control" th:field="*{password}"
                                                placeholder="Enter password" required>
-                                        <p class="text-danger" th:errors="*{password}"
-                                           th:if="${#fields.hasErrors('password')}"></p>
+
                                     </td>
                                 </tr>
 
@@ -81,8 +95,7 @@
                                     <td><input type="text" th:id="email"
                                                class="lib_input form-control" th:field="*{email}"
                                                placeholder="Enter email" required>
-                                        <p class="text-danger" th:errors="*{email}"
-                                           th:if="${#fields.hasErrors('email')}"></p>
+
                                     </td>
                                 </tr>
                                 <tr class="lib_input-wrapper">
@@ -90,8 +103,7 @@
                                     <td><input type="text" th:id="name"
                                                class="lib_input form-control" th:field="*{name}"
                                                placeholder="Enter name" required>
-                                        <p class="text-danger" th:errors="*{name}"
-                                           th:if="${#fields.hasErrors('name')}"></p>
+
                                     </td>
                                 </tr>
 
@@ -170,5 +182,33 @@
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+
+
+<!--Validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script th:src="@{/js/validation.js}"></script>
+
+<script th:inline="javascript">
+    validate_updateAccount();
+
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Update account successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check account information again!',
+            'error'
+        );
+    }
+</script>
 </body>
 </html>

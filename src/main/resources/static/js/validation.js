@@ -178,3 +178,74 @@ function validate_addAccount() {
 }
 
 
+function validate_updateAccount() {
+    $('#update-account').validate({
+        rules: {
+            username: {
+                required: true,
+                minlength: 2,
+                maxlength: 50
+            },
+            password: {
+                required: true,
+                minlength: 3,
+                maxlength: 30
+            },
+            email: {
+                required: true,
+                email: true,
+                maxlength: 100
+            },
+            name: {
+                required: true,
+                minlength: 2,
+                maxlength: 50
+            },
+            dateOfBirth: {
+                required: true,
+                date: true
+            },
+            campus: {
+                required: true
+            },
+            role: {
+                required: true
+            },
+        },
+        messages: {
+            username: {
+                required: "Username is required!",
+                minlength: "Username must have at least 2 characters!",
+                maxlength: "Username can have at most 50 characters!"
+            },
+            password: {
+                required: "Password is required!",
+                minlength: "Password must have at least 3 characters!",
+                maxlength: "Password can have at most 30 characters!"
+            },
+            email: {
+                required: "Email is required!",
+                email: "Please enter a valid email address!",
+                maxlength: "Email can have at most 100 characters!"
+            },
+            name: {
+                required: "Full Name is required!",
+                minlength: "Full Name must have at least 2 characters!",
+                maxlength: "Full Name can have at most 50 characters!"
+            },
+            dateOfBirth: {
+                required: "Date of Birth is required!",
+                date: "Please enter a valid date (YYYY-MM-DD format)!"
+            },
+            campus: {
+                required: "Campus is required!"
+            },
+            role: {
+                required: "Role is required!"
+            }
+        }
+    });
+}
+
+
+
