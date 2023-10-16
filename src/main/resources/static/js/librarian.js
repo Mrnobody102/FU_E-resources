@@ -9,7 +9,18 @@
 
 $(document).ready(function() {
 
-    $(".page-number").click(function() {
+    $(".page-course-number").click(function() {
+
+        var search = $("#search-text").val();
+        var pageIndex = $(this).html();
+
+        // alert("/librarian/accounts/" + pageIndex + "?search=" + search);
+
+        window.location = "/librarian/courses/list/" + pageIndex + "?search=" + search;
+
+    });
+
+    $(".page-account-number").click(function() {
 
         var search = $("#search-text").val();
         var pageIndex = $(this).html();

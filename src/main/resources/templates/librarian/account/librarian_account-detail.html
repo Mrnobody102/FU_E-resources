@@ -1,0 +1,118 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Librarian | View account</title>
+
+
+  <link
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
+          rel="stylesheet"
+  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" th:href="@{/css/base.css}"/>
+  <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+  <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+</head>
+<body class="app_container">
+
+<header class="row" th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<div class="main_content">
+  <div class="grid app__container-content-wrapper">
+    <div class="app__container-content">
+      <div class="course-details-head">
+        <a th:href="@{/librarian}">Home</a>
+        <span> &gt; <a th:href="@{/librarian/accounts/list}">Users management</a></span>
+        <span> &gt; User Detail</span>
+      </div>
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">User Profile</h1>
+
+      </div>
+      <div class="lib_content">
+        <div class="lib_form">
+          <div>
+            <div>
+                  <table>
+                    <tr>
+                      <td>Username</td>
+                      <td><p th:text="${account.username}"> </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Password</td>
+                      <td><p th:text="${account.password}"></p>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>Email</td>
+                      <td><p th:text="${account.email}"></p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Full Name</td>
+                      <td><p th:text="${account.name}"></p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Date of birth</td>
+                      <td><p th:text="${account.dateOfBirth}"></p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Gender</td>
+                      <td>
+                          <p th:text="${account.gender.getDisplayValue()}"></p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Campus</td>
+                      <td>
+                        <p th:text="${account.campus.getDisplayValue()}"></p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Role</td>
+                      <td><p th:text="${account.role}"></p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td>
+                        <input type="checkbox" name="IsAdmin" th:if="${account.flagAdmin}" readonly checked>
+                        <input type="checkbox" name="IsAdmin" th:unless="${account.flagAdmin}" readonly unchecked>
+                        IsAdmin
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td></td>
+                      <td>
+                        <a th:href="@{'/librarian/accounts/update/'+${account.accountId}}">Edit</a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+</html>

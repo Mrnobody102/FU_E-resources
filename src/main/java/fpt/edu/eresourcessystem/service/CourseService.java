@@ -5,6 +5,7 @@ import fpt.edu.eresourcessystem.exception.CourseNotFoundException;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Topic;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -25,4 +26,7 @@ public interface CourseService {
     Course removeTopic(Topic topic);
 
     List<Course> findByListId(List<String> courseIds);
+
+    Page<Course> findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(String code, String name, String description, int pageIndex, int pageSize);
+
 }

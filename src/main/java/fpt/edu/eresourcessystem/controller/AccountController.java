@@ -178,4 +178,22 @@ public class AccountController {
         model.addAttribute("search", search);
         return "librarian/account/librarian_accounts";
     }
+
+
+
+    @GetMapping({"/detail/{accountId}"})
+    public String getAccountDetail(@PathVariable(required = false) String accountId, final Model model) {
+        if (null == accountId) {
+            accountId = "";
+        }
+        Account account = accountService.findByAccountId(accountId);
+//        System.out.println(account);
+        if (null == account) {
+            return "exception/404";
+        } else {
+            model.addAttribute("account", account);
+            return "librarian/account/librarian_account-detail";
+        }
+
+    }
 }
