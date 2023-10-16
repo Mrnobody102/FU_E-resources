@@ -69,7 +69,7 @@
                             </tr>
                             <th:block th:each="account : ${accounts}">
                                 <tr>
-                                    <td th:text="${account.email}"></td>
+                                    <td><a th:href="@{'/librarian/accounts/detail/' + ${account.accountId}}" th:text="${account.email}"></a></td>
                                     <td th:text="${account.name}"></td>
                                     <td th:text="${account.role}"></td>
                                     <td>
@@ -93,7 +93,7 @@
                                 </li>
 
                                 <li th:if="totalPage ne null" th:each = "pageIndex: ${#numbers.sequence(1,totalPage)}"  class="page-item">
-                                    <a th:text = "${pageIndex}" class="page-link page-number"  href="#"></a>
+                                    <a th:text = "${pageIndex}" class="page-link page-account-number"  href="#"></a>
                                 </li>
 
                                 <li class="page-item">

@@ -8,6 +8,10 @@ import fpt.edu.eresourcessystem.service.AccountService;
 import fpt.edu.eresourcessystem.service.CourseService;
 import fpt.edu.eresourcessystem.service.LecturerService;
 import fpt.edu.eresourcessystem.service.TopicService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +20,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/librarian/courses")
+@PropertySource("web-setting.properties")
 public class CourseController {
+    @Value("${page-size}")
+    private Integer pageSize;
     private final CourseService courseService;
     private final AccountService accountService;
 
@@ -93,8 +100,8 @@ public class CourseController {
 
     @GetMapping({"/list"})
     public String showCourse(final Model model) {
-        List<Course> courses = courseService.findAll();
-        model.addAttribute("courses", courses);
+//        List<Course> courses = courseService.findAll();
+//        model.addAttribute("courses", courses);
         return "librarian/course/librarian_courses";
     }
 
@@ -207,5 +214,15 @@ public class CourseController {
             return "librarian/course/librarian_add-topic-to-course";
         }
         return "librarian/course/librarian_add-topic-to-course";
+    }
+    @GetMapping("/list/{pageIndex}")
+    String findCourseByPage(@PathVariable Integer pageIndex,
+                             @RequestParam(required = false, defaultValue = "") String search, final Model model) {
+        Page<Course> page = courseService.findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(search, search, search, pageIndex, pageSize);
+//        System.out.println(search);
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("courses", page.getContent());
+        model.addAttribute("search", search);
+        return "librarian/course/librarian_courses";
     }
 }

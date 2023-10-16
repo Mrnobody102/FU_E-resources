@@ -1,9 +1,12 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -127,5 +130,13 @@ public class CourseServiceImpl implements CourseService{
     public List<Course> findByListId(List<String> courseIds) {
         List<Course> courses = courseRepository.findByListId(courseIds);
         return courses;
+    }
+
+    @Override
+    public Page<Course> findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(String code, String name, String description, int pageIndex, int pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+        Page<Course> page = courseRepository.findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike( code, name, description,
+                pageable);
+        return page;
     }
 }
