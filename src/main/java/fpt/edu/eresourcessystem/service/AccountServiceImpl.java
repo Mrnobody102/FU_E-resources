@@ -28,7 +28,7 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public List<Account> searchLecturer(String search) {
-        List<Account> lecturers = accountRepository.searchLecturer("%" + search + "%");
+        List<Account> lecturers = accountRepository.searchLecturer(search );
         return lecturers;
     }
 
@@ -98,5 +98,14 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public Page<Account> findAll(int pageIndex, int pageSize) {
         return null;
+    }
+
+    @Override
+    public List<Account> findByIds(List<String> ids) {
+        if(null==ids || ids.size()<1){
+            return null;
+        }
+        List<Account> accounts = accountRepository.findByIds(ids);
+        return accounts;
     }
 }

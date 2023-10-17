@@ -24,7 +24,7 @@ public class Course {
     private String courseName;
     private String description;
 
-    private List<String> documents; //list of documentId
+//    private List<String> documents; //list of documentId
     private List<String> topics;
     private List<String> lecturers;
 

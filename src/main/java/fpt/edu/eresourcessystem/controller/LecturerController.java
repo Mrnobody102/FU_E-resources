@@ -1,16 +1,11 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.model.Account;
-import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Lecturer;
-import fpt.edu.eresourcessystem.model.Topic;
-import fpt.edu.eresourcessystem.service.AccountService;
-import fpt.edu.eresourcessystem.service.CourseService;
-import fpt.edu.eresourcessystem.service.LecturerService;
-import fpt.edu.eresourcessystem.service.TopicService;
+import fpt.edu.eresourcessystem.model.*;
+import fpt.edu.eresourcessystem.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -28,11 +23,14 @@ public class LecturerController {
 
     private final TopicService topicService;
 
-    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService) {
+    private final DocumentService documentService;
+
+    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService, DocumentService documentService) {
         this.courseService = courseService;
         this.accountService = accountService;
         this.lecturerService = lecturerService;
         this.topicService = topicService;
+        this.documentService = documentService;
     }
 
     @GetMapping({"/lecturer/courses/update/{courseId}","/lecturer/courses/update"})
@@ -136,7 +134,7 @@ public class LecturerController {
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         model.addAttribute("topic",topic);
-        return "lecturer/course/librarian_update-topic-of-course";
+        return "lecturer/course/lecturer_update-topic-of-course";
     }
 
 
@@ -170,10 +168,35 @@ public class LecturerController {
     @GetMapping("/lecturer/courses/manage_course/list")
     public String findManageCourses(final Model model){
         Lecturer lecturer = new Lecturer();
-        lecturer.setAccountId("65283bfc9bf46d65d5aa3f8f");
+
+        // get lecturer accountId from session
+        List<Account> lecturers = accountService.findAllLecturer();
+//        System.out.println(lecturers.get(0).toString());
+        lecturer.setAccountId(lecturers.get(0).getAccountId());
+
         lecturer = lecturerService.findByAccountId(lecturer.getAccountId());
         List<Course> courses = lecturerService.findListManageCourse(lecturer);
         model.addAttribute("courses", courses);
         return "lecturer/course/lecturer_courses";
+    }
+
+    @GetMapping("/lecturer/topic/detail/{topicId}")
+    public String viewTopicDetail(@PathVariable String topicId, final Model model){
+        Topic topic = topicService.findById(topicId);
+        Course course = courseService.findByCourseId(topic.getCourseId());
+        List<Document> documents = documentService.findByTopicId(topicId);
+        model.addAttribute("course", course);
+        model.addAttribute("topic", topic);
+        model.addAttribute("documents", documents);
+        return "lecturer/course/lecturer_topic-detail";
+    }
+
+
+    @GetMapping("/search/{search}")
+    public ModelAndView findLecturer(@PathVariable String search){
+        List<Account> lecturers = accountService.searchLecturer(search);
+        ModelAndView mv= new ModelAndView("search_list::search_list");
+        mv.addObject("lecturers",mv);
+        return mv;
     }
 }

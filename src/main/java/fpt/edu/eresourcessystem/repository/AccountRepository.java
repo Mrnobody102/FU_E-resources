@@ -22,7 +22,7 @@ public interface AccountRepository extends
     Optional<Account> findById(String accountId);
 
     void removeAccountByAccountId(String accountId);
-    @Query("SELECT FROM Accounts WHERE a.role = 'LIBRARIAN'")
+    @Query("SELECT FROM Accounts WHERE a.role = 'LECTURER'")
     List<Account> findAllLecturer();
 
     @Query("SELECT FROM Accounts WHERE a.role = 'LECTURER' AND (a.username LIKE  ?1  OR " +
@@ -30,5 +30,7 @@ public interface AccountRepository extends
     List<Account> searchLecturer(String search);
 //    @Query("SELECT a FROM Account a WHERE a.username LIKE 'huypq1801@gmail.com'")
     Page<Account> findByUsernameLikeOrEmailLike(String username, String email, Pageable pageable);
+    @Query("SELECT FROM Accounts WHERE accountId in ?1")
+    List<Account> findByIds(List<String> ids);
 
 }

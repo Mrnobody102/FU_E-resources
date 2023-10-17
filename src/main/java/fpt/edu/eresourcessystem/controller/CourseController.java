@@ -109,8 +109,10 @@ public class CourseController {
     public String showCourseDetail(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
         List<Topic> topics = topicService.findByCourseId(courseId);
+        List<Account> lecturerAccounts = accountService.findByIds(course.getLecturers());
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
+        model.addAttribute("lecturerAccounts", lecturerAccounts);
         return "librarian/course/librarian_course-detail";
     }
 
@@ -129,17 +131,19 @@ public class CourseController {
         return "redirect:/librarian/courses/list?error";
     }
 
-    @GetMapping({"/updateLecturers/{courseId}"})
-    public String updateLecturersProcess(@PathVariable String courseId, @RequestParam String search, final Model model) {
-        List<Lecturer> courseLecturers = lecturerService.findByCourseId(courseId);
-        List<Account> lecturers = accountService.searchLecturer(search);
-        model.addAttribute("courseLecturers", courseLecturers);
+    @GetMapping({"/addLecturers/{courseId}"})
+    public String addLecturersProcess(@PathVariable String courseId, final Model model) {
+        Course course = courseService.findByCourseId(courseId);
+        List<Lecturer> lecturers = lecturerService.findByCourseId(courseId);
+        List<Account> accounts = accountService.findAllLecturer();
+        model.addAttribute("course", course);
         model.addAttribute("lecturers", lecturers);
+        model.addAttribute("accounts",accounts);
         return "librarian/course/librarian_add-lecturer-to-course";
     }
 
     @PostMapping({"/addLecturers/{courseId}"})
-    public String addLecturersProcess(@PathVariable String courseId, @RequestParam String accountId, final Model model) {
+    public String addLecturers(@PathVariable String courseId, @RequestParam String accountId, final Model model) {
         List<Lecturer> courseLecturers = lecturerService.findByCourseId(courseId);
         List<Account> lecturers = accountService.searchLecturer("");
         model.addAttribute("courseLecturers", courseLecturers);

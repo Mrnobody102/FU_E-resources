@@ -24,4 +24,6 @@ public interface AccountService {
     boolean deleteById(String id);
     boolean delete(Account account);
     Page<Account> findAll(int pageIndex, int pageSize);
+
+    List<Account> findByIds(List<String> ids);
 }
