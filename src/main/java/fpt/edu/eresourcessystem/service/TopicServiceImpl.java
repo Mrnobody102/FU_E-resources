@@ -73,4 +73,9 @@ public class TopicServiceImpl implements TopicService{
         }
         return false;
     }
+
+    @Override
+    public Topic addDocument(Topic topic) {
+        return null;
+    }
 }

@@ -5,8 +5,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Subject Management</title>
-    <link rel="stylesheet" th:href="@{/css/base.css}" />
-    <link rel="stylesheet" th:href="@{/css/styles/librarian.css}" />
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
   </head>
   <body>
     <div class="app_container">
@@ -20,7 +25,7 @@
             <div class="body">
               <div class="user-management-head">
                 <a th:href="@{/lecturer}">Home</a>
-                <span> &gt; <a th:href="@{/librian/courses/list}"> Courses </a> </span>
+                <span> &gt; <a th:href="@{/lecturer/courses/list}"> My Courses </a> </span>
               </div>
 
               <div class="">
@@ -59,7 +64,7 @@
                     <td th:text="${course.courseName}"></td>
                     <td th:text="${course.description}"></td>
                     <td colspan="2">
-                      <a class="update-account" th:href="@{'/librarian/courses/detail/'+${course.courseId}}">View</a>
+                      <a class="update-account" th:href="@{'/lecturer/courses/detail/'+${course.courseId}}">View</a>
                     </td>
                   </tr>
                   </th:block>
@@ -69,10 +74,6 @@
           </div>
 
         </div>
-
-
-
-
       </main>
 
       <!-- Footer -->

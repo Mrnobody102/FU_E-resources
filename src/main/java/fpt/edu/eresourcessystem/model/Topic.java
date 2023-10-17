@@ -8,6 +8,8 @@ import lombok.NonNull;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
 @Document("topics")
 @NoArgsConstructor
@@ -16,12 +18,13 @@ public class Topic {
     @Id
     private String topicId;
 
-    @NonNull
     private String topicTitle;
 
     private String courseId;
 
     private String topicDescription;
+
+    private List<String> documents;
 
     @CreatedBy
     private String createdBy;
