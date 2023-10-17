@@ -139,4 +139,12 @@ public class CourseServiceImpl implements CourseService{
                 pageable);
         return page;
     }
+
+    @Override
+    public Page<Course> filterMajor(String major, String code, String name, String description, int pageIndex, int pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+        Page<Course> page = courseRepository.filterMajor(major, code, name, description,
+                pageable);
+        return page;
+    }
 }

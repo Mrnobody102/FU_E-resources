@@ -79,6 +79,14 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    public Page<Account> findByRoleAndUsernameLikeOrEmailLike(String role, String username, String email, int pageIndex, int pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+        Page<Account> page = accountRepository.filterRole(role, username , email ,
+                pageable);
+        return page;
+    }
+
+    @Override
     public boolean deleteById(String accountId) {
         if(accountRepository.existsById(accountId)){
             accountRepository.removeAccountByAccountId(accountId);

@@ -32,7 +32,7 @@
       </nav>
     </div>
     <div class="course-details-head">
-      <a th:href="@{'/lecturer/courses/detail/' + ${course.courseId}}"
+      <a th:href="@{'/lecturer/courses/' + ${course.courseId}}"
          th:text="|${course.courseCode} - ${course.courseName}|"></a>
       <span> &gt; <a th:href="@{'/lecturer/courses/addTopic/' + ${course.courseId}}">Add topic</a> </span>
     </div>

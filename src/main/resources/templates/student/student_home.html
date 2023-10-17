@@ -7,16 +7,16 @@
     <title>E-Resource Lecturer Home</title>
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
-            rel="stylesheet"
-    />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesme/5.15.4/css/all.min.css"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
 <body>
 <div class="app_container">
     <!-- Header -->
     <div class="row" th:replace="~{fragments/header::studentHeaderSection}"></div>
+
+    <!--  Main-->
+    <div class="row" th:replace="~{fragments/main}"></div>
 
     <!-- Footer -->
     <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>

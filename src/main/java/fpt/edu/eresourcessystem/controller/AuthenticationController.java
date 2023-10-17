@@ -1,36 +1,29 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.enums.AccountEnum;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
+import fpt.edu.eresourcessystem.exception.AccountNotExistedException;
+import fpt.edu.eresourcessystem.model.Account;
+import fpt.edu.eresourcessystem.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import fpt.edu.eresourcessystem.service.AccountService;
-import fpt.edu.eresourcessystem.model.Account;
-import fpt.edu.eresourcessystem.exception.AccountNotExistedException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@PropertySources(value = {@PropertySource("classpath:web-setting.properties")})
 public class AuthenticationController {
-    @Value("${page-size}")
-    private Integer pageSize;
     private final AccountService accountService;
 
     public AuthenticationController(AccountService accountService) {
         this.accountService = accountService;
     }
 
-
-    @GetMapping({"/login"})
+    @GetMapping({"/", "/guest", "/login"})
     public String loginProcess(final Model model) throws AccountNotExistedException {
         model.addAttribute("account", new Account());
         model.addAttribute("roles", AccountEnum.Role.values());
-        return "common/login";
+        return "guest/guest_home";
     }
 
     @PostMapping({"/login"})
@@ -38,7 +31,6 @@ public class AuthenticationController {
         if (null == account) {
             return "redirect:/login";
         } else if ("LIBRARIAN".equals(roles)) {
-//                account.setRole(AccountEnum.Role.STUDENT);
             return "redirect:/librarian";
         } else if ("LECTURER".equals(roles)) {
             return "redirect:/lecturer";
@@ -51,11 +43,6 @@ public class AuthenticationController {
     @GetMapping({"/logout"})
     public String logout() {
         return "redirect:/login";
-    }
-
-    @GetMapping({"/", "/guest"})
-    public String guest() {
-        return "guest/guest_home";
     }
 
 }

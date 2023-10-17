@@ -1,40 +1,17 @@
-// script.js
-
-// Xử lý sự kiện khi nút thêm tài liệu được nhấn
-// document.querySelector('form').addEventListener('submit', function (event) {
-//     event.preventDefault();
-//     // Thêm mã JavaScript xử lý khi nút được nhấn
-//     alert('Tài liệu đã được thêm thành công!');
-// });
-
-
+// Document scope
 $(document).ready(function() {
 
-    // $(".page-number").click(function() {
-    //
-    //     var firstName = $("#firstName").val();
-    //     var lastName = $("#lastName").val();
-    //
-    //     var pageIndex = $(this).html();
-    //
-    //     alert("/admin/contacts/" + pageIndex + "?firstName=" + firstName + "&lastName=" + lastName);
-    //
-    //     window.location = "/admin/contacts/" + pageIndex + "?firstName=" + firstName + "&lastName=" + lastName;
-    //
-    // });
+    $(".page-course-number").click(function () {
 
+        var search = $("#search-text").val();
+        var major = $("#major").val();
+        var pageIndex = $(this).html();
 
-    $(".delete-account").click(function(){
+        window.location = "/lecturer/courses/list/" + pageIndex + "?search=" + search +"&major=" +major;
 
-        var accountId = $(this).attr("id");
-
-        var result = confirm("Do you want delete this account?" + accountId);
-
-        if(result){
-            window.location = "/librarian/accounts/delete/"+accountId;
-        }
     });
 
+    // Delete course
     $("body").on("click", ".delete-course", function() {
         var courseId = $(this).attr("id");
         var result = confirm("Do you want delete this courses?" + courseId);
@@ -44,6 +21,7 @@ $(document).ready(function() {
         }
     });
 
+    // Delete topic
     $("body").on("click", ".delete-topic", function() {
         var courseTopic = $(this).attr("id");
         var result = confirm("Do you want delete this topic?"+ courseTopic);

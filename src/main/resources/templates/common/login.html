@@ -1,128 +1,68 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      lang="en">
-<head>
-<meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-resource login</title>
-    <link rel="stylesheet" th:href="@{/css/base.css}"/>
-    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+<!--Login modal-->
+<body th:fragment="loginForm">
+<div id="loginModal" class="modal">
+    <div id="modalOverlay" class="modal__overlay">
 
-</head>
-<body>
-<main class="main_content">
-    <div class="container">
-        <!--        <div class="web-introduction">-->
-        <!--            <h2>FPT E-resource System</h2>-->
-        <!--            <h6 id="web-introduction" >-->
-        <!--                Every student thrives on a dynamic digital platform where knowledge has no limits.-->
-        <!--                This will be a digital platform where FPT University lecturers and the library work together-->
-        <!--                to regularly enrich, update and manage learning resources comprehensively. Our system not only-->
-        <!--                includes diverse formats from documents and pdfs to videos, but also ensures students can-->
-        <!--                explore and access these treasures of knowledge seamlessly. This is not only ideal,-->
-        <!--                but also based on the actual needs of students and the development capabilities of the-->
-        <!--                institution, creating a more connected and creative academic community.-->
-        <!--            </h6>-->
-        <!--        </div>-->
-        <div class="modal">
-            <div class="modal__overlay">
+    </div>
+    <div class="modal__body">
+        <form id="loginForm" class="auth-form" method="post" role="form" th:action="@{/login}"
+              th:object="${account}" th:id="login-form">
+            <div class="auth-form__container">
+                <div class="auth-form__header">
+                    <h3 class="auth-form__heading">
+                        Login
+                    </h3>
+                </div>
 
-            </div>
-            <div class="modal__body">
-                <form class="auth-form" method="post" role="form" th:action="@{/login}"
-                      th:object="${account}" th:id="login-form">
-                    <div class="auth-form__container">
-                        <div class="auth-form__header">
-                            <h3 class="auth-form__heading">
-                                Login
-                            </h3>
-                        </div>
+                <div class="auth-form__form">
+                    <div class="auth-form__group">
+                        <input type="email" class="auth-form__input" placeholder="Your Email">
+                    </div>
+                    <div class="auth-form__group">
+                        <input type="password" class="auth-form__input" placeholder="Enter Password">
+                    </div>
 
-                        <div class="auth-form__form">
-                            <div class="auth-form__group">
-                                <input type="email" class="auth-form__input" placeholder="Your Email">
-                            </div>
-                            <div class="auth-form__group">
-                                <input type="password" class="auth-form__input" placeholder="Enter Password">
-                            </div>
-
-                            <div class="auth-form__select">
-                                <label th:for="roles">Select role</label>
-                                <select class="auth-form__select-tag" th:name="roles" th:id="roles">
-                                    <option th:each="role : ${roles}"
-                                            th:text="${role}"
-                                            th:value="${role}">
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="auth-form__aside">
-                                <div class="auth-form__help">
-                                    <a href="" class="auth-form__help-link auth-form__help-forgot-password">Forgot
-                                        Password</a>
-                                    <span class="auth-form__help-separate-line">|</span>
-                                    <a href="" class="auth-form__help-link auth-form__help-need-help">Need Help?</a>
-                                </div>
-                            </div>
-
-                            <div class="auth-form__controls">
-                                <button class="btn btn--hover auth-form__controls-back">BACK</button>
-                                <button type="submit" class="btn btn--primary">LOGIN</button>
-                            </div>
+                    <div class="auth-form__select">
+                        <label th:for="roles">Select role</label>
+                        <select class="auth-form__select-tag" th:name="roles" th:id="roles">
+                            <option th:each="role : ${roles}"
+                                    th:text="${role}"
+                                    th:value="${role}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="auth-form__aside">
+                        <div class="auth-form__help">
+                            <a href="" class="auth-form__help-link auth-form__help-forgot-password">Forgot
+                                Password</a>
+                            <span class="auth-form__help-separate-line">|</span>
+                            <a href="" class="auth-form__help-link auth-form__help-need-help">Need Help?</a>
                         </div>
                     </div>
-                    <div class="auth-form__socials">
-                        <a href="" class="btn btn--size-s btn--with-icon auth-form__socials--google">
-                            <i class="auth-form__socials-google-icon fab fa-google"></i>
-                            <span class="auth-form__socials-title">
+
+                    <div class="auth-form__controls">
+                        <div id="closeLoginForm" class="btn btn--hover auth-form__controls-back">BACK</div>
+                        <button type="submit" class="btn btn--primary">LOGIN</button>
+                    </div>
+                </div>
+            </div>
+            <div class="auth-form__socials">
+                <a href="" class="btn btn--size-s btn--with-icon auth-form__socials--google">
+                    <i class="auth-form__socials-google-icon fab fa-google"></i>
+                    <span class="auth-form__socials-title">
                         Login with Google
                         </span>
-                        </a>
-                        <a href="" class="btn btn--size-s btn--with-icon auth-form__socials--feid">
-                            <i class="auth-form__socials-feid-icon fa fa-envelope"></i>
-                            <span class="auth-form__socials-title">
+                </a>
+                <a href="" class="btn btn--size-s btn--with-icon auth-form__socials--feid">
+                    <i class="auth-form__socials-feid-icon fa fa-envelope"></i>
+                    <span class="auth-form__socials-title">
                         Login with FeID
                         </span>
-                        </a>
+                </a>
 
-                    </div>
-                </form>
             </div>
-            <!--    <div class="content-body">-->
-<!--                    <form class="modal-content animate"-->
-<!--                          method="post" role="form" th:action="@{/login}"-->
-<!--                          th:object="${account}" th:id="login-form">-->
-            <!--            <div class="container">-->
-            <!--                <label th:for="email"><b>Email</b></label>-->
-            <!--                <input type="text" placeholder="Enter email" th:field="*{email}" th:id="email">-->
-
-            <!--                <label th:for="password"><b>Password</b></label>-->
-            <!--                <input type="password" placeholder="Enter password" th:field="*{password}"-->
-            <!--                       th:id="password">-->
-<!--                            <label th:for="roles"><b>Select role</b></label>-->
-<!--                            <select th:name="roles" th:id="roles">-->
-<!--                                <option th:each="role : ${roles}"-->
-<!--                                        th:text="${role}"-->
-<!--                                        th:value="${role}">-->
-<!--                                </option>-->
-<!--                            </select>-->
-            <!--                <button type="submit">Login</button>-->
-            <!--                <label>-->
-            <!--                    <input type="checkbox" checked="checked" name="remember"> Remember me-->
-            <!--                </label>-->
-            <!--            </div>-->
-
-            <!--            <div class="container" style="background-color:#f1f1f1">-->
-            <!--                <button type="button" class="login-with-google">Login with Google</button>-->
-            <!--                <button type="button" class="login-with-feId">Login with FEID</button>-->
-            <!--                <span class="psw">Forgot <a href="#">password?</a></span>-->
-            <!--            </div>-->
-            <!--        </form>-->
-            <!--    </div>-->
-        </div>
+        </form>
     </div>
-</main>
+</div>
 </body>
-</html>

@@ -4,14 +4,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Subject Management</title>
+    <title>Lecturer | Course </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+
+    <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
-            rel="stylesheet"
-    />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
   </head>
   <body>
     <div class="app_container">
@@ -25,27 +26,48 @@
             <div class="body">
               <div class="user-management-head">
                 <a th:href="@{/lecturer}">Home</a>
-                <span> &gt; <a th:href="@{/lecturer/courses/list}"> My Courses </a> </span>
+                <span> &gt; <a th:href="@{/librian/courses/list}"> Courses </a> </span>
               </div>
 
               <div class="">
                 <div class="search-container">
-                  <form action="">
+                  <form th:action="@{/lecturer/courses/list/1}" th:method="get">
+                    <div class="d-flex">
                     <input
                             type="text"
                             placeholder="Search course.."
-                            name="search"
+                            th:name="search"
                             id="search-text"
+                            th:value="${search}"
                     />
+                      <div class="lib_search-btn-wrapper">
                     <button type="submit">
                       <i class="fa fa-search"></i> Search
                     </button>
-                    <a class="btn-add" type="button" th:href="@{/lecturer/courses/manage_course/list}">
-                      My courses
-                    </a>
-                    <a class="btn-add" type="button" th:href="@{/lecturer/courses/list}">
+                      </div>
+                    </div>
+
+                    <div>
+                    <a class="btn-add" type="button" th:href="@{/lecturer/courses/list/1}">
                       Show All
                     </a>
+                    </div>
+                    <div>
+                      <a class="btn-add" type="button" th:href="@{/lecturer/manage_course/list/1}">
+                        My courses
+                      </a>
+                    </div>
+                    <div class="d-flex">
+                      <select class="lib_filter" th:name="major" th:id="major" onchange="this.form.submit()">
+                        <option value="all">All
+                        </option>
+                        <option th:each="major : ${majors}"
+                                th:text="${major.getDisplayValue()}"
+                                th:value="${major}"
+                                th:selected="(${majorSearch} == ${major.getToString()})" >
+                        </option>
+                      </select>
+                    </div>
                   </form>
                 </div>
               </div>
@@ -59,25 +81,66 @@
                   </tr>
                   <th:block th:each="course : ${courses}">
                   <tr>
-                    <td><a th:href="|@{/user/courses/detail}?courseId= + ${course.courseId}|"
+                    <td><a th:href="|@{/user/courses}?courseId= + ${course.courseId}|"
                     th:text="${course.courseCode}"></a></td>
                     <td th:text="${course.courseName}"></td>
                     <td th:text="${course.description}"></td>
                     <td colspan="2">
-                      <a class="update-account" th:href="@{'/lecturer/courses/detail/'+${course.courseId}}">View</a>
+                      <a class="update-account" th:href="@{'/lecturer/courses/'+${course.courseId}}">View</a>
                     </td>
                   </tr>
                   </th:block>
                 </table>
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                    </li>
+
+                    <li th:if="totalPage ne null" th:each="pageIndex: ${#numbers.sequence(1,totalPage)}"
+                        class="page-item">
+                      <a th:text="${pageIndex}" class="page-link page-course-number"
+                         th:classappend=" (${currentPage == pageIndex}) ? active : '' "
+                         href="#"></a>
+                    </li>
+
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Next">
+                        <span class="sr-only">Next</span>
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
               </div>
             </div>
           </div>
 
         </div>
+
+
+
+
       </main>
 
       <!-- Footer -->
       <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!--Bootstrap script-->
+    <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <!--Custom script-->
+    <script th:src="@{/js/lecturer.js}"></script>
+    <script>
+
+      $('form select').on('change', function(){
+        $(this).closest('form').submit();
+      });
+    </script>
   </body>
 </html>

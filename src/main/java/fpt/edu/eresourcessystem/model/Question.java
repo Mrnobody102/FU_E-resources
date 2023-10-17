@@ -18,6 +18,7 @@ public class Question {
     private String studentId;
     private String documentId;
 
+    // Answer
     private String answer;
     private String lecturerId;
 

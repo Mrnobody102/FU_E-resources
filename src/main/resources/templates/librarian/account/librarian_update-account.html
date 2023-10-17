@@ -7,10 +7,7 @@
     <title>Librarian | Update account</title>
 
 
-    <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
-            rel="stylesheet"
-    />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
@@ -19,6 +16,23 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+
+
+    <!-- SweetAlert từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+    <style>
+        label.error {
+            margin-top: 5px;
+            margin-left: 5px;
+            display: block;
+            color: red;
+            /*font-size: smaller;*/
+        }
+    </style>
+
 </head>
 <body class="app_container">
 
@@ -47,7 +61,7 @@
                     </div>
                     <div class="add-form-content">
                         <form method="post" role="form" th:action="@{/librarian/accounts/update}"
-                              th:object="${account}" th:id="add-form">
+                              th:object="${account}" th:id="update-account">
                             <table class="table-form lib_table">
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="accountId">Account ID</label></td>
@@ -59,47 +73,42 @@
 
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="username">Username</label></td>
-                                    <td><input type="text"
-                                               class="lib_input form-control" th:field="*{username}"
+                                    <td><input type="text"  th:id="username" class="lib_input form-control" th:field="*{username}"
                                                placeholder="Enter username" required>
-                                        <p class="text-danger" th:errors="*{username}"
-                                           th:if="${#fields.hasErrors('username')}"></p>
+
                                     </td>
                                 </tr>
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="password">Password</label></td>
-                                    <td><input type="text"
+                                    <td><input type="text" th:id="password"
                                                class="lib_input form-control" th:field="*{password}"
                                                placeholder="Enter password" required>
-                                        <p class="text-danger" th:errors="*{password}"
-                                           th:if="${#fields.hasErrors('password')}"></p>
+
                                     </td>
                                 </tr>
 
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="email">Email</label></td>
-                                    <td><input type="text"
+                                    <td><input type="text" th:id="email"
                                                class="lib_input form-control" th:field="*{email}"
                                                placeholder="Enter email" required>
-                                        <p class="text-danger" th:errors="*{email}"
-                                           th:if="${#fields.hasErrors('email')}"></p>
+
                                     </td>
                                 </tr>
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="name">Full Name</label></td>
-                                    <td><input type="text"
+                                    <td><input type="text" th:id="name"
                                                class="lib_input form-control" th:field="*{name}"
                                                placeholder="Enter name" required>
-                                        <p class="text-danger" th:errors="*{name}"
-                                           th:if="${#fields.hasErrors('name')}"></p>
+
                                     </td>
                                 </tr>
 
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="dateOfBirth">Date of birth</label></td>
-                                    <td><input type="date"
+                                    <td><input type="date" th:id="dateOfBirth"
                                                class="lib_input form-control" th:field="*{dateOfBirth}"
-                                               th:id="dateOfBirth"
+
                                                required>
                                     </td>
                                 </tr>
@@ -137,13 +146,13 @@
                                         </select>
                                     </td>
                                 </tr>
-                                <tr class="lib_input-wrapper">
-                                    <td></td>
-                                    <td>
-                                        <input type="checkbox" name="IsAdmin" th:field="*{flagAdmin}">
-                                        IsAdmin
-                                    </td>
-                                </tr>
+<!--                                <tr class="lib_input-wrapper">-->
+<!--                                    <td></td>-->
+<!--                                    <td>-->
+<!--                                        <input type="checkbox" name="IsAdmin" th:field="*{flagAdmin}" th:id="isAdmin">-->
+<!--                                        IsAdmin-->
+<!--                                    </td>-->
+<!--                                </tr>-->
 
                                 <tr>
                                     <td></td>
@@ -170,5 +179,33 @@
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+
+
+<!--Validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script th:src="@{/js/validation.js}"></script>
+
+<script th:inline="javascript">
+    validate_updateAccount();
+
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Update account successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check account information again!',
+            'error'
+        );
+    }
+</script>
 </body>
 </html>

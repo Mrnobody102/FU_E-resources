@@ -4,15 +4,15 @@ public class DocumentEnum {
 
     public enum DocumentAccessLevelEnum {
         PUBLIC,
-        ONLY_LECTURER,
-        PRIVATE;
+        EXCEPT_GUESTS,
+        PRIVATE // only uploader (Lecturer) and Librarians
     }
 
     public enum DocumentStateEnum {
         WAIT(),
         ON_PROCESS(),
         SUCCESS(),
-        FAIL();
+        FAIL()
     }
     public enum DocumentFormat {
         PDF,
@@ -26,26 +26,17 @@ public class DocumentEnum {
         UNKNOWN;
 
         public static DocumentFormat getDocType(String suffixName) {
-            switch (suffixName) {
-                case ".pdf":
-                    return PDF;
-                case "docx":
-                    return DOC;
-                case ".docx":
-                    return DOCX;
-                case ".pptx":
-                    return PPTX;
-                case ".xlsx":
-                    return XLSX;
-                case ".md":
-                    return MD;
-                case ".html":
-                    return HTML;
-                case ".txt":
-                    return TXT;
-                default:
-                    return UNKNOWN;
-            }
+            return switch (suffixName) {
+                case ".pdf" -> PDF;
+                case "docx" -> DOC;
+                case ".docx" -> DOCX;
+                case ".pptx" -> PPTX;
+                case ".xlsx" -> XLSX;
+                case ".md" -> MD;
+                case ".html" -> HTML;
+                case ".txt" -> TXT;
+                default -> UNKNOWN;
+            };
         }
     }
 

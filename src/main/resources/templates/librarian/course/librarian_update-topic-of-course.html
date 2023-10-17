@@ -5,11 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Librarian | Course | Update topic</title>
 
-
-  <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
-          rel="stylesheet"
-  />
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
 
@@ -30,7 +25,7 @@
         <div class="course-details-head">
           <a th:href="@{/librarian}">Home</a>
           <span> >
-                    <a th:href="@{'/librarian/courses/detail/' + ${course.courseId}}"
+                    <a th:href="@{'/librarian/courses/' + ${course.courseId}}"
                        th:text="|${course.courseCode} - ${course.courseName}|"></a>
                      </span>
           <span> &gt; <a

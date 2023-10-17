@@ -1,34 +1,22 @@
 package fpt.edu.eresourcessystem.model;
 
-import fpt.edu.eresourcessystem.enums.CourseEnum;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 @Data
-@Document("courses")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Course {
+@Document("notes")
+public class Note {
     @Id
-    private String courseId;
+    private String noteId;
+    private String studentId;
+    private String documentId;
 
-    @Indexed(unique = true)
-    private String courseCode;
-
-    private String courseName;
-    private String description;
-
-    private List<String> topics;
-    private List<String> lecturers;
-    private List<String> students;
-
-    private CourseEnum.Major major;
     //Audit Log
     @CreatedBy
     private String createdBy;

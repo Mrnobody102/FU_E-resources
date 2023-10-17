@@ -60,7 +60,7 @@
 
                                     <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
                                     <a class="home__course-name" th:text="${course.courseName}"
-                                            th:href="@{'/student/courses/detail/' + ${course.courseId}}"></a>
+                                            th:href="@{'/student/courses/' + ${course.courseId}}"></a>
                                     <p class="home__course-description" th:text="${course.description}">
 <!--                                        The module consists of 6 chapters providing students with basic knowledge of-->
 <!--                                        Object, research methods-->

@@ -2,7 +2,6 @@ package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
-import fpt.edu.eresourcessystem.model.Student;
 import fpt.edu.eresourcessystem.repository.LecturerRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,21 +26,22 @@ public class LecturerServiceImpl implements LecturerService{
 
     @Override
     public Lecturer addLecturer(Lecturer lecturer) {
-        if(null==lecturer.getLecturerId()){
+        if(null==lecturer.getAccountId()){
             Lecturer result = lecturerRepository.save(lecturer);
             return result;
         }else {
-            Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getLecturerId());
+            Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getAccountId());
             if(!checkExist.isPresent()){
                 Lecturer result = lecturerRepository.save(lecturer);
                 return result;
             }
-        }return null;
+        }
+        return null;
     }
 
     @Override
     public List<Course> findListManageCourse(Lecturer lecturer) {
-        Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getLecturerId());
+        Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getAccountId());
         if(checkExist.isPresent()){
             if(null==checkExist.get().getLecturerCourses()){
                 return null;
