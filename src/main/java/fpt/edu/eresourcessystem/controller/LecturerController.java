@@ -1,14 +1,8 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.enums.CourseEnum;
-import fpt.edu.eresourcessystem.model.Account;
-import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Lecturer;
-import fpt.edu.eresourcessystem.model.Topic;
-import fpt.edu.eresourcessystem.service.AccountService;
-import fpt.edu.eresourcessystem.service.CourseService;
-import fpt.edu.eresourcessystem.service.LecturerService;
-import fpt.edu.eresourcessystem.service.TopicService;
+import fpt.edu.eresourcessystem.model.*;
+import fpt.edu.eresourcessystem.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -16,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -30,11 +25,16 @@ public class LecturerController {
     private final LecturerService lecturerService;
     private final TopicService topicService;
 
-    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService) {
+    private final DocumentService documentService;
+
+    public LecturerController(CourseService courseService, AccountService accountService,
+                              LecturerService lecturerService, TopicService topicService,
+                              DocumentService documentService) {
         this.courseService = courseService;
         this.accountService = accountService;
         this.lecturerService = lecturerService;
         this.topicService = topicService;
+        this.documentService = documentService;
     }
 
     @GetMapping
@@ -54,6 +54,7 @@ public class LecturerController {
             List<Account> lecturers = accountService.findAllLecturer();
             model.addAttribute("lecturers", lecturers);
             model.addAttribute("course", course);
+            model.addAttribute("majors", CourseEnum.Major.values());
             return "lecturer/course/lecturer_update-course";
         }
     }
@@ -198,5 +199,25 @@ public class LecturerController {
         List<Course> courses = lecturerService.findListManageCourse(lecturer);
         model.addAttribute("courses", courses);
         return "lecturer/course/lecturer_courses";
+    }
+
+    @GetMapping("/lecturer/topic/detail/{topicId}")
+    public String viewTopicDetail(@PathVariable String topicId, final Model model){
+        Topic topic = topicService.findById(topicId);
+        Course course = courseService.findByCourseId(topic.getCourseId());
+        List<Document> documents = documentService.findByTopicId(topicId);
+        model.addAttribute("course", course);
+        model.addAttribute("topic", topic);
+        model.addAttribute("documents", documents);
+        return "lecturer/course/lecturer_topic-detail";
+    }
+
+
+    @GetMapping("/search/{search}")
+    public ModelAndView findLecturer(@PathVariable String search){
+        List<Account> lecturers = accountService.searchLecturer(search);
+        ModelAndView mv= new ModelAndView("search_list::search_list");
+        mv.addObject("lecturers",mv);
+        return mv;
     }
 }

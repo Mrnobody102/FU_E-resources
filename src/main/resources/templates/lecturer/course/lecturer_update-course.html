@@ -77,13 +77,13 @@
                                     placeholder="Enter description" ></textarea>
                       </td>
                     </tr>
-                    <tr>
-                      <td><label th:for="topics">Topics</label></td>
-                      <td><input type="text"
-                                 class="form-control" name="lesson" th:id="topics"
-                                 placeholder="Enter topics"/>
-                      </td>
-                    </tr>
+<!--                    <tr>-->
+<!--                      <td><label th:for="topics">Topics</label></td>-->
+<!--                      <td><input type="text"-->
+<!--                                 class="form-control" name="lesson" th:id="topics"-->
+<!--                                 placeholder="Enter topics"/>-->
+<!--                      </td>-->
+<!--                    </tr>-->
                     <tr>
                       <td><label th:for="lecturer">Lecturers</label></td>
                       <td><textarea type="text"
@@ -91,12 +91,23 @@
                                     readonly></textarea>
                       </td>
                     </tr>
+<!--                    <tr>-->
+<!--                      <td><label th:for="lecturerSelection">Lecturers</label></td>-->
+<!--                      <td><select name="lecturerSelection" th:id="lecturerSelection">-->
+<!--                        <option th:each="lecturer : ${lecturers}"-->
+<!--                                th:text="|${lecturer.accountId} ( ${lecturer.name} )|"-->
+<!--                                th:value="${lecturer.accountId}">-->
+<!--                        </option>-->
+<!--                      </select>-->
+<!--                      </td>-->
+<!--                    </tr>-->
                     <tr>
-                      <td><label th:for="lecturerSelection">Lecturers</label></td>
-                      <td><select name="lecturerSelection" th:id="lecturerSelection">
-                        <option th:each="lecturer : ${lecturers}"
-                                th:text="|${lecturer.accountId} ( ${lecturer.name} )|"
-                                th:value="${lecturer.accountId}">
+                      <td class="lib_input-label"><label th:for="majorSelection">Major</label></td>
+                      <td><select  th:field="*{major}" name="major" th:id="majorSelection">
+                        <option th:each="major : ${majors}"
+                                th:text="${major.getDisplayValue()}"
+                                th:value="${major}"
+                        >
                         </option>
                       </select>
                       </td>
