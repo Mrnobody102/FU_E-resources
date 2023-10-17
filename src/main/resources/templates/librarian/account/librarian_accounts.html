@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      lang="en">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,21 +35,34 @@
             <div class="d-flex justify-content-center">
                 <div class="lib_data-list-wrapper">
                     <div class="lib_search-container">
+                        <form class="d-flex" th:action="@{/librarian/accounts/list/1}" method="get" th:id="search-form">
                         <div class="d-flex">
-                            <form class="d-flex" action="">
-                                <input class="lib_search-content" type="text" placeholder="Search user.." name="search"
-                                       id="search-text"/>
+
+                                <input class="lib_search-content" type="text" placeholder="Search user.." th:name="search"
+                                       th:id="search-text" th:value="${search}"/>
                                 <div class="lib_search-btn-wrapper">
-                                    <a class="lib_search-btn">
+                                    <button type="submit" class="lib_search-btn">
                                         <i class="lib_search-btn-icon fa fa-search"></i>
-                                    </a>
+                                    </button>
                                 </div>
-                            </form>
                             <a class="btn lib_show-all-btn" th:href="@{/librarian/accounts/list/1}">Show AlL</a>
                         </div>
                         <div>
                             <a class="btn lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">Add new user</a>
                         </div>
+
+                        <div class="d-flex" th:id="search-form">
+                            <select class="lib_filter" th:name="role" th:id="role" onchange="this.form.submit()">
+                                <option value="all">All
+                                </option>
+                                <option th:each="role : ${roles}"
+                                        th:text="${role}"
+                                        th:value="${role}"
+                                        th:selected="(${roleSearch} == ${role.getDisplayValue()})" >
+                                </option>
+                            </select>
+                        </div>
+                        </form>
                     </div>
 
                     <div class="table-responsive" th:if="${accounts ne null}">
@@ -86,7 +99,9 @@
 
                                 <li th:if="totalPage ne null" th:each="pageIndex: ${#numbers.sequence(1,totalPage)}"
                                     class="page-item">
-                                    <a th:text="${pageIndex}" class="page-link page-account-number" href="#"></a>
+                                    <a th:text="${pageIndex}" class="page-link page-account-number"
+                                       th:classappend=" (${currentPage == pageIndex}) ? active : '' "
+                                       href="#"></a>
                                 </li>
 
                                 <li class="page-item">
@@ -113,6 +128,12 @@
         crossorigin="anonymous"></script>
 <!--Custom script-->
 <script th:src="@{/js/librarian.js}"></script>
+<script>
+
+        $('form select').on('change', function(){
+                $(this).closest('form').submit();
+        });
+    </script>
 
 </body>
 </html>

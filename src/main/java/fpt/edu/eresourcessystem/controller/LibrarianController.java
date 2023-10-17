@@ -64,11 +64,21 @@ public class LibrarianController {
 
     @GetMapping("/accounts/list/{pageIndex}")
     String findAccountByPage(@PathVariable Integer pageIndex,
-                             @RequestParam(required = false, defaultValue = "") String search, final Model model, HttpServletRequest request) {
-        Page<Account> page = accountService.findByUsernameLikeOrEmailLike(search, search, pageIndex, pageSize);
+                             @RequestParam(required = false, defaultValue = "") String search,
+                             @RequestParam(required = false, defaultValue = "all") String role,
+                             final Model model, HttpServletRequest request) {
+        Page<Account> page;
+        if(null==role || "all".equals(role)){
+            page = accountService.findByUsernameLikeOrEmailLike(search, search, pageIndex, pageSize);
+        }else {
+            page = accountService.findByRoleAndUsernameLikeOrEmailLike( role, search, search, pageIndex, pageSize);
+        }
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("accounts", page.getContent());
         model.addAttribute("search", search);
+        model.addAttribute("roles", AccountEnum.Role.values());
+        model.addAttribute("roleSearch", role);
+        model.addAttribute("currentPage", pageIndex);
         return "librarian/account/librarian_accounts";
     }
 
@@ -289,8 +299,15 @@ public class LibrarianController {
 
     @GetMapping("/courses/list/{pageIndex}")
     String showCoursesByPage(@PathVariable Integer pageIndex,
-                             @RequestParam(required = false, defaultValue = "") String search, final Model model, HttpServletRequest request) {
-        Page<Course> page = courseService.findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(search, search, search, pageIndex, pageSize);
+                             @RequestParam(required = false, defaultValue = "") String search,
+                             @RequestParam(required = false, defaultValue = "") String role,
+                             final Model model, HttpServletRequest request) {
+        Page<Course> page;
+        if(null==role || "".equals(role)){
+            page = courseService.findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(search, search, search, pageIndex, pageSize);
+        }else {
+            page = courseService.findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(search, search, search, pageIndex, pageSize);
+        }
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
         model.addAttribute("search", search);

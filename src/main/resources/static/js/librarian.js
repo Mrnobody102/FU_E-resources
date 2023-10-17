@@ -1,3 +1,7 @@
+function submitSearchForm (){
+   document.getElementById('#search-form').submit();
+}
+
 $(document).ready(function () {
 
     // show is Admin

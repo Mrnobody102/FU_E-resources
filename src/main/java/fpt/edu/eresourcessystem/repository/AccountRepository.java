@@ -28,11 +28,14 @@ public interface AccountRepository extends
     @Query("SELECT FROM Accounts WHERE a.role = 'LIBRARIAN'")
     List<Account> findAllLecturer();
 
-    @Query("SELECT FROM Accounts WHERE a.role = 'LECTURER' AND (a.username LIKE  ?1  OR " +
+    @Query("SELECT FROM Accounts a WHERE a.role = 'LECTURER' AND (a.username LIKE  ?1  OR " +
             "a.email LIKE ?1 )")
     List<Account> searchLecturer(String search);
 
 //    @Query("SELECT a FROM Account a WHERE a.username LIKE 'huypq1801@gmail.com'")
     Page<Account> findByUsernameLikeOrEmailLike(String username, String email, Pageable pageable);
 
+
+    @Query("{$and: [{role: ?0}, {$or: [{username: {$regex: ?1}}, {email: {$regex: ?2}}]}]}")
+    Page<Account> filterRole(String role, String username, String email, Pageable pageable);
 }
