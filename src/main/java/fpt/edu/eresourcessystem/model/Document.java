@@ -19,6 +19,7 @@ public class Document {
     private String description;
     private String status;
 
+    private String courseId;
     private String topicId;  // Reference to the folder that contain it
     private String uploaderId;  // Reference to the user who uploaded the document
 
