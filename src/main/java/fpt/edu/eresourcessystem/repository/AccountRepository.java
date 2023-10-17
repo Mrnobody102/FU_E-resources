@@ -25,7 +25,7 @@ public interface AccountRepository extends
     Optional<Account> findById(String accountId);
 
     void removeAccountByAccountId(String accountId);
-    @Query("SELECT FROM Accounts WHERE a.role = 'LIBRARIAN'")
+    @Query("SELECT FROM Accounts WHERE a.role = 'LECTURER'")
     List<Account> findAllLecturer();
 
     @Query("SELECT FROM Accounts a WHERE a.role = 'LECTURER' AND (a.username LIKE  ?1  OR " +

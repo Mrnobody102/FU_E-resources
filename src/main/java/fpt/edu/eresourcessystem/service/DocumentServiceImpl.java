@@ -74,4 +74,10 @@ public class DocumentServiceImpl implements DocumentService {
         }
         return false;
     }
+
+    @Override
+    public List<Document> findByTopicId(String topicId) {
+        List<Document> documents = documentRepository.findByTopicId(topicId);
+        return documents;
+    }
 }

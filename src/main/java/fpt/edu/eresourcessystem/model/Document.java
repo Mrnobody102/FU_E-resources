@@ -16,7 +16,8 @@ import java.util.List;
 public class Document {
     @Id
     private String documentId;
-    private String topicId;  // Reference to the topic that contain it
+    private String courseId;
+    private String topicId;  // Reference to the folder that contain it
 
     private String title;
     private String description;
