@@ -19,8 +19,9 @@ $(document).ready(function () {
 
         var search = $("#search-text").val();
         var pageIndex = $(this).html();
+        var major = $("#major").val();
 
-        window.location = "/librarian/courses/list/" + pageIndex + "?search=" + search;
+        window.location = "/librarian/courses/list/" + pageIndex + "?search=" + search +"&major=" +major;
 
     });
 

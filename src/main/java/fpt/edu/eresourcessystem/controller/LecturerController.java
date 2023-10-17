@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
@@ -8,6 +9,10 @@ import fpt.edu.eresourcessystem.service.AccountService;
 import fpt.edu.eresourcessystem.service.CourseService;
 import fpt.edu.eresourcessystem.service.LecturerService;
 import fpt.edu.eresourcessystem.service.TopicService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +21,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/lecturer")
+@PropertySource("web-setting.properties")
 public class LecturerController {
+    @Value("${page-size}")
+    private Integer pageSize;
     private final CourseService courseService;
     private final AccountService accountService;
     private final LecturerService lecturerService;
@@ -68,13 +76,6 @@ public class LecturerController {
             model.addAttribute("success", "");
             return "lecturer/course/lecturer_update-course";
         }
-    }
-
-    @GetMapping({"/list"})
-    public String showCourse(final Model model) {
-        List<Course> courses = courseService.findAll();
-        model.addAttribute("courses", courses);
-        return "lecturer/course/lecturer_courses";
     }
 
     @GetMapping({"/{courseId}"})
@@ -165,9 +166,32 @@ public class LecturerController {
         }
         return "lecturer/course/lecturer_add-topic-to-course";
     }
+    @GetMapping({"/courses/list"})
+    public String showCourses() {
+        return "lecturer/course/lecturer_courses";}
+    @GetMapping("/courses/list/{pageIndex}")
+    String showCoursesByPage(@PathVariable Integer pageIndex,
+                             @RequestParam(required = false, defaultValue = "") String search,
+                             @RequestParam(required = false, defaultValue = "all") String major,
+                             final Model model, HttpServletRequest request) {
+        Page<Course> page;
+        if(null==major || "all".equals(major)){
+            page = courseService.findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(search, search, search, pageIndex, pageSize);
+        }else {
+            page = courseService.filterMajor(major, search, search, search, pageIndex, pageSize);
+        }
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("courses", page.getContent());
+        model.addAttribute("search", search);
+        model.addAttribute("currentPage", pageIndex);
+        model.addAttribute("majorSearch", major);
+        model.addAttribute("majors", CourseEnum.Major.values());
+        return "lecturer/course/lecturer_courses";
+    }
 
-    @GetMapping("/manage_course/list")
-    public String findManageCourses(final Model model) {
+
+    @GetMapping("/manage_course/list/{pageIndex}")
+    public String findManageCourses(@PathVariable String pageIndex,final Model model) {
         Lecturer lecturer = new Lecturer();
         lecturer.setAccountId("65283bfc9bf46d65d5aa3f8f");
         lecturer = lecturerService.findByAccountId(lecturer.getAccountId());
