@@ -29,12 +29,12 @@ public class LecturerController {
         this.topicService = topicService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String getLibraryManageDashboard(@ModelAttribute Account account) {
         return "lecturer/lecturer";
     }
 
-    @GetMapping({"courses/{courseId}/update"})
+    @GetMapping({"/courses/{courseId}/update"})
     public String updateCourseProcess(@PathVariable(required = false) String courseId, final Model model) {
         if (null == courseId) {
             courseId = "";

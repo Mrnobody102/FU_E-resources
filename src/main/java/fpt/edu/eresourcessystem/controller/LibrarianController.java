@@ -192,7 +192,7 @@ public class LibrarianController {
      * Delete an account by accountId
      *
      * @param accountId accountId that delete
-     * @return
+     * @return list accounts after delete
      */
     @GetMapping("/accounts/{accountId}/delete")
     public String deleteAccount(@PathVariable String accountId) {
@@ -235,7 +235,7 @@ public class LibrarianController {
     }
 
     @PostMapping("/courses/add")
-    public String addCourse(@ModelAttribute Course course, @RequestParam String lesson, @RequestParam String lecturer) {
+    public String addCourse(@ModelAttribute Course course, @RequestParam String topic, @RequestParam String lecturer) {
 
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
         if (null == checkExist) {
@@ -251,7 +251,6 @@ public class LibrarianController {
             courseId = "";
         }
         Course course = courseService.findByCourseId(courseId);
-//        System.out.println(account);
         if (null == course) {
             return "redirect:librarian/courses/update?error";
         } else {
@@ -273,7 +272,6 @@ public class LibrarianController {
             if (checkCodeDuplicate != null &&
                     !checkExist.getCourseCode().toLowerCase().equals(course.getCourseCode())) {
 //                return "redirect:/librarian/courses/update?error";
-
             }
             courseService.updateCourse(course);
             model.addAttribute("course", course);
@@ -285,7 +283,7 @@ public class LibrarianController {
     }
 
     @GetMapping({"/courses/list"})
-    public String showCourses(final Model model) {
+    public String showCourses() {
         return "librarian/course/librarian_courses";
     }
 
