@@ -35,21 +35,34 @@
             </div>
             <div class="lib_data-list-wrapper">
                 <div class="lib_search-container">
+                    <form class="d-flex" th:action="@{/librarian/courses/list/1}" th:method="get">
                     <div class="d-flex">
-                        <form class="d-flex" th:action="@{/librarian/courses/list/1}" th:method="get">
+
                             <input class="lib_search-content" type="text" placeholder="Search course.." name="search"
-                                   id="search-text"/>
+                                   th:value="${search}" id="search-text"/>
                             <div class="lib_search-btn-wrapper">
                                 <button type="submit" class="lib_search-btn">
                                     <i class="lib_search-btn-icon fa fa-search"></i>
                                 </button>
                             </div>
-                        </form>
+
                         <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list/1}">Show AlL</a>
                     </div>
                     <div>
                         <a class="btn lib_btn-add" type="button" th:href="@{/librarian/courses/add}">Add new course</a>
                     </div>
+                    <div class="d-flex">
+                        <select class="lib_filter" th:name="major" th:id="major" onchange="this.form.submit()">
+                            <option value="all">All
+                            </option>
+                            <option th:each="major : ${majors}"
+                                    th:text="${major.getDisplayValue()}"
+                                    th:value="${major}"
+                                    th:selected="(${majorSearch} == ${major.getToString()})" >
+                            </option>
+                        </select>
+                    </div>
+                    </form>
                 </div>
             </div>
             <div class="table-responsive" th:if="${courses ne null}">
@@ -84,7 +97,9 @@
 
                         <li th:if="totalPage ne null" th:each="pageIndex: ${#numbers.sequence(1,totalPage)}"
                             class="page-item">
-                            <a th:text="${pageIndex}" class="page-link page-course-number" href="#"></a>
+                            <a th:text="${pageIndex}" class="page-link page-course-number"
+                               th:classappend=" (${currentPage == pageIndex}) ? active : '' "
+                               href="#"></a>
                         </li>
 
                         <li class="page-item">
@@ -102,22 +117,19 @@
 
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
-
-
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Bootstrap script-->
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
-
-<!--Jquery-->
-<script src="jquery-3.7.1.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!--Validate-->
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-
 <!--Custom script-->
 <script th:src="@{/js/librarian.js}"></script>
+<script>
+
+    $('form select').on('change', function(){
+        $(this).closest('form').submit();
+    });
+</script>
 
 
 </body>

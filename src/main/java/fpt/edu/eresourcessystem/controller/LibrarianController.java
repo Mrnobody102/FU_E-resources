@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.enums.AccountEnum;
+import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -241,11 +242,12 @@ public class LibrarianController {
         List<Account> lecturers = accountService.findAllLecturer();
         model.addAttribute("course", new Course());
         model.addAttribute("lecturers", lecturers);
+        model.addAttribute("majors", CourseEnum.Major.values());
         return "librarian/course/librarian_add-course";
     }
 
     @PostMapping("/courses/add")
-    public String addCourse(@ModelAttribute Course course, @RequestParam String topic, @RequestParam String lecturer) {
+    public String addCourse(@ModelAttribute Course course, @RequestParam(required = false) String topic, @RequestParam(required = false) String lecturer) {
 
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
         if (null == checkExist) {
@@ -267,6 +269,7 @@ public class LibrarianController {
             List<Account> lecturers = accountService.findAllLecturer();
             model.addAttribute("lecturers", lecturers);
             model.addAttribute("course", course);
+            model.addAttribute("majors", CourseEnum.Major.values());
             return "librarian/course/librarian_update-course";
         }
     }
@@ -300,17 +303,20 @@ public class LibrarianController {
     @GetMapping("/courses/list/{pageIndex}")
     String showCoursesByPage(@PathVariable Integer pageIndex,
                              @RequestParam(required = false, defaultValue = "") String search,
-                             @RequestParam(required = false, defaultValue = "") String role,
+                             @RequestParam(required = false, defaultValue = "all") String major,
                              final Model model, HttpServletRequest request) {
         Page<Course> page;
-        if(null==role || "".equals(role)){
+        if(null==major || "all".equals(major)){
             page = courseService.findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(search, search, search, pageIndex, pageSize);
         }else {
-            page = courseService.findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(search, search, search, pageIndex, pageSize);
+            page = courseService.filterMajor(major, search, search, search, pageIndex, pageSize);
         }
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
         model.addAttribute("search", search);
+        model.addAttribute("currentPage", pageIndex);
+        model.addAttribute("majorSearch", major);
+        model.addAttribute("majors", CourseEnum.Major.values());
         return "librarian/course/librarian_courses";
     }
 

@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.model;
 
+import fpt.edu.eresourcessystem.enums.CourseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class Course {
     private List<String> lecturers;
     private List<String> students;
 
+    private CourseEnum.Major major;
     //Audit Log
     @CreatedBy
     private String createdBy;

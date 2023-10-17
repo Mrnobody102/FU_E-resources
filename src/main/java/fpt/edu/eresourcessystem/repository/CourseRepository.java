@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.repository;
 
+import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,8 @@ public interface CourseRepository extends
     List<Course> findByListId(List<String> courseId);
 
     Page<Course> findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(String code,String name,String description,Pageable pageable);
+
+    @Query("{$and: [{major: ?0}, {$or: [{code: {$regex: ?1}}, {name: {$regex: ?2}}, {description: {$regex: ?3}}]}]}")
+    Page<Course> filterMajor(String major, String code, String name, String description, Pageable pageable);
+
 }
