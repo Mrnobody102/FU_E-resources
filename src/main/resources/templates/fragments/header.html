@@ -378,7 +378,7 @@
                 </li>
                 <li class="header__navbar-main-item">
                     <a th:href="@{/student/course/saveCourse/list}" class="header__navbar-item-main-link">
-                        Personal storage
+                        My Library
                     </a>
                 </li>
                 <li class="header__navbar-main-item">
@@ -403,6 +403,7 @@
 <!--     Header -->
 <header class="header-guest">
     <div class="grid">
+        <div th:replace="~{common/login}"></div>
         <!-- Header navbar -->
         <nav class="header__navbar">
             <h2 class="header__system-name header__navbar-list">
@@ -420,8 +421,8 @@
                         <i class="header__navbar-icon far fa-question-circle"></i>
                         Help & FAQs</a>
                 </li>
-                <li class="header__navbar-item">
-                    <a th:href="@{/login}" onclick="" class="header__navbar-item-link" style="font-weight: bold">
+                <li id="openLoginModal" class="header__navbar-item">
+                    <a class="header__navbar-item-link" style="font-weight: bold">
                         <i class="header__navbar-icon fa fa-user" aria-hidden="true"></i>
                         LOGIN</a>
                 </li>

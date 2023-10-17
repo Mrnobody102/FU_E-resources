@@ -1,13 +1,12 @@
 package fpt.edu.eresourcessystem.model;
 
-import lombok.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -24,9 +23,9 @@ public class Course {
     private String courseName;
     private String description;
 
-    private List<String> documents; //list of documentId
     private List<String> topics;
     private List<String> lecturers;
+    private List<String> students;
 
     //Audit Log
     @CreatedBy

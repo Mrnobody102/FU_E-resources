@@ -20,7 +20,7 @@
     <main class="main_content">
         <div class="course-details-head">
             <a th:href="@{/lecturer/courses/list}">Back</a>
-            <span> &gt; <a th:href="@{'/lecturer/courses/detail/' + ${course.courseId}}"
+            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${course.courseId}}"
                            th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
         </div>
         <section>

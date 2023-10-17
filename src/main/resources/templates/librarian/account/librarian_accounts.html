@@ -6,11 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Librarian | Accounts</title>
 
-
-    <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
-            rel="stylesheet"
-    />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
@@ -63,21 +58,18 @@
                                 <th>Email</th>
                                 <th>Name</th>
                                 <th>Role</th>
-                                <th>IsAdmin</th>
                                 <th>Campus</th>
                                 <th></th>
                             </tr>
                             <th:block th:each="account : ${accounts}">
                                 <tr>
-                                    <td><a th:href="@{'/librarian/accounts/detail/' + ${account.accountId}}" th:text="${account.email}"></a></td>
+                                    <td><a th:href="@{'/librarian/accounts/' + ${account.accountId}}" th:text="${account.email}"></a></td>
                                     <td th:text="${account.name}"></td>
                                     <td th:text="${account.role}"></td>
-                                    <td>
-                                        <span th:if="${account.flagAdmin}" th:text="Admin"></span></td>
-                                    <td th:text="${account.campus}"></td>
+                                     <td th:text="${account.campus}"></td>
                                     <td colspan="2">
                                         <a class="update-account"
-                                           th:href="@{'/librarian/accounts/update/'+${account.accountId}}">Update</a>
+                                           th:href="@{'/librarian/accounts/'+${account.accountId} + '/update'}">Update</a>
                                         <a class="delete-account" th:id="${account.accountId}">Delete</a>
                                     </td>
                                 </tr>
@@ -92,8 +84,9 @@
                                     </a>
                                 </li>
 
-                                <li th:if="totalPage ne null" th:each = "pageIndex: ${#numbers.sequence(1,totalPage)}"  class="page-item">
-                                    <a th:text = "${pageIndex}" class="page-link page-account-number"  href="#"></a>
+                                <li th:if="totalPage ne null" th:each="pageIndex: ${#numbers.sequence(1,totalPage)}"
+                                    class="page-item">
+                                    <a th:text="${pageIndex}" class="page-link page-account-number" href="#"></a>
                                 </li>
 
                                 <li class="page-item">
@@ -113,13 +106,13 @@
 
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
-
-<!--Custom script-->
-<script th:src="@{/js/librarian.js}"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Bootstrap script-->
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+<!--Custom script-->
+<script th:src="@{/js/librarian.js}"></script>
+
 </body>
 </html>

@@ -1,9 +1,9 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import com.mongodb.lang.NonNull;
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,14 +18,14 @@ import java.util.List;
 @Document("lecturers")
 public class Lecturer {
     @Id
-    private String lecturerId;  // Reference to Account
-
-    @NonNull
+    private String lecturerId;
+    @NotNull
     private String accountId;
-    private List<String> lecturerCourses;
 
-    private List<String> uploadPermission;
-    private List<String> documentId;
+    private List<String> lecturerCourses;
+//    private List<String> uploadPermission;
+    private List<String> documents;
+    private List<String> answers; // 1 answer per question
 
     //Audit Log
     @CreatedBy

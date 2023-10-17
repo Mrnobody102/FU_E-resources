@@ -6,11 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Librarian | Update course</title>
 
-
-  <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
-          rel="stylesheet"
-  />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
@@ -44,7 +39,7 @@
       <div class="course-details-head">
         <a th:href="@{/librarian}">Home</a>
         <span> &gt; <a th:href="@{/librarian/courses/list}">Courses management</a></span>
-        <span> &gt; <a th:href="@{'/librarian/courses/detail/' + ${course.courseId} }" th:text="|${course.courseCode} - ${course.courseName}|">
+        <span> &gt; <a th:href="@{'/librarian/courses/' + ${course.courseId} }" th:text="|${course.courseCode} - ${course.courseName}|">
 
         </a></span>
         <span> &gt; Update course</span>

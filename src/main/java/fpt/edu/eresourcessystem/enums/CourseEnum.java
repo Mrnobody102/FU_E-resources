@@ -2,7 +2,7 @@ package fpt.edu.eresourcessystem.enums;
 
 public class CourseEnum {
     public enum Major {
-        SE("Information Technology"),
+        HE("Information Technology"),
         HS("Business Administration"),
         HA("Language Studies");
         private final String displayValue;

@@ -7,10 +7,7 @@
   <title>Personal course</title>
   <link rel="stylesheet" th:href="@{/css/base.css}"/>
   <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-  <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
-          rel="stylesheet"
-  />
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
 <body>
@@ -74,7 +71,7 @@
                   <div class="home__course-wrapper" th:each="course : ${coursesSaved}">
                     <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
                     <a class="home__course-name" th:text="${course.courseName}"
-                       th:href="@{'/student/courses/detail/' + ${course.courseId}}"></a>
+                       th:href="@{'/student/courses/' + ${course.courseId}}"></a>
                     <p class="home__course-description" th:text="${course.description}">
                       <!--                                        The module consists of 6 chapters providing students with basic knowledge of-->
                       <!--                                        Object, research methods-->
@@ -148,6 +145,6 @@
   <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 </div>
 
-<script th:src="@{/js/librarian.js}"></script>
+<script th:src="@{/js/student.js}"></script>
 </body>
 </html>

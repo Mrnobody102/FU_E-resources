@@ -15,7 +15,6 @@ public interface CourseRepository extends
         MongoRepository<Course, String> {
 
     Optional<Course> findById(String courseId);
-    // nên chỉ định rõ kq trả về
 
     Course findByCourseCode(String courseCode);
 

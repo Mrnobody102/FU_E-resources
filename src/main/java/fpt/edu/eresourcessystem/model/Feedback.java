@@ -1,14 +1,11 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import lombok.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +14,8 @@ import java.util.List;
 public class Feedback {
     @Id
     private String feedbackId;
-    private String accountId;
+    private String studentId;
+    private String feedbackEmotion;
     private String feedbackContent;
 
     //Audit Log

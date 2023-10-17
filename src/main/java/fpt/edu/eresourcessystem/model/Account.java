@@ -3,8 +3,8 @@ package fpt.edu.eresourcessystem.model;
 
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.*;
@@ -29,7 +29,7 @@ public class Account {
     private String password;
 
     @Indexed(unique = true)
-    @NotNull(message = "{email.not.null}")
+    @NotNull(message = "{validation.email.not.null}")
     private String email;
 
     private String name;
@@ -40,8 +40,6 @@ public class Account {
     private AccountEnum.Campus campus;
 
     private AccountEnum.Role role;
-
-    private boolean flagAdmin;
 
     //Audit Log
     @CreatedBy

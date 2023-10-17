@@ -1,8 +1,8 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import lombok.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,17 +10,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("questions")
-public class Question {
+@Document("notes")
+public class Note {
     @Id
-    private String questionId;
-    private String question;
+    private String noteId;
     private String studentId;
     private String documentId;
-
-    // Answer
-    private String answer;
-    private String lecturerId;
 
     //Audit Log
     @CreatedBy

@@ -54,12 +54,12 @@
                   </tr>
                   <th:block th:each="course : ${courses}">
                   <tr>
-                    <td><a th:href="|@{/user/courses/detail}?courseId= + ${course.courseId}|"
+                    <td><a th:href="|@{/user/courses}?courseId= + ${course.courseId}|"
                     th:text="${course.courseCode}"></a></td>
                     <td th:text="${course.courseName}"></td>
                     <td th:text="${course.description}"></td>
                     <td colspan="2">
-                      <a class="update-account" th:href="@{'/librarian/courses/detail/'+${course.courseId}}">View</a>
+                      <a class="update-account" th:href="@{'/lecturer/courses/'+${course.courseId}}">View</a>
                     </td>
                   </tr>
                   </th:block>

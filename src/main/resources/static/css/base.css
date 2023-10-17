@@ -5,26 +5,27 @@
     --text-color: #000;
     --title-color: #DD173B;
     --border-color: #dbdbdb;
-    --hover-color: #C4A589;
+    --hover-color: #825cf3;
+    --bg-hover-color: #e3e6fc;
     --hover-color-2: #CEE8E9;
-    --gradient-color: #F39019;
-    --primary-color: #d24402;
+    --gradient-color: #8D72E1;
+    --primary-color: #6C4AB6;
     --primary-color-rgb: 210, 68, 2;
     --primary-btn-color: #419a1d;
     --lib-dashboard-color: #0a53be;
-    --primary-back-ground: rgb(210, 68, 2);
+    /*--primary-back-ground: rgb(210, 68, 2);*/
     --second-back-ground: rgb(240, 234, 234);
     --content-width: 87.5%;
 }
 
 * {
     box-sizing: inherit;
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 }
 
 html {
     font-size: 65%;
     line-height: 2.0rem;
-    font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
 }
 
@@ -46,14 +47,14 @@ li {
     list-style: none;
 }
 
-/*input::placeholder,*/
-/*input::-webkit-datetime-edit-fields-wrapper {*/
-/*    padding-left: 6px;*/
-/*}*/
-
 .app__container-content-wrapper {
     display: flex;
     justify-content: center;
+}
+
+/* Transition */
+.trans-bgc-ease{
+    transition: background-color 0.5s ease;
 }
 
 /* Responsive */
@@ -98,8 +99,9 @@ li {
     bottom: 0;
     right: 0;
     left: 0;
-    display: flex;
+    display: none;
     animation: fadeIn linear 0.1s;
+    z-index: 10;
 }
 
 .modal__overlay {
@@ -117,7 +119,6 @@ li {
     background-color: var(--white-color);
     margin: auto;
     position: relative;
-    z-index: 1;
     border-radius: 5px;
     animation: growthScale linear .2s;
 }

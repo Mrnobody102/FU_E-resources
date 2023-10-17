@@ -7,10 +7,7 @@
     <title>Librarian | Add account</title>
 
 
-    <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
-            rel="stylesheet"
-    />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
@@ -19,6 +16,9 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <!-- SweetAlert từ CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -133,9 +133,9 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="lib_input-label"><label th:for="role">Role</label></td>
+                                            <td class="lib_input-label"><label for="role">Role</label></td>
                                             <td>
-                                                <select class="lib_input" th:name="role" th:id="role">
+                                                <select class="lib_input" name="role" id="role">
                                                     <option th:each="role : ${roles}"
                                                             th:text="${role}"
                                                             th:value="${role}">
@@ -143,11 +143,11 @@
                                                 </select>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr id="isAdminCheckbox" style="display: none">
                                             <td></td>
                                             <td>
-                                                <input type="checkbox" name="IsAdmin" th:field="*{flagAdmin}" th:id="isAdmin">
-                                                IsAdmin
+                                                <input type="checkbox" name="isAdmin" id="isAdmin">
+                                                <label for="isAdmin">Is Admin</label>
                                             </td>
                                         </tr>
 
@@ -171,17 +171,15 @@
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 
-<!--Custom script-->
-<script th:src="@{/js/librarian.js}"></script>
-
 <!--Bootstrap script-->
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 
+<!--Custom script-->
+<script th:src="@{/js/librarian.js}"></script>
 
 <!--Validate-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
 <script th:src="@{/js/validation.js}"></script>
 
