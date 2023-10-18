@@ -41,6 +41,8 @@ public class Account {
 
     private AccountEnum.Role role;
 
+//    private Boolean activeStatus;
+
     //Audit Log
     @CreatedBy
     private String createdBy;

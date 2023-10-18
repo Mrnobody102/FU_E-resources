@@ -13,7 +13,7 @@
 <body>
 <div class="app_container">
     <!-- Header -->
-    <div class="row" th:replace="~{fragments/header::studentHeaderSection}"></div>
+    <div th:replace="~{fragments/header::studentHeaderSection}"></div>
 
     <!--  Main-->
     <div class="main_content">
@@ -69,6 +69,7 @@
                             <ul class="home__course-list">
                                 <li class="home__course-item">
                                     <div class="home__course-wrapper" th:each="course : ${courses}">
+
 
 
                                         <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
@@ -135,18 +136,35 @@
                             </li>
                         </div>
                     </div>
-
                 </div>
-
-
             </div>
         </div>
     </div>
+    <script>
+        function toggleDropdown() {
+            var dropdownContent = document.querySelector('.dropdown-content');
+            if (dropdownContent.style.display === "none" || dropdownContent.style.display === "") {
+                dropdownContent.style.display = "block";
+                setTimeout(function() {
+                    dropdownContent.style.opacity = "1";
+                }, 10); // delay a bit to ensure the transition takes effect
+            } else {
+                dropdownContent.style.opacity = "0";
+                setTimeout(function() {
+                    dropdownContent.style.display = "none";
+                }, 300); // delay to wait for the transition to finish
+            }
+        }
+
+    </script>
 
     <!-- Footer -->
-    <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+    <div th:replace="~{fragments/footer :: footerSection}"></div>
 </div>
 
+<!--jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--Custom script-->
 <script th:src="@{/js/student.js}"></script>
 </body>
 </html>

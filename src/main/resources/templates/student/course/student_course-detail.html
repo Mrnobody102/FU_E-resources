@@ -13,7 +13,7 @@
 <body>
 <div class="app_container">
   <!-- Header -->
-  <div class="row" th:replace="~{fragments/header::studentHeaderSection}"></div>
+  <div th:replace="~{fragments/header::studentHeaderSection}"></div>
 
   <!-- Content -->
   <main class="main_content">
@@ -65,9 +65,11 @@
   </main>
 
   <!-- Footer -->
-  <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+  <div th:replace="~{fragments/footer :: footerSection}"></div>
 </div>
 
+<!--jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script th:src="@{/js/student.js}"></script>
 </body>
 </html>

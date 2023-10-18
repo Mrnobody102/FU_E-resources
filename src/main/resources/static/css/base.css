@@ -1,5 +1,6 @@
-/* COMMON */
+/*===== COMMON =====*/
 :root {
+    /* Color */
     --white-color: #fff;
     --black-color: #000;
     --text-color: #000;
@@ -13,14 +14,23 @@
     --primary-color-rgb: 210, 68, 2;
     --primary-btn-color: #419a1d;
     --lib-dashboard-color: #0a53be;
-    /*--primary-back-ground: rgb(210, 68, 2);*/
     --second-back-ground: rgb(240, 234, 234);
     --content-width: 87.5%;
+
+    /* Font */
+    --body-font: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+
+    /* z-index */
+    --z-fixed: 100;
+
+    /* Navbar */
+    --header-height: 3.5rem;
+    --nav-width: 219px;
 }
 
 * {
     box-sizing: inherit;
-    font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-family: var(--body-font);
 }
 
 html {

@@ -179,7 +179,7 @@ public class LibrarianController {
                         librarian.setAccountId(account.getAccountId());
                         librarian.setFlagAdmin(isAdmin); // sửa sau
                         librarianService.addLibrarian(librarian);
-                    }else {
+                    } else {
                         Librarian librarian = librarianService.findByAccountId(account.getAccountId());
                         librarian.setFlagAdmin(isAdmin);
                         librarianService.updateLibrarian(librarian);
@@ -218,8 +218,8 @@ public class LibrarianController {
     /**
      * Delete an account by accountId
      *
-     * @param accountId accountId that delete
-     * @return list accounts after delete
+     * @param accountId id of account that delete
+     * @return list of accounts after delete
      */
     @GetMapping("/accounts/{accountId}/delete")
     public String deleteAccount(@PathVariable String accountId) {

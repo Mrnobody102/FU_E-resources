@@ -22,7 +22,6 @@ public class Student {
     @NotNull
     private String accountId;
 
-    private List<String> enrolledCourses;
     private List<String> savedDocuments;
     private List<String> savedCourses;
     private List<String> notes;

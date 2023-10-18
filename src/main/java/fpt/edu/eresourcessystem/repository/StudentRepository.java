@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository("studentRepository")
 public interface StudentRepository extends MongoRepository<Student, String> {
-    @Query("SELECT s FROM Studdent s WHERE s.accountId = ?1")
+//    @Query("SELECT s FROM students s WHERE s.accountId = ?1")
     Student findByAccountId(String accountId);
 }
