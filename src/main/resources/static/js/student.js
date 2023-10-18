@@ -1,12 +1,22 @@
 $(document).ready(function () {
 
+    /*
+        NAVBAR
+     */
+
     // Navbar when choose
     let path = window.location.pathname;
-    $('.header__navbar-list > li > a[href="' + path + '"]').removeClass('header__navbar-item-main-link');
-    $('.header__navbar-list > li > a[href="' + path + '"]').addClass('header__navbar-item-main-link_active');
-    $('.header__navbar-list > li > a[href="' + path + '"]').parent().addClass('header__navbar-main-item_active');
+    let $targetElements = $('.header__navbar-list > li > a[href="' + path + '"]');
 
-    /*=============== SHOW SIDEBAR ===============*/
+    $targetElements.removeClass('header__navbar-item-main-link');
+    $targetElements.addClass('header__navbar-item-main-link_active');
+    $targetElements.parent().addClass('header__navbar-main-item_active');
+
+    /*
+        SIDEBAR
+     */
+
+    // Show sidebar
     const showSidebar = (toggleId, sidebarId, mainId) => {
         const toggle = document.getElementById(toggleId),
             sidebar = document.getElementById(sidebarId),
@@ -24,7 +34,7 @@ $(document).ready(function () {
     }
     showSidebar('toggle', 'sidebar', 'main')
 
-    /*=============== LINK ACTIVE ===============*/
+    // Link active
     const sidebarLink = document.querySelectorAll('.sidebar__link')
 
     function linkColor() {
@@ -33,4 +43,11 @@ $(document).ready(function () {
     }
 
     sidebarLink.forEach(l => l.addEventListener('click', linkColor))
+
+
+    /*
+        PAGINATION
+     */
+
+
 });

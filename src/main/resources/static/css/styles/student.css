@@ -34,7 +34,7 @@
 .sidebar {
     width: 280px;
     height: 100%;
-    padding: 0 0 0px 16px;
+    padding: 0 0 0 16px;
     background-color: white;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -286,6 +286,6 @@
 
     /* Add padding main */
     .main-pd {
-        min-width: calc(100% - 86px);
+        width: calc(100% - 86px);
     }
 }

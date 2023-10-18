@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+ lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,32 +36,31 @@
                 <div class="lib_data-list-wrapper">
                     <div class="lib_search-container">
                         <form class="d-flex" th:action="@{/librarian/accounts/list/1}" method="get" th:id="search-form">
-                        <div class="d-flex">
+                            <div class="d-flex">
 
-                                <input class="lib_search-content" type="text" placeholder="Search user.." th:name="search"
-                                       th:id="search-text" th:value="${search}"/>
-                                <div class="lib_search-btn-wrapper">
-                                    <button type="submit" class="lib_search-btn">
-                                        <i class="lib_search-btn-icon fa fa-search"></i>
-                                    </button>
-                                </div>
-                            <a class="btn lib_show-all-btn" th:href="@{/librarian/accounts/list/1}">Show AlL</a>
-                        </div>
-                        <div>
-                            <a class="btn lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">Add new user</a>
-                        </div>
+                                <input class="lib_search-content" type="text" placeholder="Search user.."
+                                       th:name="search" th:id="search-text" th:value="${search}"/>
+                                <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
+                                    <i class="lib_search-btn-icon fa fa-search"></i>
+                                </button>
+                                <a class="btn lib_show-all-btn" th:href="@{/librarian/accounts/list/1}">Show AlL</a>
+                            </div>
+                            <div>
+                                <a class="btn lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">Add new
+                                    user</a>
+                            </div>
 
-                        <div class="d-flex">
-                            <select class="lib_filter" th:name="role" th:id="role" onchange="this.form.submit()">
-                                <option value="all">All
-                                </option>
-                                <option th:each="role : ${roles}"
-                                        th:text="${role}"
-                                        th:value="${role}"
-                                        th:selected="(${roleSearch} == ${role.getDisplayValue()})" >
-                                </option>
-                            </select>
-                        </div>
+                            <div class="d-flex">
+                                <select class="lib_filter" th:name="role" th:id="role" onchange="this.form.submit()">
+                                    <option value="all">All
+                                    </option>
+                                    <option th:each="role : ${roles}"
+                                            th:text="${role}"
+                                            th:value="${role}"
+                                            th:selected="(${roleSearch} == ${role.getDisplayValue()})">
+                                    </option>
+                                </select>
+                            </div>
                         </form>
                     </div>
 
@@ -76,10 +75,11 @@
                             </tr>
                             <th:block th:each="account : ${accounts}">
                                 <tr>
-                                    <td><a th:href="@{'/librarian/accounts/' + ${account.accountId}}" th:text="${account.email}"></a></td>
+                                    <td><a th:href="@{'/librarian/accounts/' + ${account.accountId}}"
+                                           th:text="${account.email}"></a></td>
                                     <td th:text="${account.name}"></td>
                                     <td th:text="${account.role}"></td>
-                                     <td th:text="${account.campus}"></td>
+                                    <td th:text="${account.campus}"></td>
                                     <td colspan="2">
                                         <a class="update-account"
                                            th:href="@{'/librarian/accounts/'+${account.accountId} + '/update'}">Update</a>
@@ -89,25 +89,30 @@
                             </th:block>
                         </table>
                         <nav th:if="${totalPage} > 1" aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">Previous</span>
+                            <ul class="pagination" id="pagination">
+                                <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
+                                    <a class="page-link previous-page-account"
+                                       style="cursor: pointer">
+                                        &laquo;
                                     </a>
                                 </li>
 
-                                <li th:each="pageIndex: ${#numbers.sequence(1,totalPage)}"
-                                    class="page-item">
-                                    <a th:text="${pageIndex}" class="page-link page-account-number"
-                                       th:classappend=" (${currentPage == pageIndex}) ? active : '' "
-                                       href="#"></a>
+                                <li th:each="pageIndex: ${pages}" class="page-item"
+                                    th:classappend=" (${currentPage == pageIndex}) ? 'active' : '' ">
+                                    <th:block th:if="${pageIndex == -1}">
+                                        <span class="page-link">...</span>
+                                    </th:block>
+                                    <th:block th:if="${pageIndex != -1}">
+                                        <a th:text="${pageIndex}" th:value="${pageIndex}"
+                                           class="page-link page-account-number"
+                                           style="cursor: pointer"
+                                        ></a>
+                                    </th:block>
                                 </li>
-
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                        <span class="sr-only">Next</span>
-                                        <span aria-hidden="true">&raquo;</span>
+                                <li th:class="${currentPage == totalPage} ? 'page-item disabled' : 'page-item'">
+                                    <a class="page-link next-page-account"
+                                       style="cursor: pointer">
+                                        &raquo;
                                     </a>
                                 </li>
                             </ul>
@@ -129,10 +134,9 @@
 <!--Custom script-->
 <script th:src="@{/js/librarian.js}"></script>
 <script>
-
-        $('form select').on('change', function(){
-                $(this).closest('form').submit();
-        });
+    $('form select').on('change', function () {
+        $(this).closest('form').submit();
+    });
 </script>
 
 </body>

@@ -4,6 +4,7 @@ import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
+import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -52,7 +53,7 @@ public class LibrarianController {
     }
 
     /*
-    ACCOUNTS MANAGEMENT
+        ACCOUNTS MANAGEMENT
      */
 
     /**
@@ -74,6 +75,9 @@ public class LibrarianController {
         }else {
             page = accountService.findByRoleAndUsernameLikeOrEmailLike( role, search, search, pageIndex, pageSize);
         }
+        List<Integer> pages =  CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+        System.out.println(pages);
+        model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("accounts", page.getContent());
         model.addAttribute("search", search);
@@ -327,6 +331,8 @@ public class LibrarianController {
         }else {
             page = courseService.filterMajor(major, search, search, search, pageIndex, pageSize);
         }
+        List<Integer> pages =  CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+        model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
         model.addAttribute("search", search);

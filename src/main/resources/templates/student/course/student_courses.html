@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      lang="en">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -71,7 +71,6 @@
                                     <div class="home__course-wrapper" th:each="course : ${courses}">
 
 
-
                                         <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
                                         <a class="home__course-name" th:text="${course.courseName}"
                                            th:href="@{'/student/courses/' + ${course.courseId}}"></a>
@@ -105,7 +104,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="pagination home-courses__pagination-distance">
+                        <ul class="pagination home-courses__pagination-distance">
                             <li class="pagination-item">
                                 <a href="" class="pagination-item__link">
                                     <i class="pagination-item__icon fas fa-angle-left"></i>
@@ -114,27 +113,13 @@
                             <li class="pagination-item pagination-item--active">
                                 <a href="" class="pagination-item__link">1</a>
                             </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">2</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">3</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">4</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">...</a>
-                            </li>
-                            <li class="pagination-item">
-                                <a href="" class="pagination-item__link">14</a>
-                            </li>
+
                             <li class="pagination-item">
                                 <a href="" class="pagination-item__link">
                                     <i class="pagination-item__icon fas fa-angle-right"></i>
                                 </a>
                             </li>
-                        </div>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -145,12 +130,12 @@
             var dropdownContent = document.querySelector('.dropdown-content');
             if (dropdownContent.style.display === "none" || dropdownContent.style.display === "") {
                 dropdownContent.style.display = "block";
-                setTimeout(function() {
+                setTimeout(function () {
                     dropdownContent.style.opacity = "1";
                 }, 10); // delay a bit to ensure the transition takes effect
             } else {
                 dropdownContent.style.opacity = "0";
-                setTimeout(function() {
+                setTimeout(function () {
                     dropdownContent.style.display = "none";
                 }, 300); // delay to wait for the transition to finish
             }
