@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.model.Course;
+import fpt.edu.eresourcessystem.model.Librarian;
 import fpt.edu.eresourcessystem.model.Student;
 import fpt.edu.eresourcessystem.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,18 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public void addStudent(Student student) {
-        studentRepository.insert(student);
+    public Student addStudent(Student student) {
+        if(null==student.getAccountId()){
+            Student result = studentRepository.save(student);
+            return result;
+        }else {
+            Student checkExist = studentRepository.findByAccountId(student.getAccountId());
+            if(null!=checkExist){
+                Student result = studentRepository.save(student);
+                return result;
+            }
+        }
+        return null;
     }
 
     @Override

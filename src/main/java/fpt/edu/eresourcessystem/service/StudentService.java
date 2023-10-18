@@ -6,7 +6,7 @@ import fpt.edu.eresourcessystem.model.Topic;
 import java.util.List;
 
 public interface StudentService {
-    void addStudent(Student student);
+    Student addStudent(Student student);
 
     Student findByAccountId(String accountId);
 

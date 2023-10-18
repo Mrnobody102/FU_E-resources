@@ -51,14 +51,14 @@
             </div>
             <div class="lib_content">
                 <div class="add-form">
-                    <div th:if="${param.success}">
-                        <div class="alert alert-info">Save account successful !!!</div>
-                    </div>
-                    <div th:if="${param.error}">
-                        <div class="alert alert-danger">Please account information again !!!
-                            Account not exist or AccountId existed.
-                        </div>
-                    </div>
+<!--                    <div th:if="${param.success}">-->
+<!--                        <div class="alert alert-info">Save account successful !!!</div>-->
+<!--                    </div>-->
+<!--                    <div th:if="${param.error}">-->
+<!--                        <div class="alert alert-danger">Please account information again !!!-->
+<!--                            Account not exist or AccountId existed.-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="add-form-content">
                         <form method="post" role="form" th:action="@{/librarian/accounts/update}"
                               th:object="${account}" th:id="update-account">
@@ -146,11 +146,13 @@
                                         </select>
                                     </td>
                                 </tr>
-                                <tr id="isAdminCheckbox" class="" th:classappend="(${account.role.getDisplayValue() != 'LIBRARIAN'}) ? 'display-none' : ''">
+                                <tr id="isAdminCheckbox" class="" th:if="(${account.role.getDisplayValue() == 'LIBRARIAN'})">
                                     <td></td>
                                     <td>
-                                        <input type="checkbox" th:name="isAdmin" th:id="isAdmin">
-                                        <label th:for="isAdmin">Is Admin</label>
+                                        <input type="checkbox" name="isAdmin" id="isAdmin"
+                                        th:checked="${isAdmin}"
+                                        >
+                                        <label for="isAdmin">Is Admin</label>
                                     </td>
                                 </tr>
 

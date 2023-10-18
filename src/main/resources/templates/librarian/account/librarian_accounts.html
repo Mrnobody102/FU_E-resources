@@ -88,7 +88,7 @@
                                 </tr>
                             </th:block>
                         </table>
-                        <nav aria-label="Page navigation example">
+                        <nav th:if="${totalPage} > 1" aria-label="Page navigation example">
                             <ul class="pagination">
                                 <li class="page-item">
                                     <a class="page-link" href="#" aria-label="Previous">
@@ -97,7 +97,7 @@
                                     </a>
                                 </li>
 
-                                <li th:if="totalPage ne null" th:each="pageIndex: ${#numbers.sequence(1,totalPage)}"
+                                <li th:each="pageIndex: ${#numbers.sequence(1,totalPage)}"
                                     class="page-item">
                                     <a th:text="${pageIndex}" class="page-link page-account-number"
                                        th:classappend=" (${currentPage == pageIndex}) ? active : '' "

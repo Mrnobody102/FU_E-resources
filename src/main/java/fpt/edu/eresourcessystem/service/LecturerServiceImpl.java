@@ -30,8 +30,8 @@ public class LecturerServiceImpl implements LecturerService{
             Lecturer result = lecturerRepository.save(lecturer);
             return result;
         }else {
-            Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getAccountId());
-            if(!checkExist.isPresent()){
+            Lecturer checkExist = lecturerRepository.findByAccountId(lecturer.getAccountId());
+            if(null==checkExist){
                 Lecturer result = lecturerRepository.save(lecturer);
                 return result;
             }

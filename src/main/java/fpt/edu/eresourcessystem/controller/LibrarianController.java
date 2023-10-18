@@ -97,7 +97,8 @@ public class LibrarianController {
     }
 
     @PostMapping("/accounts/add")
-    public String addAccount(@ModelAttribute Account account, @RequestParam(name = "isAdmin", required = false) boolean isAdmin) {
+    public String addAccount(@ModelAttribute Account account,
+                             @RequestParam(name = "isAdmin", required = false) boolean isAdmin) {
         Account checkExist = accountService.findByEmail(account.getEmail());
         if (checkExist != null) {
             return "redirect:/librarian/accounts/add?error";
@@ -130,15 +131,20 @@ public class LibrarianController {
         return "redirect:/librarian/accounts/add?success";
     }
 
-    @GetMapping({"/accounts/{accountId}/update", "/update"})
+    @GetMapping({"/accounts/{accountId}/update", "/accounts/updated/{accountId}"})
     public String updateAccountProcess(@PathVariable(required = false) String accountId, final Model model) {
         if (null == accountId) {
             accountId = "";
         }
         Account account = accountService.findByAccountId(accountId);
         if (null == account) {
-            return "redirect:librarian/accounts/update?error";
+            return "exception/404";
         } else {
+            if(AccountEnum.Role.LIBRARIAN.equals(account.getRole())){
+                Librarian librarian = librarianService.findByAccountId(account.getAccountId());
+                boolean isAdmin = librarian.isFlagAdmin();
+                model.addAttribute("isAdmin", isAdmin);
+            }
             model.addAttribute("roles", AccountEnum.Role.values());
             model.addAttribute("campuses", AccountEnum.Campus.values());
             model.addAttribute("genders", AccountEnum.Gender.values());
@@ -149,7 +155,9 @@ public class LibrarianController {
     }
 
     @PostMapping("/accounts/update")
-    public String updateAccount(@ModelAttribute Account account, final Model model) {
+    public String updateAccount(@ModelAttribute Account account,
+                                @RequestParam(name = "isAdmin", required = false) boolean isAdmin,
+                                final Model model) {
         Account checkExist = accountService.findByAccountId(account.getAccountId());
         if (null == checkExist) {
             model.addAttribute("errorMessage", "account not exist.");
@@ -159,7 +167,8 @@ public class LibrarianController {
             Account checkEmailDuplicate = accountService.findByEmail(account.getEmail());
             if (checkEmailDuplicate != null &&
                     !checkExist.getEmail().toLowerCase().equals(account.getEmail())) {
-                return "redirect:/librarian/courses/update?error";
+                String result = "redirect:/librarian/accounts/updated/" +account.getAccountId() + "?error";
+                return result;
             }
             String role = String.valueOf(account.getRole());
             System.out.println(role);
@@ -168,8 +177,13 @@ public class LibrarianController {
                     if (null == librarianService.findByAccountId(account.getAccountId())) {
                         Librarian librarian = new Librarian();
                         librarian.setAccountId(account.getAccountId());
-                        librarian.setFlagAdmin(false); // sửa sau
+                        librarian.setFlagAdmin(isAdmin); // sửa sau
                         librarianService.addLibrarian(librarian);
+                    }else {
+                        Librarian librarian = librarianService.findByAccountId(account.getAccountId());
+                        librarian.setFlagAdmin(isAdmin);
+                        librarianService.updateLibrarian(librarian);
+
                     }
                     break;
                 case "STUDENT":
@@ -187,7 +201,8 @@ public class LibrarianController {
                     }
                     break;
                 default:
-                    return "redirect:/librarian/accounts/update?error";
+                    String result = "redirect:/librarian/accounts/updated/" +account.getAccountId() + "?error";
+                    return result;
             }
             accountService.updateAccount(account);
             model.addAttribute("account", account);
@@ -195,7 +210,8 @@ public class LibrarianController {
             model.addAttribute("campuses", AccountEnum.Campus.values());
             model.addAttribute("genders", AccountEnum.Gender.values());
             model.addAttribute("success", "");
-            return "librarian/account/librarian_update-account";
+            String result = "redirect:/librarian/accounts/updated/" +account.getAccountId() + "?success";
+            return result;
         }
     }
 
