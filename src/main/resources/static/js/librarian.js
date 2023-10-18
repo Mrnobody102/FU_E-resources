@@ -13,6 +13,7 @@ $(document).ready(function () {
         }
     });
 
+
     // Pagination
 
     $(".page-course-number").click(function () {

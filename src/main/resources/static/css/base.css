@@ -313,5 +313,9 @@ li {
 .dropdown-content a:hover {
     background-color: var(--second-back-ground);
 }
-
-
+.display-none{
+    display: none;
+}
+.display-block{
+    display: block;
+}
