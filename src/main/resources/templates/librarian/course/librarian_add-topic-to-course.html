@@ -50,12 +50,7 @@
                 </div>
                 <div class="lib_content">
                     <div class="add-form">
-                        <div th:if="${param.success}">
-                            <div class="alert alert-info">Save course successful !!!</div>
-                        </div>
-                        <div th:if="${param.error}">
-                            <div class="alert alert-danger">Please check course information again !!!</div>
-                        </div>
+                        
                         <div class="add-form-content">
                             <table class="lib_course-info-topic" th:if="course ne null">
                                 <tr>
@@ -70,7 +65,7 @@
                                             <div>
                                                 <a th:href="@{'/librarian/courses/updateTopic/' + ${topic.topicId}}">Edit</a>
                                                 <a class="delete-topic"
-                                                     th:id="'/' + ${course.courseId} + '/' + ${topic.topicId}">Remove</a>
+                                                     th:id=" ${course.courseId} + '/' + ${topic.topicId}">Remove</a>
                                             </div>
                                         </th:block>
                                     </td>
@@ -92,8 +87,7 @@
                                         <td><input type="text"
                                                    class="lib_input form-control" th:field="*{topicTitle}"
                                                    placeholder="Enter topic title" required>
-                                            <p class="text-danger" th:errors="*{topicTitle}"
-                                               th:if="${#fields.hasErrors('topicTitle')}"></p>
+
                                         </td>
                                     </tr>
                                     <tr>
@@ -102,8 +96,7 @@
                                         <td><textarea
                                                    class="lib_textarea form-control" th:field="*{topicDescription}"
                                                       placeholder="Enter description"></textarea>
-                                            <p class="text-danger" th:errors="*{topicDescription}"
-                                               th:if="${#fields.hasErrors('topicDescription')}"></p>
+
                                         </td>
                                     </tr>
                                     <tr>
@@ -124,7 +117,7 @@
 
 <!-- Footer -->
 <div th:replace="~{fragments/footer :: footerSection}"></div>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Custom script-->
 <script th:src="@{/js/librarian.js}"></script>
 
