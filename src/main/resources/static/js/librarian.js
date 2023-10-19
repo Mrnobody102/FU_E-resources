@@ -28,11 +28,8 @@ $(document).ready(function () {
         window.location = "/librarian/accounts/list/" + pageIndex + "?search=" + search;
 
     });
-// Function to handle deletion with Swal alert
+// Hàm xử lý xóa chung
     function handleDeletion(url, successMessage) {
-        var currentPage = window.location.href;
-        var currentPageWithoutSuccess = currentPage.replace(/[?&]success(=[^&]*)?(&|$)/, '');
-
         Swal.fire({
             title: 'Do you want to delete this item?',
             showCancelButton: true,
@@ -42,12 +39,14 @@ $(document).ready(function () {
             if (result.isConfirmed) {
                 $.ajax({
                     type: "GET",
-                    url: url + "?currentPage=" + encodeURIComponent(currentPageWithoutSuccess),
+                    url: url,
                     success: function () {
-                        window.location.href = currentPageWithoutSuccess + "?success";
+                        // Xử lý thành công
+                        window.location.reload(); // Hoặc chuyển hướng đến trang khác
                         Swal.fire('Deleted!', successMessage, 'success');
                     },
                     error: function () {
+                        // Xử lý lỗi
                         Swal.fire('Error', 'Failed to delete the item.', 'error');
                     }
                 });
@@ -57,22 +56,22 @@ $(document).ready(function () {
         });
     }
 
-// Handle delete account click
+// Xóa tài khoản khi nhấn vào một phần tử có class "delete-account"
     $("body").on("click", ".delete-account", function () {
         var accountId = $(this).attr("id");
-        handleDeletion("/librarian/accounts/" + accountId + "/delete", 'Account is deleted');
+        handleDeletion(`/librarian/accounts/${accountId}/delete`, 'Account is deleted');
     });
 
-// Handle delete course click
+// Xóa khóa học khi nhấn vào một phần tử có class "delete-course"
     $("body").on("click", ".delete-course", function () {
         var courseId = $(this).attr("id");
-        handleDeletion("/librarian/courses/delete/" + courseId, 'Course is deleted');
+        handleDeletion(`/librarian/courses/delete/${courseId}`, 'Course is deleted');
     });
 
-// Handle delete topic click
+// Xóa chủ đề khi nhấn vào một phần tử có class "delete-topic"
     $("body").on("click", ".delete-topic", function () {
         var topicId = $(this).attr("id");
-        handleDeletion("/librarian/courses/deleteTopic/" + topicId, 'Topic is deleted');
+        handleDeletion(`/librarian/courses/deleteTopic/${topicId}`, 'Topic is deleted');
     });
 
 });

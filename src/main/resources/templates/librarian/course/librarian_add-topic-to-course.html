@@ -22,6 +22,16 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 
+    <style>
+        label.error {
+            margin-top: 5px;
+            margin-left: 5px;
+            display: block;
+            color: red;
+            /*font-size: smaller;*/
+        }
+    </style>
+
 </head>
 <body class="app_container">
 
@@ -50,7 +60,7 @@
                 </div>
                 <div class="lib_content">
                     <div class="add-form">
-                        
+
                         <div class="add-form-content">
                             <table class="lib_course-info-topic" th:if="course ne null">
                                 <tr>
@@ -72,7 +82,7 @@
                                 </tr>
                             </table>
                             <form method="post" role="form" th:action="@{/librarian/courses/addTopic}"
-                                  th:object="${topic}" th:id="add-form">
+                                  th:object="${topic}" th:id="add-topic">
                                 <h3>Add topic</h3>
                                 <table class="table-form lib_table">
                                     <tr>
@@ -84,7 +94,7 @@
                                     </tr>
                                     <tr>
                                         <td class="lib_input-label"><label th:for="topicTitle">Topic Title</label></td>
-                                        <td><input type="text"
+                                        <td><input type="text" th:id="topicTitle"
                                                    class="lib_input form-control" th:field="*{topicTitle}"
                                                    placeholder="Enter topic title" required>
 
@@ -93,7 +103,7 @@
                                     <tr>
                                         <td class="lib_input-label"><label th:for="topicDescription">Topic
                                             Description</label></td>
-                                        <td><textarea
+                                        <td><textarea th:id="topicDescription"
                                                    class="lib_textarea form-control" th:field="*{topicDescription}"
                                                       placeholder="Enter description"></textarea>
 
@@ -117,13 +127,41 @@
 
 <!-- Footer -->
 <div th:replace="~{fragments/footer :: footerSection}"></div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!--Custom script-->
-<script th:src="@{/js/librarian.js}"></script>
 
 <!--Bootstrap script-->
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+
+<!--Validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script th:src="@{/js/validation.js}"></script>
+<!--Custom script-->
+<script th:src="@{/js/librarian.js}"></script>
+
+
+<script th:inline="javascript">
+    validate_addTopic();
+
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Save course successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check course information again!',
+            'error'
+        );
+    }
+</script>
+
 </body>
 </html>

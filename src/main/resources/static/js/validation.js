@@ -221,4 +221,30 @@ function validate_updateAccount() {
             }
         }
     });
+
+}
+
+function validate_addTopic() {
+    $('#add-topic').validate({
+        rules: {
+            topicTitle: {
+                required: true,
+                minlength: 3, // Change this as needed
+                maxlength: 50  // Change this as needed
+            },
+            topicDescription: {
+                maxlength: 2000 // Change this as needed
+            }
+        },
+        messages: {
+            topicTitle: {
+                required: "Topic Title is required!",
+                minlength: "Topic Title must have at least 3 characters!", // Change this as needed
+                maxlength: "Topic Title can have at most 50 characters!"  // Change this as needed
+            },
+            topicDescription: {
+                maxlength: "Topic Description can have at most 2000 characters!" // Change this as needed
+            }
+        }
+    });
 }
