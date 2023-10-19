@@ -1,73 +1,79 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>E-Resource Lecturer Home</title>
-  <link rel="stylesheet" th:href="@{/css/base.css}"/>
-  <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>E-Resource Lecturer Home</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
 <body>
 <div class="app_container">
-  <!-- Header -->
-  <div class="row" th:replace="~{fragments/header::studentHeaderSection}"></div>
+    <!-- Header -->
+    <div th:replace="~{fragments/header::studentHeaderSection}"></div>
 
-  <!-- Content -->
-  <main class="main_content">
-    <div class="course-details-head">
-      <a th:href="@{/student}">Back</a>
-      <span> &gt; <a th:href="@{'/student/courses/' + ${course.courseId}}"
-                     th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
-    </div>
-    <section>
-      <h1>Detail Subject</h1>
-      <hr />
-      <div>
-        <table th:if="course ne null">
-          <tr>
-            <th>Course Code</th>
-            <td th:text="${course.courseCode}"></td>
-            <td><a th:if="${saved} == false" th:href="@{'/student/courses/save_course/'+ ${course.courseId}}">Save Course</a></td>
-            <td><a th:if="${saved} == true" th:href="@{'/student/courses/unsaved_course/'+ ${course.courseId}}">Unsaved Course</a></td>
-          </tr>
-          <tr>
-            <th>Course Name</th>
-            <td th:text="${course.courseName}"></td>
-          </tr>
-          <tr>
-            <th>Description</th>
-            <td th:text="${course.description}"> </td>
-          <tr>
-            <th>Topics
-            </th>
-            <td th:if="topics ne null">
-              <th:block th:each="topic : ${topics}">
-                <p th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></p>
-              </th:block>
-            </td>
+    <!-- Content -->
+    <main class="main_content">
+        <div class="course-details-head">
+            <a th:href="@{/student}">Back</a>
+            <span> &gt; <a th:href="@{'/student/courses/' + ${course.courseId}}"
+                           th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
+        </div>
+        <section>
+            <h1>Detail Subject</h1>
+            <hr/>
+            <div>
+                <table th:if="course ne null">
+                    <tr>
+                        <th>Course Code</th>
+                        <td th:text="${course.courseCode}"></td>
+                        <td><a th:if="${saved} == false"
+                               th:href="@{'/student/courses/'+ ${course.courseId} + '/save_course'}">Save Course</a>
+                        </td>
+                        <td><a th:if="${saved} == true"
+                               th:href="@{'/student/courses/'+ ${course.courseId} + '/unsaved_course'}">Unsaved
+                            Course</a></td>
+                    </tr>
+                    <tr>
+                        <th>Course Name</th>
+                        <td th:text="${course.courseName}"></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td th:text="${course.description}"></td>
+                    <tr>
+                        <th>Topics
+                        </th>
+                        <td th:if="topics ne null">
+                            <th:block th:each="topic : ${topics}">
+                                <p th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></p>
+                            </th:block>
+                        </td>
 
-          </tr>
-          <tr>
-            <th>Lecturers</th>
-            <td th:if="course.lecturers ne null">
-              <th:block th:each="lecturer : ${course.lecturers}">
-                <p th:text="|${lecturer.username} ( ${lecturer.name} )|"></p>
-              </th:block>
-            </td>
-          </tr>
-        </table>
+                    </tr>
+                    <tr>
+                        <th>Lecturers</th>
+                        <td th:if="course.lecturers ne null">
+                            <th:block th:each="lecturer : ${course.lecturers}">
+                                <p th:text="|${lecturer.username} ( ${lecturer.name} )|"></p>
+                            </th:block>
+                        </td>
+                    </tr>
+                </table>
 
-      </div>
-    </section>
-  </main>
+            </div>
+        </section>
+    </main>
 
-  <!-- Footer -->
-  <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footerSection}"></div>
 </div>
 
+<!--jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script th:src="@{/js/student.js}"></script>
 </body>
 </html>

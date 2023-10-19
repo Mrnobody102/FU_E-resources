@@ -1,32 +1,40 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.model.Account;
-import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Lecturer;
-import fpt.edu.eresourcessystem.model.Topic;
-import fpt.edu.eresourcessystem.service.AccountService;
-import fpt.edu.eresourcessystem.service.CourseService;
-import fpt.edu.eresourcessystem.service.LecturerService;
-import fpt.edu.eresourcessystem.service.TopicService;
+import fpt.edu.eresourcessystem.enums.CourseEnum;
+import fpt.edu.eresourcessystem.model.*;
+import fpt.edu.eresourcessystem.service.*;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
 @Controller
 @RequestMapping("/lecturer")
+@PropertySource("web-setting.properties")
 public class LecturerController {
+    @Value("${page-size}")
+    private Integer pageSize;
     private final CourseService courseService;
     private final AccountService accountService;
     private final LecturerService lecturerService;
     private final TopicService topicService;
 
-    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService) {
+    private final DocumentService documentService;
+
+    public LecturerController(CourseService courseService, AccountService accountService,
+                              LecturerService lecturerService, TopicService topicService,
+                              DocumentService documentService) {
         this.courseService = courseService;
         this.accountService = accountService;
         this.lecturerService = lecturerService;
         this.topicService = topicService;
+        this.documentService = documentService;
     }
 
     @GetMapping
@@ -46,6 +54,7 @@ public class LecturerController {
             List<Account> lecturers = accountService.findAllLecturer();
             model.addAttribute("lecturers", lecturers);
             model.addAttribute("course", course);
+            model.addAttribute("majors", CourseEnum.Major.values());
             return "lecturer/course/lecturer_update-course";
         }
     }
@@ -68,13 +77,6 @@ public class LecturerController {
             model.addAttribute("success", "");
             return "lecturer/course/lecturer_update-course";
         }
-    }
-
-    @GetMapping({"/list"})
-    public String showCourse(final Model model) {
-        List<Course> courses = courseService.findAll();
-        model.addAttribute("courses", courses);
-        return "lecturer/course/lecturer_courses";
     }
 
     @GetMapping({"/{courseId}"})
@@ -165,14 +167,57 @@ public class LecturerController {
         }
         return "lecturer/course/lecturer_add-topic-to-course";
     }
+    @GetMapping({"/courses/list"})
+    public String showCourses() {
+        return "lecturer/course/lecturer_courses";}
+    @GetMapping("/courses/list/{pageIndex}")
+    String showCoursesByPage(@PathVariable Integer pageIndex,
+                             @RequestParam(required = false, defaultValue = "") String search,
+                             @RequestParam(required = false, defaultValue = "all") String major,
+                             final Model model, HttpServletRequest request) {
+        Page<Course> page;
+        if(null==major || "all".equals(major)){
+            page = courseService.findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(search, search, search, pageIndex, pageSize);
+        }else {
+            page = courseService.filterMajor(major, search, search, search, pageIndex, pageSize);
+        }
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("courses", page.getContent());
+        model.addAttribute("search", search);
+        model.addAttribute("currentPage", pageIndex);
+        model.addAttribute("majorSearch", major);
+        model.addAttribute("majors", CourseEnum.Major.values());
+        return "lecturer/course/lecturer_courses";
+    }
 
-    @GetMapping("/manage_course/list")
-    public String findManageCourses(final Model model) {
+
+    @GetMapping("/manage_course/list/{pageIndex}")
+    public String findManageCourses(@PathVariable String pageIndex,final Model model) {
         Lecturer lecturer = new Lecturer();
         lecturer.setAccountId("65283bfc9bf46d65d5aa3f8f");
         lecturer = lecturerService.findByAccountId(lecturer.getAccountId());
         List<Course> courses = lecturerService.findListManageCourse(lecturer);
         model.addAttribute("courses", courses);
         return "lecturer/course/lecturer_courses";
+    }
+
+    @GetMapping("/lecturer/topic/detail/{topicId}")
+    public String viewTopicDetail(@PathVariable String topicId, final Model model){
+        Topic topic = topicService.findById(topicId);
+        Course course = courseService.findByCourseId(topic.getCourseId());
+        List<Document> documents = documentService.findByTopicId(topicId);
+        model.addAttribute("course", course);
+        model.addAttribute("topic", topic);
+        model.addAttribute("documents", documents);
+        return "lecturer/course/lecturer_topic-detail";
+    }
+
+
+    @GetMapping("/search/{search}")
+    public ModelAndView findLecturer(@PathVariable String search){
+        List<Account> lecturers = accountService.searchLecturer(search);
+        ModelAndView mv= new ModelAndView("search_list::search_list");
+        mv.addObject("lecturers",mv);
+        return mv;
     }
 }

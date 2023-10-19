@@ -17,4 +17,6 @@ public interface TopicService {
     Topic updateTopic(Topic topic);
 
     boolean delete(String topicId);
+
+    Topic addDocument(Topic topic);
 }

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
@@ -29,16 +28,12 @@ public class Lecturer {
 
     //Audit Log
     @CreatedBy
-    @Field("lecturerCreatedBy")
     private String createdBy;
     @CreatedDate
-    @Field("lecturerCreatedDate")
     private String createdDate;
     @LastModifiedBy
-    @Field("lecturerLastModifiedBy")
     private String lastModifiedBy;
     @LastModifiedDate
-    @Field("lecturerLastModifiedDate")
     private String lastModifiedDate;
 
 }

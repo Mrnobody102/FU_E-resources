@@ -25,7 +25,7 @@
 </head>
 <body class="app_container">
 
-<header class="row" th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<header th:replace="~{fragments/header::headerLibrarianSection}"></header>
 <div class="main_content">
     <div class="grid app__container-content-wrapper">
         <div class="app__container-content">
@@ -123,7 +123,7 @@
 </div>
 
 <!-- Footer -->
-<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+<div th:replace="~{fragments/footer :: footerSection}"></div>
 
 <!--Custom script-->
 <script th:src="@{/js/librarian.js}"></script>

@@ -2,9 +2,16 @@ package fpt.edu.eresourcessystem.enums;
 
 public class AccountEnum {
     public enum Role {
-        STUDENT,
-        LECTURER,
-        LIBRARIAN
+        STUDENT("STUDENT"),
+        LECTURER("LECTURER"),
+        LIBRARIAN("LIBRARIAN");
+        private final String displayValue;
+        Role(String displayValue) {
+            this.displayValue = displayValue;
+        }
+        public String getDisplayValue() {
+            return displayValue;
+        }
     }
 
     public enum Campus {

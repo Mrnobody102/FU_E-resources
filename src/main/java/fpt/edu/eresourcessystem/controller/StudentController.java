@@ -34,13 +34,26 @@ public class StudentController {
         this.topicService = topicService;
     }
 
-    @GetMapping
+    public Student getLoggedInStudent() {
+        return studentService.findAll().get(0);
+    }
+
+
+    /*
+        HOME
+     */
+
+    @GetMapping({"", "/home"})
     public String getStudentHome(@ModelAttribute Account account, final Model model) {
         List<Course> courses = courseService.findAll();
         model.addAttribute("courses", courses);
         model.addAttribute("majors", CourseEnum.Major.values());
         return "student/student_home";
     }
+
+    /*
+        COURSE
+     */
 
     @GetMapping("/courses")
     public String getStudentCourse(@ModelAttribute Account account, final Model model) {
@@ -52,49 +65,50 @@ public class StudentController {
 
     @GetMapping("/courses/{courseId}")
     public String viewCourseDetail(@PathVariable String courseId, final Model model) {
-        Account account = new Account();
-        account.setAccountId("123");
-        Student student = studentService.findByAccountId(account.getAccountId());
+        // auth
+        Student student = getLoggedInStudent();
+
         Course course = courseService.findByCourseId(courseId);
         List<Topic> topics = topicService.findByCourseId(courseId);
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
-        if (studentService.checkCourseSaved(student.getAccountId(), courseId)) {
+        if (studentService.checkCourseSaved(student.getStudentId(), courseId)) {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);
         return "student/course/student_course-detail";
     }
 
-    @GetMapping("/courses/save_course/{courseId}")
+    @GetMapping("/courses/{courseId}/save_course")
     public String saveCourse(@PathVariable String courseId, final Model model) {
         // get account authorized
-        Account account = new Account();
-        account.setAccountId("123");
-        Student student = studentService.findByAccountId(account.getAccountId());
+        Student student = getLoggedInStudent();
+
+        System.out.println(student.getAccountId());
         if (null != courseService.findByCourseId(courseId)) {
-            studentService.saveACourse(student.getAccountId(), courseId);
+            studentService.saveACourse(student.getStudentId(), courseId);
         }
         return "redirect:/student/courses/" + courseId + "?success";
     }
 
-    @GetMapping("/courses/unsaved_course/{courseId}")
+    @GetMapping("/courses/{courseId}/unsaved_course")
     public String unsavedCourse(@PathVariable String courseId, final Model model) {
         // get account authorized
-        Account account = new Account();
-        account.setAccountId("652822485ab106356098b911");
-        Student student = studentService.findByAccountId(account.getAccountId());
+        Student student = getLoggedInStudent();
+
         if (null != courseService.findByCourseId(courseId)) {
-            studentService.unsavedACourse(student.getAccountId(), courseId);
+            studentService.unsavedACourse(student.getStudentId(), courseId);
         }
         return "redirect:/student/courses/" + courseId + "?success";
     }
 
-    @GetMapping("/course/saveCourse/list")
+    /*
+        STUDENT PERSONAL LIBRARY
+     */
+
+    @GetMapping({"/my_library/saved_courses", "/my_library"})
     public String viewCourseSaved(final Model model) {
         // get account authorized
-        Account account = new Account();
-        account.setAccountId("652822485ab106356098b911");
-        Student student = studentService.findByAccountId(account.getAccountId());
+        Student student = getLoggedInStudent();
         List<String> savedCourses = student.getSavedCourses();
         List<Course> courses = new ArrayList<>();
         if (null != savedCourses) {
@@ -104,7 +118,7 @@ public class StudentController {
             }
         }
         model.addAttribute("coursesSaved", courses);
-        return "student/course/student_courses-saved";
+        return "student/library/student_saved_courses";
 
     }
 

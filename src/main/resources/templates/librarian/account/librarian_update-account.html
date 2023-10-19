@@ -36,7 +36,7 @@
 </head>
 <body class="app_container">
 
-<header class="row" th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<header th:replace="~{fragments/header::headerLibrarianSection}"></header>
 <div class="main_content">
     <div class="grid app__container-content-wrapper">
         <div class="app__container-content">
@@ -51,14 +51,14 @@
             </div>
             <div class="lib_content">
                 <div class="add-form">
-                    <div th:if="${param.success}">
-                        <div class="alert alert-info">Save account successful !!!</div>
-                    </div>
-                    <div th:if="${param.error}">
-                        <div class="alert alert-danger">Please account information again !!!
-                            Account not exist or AccountId existed.
-                        </div>
-                    </div>
+<!--                    <div th:if="${param.success}">-->
+<!--                        <div class="alert alert-info">Save account successful !!!</div>-->
+<!--                    </div>-->
+<!--                    <div th:if="${param.error}">-->
+<!--                        <div class="alert alert-danger">Please account information again !!!-->
+<!--                            Account not exist or AccountId existed.-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="add-form-content">
                         <form method="post" role="form" th:action="@{/librarian/accounts/update}"
                               th:object="${account}" th:id="update-account">
@@ -136,9 +136,9 @@
                                     </td>
                                 </tr>
                                 <tr class="lib_input-wrapper">
-                                    <td class="lib_input-label"><label th:for="role">Role</label></td>
+                                    <td class="lib_input-label"><label for="role">Role</label></td>
                                     <td>
-                                        <select class="lib_input" th:field="*{role}" th:id="role">
+                                        <select class="lib_input" th:field="*{role}" id="role">
                                             <option th:each="role : ${roles}"
                                                     th:text="${role}"
                                                     th:value="${role}">
@@ -146,13 +146,15 @@
                                         </select>
                                     </td>
                                 </tr>
-<!--                                <tr class="lib_input-wrapper">-->
-<!--                                    <td></td>-->
-<!--                                    <td>-->
-<!--                                        <input type="checkbox" name="IsAdmin" th:field="*{flagAdmin}" th:id="isAdmin">-->
-<!--                                        IsAdmin-->
-<!--                                    </td>-->
-<!--                                </tr>-->
+                                <tr id="isAdminCheckbox" class="" th:if="(${account.role.getDisplayValue() == 'LIBRARIAN'})">
+                                    <td></td>
+                                    <td>
+                                        <input type="checkbox" name="isAdmin" id="isAdmin"
+                                        th:checked="${isAdmin}"
+                                        >
+                                        <label for="isAdmin">Is Admin</label>
+                                    </td>
+                                </tr>
 
                                 <tr>
                                     <td></td>
@@ -170,16 +172,16 @@
 </div>
 
 <!-- Footer -->
-<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+<div th:replace="~{fragments/footer :: footerSection}"></div>
 
-<!--Custom script-->
-<script th:src="@{/js/librarian.js}"></script>
 
 <!--Bootstrap script-->
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 
+<!--Custom script-->
+<script th:src="@{/js/librarian.js}"></script>
 
 <!--Validate-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -206,6 +208,18 @@
             'error'
         );
     }
+
+    $(document).ready(function () {
+
+        // show is Admin
+        $('#role').change(function () {
+            if ($(this).val() === 'LIBRARIAN') {
+                $('#isAdminCheckbox').show();
+            } else {
+                $('#isAdminCheckbox').hide();
+            }
+        });
+    })
 </script>
 </body>
 </html>

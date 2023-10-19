@@ -20,8 +20,22 @@ public class LibrarianServiceImpl implements LibrarianService{
             Librarian result = librarianRepository.save(librarian);
             return result;
         }else {
-            Optional<Librarian> checkExist = librarianRepository.findById(librarian.getAccountId());
-            if(checkExist.isEmpty()){
+            Librarian checkExist = librarianRepository.findByAccountId(librarian.getAccountId());
+            if(null!=checkExist){
+                Librarian result = librarianRepository.save(librarian);
+                return result;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Librarian updateLibrarian(Librarian librarian) {
+        if(null==librarian.getAccountId()){
+            return null;
+        }else {
+            Librarian checkExist = librarianRepository.findByAccountId(librarian.getAccountId());
+            if(null!=checkExist){
                 Librarian result = librarianRepository.save(librarian);
                 return result;
             }

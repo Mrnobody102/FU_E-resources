@@ -16,4 +16,5 @@ public interface DocumentService {
     Document updateDocument(Document document);
 
     boolean delete(String documentId);
+    List<Document> findByTopicId(String topicId);
 }

@@ -57,7 +57,8 @@
                         <td th:text="${course.description}"> </td>
                     <tr>
                         <th>Topics
-
+                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addTopic/' + ${course.courseId}}">Edit</a>
+                            </p>
                         </th>
                         <td th:if="topics ne null">
                             <th:block th:each="topic : ${topics}">
@@ -67,12 +68,12 @@
                     </tr>
                     <tr>
                         <th>Lecturers
-                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/updateLecturers/'+${course.courseId}}">Edit</a>
+                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>
                             </p>
                         </th>
-                        <td th:if="lecturers ne null">
-                            <th:block th:each="lecturer : ${lecturers}">
-                                <p th:text="|${lecturer.username} ( ${lecturer.name} )|"></p>
+                        <td th:if="lecturerAccounts ne null">
+                            <th:block th:each="lecturerAccount : ${lecturerAccounts}">
+                                <p th:text="|${lecturerAccount.username} ( ${lecturerAccount.email} )|"></p>
                             </th:block>
                         </td>
                     </tr>

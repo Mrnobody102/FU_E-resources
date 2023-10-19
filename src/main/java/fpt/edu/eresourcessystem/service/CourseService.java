@@ -29,4 +29,6 @@ public interface CourseService {
 
     Page<Course> findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(String code, String name, String description, int pageIndex, int pageSize);
 
+
+    Page<Course> filterMajor(String major, String code, String name, String description, int pageIndex, int pageSize);
 }

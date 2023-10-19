@@ -1,14 +1,53 @@
-function toggleDropdown() {
-    const dropdownContent = document.querySelector('.dropdown-content');
-    if (dropdownContent.style.display === "none" || dropdownContent.style.display === "") {
-        dropdownContent.style.display = "block";
-        setTimeout(function() {
-            dropdownContent.style.opacity = "1";
-        }, 10); // delay a bit to ensure the transition takes effect
-    } else {
-        dropdownContent.style.opacity = "0";
-        setTimeout(function() {
-            dropdownContent.style.display = "none";
-        }, 300); // delay to wait for the transition to finish
+$(document).ready(function () {
+
+    /*
+        NAVBAR
+     */
+
+    // Navbar when choose
+    let path = window.location.pathname;
+    let $targetElements = $('.header__navbar-list > li > a[href="' + path + '"]');
+
+    $targetElements.removeClass('header__navbar-item-main-link');
+    $targetElements.addClass('header__navbar-item-main-link_active');
+    $targetElements.parent().addClass('header__navbar-main-item_active');
+
+    /*
+        SIDEBAR
+     */
+
+    // Show sidebar
+    const showSidebar = (toggleId, sidebarId, mainId) => {
+        const toggle = document.getElementById(toggleId),
+            sidebar = document.getElementById(sidebarId),
+            main = document.getElementById(mainId)
+
+        if (toggle && sidebar && main) {
+            toggle.addEventListener('click', () => {
+                /* Show sidebar */
+                sidebar.classList.toggle('show-sidebar')
+                /* Add padding main */
+                main.classList.toggle('main-pd')
+
+            })
+        }
     }
-}
+    showSidebar('toggle', 'sidebar', 'main')
+
+    // Link active
+    const sidebarLink = document.querySelectorAll('.sidebar__link')
+
+    function linkColor() {
+        sidebarLink.forEach(l => l.classList.remove('active-link'))
+        this.classList.add('active-link')
+    }
+
+    sidebarLink.forEach(l => l.addEventListener('click', linkColor))
+
+
+    /*
+        PAGINATION
+     */
+
+
+});

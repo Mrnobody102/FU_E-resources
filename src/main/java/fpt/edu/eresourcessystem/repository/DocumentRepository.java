@@ -16,4 +16,6 @@ public interface DocumentRepository extends
 
     @Query("SELECT c FROM Documents c WHERE c.courseId in ?1")
     List<Document> findByListId(List<String> courseId);
+    List<Document> findByTopicId(String topicId);
+
 }

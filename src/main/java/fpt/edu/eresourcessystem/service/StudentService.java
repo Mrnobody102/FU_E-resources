@@ -1,14 +1,15 @@
 package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.model.Student;
-import fpt.edu.eresourcessystem.model.Topic;
 
 import java.util.List;
 
 public interface StudentService {
-    void addStudent(Student student);
+    Student addStudent(Student student);
 
     Student findByAccountId(String accountId);
+
+    List<Student> findAll();
 
     void updateStudentSavedCourse(Student student);
 

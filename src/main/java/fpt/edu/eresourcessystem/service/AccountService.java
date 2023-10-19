@@ -21,7 +21,11 @@ public interface AccountService {
     Account findByEmail(String email);
     List<Account> findAll();
     Page<Account> findByUsernameLikeOrEmailLike(String username, String email, int pageIndex, int pageSize);
+
+    Page<Account> findByRoleAndUsernameLikeOrEmailLike(String role, String username, String email, int pageIndex, int pageSize);
     boolean deleteById(String id);
     boolean delete(Account account);
     Page<Account> findAll(int pageIndex, int pageSize);
+
+    List<Account> findByIds(List<String> ids);
 }
