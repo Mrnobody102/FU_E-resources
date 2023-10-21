@@ -2,6 +2,8 @@ package fpt.edu.eresourcessystem.repository;
 
 import com.mongodb.lang.NonNull;
 import fpt.edu.eresourcessystem.model.Document;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,10 +16,27 @@ public interface DocumentRepository extends
         MongoRepository<Document, String> {
 
     @NonNull
-    Optional<Document> findById(@NonNull String courseId);
+    Optional<Document> findById(@NonNull String documentId);
 
-    @Query("SELECT c FROM Documents c WHERE c.documentId in ?1")
-    List<Document> findByListId(List<String> courseId);
-    List<Document> findByTopicId(String topicId);
+    List<Document> findDocumentsByTopicId(String topicId);
 
+    @Query("{$and: ["
+            + "{$or: ["
+            + "    {topicId: {$regex: ?1}},"
+            + "    {topicId: null},"
+            + "    {topicId: ''}"
+            + "    ]},"
+            + "{$or: ["
+            + "    {title: {$regex: ?2}},"
+            + "    {title: null},"
+            + "    {title: ''}"
+            + "    ]},"
+            + "{$or: ["
+            + "    {description: {$regex: ?3}},"
+            + "    {description: null},"
+            + "    {description: ''}"
+            + "    ]}"
+            + "]}")
+    Page<Document> filterAndSearchDocument(String course, String topic, String title, String description,
+                                         Pageable pageable);
 }

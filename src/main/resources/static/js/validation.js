@@ -1,3 +1,4 @@
+// VALIDATE COURSE
 function validate_addCourse() {
     $('#add-form').validate({
         rules: {
@@ -87,6 +88,8 @@ function validate_updateCourse() {
         }
     });
 }
+
+// VALIDATE ACCOUNT
 function validate_addAccount() {
     $('#add-account').validate({
         rules: {
@@ -248,3 +251,9 @@ function validate_addTopic() {
         }
     });
 }
+
+// VALIDATE DOCUMENTS
+function validate_addDocument(){
+    // bổ sung
+}
+

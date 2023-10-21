@@ -1,4 +1,4 @@
-package fpt.edu.eresourcessystem.config.security;
+package fpt.edu.eresourcessystem.utils;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

@@ -117,7 +117,5 @@ public class StudentController {
         }
         model.addAttribute("coursesSaved", courses);
         return "student/library/student_saved_courses";
-
     }
-
 }

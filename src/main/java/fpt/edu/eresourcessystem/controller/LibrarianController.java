@@ -14,9 +14,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,15 +35,17 @@ public class LibrarianController {
     private final StudentService studentService;
     private final CourseService courseService;
     private final TopicService topicService;
+    private final DocumentService documentService;
 
     @Autowired
-    public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService) {
+    public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, DocumentService documentService) {
         this.accountService = accountService;
         this.librarianService = librarianService;
         this.lecturerService = lecturerService;
         this.studentService = studentService;
         this.courseService = courseService;
         this.topicService = topicService;
+        this.documentService = documentService;
     }
 
     /*
@@ -74,12 +78,12 @@ public class LibrarianController {
                              @RequestParam(required = false, defaultValue = "all") String role,
                              final Model model) {
         Page<Account> page;
-        if(null==role || "all".equals(role)){
+        if (null == role || "all".equals(role)) {
             page = accountService.findByUsernameLikeOrEmailLike(search, search, pageIndex, pageSize);
-        }else {
-            page = accountService.findByRoleAndUsernameLikeOrEmailLike( role, search, search, pageIndex, pageSize);
+        } else {
+            page = accountService.findByRoleAndUsernameLikeOrEmailLike(role, search, search, pageIndex, pageSize);
         }
-        List<Integer> pages =  CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         System.out.println(pages);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
@@ -145,9 +149,12 @@ public class LibrarianController {
         if (null == account) {
             return "exception/404";
         } else {
-            if(AccountEnum.Role.LIBRARIAN.equals(account.getRole())){
-                Librarian librarian = librarianService.findByAccountId(account.getAccountId());
-                boolean isAdmin = librarian.isFlagAdmin();
+            if (AccountEnum.Role.LIBRARIAN.equals(account.getRole())) {
+                Librarian librarian = librarianService.findByAccountId(accountId);
+                boolean isAdmin = false;
+                if(librarian != null) {
+                    isAdmin = librarian.isFlagAdmin();
+                }
                 model.addAttribute("isAdmin", isAdmin);
             }
             model.addAttribute("roles", AccountEnum.Role.values());
@@ -172,7 +179,7 @@ public class LibrarianController {
             Account checkEmailDuplicate = accountService.findByEmail(account.getEmail());
             if (checkEmailDuplicate != null &&
                     !checkExist.getEmail().equalsIgnoreCase(account.getEmail())) {
-                String result = "redirect:/librarian/accounts/updated/" +account.getAccountId() + "?error";
+                String result = "redirect:/librarian/accounts/updated/" + account.getAccountId() + "?error";
                 return result;
             }
             String role = String.valueOf(account.getRole());
@@ -205,7 +212,7 @@ public class LibrarianController {
                     }
                     break;
                 default:
-                    return "redirect:/librarian/accounts/updated/" +account.getAccountId() + "?error";
+                    return "redirect:/librarian/accounts/updated/" + account.getAccountId() + "?error";
             }
             accountService.updateAccount(account);
             model.addAttribute("account", account);
@@ -213,7 +220,7 @@ public class LibrarianController {
             model.addAttribute("campuses", AccountEnum.Campus.values());
             model.addAttribute("genders", AccountEnum.Gender.values());
             model.addAttribute("success", "");
-            String result = "redirect:/librarian/accounts/updated/" +account.getAccountId() + "?success";
+            String result = "redirect:/librarian/accounts/updated/" + account.getAccountId() + "?success";
             return result;
         }
     }
@@ -257,7 +264,7 @@ public class LibrarianController {
      */
 
     @GetMapping({"/courses/add"})
-    public String addCourseProcess(final Model model) {
+    public String addCourse(final Model model) {
         List<Account> lecturers = accountService.findAllLecturer();
         model.addAttribute("course", new Course());
         model.addAttribute("lecturers", lecturers);
@@ -266,7 +273,7 @@ public class LibrarianController {
     }
 
     @PostMapping("/courses/add")
-    public String addCourse(@ModelAttribute Course course, @RequestParam(required = false) String topic, @RequestParam(required = false) String lecturer) {
+    public String addCourseProcess(@ModelAttribute Course course, @RequestParam(required = false) String topic, @RequestParam(required = false) String lecturer) {
 
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
         if (null == checkExist) {
@@ -325,12 +332,12 @@ public class LibrarianController {
                              @RequestParam(required = false, defaultValue = "all") String major,
                              final Model model, HttpServletRequest request) {
         Page<Course> page;
-        if(null==major || "all".equals(major)){
+        if (null == major || "all".equals(major)) {
             page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
-        }else {
+        } else {
             page = courseService.filterMajor(major, search, search, search, pageIndex, pageSize);
         }
-        List<Integer> pages =  CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
@@ -352,7 +359,7 @@ public class LibrarianController {
 
 
     @GetMapping("/courses/{courseId}/delete")
-    public String delete(@PathVariable String courseId) {
+    public String deleteCourse(@PathVariable String courseId) {
         Course checkExist = courseService.findByCourseId(courseId);
         if (null != checkExist) {
             List<String> topics = checkExist.getTopics();
@@ -374,7 +381,7 @@ public class LibrarianController {
         List<Account> accounts = accountService.findAllLecturer();
         model.addAttribute("course", course);
         model.addAttribute("lecturers", lecturers);
-        model.addAttribute("accounts",accounts);
+        model.addAttribute("accounts", accounts);
         return "librarian/course/librarian_add-lecturer-to-course";
     }
 
@@ -464,4 +471,108 @@ public class LibrarianController {
         }
         return "librarian/course/librarian_add-topic-to-course";
     }
+
+
+    /*
+        DOCUMENTS
+     */
+
+    @GetMapping({"/documents/list"})
+    public String showDocuments() {
+        return "librarian/document/librarian_documents";
+    }
+
+    @GetMapping("/documents/list/{pageIndex}")
+    String showDocumentsByPage(@PathVariable Integer pageIndex,
+                               @RequestParam(required = false, defaultValue = "") String search,
+                               @RequestParam(required = false, defaultValue = "all") String course,
+                               @RequestParam(required = false, defaultValue = "all") String topic,
+                               final Model model, HttpServletRequest request) {
+        Page<Document> page = documentService.filterAndSearchDocument(course, topic, search, search, pageIndex, pageSize);
+
+        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+        model.addAttribute("pages", pages);
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("currentPage", pageIndex);
+        model.addAttribute("documents", page.getContent());
+        model.addAttribute("search", search);
+        model.addAttribute("selectedCourse", course);
+        model.addAttribute("courses", courseService.findAll());
+        return "librarian/document/librarian_documents";
+    }
+
+    @GetMapping({"/documents/{documentId}"})
+    public String showDocumentDetail(@PathVariable String documentId, final Model model) {
+        Document document = documentService.findById(documentId);
+        model.addAttribute("document", document);
+        return "librarian/document/librarian_document-detail";
+    }
+
+    @GetMapping({"/documents/add"})
+    public String addDocument(final Model model) {
+        model.addAttribute("document", new Document());
+        model.addAttribute("courses", courseService.findAll());
+        return "librarian/document/librarian_add-document";
+    }
+
+    @PostMapping("/documents/add")
+    public String addDocumentProcess(@ModelAttribute Document document,
+                                     @RequestParam("file") MultipartFile file) throws IOException {
+        // thêm check
+        String id = documentService.addFile(file);
+        documentService.addDocument(document, id);
+        return "redirect:/librarian/documents/add?success";
+    }
+
+    @GetMapping({"/documents/update/{documentId}"})
+    public String updateDocumentProcess(@PathVariable(required = false) String documentId, final Model model) {
+        if (null == documentId) {
+            documentId = "";
+        }
+        Document document = documentService.findById(documentId);
+        if (null == document) {
+            return "redirect:librarian/documents/update?error";
+        } else {
+            model.addAttribute("document", new Document());
+            model.addAttribute("courses", courseService.findAll());
+            return "librarian/document/librarian_update-document";
+        }
+    }
+
+//    @PostMapping("/documents/update")
+//    public String updateDocument(@ModelAttribute Document document, final Model model) {
+//        Document checkExist = documentService.findByDocumentId(document.getDocumentId());
+//        if (null == checkExist) {
+//            model.addAttribute("errorMessage", "document not exist.");
+//            return "exception/404";
+//        } else {
+//            Document checkCodeDuplicate = documentService.findByDocumentCode(document.getDocumentCode());
+//            if (checkCodeDuplicate != null &&
+//                    !checkExist.getDocumentCode().toLowerCase().equals(document.getDocumentCode())) {
+////                return "redirect:/librarian/documents/update?error";
+//            }
+//            documentService.updateDocument(document);
+//            model.addAttribute("document", document);
+//            List<Account> lecturers = accountService.findAllLecturer();
+//            model.addAttribute("lecturers", lecturers);
+//            model.addAttribute("success", "");
+//            return "librarian/document/librarian_update-document";
+//        }
+//    }
+//
+//    @GetMapping("/documents/{documentId}/delete")
+//    public String deleteDocument(@PathVariable String documentId) {
+//        Document checkExist = documentService.findByDocumentId(documentId);
+//        if (null != checkExist) {
+//            List<String> topics = checkExist.getTopics();
+//            if (null != topics) {
+//                for (String topicId : topics) {
+//                    topicService.delete(topicId);
+//                }
+//            }
+//            documentService.delete(checkExist);
+//            return "redirect:/librarian/documents/list?success";
+//        }
+//        return "redirect:/librarian/documents/list?error";
+//    }
 }
