@@ -401,3 +401,25 @@ li {
     font-size: 1.1rem;
     font-weight: bold;
 }
+.code-archive-except{
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    /*line-height: 24px; !* fallback *!*/
+    /*max-height: 72px; !* fallback *!*/
+    -webkit-line-clamp: 1; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+.table-view{
+    table-layout: fixed;
+}
+.table-view td , .table-view th {
+    padding: 0.5rem 1rem;
+}
+.table-view tr td:first-child{
+    width: 15%;
+}
+.table-view tr td:last-child{
+    width: 55%;
+}

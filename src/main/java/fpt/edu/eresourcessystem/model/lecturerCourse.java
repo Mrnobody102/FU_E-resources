@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.model;
 
+
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,31 +12,31 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Data
-@Document("courses")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Course {
+@Document("lecturerCourse")
+public class lecturerCourse {
+    @Id
+    private String lecturerId;
+
     @Id
     private String courseId;
 
-    @Indexed(unique = true)
-    private String courseCode;
+    private String accountId;
+    private String startDate;
 
-    private String courseName;
-    private String description;
-
-    private List<String> topics;
-    private List<String> lecturerCourse;
-    private List<String> students;
-
-    private CourseEnum.Major major;
     //Audit Log
     @CreatedBy
     private String createdBy;
+
+    @Id
     @CreatedDate
     private String createdDate;
     @LastModifiedBy
     private String lastModifiedBy;
+
+    @Id
     @LastModifiedDate
     private String lastModifiedDate;
+
 }
