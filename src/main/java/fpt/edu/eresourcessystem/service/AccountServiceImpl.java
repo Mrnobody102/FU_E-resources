@@ -1,56 +1,68 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.dto.ObjectRespond;
+import fpt.edu.eresourcessystem.dto.AccountDTO;
+import fpt.edu.eresourcessystem.model.Account;
+import fpt.edu.eresourcessystem.repository.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import fpt.edu.eresourcessystem.model.Account;
-import fpt.edu.eresourcessystem.repository.AccountRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 
 @Service("accountService")
-public class AccountServiceImpl implements AccountService{
+public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
 
-    public AccountServiceImpl(AccountRepository accountRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public AccountServiceImpl(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public List<Account> findAllLecturer() {
-        List<Account> lecturers = accountRepository.findAllLecturer();
-        return lecturers;
+        return accountRepository.findAllLecturer();
     }
 
     @Override
     public List<Account> searchLecturer(String search) {
-        List<Account> lecturers = accountRepository.searchLecturer(search );
-        return lecturers;
+        return accountRepository.searchLecturer(search);
     }
 
     @Override
-    public void addAccount(Account account) {
+    public void addAccount(AccountDTO accountDTO) {
+        Account account = new Account();
+        account.setAccountId(accountDTO.getAccountId());
+        account.setUsername(accountDTO.getUsername());
+        account.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
+        account.setEmail(accountDTO.getEmail());
+        account.setName(accountDTO.getName());
+        account.setDateOfBirth(accountDTO.getDateOfBirth());
+        account.setGender(accountDTO.getGender());
+        account.setCampus(accountDTO.getCampus());
+        account.setRole(accountDTO.getRole());
         accountRepository.insert(account);
     }
 
     @Override
-    public Account updateAccount(Account account){
+    public Account updateAccount(Account account) {
         Optional<Account> savedAccount = accountRepository.findById(account.getAccountId());
-        if(savedAccount.isPresent()){
-            Account result = accountRepository.save(account);
-            return result;
+        if (savedAccount.isPresent()) {
+            return accountRepository.save(account);
         }
         return null;
     }
 
     @Override
-    public Account findByUsername(String username){
-        Account account = accountRepository.findByUsername(username);
-        return account;
+    public Account findByUsername(String username) {
+        return accountRepository.findByUsername(username);
     }
 
     @Override
@@ -61,8 +73,8 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public Account findByEmail(String email) {
-        Account account = accountRepository.findByEmail(email);
-        return account;
+        Optional<Account> account = accountRepository.findByEmail(email);
+        return account.orElse(null);
     }
 
     @Override
@@ -73,30 +85,29 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public Page<Account> findByUsernameLikeOrEmailLike(String username, String email, int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
-        Page<Account> page = accountRepository.findByUsernameLikeOrEmailLike( username ,  email ,
+        return accountRepository.findByUsernameLikeOrEmailLike(username, email,
                 pageable);
-        return page;
     }
 
     @Override
     public Page<Account> findByRoleAndUsernameLikeOrEmailLike(String role, String username, String email, int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
-        Page<Account> page = accountRepository.filterRole(role, username , email ,
+        return accountRepository.filterRole(role, username, email,
                 pageable);
-        return page;
     }
 
     @Override
     public boolean deleteById(String accountId) {
-        if(accountRepository.existsById(accountId)){
+        if (accountRepository.existsById(accountId)) {
             accountRepository.removeAccountByAccountId(accountId);
             return true;
-        }return false;
+        }
+        return false;
     }
 
     @Override
     public boolean delete(Account account) {
-        if(accountRepository.findById(account.getAccountId()).isPresent()){
+        if (accountRepository.findById(account.getAccountId()).isPresent()) {
             accountRepository.delete(account);
             return true;
         }
@@ -110,10 +121,9 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public List<Account> findByIds(List<String> ids) {
-        if(null==ids || ids.size()<1){
+        if (null == ids || ids.size() < 1) {
             return null;
         }
-        List<Account> accounts = accountRepository.findByIds(ids);
-        return accounts;
+        return accountRepository.findByIds(ids);
     }
 }

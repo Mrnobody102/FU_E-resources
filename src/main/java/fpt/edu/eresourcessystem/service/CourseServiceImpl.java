@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service("courseService")
 public class CourseServiceImpl implements CourseService{
     private final CourseRepository courseRepository;
@@ -75,6 +74,25 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
+    public List<Course> findAllLecturerCourses(String lecturerId) {
+        return courseRepository.findAll();
+    }
+
+    @Override
+    public Page<Course> findAllLecturerCourses(int pageIndex, int pageSize, String search) {
+        return null;
+    }
+
+    @Override
+    public Page<Course> findAllLecturerCourses(int pageIndex, int pageSize) {
+        return null;
+    }
+
+    /*
+        TOPIC
+     */
+
+    @Override
     public boolean addTopic(Topic topic) {
         // check course exist
             Optional<Course> course = courseRepository.findById(topic.getCourseId());
@@ -133,7 +151,7 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public Page<Course> findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(String code, String name, String description, int pageIndex, int pageSize) {
+    public Page<Course> findByCodeOrNameOrDescription(String code, String name, String description, int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         Page<Course> page = courseRepository.findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike( code, name, description,
                 pageable);

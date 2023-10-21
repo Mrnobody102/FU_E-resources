@@ -60,7 +60,7 @@
         <div class="header-with-search">
             <a href="/" class="header__logo-link">
                 <div class="header__logo">
-                    <img th:src="@{/images/appLogoIcon.webp}">
+                    <img alt="" th:src="@{/images/appLogoIcon.webp}">
                 </div>
             </a>
 
@@ -403,7 +403,6 @@
 <!--     Header -->
 <header class="header-guest">
     <div class="grid">
-        <div th:replace="~{common/login}"></div>
         <!-- Header navbar -->
         <nav class="header__navbar">
             <h2 class="header__system-name header__navbar-list">
@@ -422,7 +421,7 @@
                         Help & FAQs</a>
                 </li>
                 <li id="openLoginModal" class="header__navbar-item">
-                    <a class="header__navbar-item-link" style="font-weight: bold">
+                    <a th:href="@{/login}" class="header__navbar-item-link" style="font-weight: bold">
                         <i class="header__navbar-icon fa fa-user" aria-hidden="true"></i>
                         LOGIN</a>
                 </li>

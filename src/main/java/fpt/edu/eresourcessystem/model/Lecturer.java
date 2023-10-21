@@ -22,7 +22,6 @@ public class Lecturer {
     private String accountId;
 
     private List<String> lecturerCourses;
-//    private List<String> uploadPermission;
     private List<String> documents;
     private List<String> answers; // 1 answer per question
 

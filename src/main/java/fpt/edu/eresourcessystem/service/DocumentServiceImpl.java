@@ -1,52 +1,52 @@
 package fpt.edu.eresourcessystem.service;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.client.gridfs.model.GridFSFile;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.repository.DocumentRepository;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsOperations;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @Service("documentService")
 public class DocumentServiceImpl implements DocumentService {
-    private final DocumentRepository documentRepository;
+    private DocumentRepository documentRepository;
+
+    private GridFsTemplate template;
+
+    private GridFsOperations operations;
+
     @Autowired
-    MongoTemplate mongoTemplate;
-
-    public DocumentServiceImpl(DocumentRepository documentRepository) {
+    public DocumentServiceImpl(DocumentRepository documentRepository, GridFsTemplate template, GridFsOperations operations) {
         this.documentRepository = documentRepository;
+        this.template = template;
+        this.operations = operations;
     }
 
-    @Override
-    public List<Document> findAll() {
-        List<Document> documents = documentRepository.findAll();
-        return documents;
-    }
+    public String addFile(MultipartFile upload) throws IOException {
 
-    @Override
-    public List<Document> findByCourseId(String courseId) {
-        Query query = new Query(Criteria.where("courseId").is(courseId));
-        List<Document> documents = mongoTemplate.find(query, Document.class);
-        return documents;
-    }
+        //define additional metadata
+        DBObject metadata = new BasicDBObject();
+        metadata.put("fileSize", upload.getSize());
 
-    @Override
-    public Document addDocument(Document document) {
-        if (null == document.getDocumentId()) {
-            Document result = documentRepository.save(document);
-            return result;
-        } else {
-            Optional<Document> checkExist = documentRepository.findById(document.getDocumentId());
-            if (!checkExist.isPresent()) {
-                Document result = documentRepository.save(document);
-                return result;
-            }
-            return null;
-        }
+        //store in database which returns the objectID
+        Object fileID = template.store(upload.getInputStream(), upload.getOriginalFilename(), upload.getContentType(), metadata);
+
+        //return as a string
+        return fileID.toString();
     }
 
     @Override
@@ -56,7 +56,43 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public Document updateDocument(Document document) {
+    public List<Document> findAll() {
+        List<Document> documents = documentRepository.findAll();
+        return documents;
+    }
+
+    @Override
+    public Page<Document> filterAndSearchDocument(String course, String topic, String title, String description, int pageIndex, int pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+        Page<Document> page = documentRepository.filterAndSearchDocument(course, topic, title, description,
+                pageable);
+        return page;
+    }
+
+
+    @Override
+    public Document addDocument(Document document, String id) throws IOException {
+        //search file
+        GridFSFile file = template.findOne( new Query(Criteria.where("_id").is(id)) );
+        if (null == document.getDocumentId()) {
+            document.setContent( IOUtils.toByteArray(operations.getResource(file).getInputStream()) );
+
+            System.out.println(operations.getResource(file).getFilename());
+            Document result = documentRepository.save(document);
+            return result;
+        } else {
+            Optional<Document> checkExist = documentRepository.findById(document.getDocumentId());
+            if (!checkExist.isPresent()) {
+                document.setContent( IOUtils.toByteArray(operations.getResource(file).getInputStream()) );
+                Document result = documentRepository.save(document);
+                return result;
+            }
+            return null;
+        }
+    }
+
+    @Override
+    public Document updateDocument(Document document) throws IOException {
         Optional<Document> checkExist = documentRepository.findById(document.getDocumentId());
         if (checkExist.isPresent()) {
             Document result = documentRepository.save(document);
@@ -76,8 +112,8 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public List<Document> findByTopicId(String topicId) {
-        List<Document> documents = documentRepository.findByTopicId(topicId);
+    public List<Document> findDocumentsByTopicId(String topicId) {
+        List<Document> documents = documentRepository.findDocumentsByTopicId(topicId);
         return documents;
     }
 }

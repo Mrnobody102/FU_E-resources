@@ -1,0 +1,172 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Librarian | Add document</title>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+
+    <!-- SweetAlert từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+    <style>
+        label.error {
+            margin-top: 5px;
+            margin-left: 5px;
+            display: block;
+            color: red;
+            /*font-size: smaller;*/
+        }
+    </style>
+</head>
+<body class="app_container">
+
+<header class="row" th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<div class="main_content">
+    <div class="grid app__container-content-wrapper">
+        <div class="app__container-content">
+            <div class="document-details-head">
+                <a th:href="@{/librarian}">Home</a>
+                <span> &gt; <a th:href="@{/librarian/documents/list}">Documents management</a></span>
+                <span> &gt; Add new document</span>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Add document</h1>
+
+            </div>
+            <div class="lib_content">
+                <div class="lib_form">
+
+                    <div class="lib_form-content">
+                        <form method="post" role="form" th:action="@{/librarian/documents/add}"
+                              th:object="${document}" th:id="add-form" enctype="multipart/form-data">
+                            <table class="table-form lib_table">
+
+                                <tr>
+                                    <td class="lib_input-label"><label th:for="documentTitle">Document Code</label></td>
+                                    <td><input type="text" th:id="documentTitle"
+                                               class="lib_input form-control" th:field="*{title}"
+                                               placeholder="Enter document code" required>
+                                        <p class="text-danger" th:errors="*{title}"
+                                           th:if="${#fields.hasErrors('title')}"></p>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="lib_input-label"><label th:for="description">Description</label></td>
+                                    <td><textarea type="text" th:id="description"
+                                                  class="lib_input form-control" th:field="*{description}"
+                                                  placeholder="Enter description" ></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="lib_input-label"><label th:for="courseSelection">Major</label></td>
+                                    <td><select  th:field="*{courseId}" name="course" th:id="courseSelection">
+                                        <option th:each="course : ${courses}"
+                                                th:text="${course.courseCode}"
+                                                th:value="${course.courseId}">
+                                        </option>
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="lib_input-label"><label th:for="topicSelection">Major</label></td>
+                                    <td><select name="topic" th:id="topicSelection">
+
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="lib_input-label"><label th:for="file">File Upload</label></td>
+                                    <td>
+                                        <input type="file" th:name="file" id="fileUploadInput" class="file-input" required>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <button type="submit" class="btn lib_btn-save">Save</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+
+<!--Custom script-->
+<script th:src="@{/js/librarian.js}"></script>
+
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+<!--Validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script th:src="@{/js/validation.js}"></script>
+
+<script th:inline="javascript">
+
+    validate_addDocument();
+
+        var successParam = [[${param.success}]];
+        if (successParam) {
+            Swal.fire(
+                'Success!',
+                'Save document successful!',
+                'success'
+            );
+        }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check document information again!',
+            'error'
+        );
+    }
+
+    $(document).ready(function () {
+        $('#courseSelection').on('change', function () {
+            var courseId = $(this).val();
+            if (courseId) {
+                $.ajax({
+                    url: '/getTopics',
+                    data: { courseId: courseId },
+                    success: function (data) {
+                        var topicSelect = $('#topicSelection');
+                        topicSelect.empty();
+                        topicSelect.append($('<option>', { value: '', text: 'Select a Topic' }));
+                        $.each(data, function (index, topic) {
+                            topicSelect.append($('<option>', { value: topic.id, text: topic.name }));
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

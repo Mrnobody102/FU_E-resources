@@ -3,7 +3,8 @@ package fpt.edu.eresourcessystem.controller;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
-import jakarta.servlet.http.HttpServletRequest;
+import fpt.edu.eresourcessystem.utils.CommonUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ public class LecturerController {
 
     private final DocumentService documentService;
 
+    @Autowired
     public LecturerController(CourseService courseService, AccountService accountService,
                               LecturerService lecturerService, TopicService topicService,
                               DocumentService documentService) {
@@ -40,6 +42,36 @@ public class LecturerController {
     @GetMapping
     public String getLibraryManageDashboard(@ModelAttribute Account account) {
         return "lecturer/lecturer";
+    }
+
+    /*
+        LECTURER COURSES
+     */
+    @GetMapping({"/courses/list", "courses"})
+    public String showCourses() {
+        return "lecturer/course/lecturer_courses";
+    }
+
+    @GetMapping("/courses/list/{pageIndex}")
+    String showCoursesByPage(@PathVariable Integer pageIndex,
+                             @RequestParam(required = false, defaultValue = "") String search,
+                             @RequestParam(required = false, defaultValue = "all") String major,
+                             final Model model) {
+        Page<Course> page;
+        if (null == major || "all".equals(major)) {
+            page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
+        } else {
+            page = courseService.filterMajor(major, search, search, search, pageIndex, pageSize);
+        }
+        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+        model.addAttribute("pages", pages);
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("courses", page.getContent());
+        model.addAttribute("search", search);
+        model.addAttribute("currentPage", pageIndex);
+        model.addAttribute("majorSearch", major);
+        model.addAttribute("majors", CourseEnum.Major.values());
+        return "lecturer/course/lecturer_courses";
     }
 
     @GetMapping({"/courses/{courseId}/update"})
@@ -68,7 +100,8 @@ public class LecturerController {
         } else {
             Course checkCodeDuplicate = courseService.findByCourseCode(course.getCourseCode());
             if (checkCodeDuplicate != null &&
-                    !checkExist.getCourseCode().toLowerCase().equals(course.getCourseCode())) {
+                    !checkExist.getCourseCode().equalsIgnoreCase(course.getCourseCode())) {
+                //
             }
             courseService.updateCourse(course);
             List<Account> lecturers = accountService.findAllLecturer();
@@ -136,12 +169,12 @@ public class LecturerController {
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         model.addAttribute("topic", topic);
-        return "lecturer/course/librarian_update-topic-of-course";
+        return "lecturer/course/lecturer_update-topic-of-course";
     }
 
 
     @PostMapping({"/updateTopic/{topicId}"})
-    public String editTopic(@PathVariable String topicId, @ModelAttribute Topic topic, final Model model) {
+    public String editTopic(@PathVariable String topicId, @ModelAttribute Topic topic) {
         Topic checkTopicExist = topicService.findById(topicId);
         if (null != checkTopicExist) {
             topicService.updateTopic(topic);
@@ -167,32 +200,9 @@ public class LecturerController {
         }
         return "lecturer/course/lecturer_add-topic-to-course";
     }
-    @GetMapping({"/courses/list"})
-    public String showCourses() {
-        return "lecturer/course/lecturer_courses";}
-    @GetMapping("/courses/list/{pageIndex}")
-    String showCoursesByPage(@PathVariable Integer pageIndex,
-                             @RequestParam(required = false, defaultValue = "") String search,
-                             @RequestParam(required = false, defaultValue = "all") String major,
-                             final Model model, HttpServletRequest request) {
-        Page<Course> page;
-        if(null==major || "all".equals(major)){
-            page = courseService.findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(search, search, search, pageIndex, pageSize);
-        }else {
-            page = courseService.filterMajor(major, search, search, search, pageIndex, pageSize);
-        }
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("courses", page.getContent());
-        model.addAttribute("search", search);
-        model.addAttribute("currentPage", pageIndex);
-        model.addAttribute("majorSearch", major);
-        model.addAttribute("majors", CourseEnum.Major.values());
-        return "lecturer/course/lecturer_courses";
-    }
-
 
     @GetMapping("/manage_course/list/{pageIndex}")
-    public String findManageCourses(@PathVariable String pageIndex,final Model model) {
+    public String findManageCourses(@PathVariable String pageIndex, final Model model) {
         Lecturer lecturer = new Lecturer();
         lecturer.setAccountId("65283bfc9bf46d65d5aa3f8f");
         lecturer = lecturerService.findByAccountId(lecturer.getAccountId());
@@ -202,10 +212,10 @@ public class LecturerController {
     }
 
     @GetMapping("/lecturer/topic/detail/{topicId}")
-    public String viewTopicDetail(@PathVariable String topicId, final Model model){
+    public String viewTopicDetail(@PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
         Course course = courseService.findByCourseId(topic.getCourseId());
-        List<Document> documents = documentService.findByTopicId(topicId);
+        List<Document> documents = documentService.findDocumentsByTopicId(topicId);
         model.addAttribute("course", course);
         model.addAttribute("topic", topic);
         model.addAttribute("documents", documents);
@@ -214,10 +224,10 @@ public class LecturerController {
 
 
     @GetMapping("/search/{search}")
-    public ModelAndView findLecturer(@PathVariable String search){
+    public ModelAndView findLecturer(@PathVariable String search) {
         List<Account> lecturers = accountService.searchLecturer(search);
-        ModelAndView mv= new ModelAndView("search_list::search_list");
-        mv.addObject("lecturers",mv);
+        ModelAndView mv = new ModelAndView("search_list::search_list");
+        mv.addObject("lecturers", mv);
         return mv;
     }
 }

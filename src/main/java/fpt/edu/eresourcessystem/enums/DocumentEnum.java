@@ -2,6 +2,20 @@ package fpt.edu.eresourcessystem.enums;
 
 public class DocumentEnum {
 
+    public enum DocumentDisplayEnum {
+        DISPLAY("1", "display"),
+        HIDE("0", "hide");
+
+        private final String displayValue;
+
+        private final String toString;
+
+        DocumentDisplayEnum(String displayValue, String toString) {
+            this.displayValue = displayValue;
+            this.toString = toString;
+        }
+    }
+
     public enum DocumentAccessLevelEnum {
         PUBLIC,
         EXCEPT_GUESTS,
@@ -14,6 +28,7 @@ public class DocumentEnum {
         SUCCESS(),
         FAIL()
     }
+
     public enum DocumentFormat {
         PDF,
         DOC,

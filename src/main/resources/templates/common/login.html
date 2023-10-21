@@ -17,18 +17,18 @@
 
                 <div class="auth-form__form">
                     <div class="auth-form__group">
-                        <input type="email" class="auth-form__input" placeholder="Your Email">
+                        <input type="email" name="username" class="auth-form__input" placeholder="Your Email">
                     </div>
                     <div class="auth-form__group">
-                        <input type="password" class="auth-form__input" placeholder="Enter Password">
+                        <input type="password" name="password" class="auth-form__input" placeholder="Enter Password">
                     </div>
 
                     <div class="auth-form__select">
-                        <label th:for="roles">Select role</label>
-                        <select class="auth-form__select-tag" th:name="roles" th:id="roles">
-                            <option th:each="role : ${roles}"
-                                    th:text="${role}"
-                                    th:value="${role}">
+                        <label th:for="campus">Select campus</label>
+                        <select class="auth-form__select-tag" th:name="campus" th:id="campuses">
+                            <option th:each="campus : ${campuses}"
+                                    th:text="${campus}"
+                                    th:value="${campus}">
                             </option>
                         </select>
                     </div>

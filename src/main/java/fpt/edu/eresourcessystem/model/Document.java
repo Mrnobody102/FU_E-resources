@@ -2,8 +2,8 @@ package fpt.edu.eresourcessystem.model;
 
 
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
-import lombok.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 
@@ -27,8 +27,13 @@ public class Document {
     private DocumentEnum.DocumentFormat docType;
     private byte[] content;
 
+    private String contentLink; //link video, audio - cloud
+
+
     private List<String> notes;
     private List<String> questions;
+
+    private DocumentEnum.DocumentDisplayEnum displayFlg;
 
     //Audit Log
     @CreatedBy

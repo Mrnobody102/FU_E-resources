@@ -79,11 +79,9 @@ public class StudentController {
     }
 
     @GetMapping("/courses/{courseId}/save_course")
-    public String saveCourse(@PathVariable String courseId, final Model model) {
+    public String saveCourse(@PathVariable String courseId) {
         // get account authorized
         Student student = getLoggedInStudent();
-
-        System.out.println(student.getAccountId());
         if (null != courseService.findByCourseId(courseId)) {
             studentService.saveACourse(student.getStudentId(), courseId);
         }
@@ -91,7 +89,7 @@ public class StudentController {
     }
 
     @GetMapping("/courses/{courseId}/unsaved_course")
-    public String unsavedCourse(@PathVariable String courseId, final Model model) {
+    public String unsavedCourse(@PathVariable String courseId) {
         // get account authorized
         Student student = getLoggedInStudent();
 
@@ -119,7 +117,5 @@ public class StudentController {
         }
         model.addAttribute("coursesSaved", courses);
         return "student/library/student_saved_courses";
-
     }
-
 }

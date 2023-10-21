@@ -4,12 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Librarian | Courses</title>
+    <title>Librarian | Documents</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
-
-    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
@@ -28,12 +27,12 @@
 <div class="main_content">
     <div class="grid app__container-content-wrapper">
         <div class="app__container-content">
-            <div class="course-details-head">
+            <div class="document-details-head">
                 <a th:href="@{/librarian}">Home</a>
-                <span> &gt; Courses management</span>
+                <span> &gt; Documents management</span>
             </div>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Courses</h1>
+                <h1 class="h2">Documents</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
@@ -42,67 +41,61 @@
             </div>
             <div class="lib_data-list-wrapper">
                 <div class="lib_search-container">
-                    <form class="d-flex" th:action="@{/librarian/courses/list/1}" th:method="get">
+                    <form class="d-flex" th:action="@{/librarian/documents/list/1}" th:method="get">
                         <div class="d-flex">
 
-                            <input class="lib_search-content" type="text" placeholder="Search course.." name="search"
+                            <input class="lib_search-content" type="text" placeholder="Search document.." name="search"
                                    th:value="${search}" id="search-text"/>
                             <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
-                                <i class="lib_search-btn-icon fas fa-search"></i>
+                                <i class="lib_search-btn-icon fa fa-search"></i>
                             </button>
 
-                            <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list/1}">Show AlL</a>
+                            <a class="btn lib_show-all-btn" th:href="@{/librarian/documents/list/1}">Show AlL</a>
                         </div>
-<!--                        <div>-->
-<!--                            <a class="btn lib_btn-add" type="button" th:href="@{/librarian/courses/add}">Add new-->
-<!--                                course</a>-->
-<!--                        </div>-->
+                        <div>
+                            <a class="btn lib_btn-add" type="button" th:href="@{/librarian/documents/add}">Add new
+                                document</a>
+                        </div>
                         <div class="d-flex">
-                            <select class="lib_filter" th:name="major" th:id="major" onchange="this.form.submit()">
+                            <select class="lib_filter" th:name="course" th:id="course" onchange="this.form.submit()">
                                 <option value="all">All
                                 </option>
-                                <option th:each="major : ${majors}"
-                                        th:text="${major.getDisplayValue()}"
-                                        th:value="${major}"
-                                        th:selected="(${majorSearch} == ${major.getToString()})">
+                                <option th:each="course : ${courses}"
+                                        th:text="${course.getCourseCode()}"
+                                        th:value="${course}"
+                                        th:selected="(${selectedCourse} == ${course.getCourseCode()})">
                                 </option>
                             </select>
                         </div>
-
                     </form>
-                    <div>
-                        <a class="lib_btn-add" type="button" th:href="@{/librarian/courses/add}">
-                            <i class="fa-solid fa-plus"></i>
-                            <span>New</span>
-                        </a>
-                    </div>
                 </div>
             </div>
-            <div class="table-view" th:if="${courses ne null}">
+            <div class="table-responsive" th:if="${documents ne null}">
                 <table class="table table-striped table-sm">
                     <tr class="table-head">
-                        <th>Code</th>
-                        <th>Name</th>
+                        <th>#</th>
+                        <th>Title</th>
                         <th>Descriptions</th>
-<!--                        <th></th>-->
+                        <th></th>
                     </tr>
-                    <th:block th:each="course : ${courses}">
+                    <th:block th:each="document, iterStat : ${documents}">
                         <tr>
-                            <td><a th:href="@{'/librarian/courses/' + ${course.courseId}}"
-                                   th:text="${course.courseCode}"></a></td>
-                            <td th:text="${course.courseName}"></td>
-                            <td> <span class="code-archive-except" th:text="${course.description}"></span> </td>
-<!--                            <td colspan="2">-->
-<!--                                <a class="update-account" th:href="@{'/librarian/courses/'+${course.courseId}}">View</a>-->
-<!--                                <a class="lib-delete-course" th:id="${course.courseId}">Delete</a>-->
-<!--                            </td>-->
+                            <td th:text="${iterStat.count}"></td>
+                            <td><a th:href="@{'/librarian/documents/' + ${document.documentId}}"
+                                   th:text="${document.title}"></a></td>
+                            <td th:text="${document.description}"></td>
+                            <td colspan="2">
+                                <a class="update-account" th:href="@{'/librarian/documents/'+${document.documentId}}">View</a>
+                                <a class="delete-document" style="cursor: pointer"
+                                   th:id="${document.documentId}">Delete</a>
+                            </td>
                         </tr>
                     </th:block>
                 </table>
                 <nav th:if="${totalPage} > 1" aria-label="Page navigation example">
                     <ul class="pagination">
                         <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
-                            <a class="page-link previous-page-course"
+                            <a class="page-link previous-page-document"
                                style="cursor: pointer">
                                 &laquo;
                             </a>
@@ -115,13 +108,13 @@
                             </th:block>
                             <th:block th:if="${pageIndex != -1}">
                                 <a th:text="${pageIndex}" th:value="${pageIndex}"
-                                   class="page-link page-course-number"
+                                   class="page-link page-document-number"
                                    style="cursor: pointer"
                                 ></a>
                             </th:block>
                         </li>
                         <li th:class="${currentPage == totalPage} ? 'page-item disabled' : 'page-item'">
-                            <a class="page-link next-page-course"
+                            <a class="page-link next-page-document"
                                style="cursor: pointer">
                                 &raquo;
                             </a>

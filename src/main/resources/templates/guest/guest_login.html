@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FPT University E-Resources</title>
+  <!-- CSS -->
+  <link rel="stylesheet" th:href="@{/css/base.css}" />
+  <link rel="stylesheet" th:href="@{/css/fragment.css}" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+<body>
+<div class="app_container">
+
+  <div th:replace="~{fragments/header::guestHeaderSection}"></div>
+  <!--  Main-->
+  <div th:replace="~{fragments/main}"></div>
+  <div th:replace="~{common/login}"></div>
+
+  <!-- Footer -->
+  <div th:replace="~{fragments/footer :: footerSection}"></div>
+</div>
+<script th:src="@{/js/guest.js}"></script>
+</body>
+</html>

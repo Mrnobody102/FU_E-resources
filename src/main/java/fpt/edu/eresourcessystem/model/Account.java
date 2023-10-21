@@ -29,7 +29,6 @@ public class Account {
     private String password;
 
     @Indexed(unique = true)
-    @NotNull(message = "{validation.email.not.null}")
     private String email;
 
     private String name;
@@ -41,7 +40,7 @@ public class Account {
 
     private AccountEnum.Role role;
 
-//    private Boolean activeStatus;
+//    private String deleteFlg;
 
     //Audit Log
     @CreatedBy
