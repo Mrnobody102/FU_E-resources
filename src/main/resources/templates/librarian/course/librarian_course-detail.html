@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Librarian | Course detail</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
@@ -69,16 +69,16 @@
 <!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>-->
 <!--                            </p>-->
                         </th>
-                        <td th:if="accountLecturer ne null">
+                        <td th:if="${accountLecturer ne null}">
                            <p th:text="|${accountLecturer.name} - ${accountLecturer.email} |"></p>
-                            <span><a class="link update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>
-                            </span>
+                            <p><a class="link update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>
+                            </p>
                         </td>
-                        <td th:if="accountLecturer null">
+                        <td th:unless="${accountLecturer ne null}">
                             <p>
-                                <a class="btn" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">
+                                <a class="link" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">
                                     <i class="fa-solid fa-plus"></i>
-                                    <span  class="link update-course-topic">Add</span>
+                                    <span  class="update-course-topic">Add</span>
                                 </a>
                             </p>
                         </td>

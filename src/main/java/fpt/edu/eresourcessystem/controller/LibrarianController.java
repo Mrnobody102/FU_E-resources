@@ -287,7 +287,7 @@ public class LibrarianController {
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
         if (null == checkExist) {
             // check lecturer param exist
-            if (lecturer != null) {
+            if (lecturer != null && !"".equals(lecturer.trim())) {
                 // get account by email
                 Account account = accountService.findByEmail(lecturer);
                 if (null != account) {
@@ -409,6 +409,7 @@ public class LibrarianController {
         Course course = courseService.findByCourseId(courseId);
         List<Topic> topics = topicService.findByCourseId(courseId);
         Lecturer lecturer = lecturerService.findCurrentCourseLecturer(courseId);
+
         if(null!=lecturer){
             Account accountLecturer = accountService.findByAccountId(lecturer.getAccountId());
             model.addAttribute("accountLecturer", accountLecturer);
