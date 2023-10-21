@@ -65,14 +65,22 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Lecturers
-                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>
-                            </p>
+                        <th>Lecturer
+<!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>-->
+<!--                            </p>-->
                         </th>
-                        <td th:if="lecturerAccounts ne null">
-                            <th:block th:each="lecturerAccount : ${lecturerAccounts}">
-                                <p th:text="|${lecturerAccount.username} ( ${lecturerAccount.email} )|"></p>
-                            </th:block>
+                        <td th:if="accountLecturer ne null">
+                           <p th:text="|${accountLecturer.name} - ${accountLecturer.email} |"></p>
+                            <span><a class="link update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>
+                            </span>
+                        </td>
+                        <td th:if="accountLecturer null">
+                            <p>
+                                <a class="btn" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">
+                                    <i class="fa-solid fa-plus"></i>
+                                    <span  class="link update-course-topic">Add</span>
+                                </a>
+                            </p>
                         </td>
                     </tr>
                     <tr>

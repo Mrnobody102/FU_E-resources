@@ -2,6 +2,8 @@ package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
+import fpt.edu.eresourcessystem.model.LecturerCourse;
+import fpt.edu.eresourcessystem.repository.LecturerCourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,12 @@ public class LecturerServiceImpl implements LecturerService {
     private final LecturerRepository lecturerRepository;
     private final CourseService courseService;
 
-    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseService courseService) {
+    private final LecturerCourseRepository lecturerCourseRepository;
+
+    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseService courseService, LecturerCourseRepository lecturerCourseRepository) {
         this.lecturerRepository = lecturerRepository;
         this.courseService = courseService;
+        this.lecturerCourseRepository = lecturerCourseRepository;
     }
 
     @Override
@@ -47,6 +52,25 @@ public class LecturerServiceImpl implements LecturerService {
     @Override
     public Lecturer findByAccountId(String accountId) {
         return lecturerRepository.findByAccountId(accountId);
+    }
+
+    @Override
+    public List<Lecturer> findByListLecturerIds(List<String> ids) {
+        List<Lecturer> lecturers = lecturerRepository.findByLecturerIds(ids);
+        return lecturers;
+    }
+
+    @Override
+    public Lecturer findCurrentCourseLecturer(String courseId) {
+        LecturerCourse lecturerCourse = lecturerCourseRepository.findCurrentCourseLecturer(courseId);
+        if(null!= lecturerCourse){
+            if(null!=lecturerCourse.getLecturerCourseId().getLecturerId()){
+                Optional<Lecturer> lecturer = lecturerRepository.findById(
+                        lecturerCourse.getLecturerCourseId().getLecturerId());
+                return lecturer.orElse(null);
+            }
+        }
+        return null;
     }
 
 

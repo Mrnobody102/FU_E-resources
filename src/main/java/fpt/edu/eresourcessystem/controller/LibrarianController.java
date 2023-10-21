@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,8 +39,10 @@ public class LibrarianController {
     private final TopicService topicService;
     private final DocumentService documentService;
 
+    private final LecturerCourseService lecturerCourseService;
+
     @Autowired
-    public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, DocumentService documentService) {
+    public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, DocumentService documentService, LecturerCourseService lecturerCourseService) {
         this.accountService = accountService;
         this.librarianService = librarianService;
         this.lecturerService = lecturerService;
@@ -46,6 +50,7 @@ public class LibrarianController {
         this.courseService = courseService;
         this.topicService = topicService;
         this.documentService = documentService;
+        this.lecturerCourseService = lecturerCourseService;
     }
 
     /*
@@ -84,7 +89,7 @@ public class LibrarianController {
             page = accountService.findByRoleAndUsernameLikeOrEmailLike(role, search, search, pageIndex, pageSize);
         }
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-        System.out.println(pages);
+//        System.out.println(pages);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("accounts", page.getContent());
@@ -183,7 +188,7 @@ public class LibrarianController {
                 return result;
             }
             String role = String.valueOf(account.getRole());
-            System.out.println(role);
+//            System.out.println(role);
             switch (role) {
                 case "LIBRARIAN":
                     Librarian librarian = librarianService.findByAccountId(account.getAccountId());
@@ -234,7 +239,7 @@ public class LibrarianController {
     @GetMapping("/accounts/{accountId}/delete")
     public String deleteAccount(@PathVariable String accountId) {
         Account check = accountService.findByAccountId(accountId);
-        System.out.println(check);
+//        System.out.println(check);
         if (null != check) {
             accountService.delete(check);
             return "redirect:/librarian/accounts/list?success";
@@ -268,23 +273,81 @@ public class LibrarianController {
         List<Account> lecturers = accountService.findAllLecturer();
         model.addAttribute("course", new Course());
         model.addAttribute("lecturers", lecturers);
-        model.addAttribute("majors", CourseEnum.Major.values());
+        model.addAttribute("statuses", CourseEnum.Status.values());
         return "librarian/course/librarian_add-course";
     }
 
     @PostMapping("/courses/add")
-    public String addCourseProcess(@ModelAttribute Course course, @RequestParam(required = false) String topic, @RequestParam(required = false) String lecturer) {
+    public String addCourseProcess(@ModelAttribute Course course,
+                                   @RequestParam(required = false) String topic,
+                                   @RequestParam String lecturer) {
 
+
+        // check course code duplicate
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
         if (null == checkExist) {
-            courseService.addCourse(course);
-            return "redirect:/librarian/courses/add?success";
-        } else return "redirect:/librarian/courses/add?error";
+            // check lecturer param exist
+            if (lecturer != null) {
+                // get account by email
+                Account account = accountService.findByEmail(lecturer);
+                if (null != account) {
+                    // get lecturer by account
+                    Lecturer findLecturer = lecturerService.findByAccountId(account.getAccountId());
+
+                    if (null != findLecturer) {
+                        //save course
+                        Course result = courseService.addCourse(course);
+
+                        //check lecturer exist
+                        if(result !=null){
+                            // create new lecturerCourseId
+                            LecturerCourseId lecturerCourseId = new LecturerCourseId();
+                            lecturerCourseId.setLecturerId(findLecturer.getLecturerId());
+                            // set course Id that added
+                            lecturerCourseId.setCourseId(result.getCourseId());
+                            lecturerCourseId.setCreatedDate(LocalDate.now());
+
+                            // save new lecturer manage to the course
+                            LecturerCourse lecturerCourse = new LecturerCourse();
+                            lecturerCourse.setLecturerCourseId(lecturerCourseId);
+
+                            LecturerCourse addLecturerCourseResult = lecturerCourseService.add(lecturerCourse);
+                            // check save lecturerCourse to database
+                            if (null != addLecturerCourseResult) {
+
+                                // add lecturer to  course
+                                List<LecturerCourseId> lecturerCourseIds = new ArrayList<>();
+                                lecturerCourseIds.add(addLecturerCourseResult.getLecturerCourseId());
+
+                                result.setLecturerCourseIds(lecturerCourseIds);
+
+                                // update course lecturers
+                                result = courseService.updateCourse(result);
+                                System.out.println(result);
+                                if (null != result) {
+                                    return "redirect:/librarian/courses/add?success";
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    return "redirect:/librarian/courses/add?error";
+                }
+
+            } else {
+                Course addedCourse = courseService.addCourse(course);
+                if (null != addedCourse) {
+                    return "redirect:/librarian/courses/add?success";
+                }
+            }
+        }
+            return "redirect:/librarian/courses/add?error";
 
     }
 
     @GetMapping({"/courses/update/{courseId}"})
-    public String updateCourseProcess(@PathVariable(required = false) String courseId, final Model model) {
+    public String updateCourseProcess(@PathVariable(required = false) String courseId,
+                                       final Model model) {
         if (null == courseId) {
             courseId = "";
         }
@@ -295,7 +358,7 @@ public class LibrarianController {
             List<Account> lecturers = accountService.findAllLecturer();
             model.addAttribute("lecturers", lecturers);
             model.addAttribute("course", course);
-            model.addAttribute("majors", CourseEnum.Major.values());
+            model.addAttribute("status", CourseEnum.Status.values());
             return "librarian/course/librarian_update-course";
         }
     }
@@ -329,22 +392,15 @@ public class LibrarianController {
     @GetMapping("/courses/list/{pageIndex}")
     String showCoursesByPage(@PathVariable Integer pageIndex,
                              @RequestParam(required = false, defaultValue = "") String search,
-                             @RequestParam(required = false, defaultValue = "all") String major,
                              final Model model, HttpServletRequest request) {
         Page<Course> page;
-        if (null == major || "all".equals(major)) {
-            page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
-        } else {
-            page = courseService.filterMajor(major, search, search, search, pageIndex, pageSize);
-        }
+        page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
         model.addAttribute("search", search);
         model.addAttribute("currentPage", pageIndex);
-        model.addAttribute("majorSearch", major);
-        model.addAttribute("majors", CourseEnum.Major.values());
         return "librarian/course/librarian_courses";
     }
 
@@ -352,8 +408,14 @@ public class LibrarianController {
     public String showCourseDetail(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
         List<Topic> topics = topicService.findByCourseId(courseId);
+        Lecturer lecturer = lecturerService.findCurrentCourseLecturer(courseId);
+        if(null!=lecturer){
+            Account accountLecturer = accountService.findByAccountId(lecturer.getAccountId());
+            model.addAttribute("accountLecturer", accountLecturer);
+        }
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
+
         return "librarian/course/librarian_course-detail";
 //        return  "librarian/course/detailCourseTest";
     }
@@ -419,7 +481,7 @@ public class LibrarianController {
 
     @PostMapping({"/courses/addTopic"})
     public String addTopic(@ModelAttribute Topic topic, final Model model) {
-        System.out.println(topic);
+//        System.out.println(topic);
         topic = topicService.addTopic(topic);
         courseService.addTopic(topic);
         Course course = courseService.findByCourseId(topic.getCourseId());
