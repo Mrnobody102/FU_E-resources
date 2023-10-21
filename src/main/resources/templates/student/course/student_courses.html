@@ -5,6 +5,10 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>E-Resource Lecturer Home</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
 
@@ -15,34 +19,44 @@
     <!-- Header -->
     <div th:replace="~{fragments/header::studentHeaderSection}"></div>
 
+
+
+
     <!--  Main-->
     <div class="main_content">
-        <div class="grid app__container-content-wrapper">
-            <div class="grid__row app__container-content">
-                <div class="grid__column-3">
+
+
+        <div class="container-content-wrapper">
+            <div class="stu_sidebar">
+                <div th:replace="~{fragments/sidebar}"></div>
+            </div>
+            <div class="container-content row main" id="main">
+                <div class="col-md-3">
                     <div class="home__course-filter">
-                        <div class="home__course-filter-title">
-                            <p>Filter</p>
-                            <a href="" class="home__course-filter-clear">Clear all</a>
-                        </div>
-                        <div class="home__course-filter-type">
-                            <div class="home__course-filter-type-item">
-                                <div class="home__course-filter-type-btn" onclick="toggleDropdown()">
-                                    <span>Major</span>
-                                    <i class="fa fa-caret-down"></i>
-                                </div>
-                                <div class="home__course-filter-dropdown dropdown-content">
-                                    <a th:each="major : ${majors}"
-                                       href=""
-                                       th:text="${major.getDisplayValue()}"
-                                       th:value="${major}">
-                                    </a>
+                        <div>
+                            <div class="home__course-filter-title">
+                                <p>Filter</p>
+                                <a href="" class="home__course-filter-clear">Clear all</a>
+                            </div>
+                            <div class="home__course-filter-type">
+                                <div class="home__course-filter-type-item">
+                                    <div class="home__course-filter-type-btn" onclick="toggleDropdown()">
+                                        <span>Major</span>
+                                        <i class="fa fa-caret-down"></i>
+                                    </div>
+                                    <div class="home__course-filter-dropdown dropdown-content">
+                                        <a th:each="major : ${majors}"
+                                           href=""
+                                           th:text="${major.getDisplayValue()}"
+                                           th:value="${major}">
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="grid__column-9">
+                <div class="col-md-9">
                     <div class="home-filter">
                         <div class="home-filter__selection">
                             <button class="home-filter__tag btn btn--primary">
@@ -122,34 +136,37 @@
                         </ul>
                     </div>
                 </div>
+
             </div>
         </div>
-    </div>
-    <script>
-        function toggleDropdown() {
-            var dropdownContent = document.querySelector('.dropdown-content');
-            if (dropdownContent.style.display === "none" || dropdownContent.style.display === "") {
-                dropdownContent.style.display = "block";
-                setTimeout(function () {
-                    dropdownContent.style.opacity = "1";
-                }, 10); // delay a bit to ensure the transition takes effect
-            } else {
-                dropdownContent.style.opacity = "0";
-                setTimeout(function () {
-                    dropdownContent.style.display = "none";
-                }, 300); // delay to wait for the transition to finish
+        <script>
+            function toggleDropdown() {
+                var dropdownContent = document.querySelector('.dropdown-content');
+                if (dropdownContent.style.display === "none" || dropdownContent.style.display === "") {
+                    dropdownContent.style.display = "block";
+                    setTimeout(function () {
+                        dropdownContent.style.opacity = "1";
+                    }, 10); // delay a bit to ensure the transition takes effect
+                } else {
+                    dropdownContent.style.opacity = "0";
+                    setTimeout(function () {
+                        dropdownContent.style.display = "none";
+                    }, 300); // delay to wait for the transition to finish
+                }
             }
-        }
 
-    </script>
-
+        </script>
+    </div>
     <!-- Footer -->
     <div th:replace="~{fragments/footer :: footerSection}"></div>
-</div>
 
-<!--jquery-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!--Custom script-->
-<script th:src="@{/js/student.js}"></script>
+    <!--jquery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!--Bootstrap script-->
+    <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <!--Custom script-->
+    <script th:src="@{/js/student.js}"></script>
 </body>
 </html>
