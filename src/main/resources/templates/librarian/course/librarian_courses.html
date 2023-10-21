@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Librarian | Courses</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
@@ -46,10 +47,10 @@
 
                             <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list/1}">Show AlL</a>
                         </div>
-                        <div>
-                            <a class="btn lib_btn-add" type="button" th:href="@{/librarian/courses/add}">Add new
-                                course</a>
-                        </div>
+<!--                        <div>-->
+<!--                            <a class="btn lib_btn-add" type="button" th:href="@{/librarian/courses/add}">Add new-->
+<!--                                course</a>-->
+<!--                        </div>-->
                         <div class="d-flex">
                             <select class="lib_filter" th:name="major" th:id="major" onchange="this.form.submit()">
                                 <option value="all">All
@@ -61,7 +62,12 @@
                                 </option>
                             </select>
                         </div>
+
                     </form>
+                    <div>
+                        <a class="btn lib_btn-add" type="button" th:href="@{/librarian/courses/add}">Add new
+                            course</a>
+                    </div>
                 </div>
             </div>
             <div class="table-responsive" th:if="${courses ne null}">

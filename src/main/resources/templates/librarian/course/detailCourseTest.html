@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Librarian | Course detail</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+</head>
+
+<body class="app_container">
+
+<header class="row" th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<div class="main_content">
+    <div class="container-content-wrapper">
+        <div class="container-content row">
+            <div class="course-sidebar col-md-2">
+                <div class="course-sidebar-code block">
+                    <h2><i class="fas fa-folder"></i> <span th:text="${course.courseCode}"></span></h2>
+                </div>
+                <div class="edit-course-info block">
+                    <a  class="link-sidebar" href="">Edit course information</a>
+                </div>
+                <div class="edit-course-info block">
+                    <a  class="link-sidebar" href="">Delete course</a>
+                </div>
+                <div class="edit-course-info">
+                    <a  class="link-sidebar" href="">Edit topics</a>
+                </div>
+            </div>
+
+<!--            COURSE CONTENT-->
+            <div class="course-content col-md-10">
+            <!--COURSE HEADER-->
+                <div class="course-content-general">
+
+            <div class="course-details-head">
+                <a th:href="@{/librarian}">Home</a>
+                <span> &gt; <a th:href="@{/librarian/courses/list}"> Courses management</a> </span>
+                <span> &gt; <a th:href="@{'/librarian/courses/' + ${course.courseId}}"
+                               th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
+            </div>
+            <div class="border-bottom row">
+                <div class="course-info-title">
+                    <h1 class="h2" th:text="|${course.courseCode} - ${course.courseName}|"></h1>
+                    <p class="p" th:text="${course.description}"></p>
+                </div>
+                <div class="course-info-link row">
+                <div class="course-link-header">
+                        <a class="link-btn" href="">
+                            <i class="fas fa-folder"></i>
+                            <span  th:text="${course.topics.size() + ' topics'}"></span></a>
+                        <a class="link-btn" href=""><i class="fas fa-user"></i> 1 lecturers</a>
+                        <a class="link-btn" href=""><i class="fas fa-eye"></i> 2000 views</a>
+                        <a class="link-btn" href=""><i class="fas fa-heart"></i> 50 likes</a>
+                    </div>
+<!--                    <div class="col-md-2">-->
+<!--                        <a href="">1 lecturers</a>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-2">-->
+<!--                        <a href=""> 2000 views</a>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-2">-->
+<!--                        <a href=""> 50 likes</a>-->
+<!--                    </div>-->
+                </div>
+            </div>
+                </div>
+                <!-- END COURSE HEADER-->
+
+           <!--COURSE TOPICS-->
+            <div class="course-info-topics">
+                <div class="course-topic-sidebar">
+                    <div class="link-topics">
+                        <a class="link-primary h4"> &gt; Topics</a>
+                    </div>
+                </div>
+                <div class="topics-content" th:if="course ne null">
+                    <div  class="topic-content border-bottom row" th:each="topic :${topics}">
+                        <div class="topic-info-title col-md-10">
+                            <a class="h5 topic-title" href=""><span th:text="${topic.topicTitle}"></span></a>
+                            <a class="link-topic-info" href=""><i class="fa fa-file"></i>  0 documents</a>
+                            <p th:text="${topic.topicDescription}"></p>
+
+                        </div>
+                        <div class="topic-info-other col-md-2">
+                            <div class="col-md-12">
+                                <a class="link-topic-info"th:href="@{'/librarian/courses/updateTopic/' + ${topic.topicId}}"><i class="fa fa-pen"></i>  Update</a>
+                                <a class="link-topic-info" href=""><i class="fa fa-trash"></i>  Delete</a>
+                            </div>
+                        </div>
+                    </div>
+
+<!--                    <div  class="lecturer-content row" th:each="topic :${topics}">-->
+<!--                        <div class="lecturer-info-title">-->
+<!--                            <a class="h3" href="" th:text="${topic.topicTitle}"></a>-->
+<!--                        </div>-->
+<!--                        <div class="topic-info-description">-->
+<!--                            <p th:text="${topic.topicDescription}"></p>-->
+<!--                        </div>-->
+<!--                        <div class="topic-info-other row">-->
+<!--                            <div class="col-md-3">-->
+<!--                                <a href=""  th:text="${topic.documents.size() + ' documents'}"></a>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-3">-->
+<!--                                <a class="btn"  href="">Update</a>-->
+<!--                                <a class="btn"  href="">Delete</a>-->
+<!--                            </div>-->
+<!--                            <p th:text="${topic.topicDescription}"></p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+
+<!--                    <tr>-->
+<!--                        <th>Course Code</th>-->
+<!--                        <td th:text="${course.courseCode}"></td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th>Course Name</th>-->
+<!--                        <td th:text="${course.courseName}"></td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th>Description</th>-->
+<!--                        <td th:text="${course.description}"> </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th>Topics-->
+<!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addTopic/' + ${course.courseId}}">Edit</a>-->
+<!--                            </p>-->
+<!--                        </th>-->
+<!--                        <td th:if="topics ne null">-->
+<!--                            <th:block th:each="topic : ${topics}">-->
+<!--                                <p th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></p>-->
+<!--                            </th:block>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th>Lecturers-->
+<!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>-->
+<!--                            </p>-->
+<!--                        </th>-->
+<!--                        <td th:if="lecturerAccounts ne null">-->
+<!--                            <th:block th:each="lecturerAccount : ${lecturerAccounts}">-->
+<!--                                <p th:text="|${lecturerAccount.username} ( ${lecturerAccount.email} )|"></p>-->
+<!--                            </th:block>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th></th>-->
+<!--                        <td>-->
+<!--                            <a class="update-course" th:href="@{'/librarian/courses/update/'+${course.courseId}}">Edit course information</a>-->
+<!--                            | <a class="delete-course" th:id="${course.courseId}">Delete</a>-->
+<!--                            | <a class="update-topics" th:href="@{'/librarian/courses/topics/'+${course.courseId}}">Edit topics</a>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+                </div>
+
+            </div>
+        <!--END COURSE TOPICS-->
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+
+<!--Custom script-->
+<script th:src="@{/js/librarian.js}"></script>
+
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
