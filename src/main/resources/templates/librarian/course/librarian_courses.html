@@ -42,7 +42,7 @@
                             <input class="lib_search-content" type="text" placeholder="Search course.." name="search"
                                    th:value="${search}" id="search-text"/>
                             <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
-                                <i class="lib_search-btn-icon fa fa-search"></i>
+                                <i class="lib_search-btn-icon fas fa-search"></i>
                             </button>
 
                             <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list/1}">Show AlL</a>
@@ -65,8 +65,10 @@
 
                     </form>
                     <div>
-                        <a class="btn lib_btn-add" type="button" th:href="@{/librarian/courses/add}">Add new
-                            course</a>
+                        <a class="lib_btn-add" type="button" th:href="@{/librarian/courses/add}">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>New</span>
+                        </a>
                     </div>
                 </div>
             </div>
