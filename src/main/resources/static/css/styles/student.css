@@ -107,7 +107,7 @@
 }
 
 .sidebar__link:hover {
-    background-color: var(--background-hover);
+    background-color: var(--background-block-color-hover);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     color: var(--white-color);
@@ -117,7 +117,7 @@
     display: block;
     position: relative;
     margin-block: 1.5rem 1rem;
-    color: var(--background);
+    color: var(--background-block-color);
     font-size: 1.4rem;
 }
 
@@ -158,7 +158,7 @@
 
 /* Active link */
 .active-link {
-    background-color: var(--background);
+    background-color: var(--background-block-color);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
 }

@@ -25,10 +25,12 @@ public class Course {
     private String description;
 
     private List<String> topics;
-    private List<String> lecturerCourse;
+    private List<LecturerCourseId> lecturerCourseIds;
     private List<String> students;
 
-    private CourseEnum.Major major;
+    private CourseEnum.Status status;
+    private CourseEnum.DeleteFlag deleteFlag;
+
     //Audit Log
     @CreatedBy
     private String createdBy;

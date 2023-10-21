@@ -22,15 +22,25 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public void addCourse(Course course) {
-        courseRepository.insert(course);
+    public Course addCourse(Course course) {
+        if(null!=course && null==course.getCourseId()){
+            if(null!=courseRepository.findByCourseCode(course.getCourseCode())){
+                return null;
+            }else {
+                Course result = courseRepository.save(course);
+                return result;
+            }
+        }
+        return null;
+
     }
 
     @Override
     public Course updateCourse(Course course){
         Optional<Course> savedCourse = courseRepository.findById(course.getCourseId());
         if(savedCourse.isPresent()){
-            courseRepository.save(course);
+           Course result =  courseRepository.save(course);
+           return result;
         }
         return null;
     }

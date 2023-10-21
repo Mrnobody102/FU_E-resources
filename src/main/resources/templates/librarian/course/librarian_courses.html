@@ -57,17 +57,18 @@
 <!--                            <a class="btn lib_btn-add" type="button" th:href="@{/librarian/courses/add}">Add new-->
 <!--                                course</a>-->
 <!--                        </div>-->
-                        <div class="d-flex">
-                            <select class="lib_filter" th:name="major" th:id="major" onchange="this.form.submit()">
-                                <option value="all">All
-                                </option>
-                                <option th:each="major : ${majors}"
-                                        th:text="${major.getDisplayValue()}"
-                                        th:value="${major}"
-                                        th:selected="(${majorSearch} == ${major.getToString()})">
-                                </option>
-                            </select>
-                        </div>
+<!--                        SELECT BY MAJOR-->
+<!--                        <div class="d-flex">-->
+<!--                            <select class="lib_filter" th:name="major" th:id="major" onchange="this.form.submit()">-->
+<!--                                <option value="all">All-->
+<!--                                </option>-->
+<!--                                <option th:each="major : ${majors}"-->
+<!--                                        th:text="${major.getDisplayValue()}"-->
+<!--                                        th:value="${major}"-->
+<!--                                        th:selected="(${majorSearch} == ${major.getToString()})">-->
+<!--                                </option>-->
+<!--                            </select>-->
+<!--                        </div>-->
 
                     </form>
                     <div>
@@ -90,8 +91,9 @@
                         <tr>
                             <td><a th:href="@{'/librarian/courses/' + ${course.courseId}}"
                                    th:text="${course.courseCode}"></a></td>
-                            <td th:text="${course.courseName}"></td>
-                            <td> <span class="code-archive-except" th:text="${course.description}"></span> </td>
+                            <td><a class="link" th:href="@{'/librarian/courses/' + ${course.courseId}}"
+                                                        th:text="${course.courseName}"></a></td>
+                            <td><span class="code-archive-except" th:text="${course.description}"></span></td>
 <!--                            <td colspan="2">-->
 <!--                                <a class="update-account" th:href="@{'/librarian/courses/'+${course.courseId}}">View</a>-->
 <!--                                <a class="lib-delete-course" th:id="${course.courseId}">Delete</a>-->
@@ -142,12 +144,12 @@
         crossorigin="anonymous"></script>
 <!--Custom script-->
 <script th:src="@{/js/librarian.js}"></script>
-<script>
+<!--<script>-->
 
-    $('form select').on('change', function () {
-        $(this).closest('form').submit();
-    });
-</script>
+<!--    $('form select').on('change', function () {-->
+<!--        $(this).closest('form').submit();-->
+<!--    });-->
+<!--</script>-->
 
 
 </body>

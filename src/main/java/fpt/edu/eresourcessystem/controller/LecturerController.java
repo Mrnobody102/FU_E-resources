@@ -55,22 +55,15 @@ public class LecturerController {
     @GetMapping("/courses/list/{pageIndex}")
     String showCoursesByPage(@PathVariable Integer pageIndex,
                              @RequestParam(required = false, defaultValue = "") String search,
-                             @RequestParam(required = false, defaultValue = "all") String major,
                              final Model model) {
         Page<Course> page;
-        if (null == major || "all".equals(major)) {
-            page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
-        } else {
-            page = courseService.filterMajor(major, search, search, search, pageIndex, pageSize);
-        }
+        page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
         model.addAttribute("search", search);
         model.addAttribute("currentPage", pageIndex);
-        model.addAttribute("majorSearch", major);
-        model.addAttribute("majors", CourseEnum.Major.values());
         return "lecturer/course/lecturer_courses";
     }
 
@@ -86,7 +79,6 @@ public class LecturerController {
             List<Account> lecturers = accountService.findAllLecturer();
             model.addAttribute("lecturers", lecturers);
             model.addAttribute("course", course);
-            model.addAttribute("majors", CourseEnum.Major.values());
             return "lecturer/course/lecturer_update-course";
         }
     }

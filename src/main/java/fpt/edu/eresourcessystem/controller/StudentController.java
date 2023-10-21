@@ -47,7 +47,6 @@ public class StudentController {
     public String getStudentHome(@ModelAttribute Account account, final Model model) {
         List<Course> courses = courseService.findAll();
         model.addAttribute("courses", courses);
-        model.addAttribute("majors", CourseEnum.Major.values());
         return "student/student_home";
     }
 
@@ -59,7 +58,6 @@ public class StudentController {
     public String getStudentCourse(@ModelAttribute Account account, final Model model) {
         List<Course> courses = courseService.findAll();
         model.addAttribute("courses", courses);
-        model.addAttribute("majors", CourseEnum.Major.values());
         return "student/course/student_courses";
     }
 

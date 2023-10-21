@@ -26,8 +26,6 @@
     <div th:replace="~{fragments/header::studentHeaderSection}"></div>
 
 
-
-
     <!--  Main-->
     <div class="main_content">
 
@@ -44,21 +42,21 @@
                                 <p>Filter</p>
                                 <a href="" class="home__course-filter-clear">Clear all</a>
                             </div>
-                            <div class="home__course-filter-type">
-                                <div class="home__course-filter-type-item">
-                                    <div class="home__course-filter-type-btn" onclick="toggleDropdown()">
-                                        <span>Major</span>
-                                        <i class="fa fa-caret-down"></i>
-                                    </div>
-                                    <div class="home__course-filter-dropdown dropdown-content">
-                                        <a th:each="major : ${majors}"
-                                           href=""
-                                           th:text="${major.getDisplayValue()}"
-                                           th:value="${major}">
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+<!--                            <div class="home__course-filter-type">-->
+<!--                                <div class="home__course-filter-type-item">-->
+<!--                                    <div class="home__course-filter-type-btn" onclick="toggleDropdown()">-->
+<!--                                        <span>Major</span>-->
+<!--                                        <i class="fa fa-caret-down"></i>-->
+<!--                                    </div>-->
+<!--                                    <div class="home__course-filter-dropdown dropdown-content">-->
+<!--                                        <a th:each="major : ${majors}"-->
+<!--                                           href=""-->
+<!--                                           th:text="${major.getDisplayValue()}"-->
+<!--                                           th:value="${major}">-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -145,34 +143,35 @@
 
             </div>
         </div>
-        <script>
-            function toggleDropdown() {
-                var dropdownContent = document.querySelector('.dropdown-content');
-                if (dropdownContent.style.display === "none" || dropdownContent.style.display === "") {
-                    dropdownContent.style.display = "block";
-                    setTimeout(function () {
-                        dropdownContent.style.opacity = "1";
-                    }, 10); // delay a bit to ensure the transition takes effect
-                } else {
-                    dropdownContent.style.opacity = "0";
-                    setTimeout(function () {
-                        dropdownContent.style.display = "none";
-                    }, 300); // delay to wait for the transition to finish
-                }
-            }
-
-        </script>
     </div>
-    <!-- Footer -->
-    <div th:replace="~{fragments/footer :: footerSection}"></div>
+</div>
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footerSection}"></div>
 
-    <!--jquery-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <!--Bootstrap script-->
-    <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-            crossorigin="anonymous"></script>
-    <!--Custom script-->
-    <script th:src="@{/js/student.js}"></script>
+<!--jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<!--Custom script-->
+<script th:src="@{/js/student.js}"></script>
+<script>
+    function toggleDropdown() {
+        var dropdownContent = document.querySelector('.dropdown-content');
+        if (dropdownContent.style.display === "none" || dropdownContent.style.display === "") {
+            dropdownContent.style.display = "block";
+            setTimeout(function () {
+                dropdownContent.style.opacity = "1";
+            }, 10); // delay a bit to ensure the transition takes effect
+        } else {
+            dropdownContent.style.opacity = "0";
+            setTimeout(function () {
+                dropdownContent.style.display = "none";
+            }, 300); // delay to wait for the transition to finish
+        }
+    }
+
+</script>
 </body>
 </html>

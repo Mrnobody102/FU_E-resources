@@ -1,23 +1,30 @@
 package fpt.edu.eresourcessystem.enums;
 
 public class CourseEnum {
-    public enum Major {
-        HE("Information Technology", "HE"),
-        HS("Business Administration", "HS"),
-        HA("Language Studies", "HA");
+    public enum Status {
+        Active("Active"),
+        Inactive("Inactive");
         private final String displayValue;
-        private final String toString;
 
-        Major(String displayValue, String toString) {
+        Status(String displayValue) {
             this.displayValue = displayValue;
-            this.toString = toString;
         }
 
         public String getDisplayValue() {
             return displayValue;
         }
-        public String getToString() {
-            return toString;
+    }
+    public enum DeleteFlag {
+        PRESERVED("Preserved"),
+        DELETED("Deleted");
+        private final String displayValue;
+
+        DeleteFlag(String displayValue) {
+            this.displayValue = displayValue;
+        }
+        public String getDisplayValue() {
+            return displayValue;
         }
     }
+
 }

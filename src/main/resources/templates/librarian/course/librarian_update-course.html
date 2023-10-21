@@ -95,28 +95,27 @@
 <!--                </tr>-->
                 <tr>
                   <td class="lib_input-label"><label th:for="lecturer">Lecturers</label></td>
-                  <td><textarea type="text"
-                                class="lib_input form-control" name="lecturer" th:id="lecturer"
-                                readonly></textarea>
+                  <td><input type="text"
+                             class="lib_input form-control" th:name="lecturer" th:id="lecturer"
+                  />
                   </td>
                 </tr>
+                <!--                                <tr>-->
+                <!--                                    <td class="lib_input-label"><label th:for="lecturerSelection">Lecturers</label></td>-->
+                <!--                                    <td><select name="lecturerSelection" th:id="lecturerSelection">-->
+                <!--                                        <option th:each="lecturer : ${lecturers}"-->
+                <!--                                                th:text="|${lecturer.username} ( ${lecturer.name} )|"-->
+                <!--                                                th:value="${lecturer.accountId}">-->
+                <!--                                        </option>-->
+                <!--                                    </select>-->
+                <!--                                    </td>-->
+                <!--                                </tr>-->
                 <tr>
-                  <td class="lib_input-label"><label th:for="lecturerSelection">Lecturers</label></td>
-                  <td><select class="lib_input" name="lecturerSelection" th:id="lecturerSelection">
-                    <option th:each="lecturer : ${lecturers}"
-                            th:text="|${lecturer.username} ( ${lecturer.name} )|"
-                            th:value="${lecturer.accountId}">
-                    </option>
-                  </select>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="lib_input-label"><label th:for="majorSelection">Major</label></td>
-                  <td><select  th:field="*{major}" name="major" th:id="majorSelection">
-                    <option th:each="major : ${majors}"
-                            th:text="${major.getDisplayValue()}"
-                            th:value="${major}"
-                    >
+                  <td class="lib_input-label"><label th:for="statusSelection">Status</label></td>
+                  <td><select  th:field="*{status}" name="status" th:id="statusSelection">
+                    <option th:each="status : ${statuses}"
+                            th:text="${status.getDisplayValue()}"
+                            th:value="${status}">
                     </option>
                   </select>
                   </td>

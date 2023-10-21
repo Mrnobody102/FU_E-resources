@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface CourseService {
-    void addCourse(Course Course);
+    Course addCourse(Course Course);
     Course updateCourse(Course Course);
     boolean delete(Course course);
 
