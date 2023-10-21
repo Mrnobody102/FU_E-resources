@@ -355,6 +355,7 @@ public class LibrarianController {
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         return "librarian/course/librarian_course-detail";
+//        return  "librarian/course/detailCourseTest";
     }
 
 

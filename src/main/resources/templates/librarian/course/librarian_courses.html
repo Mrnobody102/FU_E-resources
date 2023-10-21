@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Librarian | Courses</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
@@ -47,15 +48,15 @@
                             <input class="lib_search-content" type="text" placeholder="Search course.." name="search"
                                    th:value="${search}" id="search-text"/>
                             <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
-                                <i class="lib_search-btn-icon fa fa-search"></i>
+                                <i class="lib_search-btn-icon fas fa-search"></i>
                             </button>
 
                             <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list/1}">Show AlL</a>
                         </div>
-                        <div>
-                            <a class="btn lib_btn-add" type="button" th:href="@{/librarian/courses/add}">Add new
-                                course</a>
-                        </div>
+<!--                        <div>-->
+<!--                            <a class="btn lib_btn-add" type="button" th:href="@{/librarian/courses/add}">Add new-->
+<!--                                course</a>-->
+<!--                        </div>-->
                         <div class="d-flex">
                             <select class="lib_filter" th:name="major" th:id="major" onchange="this.form.submit()">
                                 <option value="all">All
@@ -67,7 +68,14 @@
                                 </option>
                             </select>
                         </div>
+
                     </form>
+                    <div>
+                        <a class="lib_btn-add" type="button" th:href="@{/librarian/courses/add}">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>New</span>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="table-responsive" th:if="${courses ne null}">
@@ -86,7 +94,7 @@
                             <td th:text="${course.description}"></td>
                             <td colspan="2">
                                 <a class="update-account" th:href="@{'/librarian/courses/'+${course.courseId}}">View</a>
-                                <a class="delete-course" style="cursor: pointer" th:id="${course.courseId}">Delete</a>
+                                <a class="lib-delete-course" style="cursor: pointer" th:id="${course.courseId}">Delete</a>
                             </td>
                         </tr>
                     </th:block>

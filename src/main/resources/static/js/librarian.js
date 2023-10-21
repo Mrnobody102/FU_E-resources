@@ -2,6 +2,18 @@ function submitSearchForm() {
     // ????????????????????? :)
     document.getElementById('#search-form').submit();
 }
+function addIndexToTable(){
+    var table = document.getElementsByClassName("numbered-table");
+    var rows = table[0].getElementsByTagName("tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var cell = rows[i].insertCell(0);
+        if( i>0 ){
+            cell.textContent = i;
+        }
+
+    }
+}
 
 $(document).ready(function () {
 
@@ -109,14 +121,14 @@ $(document).ready(function () {
         DELETE
      */
 
-// Handle delete course click
-    $("body").on("click", ".delete-course", function () {
+    // Handle delete course click
+    $("body").on("click", ".lib-delete-course", function () {
         var courseId = $(this).attr("id");
         handleDeletion("/librarian/courses/" + courseId + "/delete", 'Course is deleted');
     });
 
-// Handle delete topic click
-    $("body").on("click", ".delete-topic", function () {
+    // Handle delete topic click
+    $("body").on("click", ".lib-delete-topic", function () {
         var topicId = $(this).attr("id");
         handleDeletion("/librarian/courses/deleteTopic/" + topicId, 'Topic is deleted');
     });

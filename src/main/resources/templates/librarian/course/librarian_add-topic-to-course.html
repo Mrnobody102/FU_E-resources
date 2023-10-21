@@ -6,11 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Librarian | Course | Add topic</title>
 
-
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
@@ -56,69 +54,104 @@
             <section>
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h2 class="h2" th:text="|Add topic to ${course.courseCode}|"></h2>
-
                 </div>
                 <div class="lib_content">
-                    <div class="add-form">
-
-                        <div class="add-form-content">
-                            <table class="lib_course-info-topic" th:if="course ne null">
+                    <div class="lib_add-topic-info row">
+                        <div class="lib_add-topic-form col-md-8">
+                            <!--                        <div th:if="${param.success}">-->
+                            <!--                            <div class="alert alert-info">Save course successful !!!</div>-->
+                            <!--                        </div>-->
+                            <!--                        <div th:if="${param.error}">-->
+                            <!--                            <div class="alert alert-danger">Please check course information again !!!</div>-->
+                            <!--                        </div>-->
+                            <div class="lib_add-form-content">
+                                <form method="post" role="form" th:action="@{/librarian/courses/addTopic}"
+                                      th:object="${topic}" th:id="add-form">
+                                    <h3>Add topic</h3>
+                                    <table class="table-form lib_table">
+                                        <tr>
+                                            <td class="lib_input-label"><label th:for="courseId">Course</label></td>
+                                            <td><input type="text"
+                                                       class="lib_input form-control hidden" th:field="*{courseId}"
+                                                       th:id="courseId"
+                                                       placeholder="Enter course ID" readonly>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="lib_input-label"><label th:for="topicTitle">Topic Title</label>
+                                            </td>
+                                            <td><input type="text"
+                                                       class="lib_input form-control" th:field="*{topicTitle}"
+                                                       placeholder="Enter topic title" required>
+                                                <p class="text-danger" th:errors="*{topicTitle}"
+                                                   th:if="${#fields.hasErrors('topicTitle')}"></p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="lib_input-label"><label th:for="topicDescription">Topic
+                                                Description</label></td>
+                                            <td><textarea
+                                                    class="lib_textarea form-control" th:field="*{topicDescription}"
+                                                    placeholder="Enter description"></textarea>
+                                                <p class="text-danger" th:errors="*{topicDescription}"
+                                                   th:if="${#fields.hasErrors('topicDescription')}"></p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <button type="submit" class="btn lib_btn-save mt-2">Save</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="lib_course-general-info  col-md-4">
+                            <div class="lib_course-general-info-content">
+                            <table class="lib_course-info" th:if="course ne null">
                                 <tr>
-                                    <th class="lib_input-label">Course</th>
-                                    <td th:text="| ${course.courseCode} - ${course.courseName}|"></td>
+                                    <th class="course-info-label">Course</th>
+                                    <td th:text="${course.courseCode}"></td>
                                 </tr>
                                 <tr>
-                                    <th class="lib_input-label">Topics</th>
-                                    <td th:if="topics ne null">
-                                        <th:block th:each="topic : ${topics}">
-                                            <a th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></a>
-                                            <div>
-                                                <a th:href="@{'/librarian/courses/updateTopic/' + ${topic.topicId}}">Edit</a>
-                                                <a class="delete-topic"
-                                                     th:id=" ${course.courseId} + '/' + ${topic.topicId}">Remove</a>
-                                            </div>
-                                        </th:block>
+                                    <th class="course-info-label"></th>
+                                    <td th:text="${course.courseName}"></td>
+                                </tr>
+                                <tr>
+                                    <th class="course-info-label"></th>
+                                    <td th:text="${course.description}"></td>
+                                </tr>
+                            </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lib_course_topics">
+                        <!--                        <div th:if="${param.success}">-->
+                        <!--                            <div class="alert alert-info">Save course successful !!!</div>-->
+                        <!--                        </div>-->
+                        <!--                        <div th:if="${param.error}">-->
+                        <!--                            <div class="alert alert-danger">Please check course information again !!!</div>-->
+                        <!--                        </div>-->
+                        <div class="lib_topics-content">
+                            <table class="lib_course-info-topic numbered-table table table-striped table-sm" th:if="topics ne null">
+                                <tr>
+                                    <th class="lib_input-label">Topic</th>
+                                    <th>Description</th>
+                                    <th></th>
+                                </tr>
+                                <tr th:each="topic : ${topics}">
+                                    <td th:if="topic ne null"> <a href=""> <span  th:text="${topic.topicTitle}"></span></a></td>
+                                    <td th:if="topic ne null"> <span  th:text="${topic.topicDescription}"></span></td>
+                                    <td>
+                                        <div>
+                                            <a th:href="@{'/librarian/courses/updateTopic/' + ${topic.topicId}}">Edit</a>
+                                            <a class="lib-delete-topic"
+                                               th:id="'/' + ${course.courseId} + '/' + ${topic.topicId}">Remove</a>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
-                            <form method="post" role="form" th:action="@{/librarian/courses/addTopic}"
-                                  th:object="${topic}" th:id="add-topic">
-                                <h3>Add topic</h3>
-                                <table class="table-form lib_table">
-                                    <tr>
-                                        <td class="lib_input-label"><label th:for="courseId">Course ID</label></td>
-                                        <td><input type="text"
-                                                   class="lib_input form-control hidden" th:field="*{courseId}" th:id="courseId"
-                                                   placeholder="Enter course ID" readonly>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="lib_input-label"><label th:for="topicTitle">Topic Title</label></td>
-                                        <td><input type="text" th:id="topicTitle"
-                                                   class="lib_input form-control" th:field="*{topicTitle}"
-                                                   placeholder="Enter topic title" required>
-                                            <p class="text-danger" th:errors="*{topicTitle}"
-                                               th:if="${#fields.hasErrors('topicTitle')}"></p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="lib_input-label"><label th:for="topicDescription">Topic
-                                            Description</label></td>
-                                        <td><textarea th:id="topicDescription"
-                                                   class="lib_textarea form-control" th:field="*{topicDescription}"
-                                                      placeholder="Enter description"></textarea>
-                                            <p class="text-danger" th:errors="*{topicDescription}"
-                                               th:if="${#fields.hasErrors('topicDescription')}"></p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>
-                                            <button type="submit" class="btn lib_btn-save mt-2">Save</button>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -144,13 +177,14 @@
 
 
 <script th:inline="javascript">
+    addIndexToTable();
     validate_addTopic();
 
     var successParam = [[${param.success}]];
     if (successParam) {
         Swal.fire(
             'Success!',
-            'Save course successful!',
+            'Save topic successful!',
             'success'
         );
     }
@@ -159,7 +193,7 @@
     if (errorParam) {
         Swal.fire(
             'Error!',
-            'Please check course information again!',
+            'Please check topic information again!',
             'error'
         );
     }

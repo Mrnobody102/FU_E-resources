@@ -8,7 +8,8 @@
 /* HEADER */
 .header {
     min-width: max-content;
-    height: 175px;
+    /*height: 175px;*/
+    height: auto;
     /*background-color: var(--primary-color);*/
     /*background-image: linear-gradient(0, rgba(var(--primary-color-rgb), 0.6), var(--primary-color));*/
     background-image: linear-gradient(0, var(--gradient-color), var(--primary-color));
@@ -17,7 +18,8 @@
 .header-guest,
 .header-librarian,
 .header-lecturer {
-    height: 132px;
+    /*height: 132px;*/
+    height: auto;
     /*background-image: linear-gradient(0, rgba(var(--primary-color-rgb), 0.6), var(--primary-color));*/
     background-image: linear-gradient(0, var(--gradient-color), var(--primary-color));
 }

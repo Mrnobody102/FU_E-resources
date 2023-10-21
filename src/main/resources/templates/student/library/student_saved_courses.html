@@ -5,6 +5,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Personal course</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
@@ -12,38 +17,41 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
-<body>
-<div class="app_container">
-    <!-- Header -->
-    <div th:replace="~{fragments/header::studentHeaderSection}"></div>
-
-    <!--  Main-->
-    <div class="main_content">
-        <div class="grid">
-            <div style="display: flex; width: 100%; margin-bottom: 16px" class="app__container-content">
-                <div>
-                    <div th:replace="~{fragments/sidebar}"></div>
+<body class="app_container">
+<!-- Header -->
+<div th:replace="~{fragments/header::studentHeaderSection}"></div>
+<div class="main_content">
+    <div class="container-content-wrapper">
+        <!--  Main-->
+        <div class="container-content row">
+            <div class="main-content stu_course-saved">
+                <div class="stu_course-saved-content d-flex">
+                    <div class="stu_sidebar">
+                        <div th:replace="~{fragments/sidebar}"></div>
+                    </div>
+                    <div class="stu_course-saved-content main" id="main">
+                        <ul>
+                            <li th:each="courseSaved : ${coursesSaved}">
+                                <a th:text="${courseSaved.getCourseName()}"
+                                   th:href="@{'/student/courses/' + ${courseSaved.getCourseId()}}"></a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="main" id="main">
-                    <ul>
-                        <li th:each="courseSaved : ${coursesSaved}">
-                            <a th:text="${courseSaved.getCourseName()}"
-                               th:href="@{'/student/courses/' + ${courseSaved.getCourseId()}}"></a>
-                        </li>
-                    </ul>
-                </div>
-
-
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <div th:replace="~{fragments/footer :: footerSection}"></div>
 </div>
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footerSection}"></div>
+
 
 <!--jquery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 <!--Custom script-->
 <script th:src="@{/js/student.js}"></script>
 </body>

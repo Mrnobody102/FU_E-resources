@@ -91,3 +91,38 @@
   margin-bottom: 12px;
   border-bottom: 1px solid var(--second-back-ground);
 }
+
+.lib_course_topics{
+  margin: 2rem;
+}
+
+.course-info-label{
+  text-align: right;
+  padding-right: 1.5rem;
+}
+.lib_input-label{
+  text-align: right;
+}
+.lib_course-general-info-content{
+  padding: 1.5rem;
+  border-radius: 3rem;
+  border: 1px solid #d2d0d0;
+}
+.lib_course-info{
+  margin: 1rem;
+  /*background: #cfecd9;*/
+}
+.lib_add-new{
+  float: right;
+  padding-bottom: 1rem;
+}
+.lib_btn-add{
+  background: #9ed5b0;
+  padding: 0.7rem 1rem;
+  border: 1px solid #d2d0d0;
+  border-radius: 1rem;
+}
+
+.lib_btn-add:hover{
+  background: #94d3aa;
+}
