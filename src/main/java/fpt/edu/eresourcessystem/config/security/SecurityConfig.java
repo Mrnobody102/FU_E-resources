@@ -59,7 +59,7 @@ public class SecurityConfig {
         // Authorization
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/**", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
+                        .requestMatchers("/", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
                         .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
                         .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.LECTURER.name())
                         .requestMatchers("/student/**").hasAnyRole(AccountEnum.Role.STUDENT.name())
