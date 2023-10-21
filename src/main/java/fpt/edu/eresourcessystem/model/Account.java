@@ -40,6 +40,8 @@ public class Account {
 
     private AccountEnum.Role role;
 
+    private AccountEnum.Status status;
+
 //    private String deleteFlg;
 
     //Audit Log

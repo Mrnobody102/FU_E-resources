@@ -4,6 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountEnum {
+
+    public enum Status {
+        Active("Active"),
+        Inactive("Inactive");
+
+        private final String displayValue;
+
+        Status(String displayValue) {
+            this.displayValue = displayValue;
+        }
+
+        public String getDisplayValue() {
+            return displayValue;
+        }
+    }
     public enum Role {
         STUDENT("STUDENT"),
         LECTURER("LECTURER"),
