@@ -86,7 +86,7 @@
                             <td th:text="${course.description}"></td>
                             <td colspan="2">
                                 <a class="update-account" th:href="@{'/librarian/courses/'+${course.courseId}}">View</a>
-                                <a class="delete-course" th:id="${course.courseId}">Delete</a>
+                                <a class="lib-delete-course" th:id="${course.courseId}">Delete</a>
                             </td>
                         </tr>
                     </th:block>

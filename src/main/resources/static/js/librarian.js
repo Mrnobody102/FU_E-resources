@@ -2,6 +2,18 @@ function submitSearchForm() {
     // ????????????????????? :)
     document.getElementById('#search-form').submit();
 }
+function addIndexToTable(){
+    var table = document.getElementsByClassName("numbered-table");
+    var rows = table[0].getElementsByTagName("tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var cell = rows[i].insertCell(0);
+        if( i>0 ){
+            cell.textContent = i;
+        }
+
+    }
+}
 
 $(document).ready(function () {
 
@@ -76,7 +88,7 @@ $(document).ready(function () {
         DELETE
      */
 
-    $("body").on("click", ".delete-course", function () {
+    $("body").on("click", ".lib-delete-course", function () {
         var courseId = $(this).attr("id");
         var result = confirm("Do you want delete this courses?" + courseId);
 
@@ -85,7 +97,7 @@ $(document).ready(function () {
         }
     });
 
-    $("body").on("click", ".delete-topic", function () {
+    $("body").on("click", ".lib-delete-topic", function () {
         var courseTopic = $(this).attr("id");
         var result = confirm("Do you want delete this topic?" + courseTopic);
         if (result) {
