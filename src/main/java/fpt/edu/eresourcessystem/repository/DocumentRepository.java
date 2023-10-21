@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.repository;
 
+import com.mongodb.lang.NonNull;
 import fpt.edu.eresourcessystem.model.Document;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -12,9 +13,10 @@ import java.util.Optional;
 public interface DocumentRepository extends
         MongoRepository<Document, String> {
 
-    Optional<Document> findById(String courseId);
+    @NonNull
+    Optional<Document> findById(@NonNull String courseId);
 
-    @Query("SELECT c FROM Documents c WHERE c.courseId in ?1")
+    @Query("SELECT c FROM Documents c WHERE c.documentId in ?1")
     List<Document> findByListId(List<String> courseId);
     List<Document> findByTopicId(String topicId);
 

@@ -19,10 +19,10 @@ public interface AccountRepository extends
     List<Account> findAll();
     Account findByUsername(String username);
 
-    Account findByEmail(String email);
+    Optional<Account> findByEmail(String email);
 
     @NonNull
-    Optional<Account> findById(String accountId);
+    Optional<Account> findById(@NonNull String accountId);
 
     void removeAccountByAccountId(String accountId);
     @Query("SELECT FROM Accounts WHERE a.role = 'LECTURER'")

@@ -18,23 +18,23 @@
 
     <!-- Content -->
     <div class="main_content">
-        <div class="container-content">
-            <div class="content">
-                <div class="profile-content">
-                    <div class="profile-form ">
-                        <div class="profile-form-title">
-                            <Profile class="title-form"></Profile>
-                        </div>
-                        <div th:if="${param.success}">
-                            <div class="alert alert-info">Save content successful !!!</div>
-                        </div>
-                        <div th:if="${param.error}">
-                            <div class="alert alert-danger">Error !!!</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <ul>
+            <li>
+                <a th:href="@{/lecturer/courses}">
+                    My Courses
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/lecturer/documents}">
+                    My Documents
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/lecturer/questions}">
+                    Student questions
+                </a>
+            </li>
+        </ul>
     </div>
     <!-- Footer -->
     <div th:replace="~{fragments/footer :: footerSection}"></div>

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("lecturerService")
-public class LecturerServiceImpl implements LecturerService{
+public class LecturerServiceImpl implements LecturerService {
     private final LecturerRepository lecturerRepository;
     private final CourseService courseService;
 
@@ -20,21 +20,14 @@ public class LecturerServiceImpl implements LecturerService{
 
     @Override
     public List<Lecturer> findByCourseId(String courseId) {
-        List<Lecturer> lecturers = lecturerRepository.findByCourseId(courseId);
-        return lecturers;
+        return lecturerRepository.findByLecturerId(courseId);
     }
 
     @Override
     public Lecturer addLecturer(Lecturer lecturer) {
-        if(null==lecturer.getAccountId()){
-            Lecturer result = lecturerRepository.save(lecturer);
-            return result;
-        }else {
-            Lecturer checkExist = lecturerRepository.findByAccountId(lecturer.getAccountId());
-            if(null==checkExist){
-                Lecturer result = lecturerRepository.save(lecturer);
-                return result;
-            }
+        Lecturer checkExist = lecturerRepository.findByAccountId(lecturer.getAccountId());
+        if (null == checkExist) {
+            return lecturerRepository.save(lecturer);
         }
         return null;
     }
@@ -42,20 +35,18 @@ public class LecturerServiceImpl implements LecturerService{
     @Override
     public List<Course> findListManageCourse(Lecturer lecturer) {
         Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getAccountId());
-        if(checkExist.isPresent()){
-            if(null==checkExist.get().getLecturerCourses()){
+        if (checkExist.isPresent()) {
+            if (null == checkExist.get().getLecturerCourses()) {
                 return null;
             }
-            List<Course> courses = courseService.findByListId(checkExist.get().getLecturerCourses());
-            return courses;
+            return courseService.findByListId(checkExist.get().getLecturerCourses());
         }
         return null;
     }
 
     @Override
     public Lecturer findByAccountId(String accountId) {
-        Lecturer lecturer = lecturerRepository.findByAccountId(accountId);
-        return lecturer;
+        return lecturerRepository.findByAccountId(accountId);
     }
 
 

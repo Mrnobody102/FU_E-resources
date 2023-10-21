@@ -1,3 +1,7 @@
+/*
+    LOGIN MODAL
+ */
+
 const loginModal = document.getElementById("loginModal");
 const closeLoginForm = document.getElementById("closeLoginForm");
 const openLoginModal = document.getElementById("openLoginModal");

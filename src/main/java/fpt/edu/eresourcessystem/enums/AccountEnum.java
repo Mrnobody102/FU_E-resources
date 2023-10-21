@@ -1,5 +1,8 @@
 package fpt.edu.eresourcessystem.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AccountEnum {
     public enum Role {
         STUDENT("STUDENT"),
@@ -30,6 +33,7 @@ public class AccountEnum {
         public String getDisplayValue() {
             return displayValue;
         }
+
     }
     public enum Gender {
         M("Male"),
@@ -44,5 +48,13 @@ public class AccountEnum {
         public String getDisplayValue() {
             return displayValue;
         }
+    }
+
+    public static List<String> getListCampus(){
+        List<String> displayValues = new ArrayList<>();
+        for (Campus campus : Campus.values()) {
+            displayValues.add(campus.getDisplayValue());
+        }
+        return displayValues;
     }
 }

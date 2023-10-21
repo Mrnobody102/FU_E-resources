@@ -25,19 +25,19 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 
-    <style>
-        label.error {
-            margin-top: 5px;
-            margin-left: 5px;
-            display: block;
-            color: red;
-            /*font-size: smaller;*/
-        }
-    </style>
+<!--    <style>-->
+<!--        label.error {-->
+<!--            margin-top: 5px;-->
+<!--            margin-left: 5px;-->
+<!--            display: block;-->
+<!--            color: red;-->
+<!--            /*font-size: smaller;*/-->
+<!--        }-->
+<!--    </style>-->
 </head>
 <body class="app_container">
 
-<header class="row" th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<header th:replace="~{fragments/header::headerLibrarianSection}"></header>
 <div class="main_content">
     <div class="grid app__container-content-wrapper">
         <div class="app__container-content">
@@ -169,21 +169,19 @@
 </div>
 
 <!-- Footer -->
-<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+<div th:replace="~{fragments/footer :: footerSection}"></div>
 
 <!--Bootstrap script-->
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!--Validate-->
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-
-
 <!--Custom script-->
 <script th:src="@{/js/librarian.js}"></script>
+
+
+<!--Validate-->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
 <script th:src="@{/js/validation.js}"></script>
 
 <script th:inline="javascript">

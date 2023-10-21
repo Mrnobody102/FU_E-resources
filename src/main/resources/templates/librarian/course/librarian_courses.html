@@ -41,21 +41,33 @@
             </div>
             <div class="lib_data-list-wrapper">
                 <div class="lib_search-container">
-                    <div class="d-flex">
-                        <form class="d-flex" action="">
+                    <form class="d-flex" th:action="@{/librarian/courses/list/1}" th:method="get">
+                        <div class="d-flex">
+
                             <input class="lib_search-content" type="text" placeholder="Search course.." name="search"
-                                   id="search-text"/>
-                            <div class="lib_search-btn-wrapper">
-                                <a class="lib_search-btn">
-                                    <i class="lib_search-btn-icon fa fa-search"></i>
-                                </a>
-                            </div>
-                        </form>
-                        <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list/1}">Show AlL</a>
-                    </div>
-                    <div>
-                        <a class="btn lib_btn-add" type="button" th:href="@{/librarian/courses/add}">Add new course</a>
-                    </div>
+                                   th:value="${search}" id="search-text"/>
+                            <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
+                                <i class="lib_search-btn-icon fa fa-search"></i>
+                            </button>
+
+                            <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list/1}">Show AlL</a>
+                        </div>
+                        <div>
+                            <a class="btn lib_btn-add" type="button" th:href="@{/librarian/courses/add}">Add new
+                                course</a>
+                        </div>
+                        <div class="d-flex">
+                            <select class="lib_filter" th:name="major" th:id="major" onchange="this.form.submit()">
+                                <option value="all">All
+                                </option>
+                                <option th:each="major : ${majors}"
+                                        th:text="${major.getDisplayValue()}"
+                                        th:value="${major}"
+                                        th:selected="(${majorSearch} == ${major.getToString()})">
+                                </option>
+                            </select>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="table-responsive" th:if="${courses ne null}">
@@ -74,29 +86,36 @@
                             <td th:text="${course.description}"></td>
                             <td colspan="2">
                                 <a class="update-account" th:href="@{'/librarian/courses/'+${course.courseId}}">View</a>
-                                <a class="delete-course" th:id="${course.courseId}">Delete</a>
+                                <a class="delete-course" style="cursor: pointer" th:id="${course.courseId}">Delete</a>
                             </td>
                         </tr>
                     </th:block>
                 </table>
-                <nav aria-label="Page navigation example">
+                <nav th:if="${totalPage} > 1" aria-label="Page navigation example">
                     <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
+                        <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
+                            <a class="page-link previous-page-course"
+                               style="cursor: pointer">
+                                &laquo;
                             </a>
                         </li>
 
-                        <li th:if="totalPage ne null" th:each="pageIndex: ${#numbers.sequence(1,totalPage)}"
-                            class="page-item">
-                            <a th:text="${pageIndex}" class="page-link page-course-number" href="#"></a>
+                        <li th:each="pageIndex: ${pages}" class="page-item"
+                            th:classappend=" (${currentPage == pageIndex}) ? 'active' : '' ">
+                            <th:block th:if="${pageIndex == -1}">
+                                <span class="page-link">...</span>
+                            </th:block>
+                            <th:block th:if="${pageIndex != -1}">
+                                <a th:text="${pageIndex}" th:value="${pageIndex}"
+                                   class="page-link page-course-number"
+                                   style="cursor: pointer"
+                                ></a>
+                            </th:block>
                         </li>
-
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span class="sr-only">Next</span>
-                                <span aria-hidden="true">&raquo;</span>
+                        <li th:class="${currentPage == totalPage} ? 'page-item disabled' : 'page-item'">
+                            <a class="page-link next-page-course"
+                               style="cursor: pointer">
+                                &raquo;
                             </a>
                         </li>
                     </ul>
@@ -109,13 +128,19 @@
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-<!--Custom script-->
-<script th:src="@{/js/librarian.js}"></script>
-
 <!--Bootstrap script-->
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+<!--Custom script-->
+<script th:src="@{/js/librarian.js}"></script>
+<script>
+
+    $('form select').on('change', function () {
+        $(this).closest('form').submit();
+    });
+</script>
+
+
 </body>
 </html>

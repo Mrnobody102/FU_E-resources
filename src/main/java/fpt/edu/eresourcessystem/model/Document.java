@@ -26,9 +26,12 @@ public class Document {
 
     private DocumentEnum.DocumentFormat docType;
     private byte[] content;
+    private String contentLink; //link video, audio - cloud
 
     private List<String> notes;
     private List<String> questions;
+
+    private DocumentEnum.DocumentDisplayEnum displayFlg;
 
     //Audit Log
     @CreatedBy

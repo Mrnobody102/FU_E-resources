@@ -1,7 +1,12 @@
+function submitSearchForm() {
+    // ????????????????????? :)
+    document.getElementById('#search-form').submit();
+}
+
 $(document).ready(function () {
 
-    // show is Admin
-    $('#role').change(function() {
+    // SHOW is Admin
+    $('#role').change(function () {
         if ($(this).val() === 'LIBRARIAN') {
             $('#isAdminCheckbox').show();
         } else {
@@ -9,27 +14,67 @@ $(document).ready(function () {
         }
     });
 
-    // Pagination
-
-    $(".page-course-number").click(function () {
-
-        var search = $("#search-text").val();
-        var pageIndex = $(this).html();
-
-        window.location = "/librarian/courses/list/" + pageIndex + "?search=" + search;
-
-    });
-
+    /*
+        PAGINATION
+     */
+    // Account pagination
     $(".page-account-number").click(function () {
 
-        var search = $("#search-text").val();
-        var pageIndex = $(this).html();
+        const search = $("#search-text").val();
+        let pageIndex = $(this).html();
 
         window.location = "/librarian/accounts/list/" + pageIndex + "?search=" + search;
+    });
+
+    $(".previous-page-account").click(function () {
+        const search = $("#search-text").val();
+        const pageIndex = $(".active .page-account-number").text();
+        const currentPage = parseInt(pageIndex);
+        if (currentPage > 1) {
+            window.location.href = "/librarian/accounts/list/" + (currentPage - 1) + "?search=" + search;
+        }
+    });
+
+    $(".next-page-account").click(function () {
+        const search = $("#search-text").val();
+        const pageIndex = $(".active .page-account-number").text();
+        const currentPage = parseInt(pageIndex);
+        window.location.href = "/librarian/accounts/list/" + (currentPage + 1) + "?search=" + search;
+    });
+
+    // Course pagination
+    $(".page-course-number").click(function () {
+        const search = $("#search-text").val();
+        const pageIndex = $(this).html();
+        const major = $("#major").val();
+
+        window.location = "/librarian/courses/list/" + pageIndex + "?search=" + search + "&major=" + major;
 
     });
-// Hàm xử lý xóa chung
+
+    $(".previous-page-course").click(function () {
+        const search = $("#search-text").val();
+        const major = $("#major").val();
+        const pageIndex = $(".active .page-course-number").text();
+        const currentPage = parseInt(pageIndex);
+        if (currentPage > 1) {
+            window.location.href = "/librarian/courses/list/" + (currentPage - 1) + "?search=" + search + "&major=" + major;
+        }
+    });
+
+    $(".next-page-course").click(function () {
+        const search = $("#search-text").val();
+        const major = $("#major").val();
+        const pageIndex = $(".active .page-course-number").text();
+        const currentPage = parseInt(pageIndex);
+        window.location.href = "/librarian/courses/list/" + (currentPage + 1) + "?search=" + search + "&major=" + major;
+    });
+
+    // Function to handle deletion with Swal alert
     function handleDeletion(url, successMessage) {
+        var currentPage = window.location.href;
+        var currentPageWithoutSuccess = currentPage.replace(/[?&]success(=[^&]*)?(&|$)/, '');
+
         Swal.fire({
             title: 'Do you want to delete this item?',
             showCancelButton: true,
@@ -39,14 +84,12 @@ $(document).ready(function () {
             if (result.isConfirmed) {
                 $.ajax({
                     type: "GET",
-                    url: url,
+                    url: url + "?currentPage=" + encodeURIComponent(currentPageWithoutSuccess),
                     success: function () {
-                        // Xử lý thành công
-                        window.location.reload(); // Hoặc chuyển hướng đến trang khác
+                        window.location.href = currentPageWithoutSuccess + "?success";
                         Swal.fire('Deleted!', successMessage, 'success');
                     },
                     error: function () {
-                        // Xử lý lỗi
                         Swal.fire('Error', 'Failed to delete the item.', 'error');
                     }
                 });
@@ -56,22 +99,26 @@ $(document).ready(function () {
         });
     }
 
-// Xóa tài khoản khi nhấn vào một phần tử có class "delete-account"
+// Handle delete account click
     $("body").on("click", ".delete-account", function () {
         var accountId = $(this).attr("id");
-        handleDeletion(`/librarian/accounts/${accountId}/delete`, 'Account is deleted');
+        handleDeletion("/librarian/accounts/" + accountId + "/delete", 'Account is deleted');
     });
 
-// Xóa khóa học khi nhấn vào một phần tử có class "delete-course"
+    /*
+        DELETE
+     */
+
+// Handle delete course click
     $("body").on("click", ".delete-course", function () {
         var courseId = $(this).attr("id");
-        handleDeletion(`/librarian/courses/delete/${courseId}`, 'Course is deleted');
+        handleDeletion("/librarian/courses/" + courseId + "/delete", 'Course is deleted');
     });
 
-// Xóa chủ đề khi nhấn vào một phần tử có class "delete-topic"
+// Handle delete topic click
     $("body").on("click", ".delete-topic", function () {
         var topicId = $(this).attr("id");
-        handleDeletion(`/librarian/courses/deleteTopic/${topicId}`, 'Topic is deleted');
+        handleDeletion("/librarian/courses/deleteTopic/" + topicId, 'Topic is deleted');
     });
 
 });

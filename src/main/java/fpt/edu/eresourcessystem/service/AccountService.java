@@ -1,11 +1,8 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.dto.ObjectRespond;
-import org.springframework.data.domain.Page;
-import fpt.edu.eresourcessystem.exception.AccountNotExistedException;
-import fpt.edu.eresourcessystem.exception.AccountNotFoundException;
+import fpt.edu.eresourcessystem.dto.AccountDTO;
 import fpt.edu.eresourcessystem.model.Account;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -13,8 +10,7 @@ public interface AccountService {
 
     List<Account> findAllLecturer();
     List<Account> searchLecturer(String search);
-
-    void addAccount(Account account);
+    void addAccount(AccountDTO accountDTO);
     Account updateAccount(Account account);
     Account findByUsername(String username) ;
     Account findByAccountId(String accountId) ;

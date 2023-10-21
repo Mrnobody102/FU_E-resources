@@ -1,11 +1,13 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.dto.AccountDTO;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/librarian")
@@ -31,6 +34,7 @@ public class LibrarianController {
     private final CourseService courseService;
     private final TopicService topicService;
 
+    @Autowired
     public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService) {
         this.accountService = accountService;
         this.librarianService = librarianService;
@@ -68,7 +72,7 @@ public class LibrarianController {
     String findAccountByPage(@PathVariable Integer pageIndex,
                              @RequestParam(required = false, defaultValue = "") String search,
                              @RequestParam(required = false, defaultValue = "all") String role,
-                             final Model model, HttpServletRequest request) {
+                             final Model model) {
         Page<Account> page;
         if(null==role || "all".equals(role)){
             page = accountService.findByUsernameLikeOrEmailLike(search, search, pageIndex, pageSize);
@@ -89,11 +93,7 @@ public class LibrarianController {
 
     @GetMapping("/accounts/add")
     public String addAccountProcess(@ModelAttribute Account account, final Model model) {
-        if (null != account) {
-            model.addAttribute("account", account);
-        } else {
-            model.addAttribute("account", new Account());
-        }
+        model.addAttribute("account", Objects.requireNonNullElseGet(account, Account::new));
         model.addAttribute("roles", AccountEnum.Role.values());
         model.addAttribute("campuses", AccountEnum.Campus.values());
         model.addAttribute("genders", AccountEnum.Gender.values());
@@ -101,29 +101,30 @@ public class LibrarianController {
     }
 
     @PostMapping("/accounts/add")
-    public String addAccount(@ModelAttribute Account account,
+    public String addAccount(@ModelAttribute AccountDTO accountDTO,
                              @RequestParam(name = "isAdmin", required = false) boolean isAdmin) {
-        Account checkExist = accountService.findByEmail(account.getEmail());
-        if (checkExist != null) {
+        String email = accountDTO.getEmail();
+        if (accountService.findByEmail(email) != null) {
             return "redirect:/librarian/accounts/add?error";
         }
-        accountService.addAccount(account);
-        String role = String.valueOf(account.getRole());
+
+        accountService.addAccount(accountDTO);
+        String role = String.valueOf(accountDTO.getRole());
         switch (role) {
             case "LIBRARIAN":
                 Librarian librarian = new Librarian();
-                librarian.setAccountId(account.getAccountId());
+                librarian.setAccountId(accountDTO.getAccountId());
                 librarian.setFlagAdmin(isAdmin);
                 librarianService.addLibrarian(librarian);
                 break;
             case "STUDENT":
                 Student student = new Student();
-                student.setAccountId(account.getAccountId());
+                student.setAccountId(accountDTO.getAccountId());
                 studentService.addStudent(student);
                 break;
             case "LECTURER":
                 Lecturer lecturer = new Lecturer();
-                lecturer.setAccountId(account.getAccountId());
+                lecturer.setAccountId(accountDTO.getAccountId());
                 lecturerService.addLecturer(lecturer);
                 break;
             default:
@@ -131,7 +132,7 @@ public class LibrarianController {
         }
 
         RedirectAttributes attributes = new RedirectAttributesModelMap();
-        attributes.addFlashAttribute("account", account);
+        attributes.addFlashAttribute("account", accountDTO);
         return "redirect:/librarian/accounts/add?success";
     }
 
@@ -170,7 +171,7 @@ public class LibrarianController {
 
             Account checkEmailDuplicate = accountService.findByEmail(account.getEmail());
             if (checkEmailDuplicate != null &&
-                    !checkExist.getEmail().toLowerCase().equals(account.getEmail())) {
+                    !checkExist.getEmail().equalsIgnoreCase(account.getEmail())) {
                 String result = "redirect:/librarian/accounts/updated/" +account.getAccountId() + "?error";
                 return result;
             }
@@ -178,16 +179,15 @@ public class LibrarianController {
             System.out.println(role);
             switch (role) {
                 case "LIBRARIAN":
-                    if (null == librarianService.findByAccountId(account.getAccountId())) {
-                        Librarian librarian = new Librarian();
+                    Librarian librarian = librarianService.findByAccountId(account.getAccountId());
+                    if (librarian == null) {
+                        librarian = new Librarian();
                         librarian.setAccountId(account.getAccountId());
-                        librarian.setFlagAdmin(isAdmin); // sửa sau
+                        librarian.setFlagAdmin(isAdmin);
                         librarianService.addLibrarian(librarian);
                     } else {
-                        Librarian librarian = librarianService.findByAccountId(account.getAccountId());
                         librarian.setFlagAdmin(isAdmin);
                         librarianService.updateLibrarian(librarian);
-
                     }
                     break;
                 case "STUDENT":
@@ -205,8 +205,7 @@ public class LibrarianController {
                     }
                     break;
                 default:
-                    String result = "redirect:/librarian/accounts/updated/" +account.getAccountId() + "?error";
-                    return result;
+                    return "redirect:/librarian/accounts/updated/" +account.getAccountId() + "?error";
             }
             accountService.updateAccount(account);
             model.addAttribute("account", account);
@@ -277,7 +276,7 @@ public class LibrarianController {
 
     }
 
-    @GetMapping({"/courses/update/{courseId}", "/update"})
+    @GetMapping({"/courses/update/{courseId}"})
     public String updateCourseProcess(@PathVariable(required = false) String courseId, final Model model) {
         if (null == courseId) {
             courseId = "";
@@ -327,7 +326,7 @@ public class LibrarianController {
                              final Model model, HttpServletRequest request) {
         Page<Course> page;
         if(null==major || "all".equals(major)){
-            page = courseService.findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(search, search, search, pageIndex, pageSize);
+            page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
         }else {
             page = courseService.filterMajor(major, search, search, search, pageIndex, pageSize);
         }
@@ -352,13 +351,15 @@ public class LibrarianController {
     }
 
 
-    @GetMapping("/{courseId}/delete")
+    @GetMapping("/courses/{courseId}/delete")
     public String delete(@PathVariable String courseId) {
         Course checkExist = courseService.findByCourseId(courseId);
-//        System.out.println(checkExist);
         if (null != checkExist) {
-            for (String topicId : checkExist.getTopics()) {
-                topicService.delete(topicId);
+            List<String> topics = checkExist.getTopics();
+            if (null != topics) {
+                for (String topicId : topics) {
+                    topicService.delete(topicId);
+                }
             }
             courseService.delete(checkExist);
             return "redirect:/librarian/courses/list?success";
@@ -366,7 +367,7 @@ public class LibrarianController {
         return "redirect:/librarian/courses/list?error";
     }
 
-    @GetMapping({"/addLecturers/{courseId}"})
+    @GetMapping({"/courses/{courseId}/addLecturers"})
     public String addLecturersProcess(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
         List<Lecturer> lecturers = lecturerService.findByCourseId(courseId);
@@ -377,7 +378,7 @@ public class LibrarianController {
         return "librarian/course/librarian_add-lecturer-to-course";
     }
 
-    @PostMapping({"/addLecturers/{courseId}"})
+    @PostMapping({"/courses/{courseId}/addLecturers"})
     public String addLecturers(@PathVariable String courseId, @RequestParam String accountId, final Model model) {
         List<Lecturer> courseLecturers = lecturerService.findByCourseId(courseId);
         List<Account> lecturers = accountService.searchLecturer("");
@@ -387,19 +388,10 @@ public class LibrarianController {
     }
 
 
-    @GetMapping({"/courses/updateLecturers/{courseId}"})
+    @GetMapping({"/courses/{courseId}/updateLecturers"})
     public String updateLecturersProcess(@PathVariable String courseId, @RequestParam String search, final Model model) {
         List<Lecturer> courseLecturers = lecturerService.findByCourseId(courseId);
         List<Account> lecturers = accountService.searchLecturer(search);
-        model.addAttribute("courseLecturers", courseLecturers);
-        model.addAttribute("lecturers", lecturers);
-        return "librarian/course/librarian_add-lecturer-to-course";
-    }
-
-    @PostMapping({"/courses/{courseId}/addLecturers"})
-    public String addLecturersProcess(@PathVariable String courseId, @RequestParam String accountId, final Model model) {
-        List<Lecturer> courseLecturers = lecturerService.findByCourseId(courseId);
-        List<Account> lecturers = accountService.searchLecturer("");
         model.addAttribute("courseLecturers", courseLecturers);
         model.addAttribute("lecturers", lecturers);
         return "librarian/course/librarian_add-lecturer-to-course";

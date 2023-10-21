@@ -97,7 +97,8 @@
                                         <td><input type="text" th:id="topicTitle"
                                                    class="lib_input form-control" th:field="*{topicTitle}"
                                                    placeholder="Enter topic title" required>
-
+                                            <p class="text-danger" th:errors="*{topicTitle}"
+                                               th:if="${#fields.hasErrors('topicTitle')}"></p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -106,7 +107,8 @@
                                         <td><textarea th:id="topicDescription"
                                                    class="lib_textarea form-control" th:field="*{topicDescription}"
                                                       placeholder="Enter description"></textarea>
-
+                                            <p class="text-danger" th:errors="*{topicDescription}"
+                                               th:if="${#fields.hasErrors('topicDescription')}"></p>
                                         </td>
                                     </tr>
                                     <tr>
