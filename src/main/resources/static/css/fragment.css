@@ -313,6 +313,7 @@
     border-radius: 5px;
     font-weight: bold;
     transition: background-color 0.5s ease;
+    margin-top: 6px;
 }
 
 .student__log-out:hover {
@@ -783,64 +784,6 @@ footer p {
 .app__container-content {
     padding-top: 18px;
     width: 90%;
-}
-
-.category {
-    border-radius: 5px;
-    background-color: white;
-    padding: 0 16px;
-}
-
-.category__heading-icon {
-    font-size: 1.4rem;
-}
-
-.category__heading {
-    font-size: 1.5rem;
-    padding: 16px 0px 8px 0;
-    border-bottom: 1px solid rgb(219, 213, 213);
-    text-transform: uppercase;
-}
-
-.category__list {
-    list-style: none;
-    padding-left: 12px;
-}
-
-.category-item {
-    font-size: 1.5rem;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    font-weight: 500;
-}
-
-.category-item__link {
-    position: relative;
-    text-decoration: none;
-    color: black;
-    display: block;
-    transition: right ease 0.1s;
-    right: 0;
-}
-
-.category-item--active .category-item__link {
-    color: var(--primary-color);
-    margin: 0;
-}
-
-.category-item--active .category-item__link::before {
-    content: "";
-    top: 50%;
-    left: -12px;
-    position: absolute;
-    border: 4px solid;
-    transform: translateY(-50%);
-    border-color: transparent transparent transparent var(--primary-color);
-}
-
-.category-item__link:hover {
-    right: -4px;
-    color: var(--primary-color);
 }
 
 /* Filter  */

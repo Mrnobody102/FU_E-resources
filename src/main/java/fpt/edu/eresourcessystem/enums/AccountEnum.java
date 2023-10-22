@@ -22,7 +22,8 @@ public class AccountEnum {
     public enum Role {
         STUDENT("STUDENT"),
         LECTURER("LECTURER"),
-        LIBRARIAN("LIBRARIAN");
+        LIBRARIAN("LIBRARIAN"),
+        ADMIN("ADMIN");
         private final String displayValue;
         Role(String displayValue) {
             this.displayValue = displayValue;

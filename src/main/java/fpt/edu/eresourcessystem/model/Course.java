@@ -17,6 +17,7 @@ import java.util.List;
 public class Course {
     @Id
     private String courseId;
+    private String managerId;
 
     @Indexed(unique = true)
     private String courseCode;
@@ -25,11 +26,11 @@ public class Course {
     private String description;
 
     private List<String> topics;
-    private List<LecturerCourseId> lecturerCourseIds;
     private List<String> students;
 
     private CourseEnum.Status status;
     private CourseEnum.DeleteFlag deleteFlag;
+    private List<LecturerCourseId> lecturerCourseIds;
 
     //Audit Log
     @CreatedBy

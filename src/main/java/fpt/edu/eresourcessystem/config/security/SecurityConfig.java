@@ -59,7 +59,7 @@ public class SecurityConfig {
         // Authorization
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
+                        .requestMatchers("/**", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
                         .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
                         .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.LECTURER.name())
                         .requestMatchers("/student/**").hasAnyRole(AccountEnum.Role.STUDENT.name())
@@ -73,27 +73,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-//
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails librarian = User.withDefaultPasswordEncoder()
-//                .username("librarian")
-//                .password("password")
-//                .roles(AccountEnum.Role.LIBRARIAN.name())
-//                .build();
-//
-//        UserDetails lecturer = User.withDefaultPasswordEncoder()
-//                .username("lecturer")
-//                .password("password")
-//                .roles(AccountEnum.Role.LECTURER.name())
-//                .build();
-//
-//        UserDetails student = User.withDefaultPasswordEncoder()
-//                .username("student")
-//                .password("password")
-//                .roles(AccountEnum.Role.STUDENT.name())
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(librarian, lecturer, student);
-//    }
 }

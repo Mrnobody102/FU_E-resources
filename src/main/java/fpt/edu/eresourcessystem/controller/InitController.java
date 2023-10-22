@@ -1,9 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.exception.AccountNotExistedException;
-import fpt.edu.eresourcessystem.service.AccountService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller

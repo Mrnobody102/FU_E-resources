@@ -2,25 +2,21 @@ package fpt.edu.eresourcessystem.model;
 
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("librarians")
-public class Librarian{
+@Document("admin") //tạm thời chưa dùng
+public class Admin {
     @Id
-    private String librarianId;
+    private String adminId;
     @NotNull
     private String accountId;
-
-    private List<String> createdCourses;
 
     //Audit Log
     @CreatedBy

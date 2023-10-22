@@ -33,7 +33,9 @@ public class DocumentEnum {
         PDF,
         DOC,
         DOCX,
+        PPT,
         PPTX,
+        XLS,
         XLSX,
         MD,
         HTML,
@@ -45,7 +47,9 @@ public class DocumentEnum {
                 case ".pdf" -> PDF;
                 case "docx" -> DOC;
                 case ".docx" -> DOCX;
+                case ".ppt" -> PPT;
                 case ".pptx" -> PPTX;
+                case ".xls" -> XLS;
                 case ".xlsx" -> XLSX;
                 case ".md" -> MD;
                 case ".html" -> HTML;
