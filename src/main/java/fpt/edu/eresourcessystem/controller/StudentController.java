@@ -61,19 +61,20 @@ public class StudentController {
         return "student/course/student_courses";
     }
 
-    @GetMapping("/courses/{courseId}")
-    public String viewCourseDetail(@PathVariable String courseId, final Model model) {
-        // auth
-        Student student = getLoggedInStudent();
-
-        Course course = courseService.findByCourseId(courseId);
-        List<Topic> topics = topicService.findByCourseId(courseId);
-        model.addAttribute("course", course);
-        model.addAttribute("topics", topics);
-        if (studentService.checkCourseSaved(student.getStudentId(), courseId)) {
-            model.addAttribute("saved", true);
-        } else model.addAttribute("saved", false);
-        return "student/course/student_course-detail";
+    @GetMapping({"/courses/{courseId}","/courseDetail"})
+    public String viewCourseDetail(@PathVariable(required = false) String courseId, final Model model) {
+//        // auth
+//        Student student = getLoggedInStudent();
+//
+//        Course course = courseService.findByCourseId(courseId);
+//        List<Topic> topics = topicService.findByCourseId(courseId);
+//        model.addAttribute("course", course);
+//        model.addAttribute("topics", topics);
+//        if (studentService.checkCourseSaved(student.getStudentId(), courseId)) {
+//            model.addAttribute("saved", true);
+//        } else model.addAttribute("saved", false);
+//        return "student/course/student_course-detail";
+        return "student/course/courseDetailFrontEnd";
     }
 
     @GetMapping("/courses/{courseId}/save_course")
