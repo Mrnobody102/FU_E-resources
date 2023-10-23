@@ -2,8 +2,11 @@
 :root {
     --normal-font-size: .938rem;
     --small-font-size: .813rem;
+    --medium-font-size: 1.3rem;
+    --large-font-size: 2rem;
 
     /*========== Font weight ==========*/
+    --font-normal: 400;
     --font-medium: 500;
     --font-semi-bold: 600;
 
@@ -32,7 +35,7 @@
 
 /*=============== SIDEBAR ===============*/
 .sidebar {
-    width: 280px;
+    width: 25rem;
     height: 100%;
     padding: 0 0 0 16px;
     background-color: white;
@@ -48,6 +51,10 @@
     flex-direction: column;
     height: 100%;
 }
+.sidebar-icon{
+    font-size: var(--large-font-size);
+    padding-top: 0.3rem;
+}
 
 .sidebar__logo {
     display: grid;
@@ -56,16 +63,17 @@
 }
 
 .sidebar__logo-img {
-    width: 37px;
+    width: 3rem;
 }
 .sidebar__logo-text {
-    width: 76px;
+    width: 5rem;
 }
 
 .sidebar__content {
     position: relative;
     overflow: auto;
-    margin-right: 16px;
+    margin-top: 2rem;
+    margin-right: 1.2rem;
 }
 
 .sidebar__content::-webkit-scrollbar {
@@ -101,9 +109,9 @@
 }
 
 .sidebar__link-name {
-    font-weight: var(--font-medium);
+    font-weight: var(--font-normal);
     transition: color .4s;
-    font-size: 1rem;
+    font-size: var(--medium-font-size);
 }
 
 .sidebar__link:hover {
@@ -147,7 +155,7 @@
 
 .sidebar__account i {
     font-size: 2.5rem;
-    margin-left: auto;
+    margin-left: 0;
     cursor: pointer;
 }
 
@@ -197,7 +205,7 @@
     .sidebar {
         left: 0;
         top: calc(var(--header-height) + 1.5rem);
-        width: 20rem;
+        width: 25rem;
         transition: width .4s;
     }
     .sidebar__container {
@@ -241,12 +249,12 @@
     }
 
     .main {
-        min-width: calc(100% - 20rem);
+        min-width: calc(100% - 25rem);
         transition: padding .4s;
     }
 
     .sidebar__arrow {
-        margin: 1rem;
+        margin: 0.3rem;
     }
 
     /* Reduce sidebar */
@@ -278,7 +286,7 @@
     }
 
     .show-sidebar .sidebar__arrow {
-        margin: 1.5rem;
+        /*margin: 1.5rem;*/
     }
 
     .show-sidebar .sidebar__link i {
@@ -289,4 +297,31 @@
     .main-pd {
         width: calc(100% - 7rem);
     }
+}
+.stu__courses-list-view{
+    display: flex;
+}
+.list-course-content{
+    width: 85%;
+}
+.stu_course-filter{
+    width: 15%;
+}
+.stu_course-content{
+    display: flex;
+    width: 100%;
+}
+.student__course-topic-list{
+    width: 15%;
+}
+.student__course-document-view{
+    width: 72%;
+}
+
+.student__course-document-list{
+    width: 13%;
+    margin-left: 1rem;
+}
+.list-view-block a, .list-view-block input{
+    display: block;
 }

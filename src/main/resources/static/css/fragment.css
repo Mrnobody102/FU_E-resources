@@ -28,13 +28,13 @@
 /* User navbar */
 .header__navbar {
     display: flex;
-    justify-content: space-between;
-    padding-top: 6px;
+    /*justify-content: space-between;*/
+    padding: 1.5rem 0 1rem 2rem;
 }
 
 .header__navbar-list {
-    padding: 0 0 0 8px;
-    margin-top: 0;
+    margin: 0 0 0 auto;
+    justify-content: right;
     display: flex;
 }
 
@@ -45,11 +45,13 @@
 }
 
 .header__system-name {
-    margin: 8px 0px;
-    position: relative;
+    /*margin: 8px 0px;*/
+    /*position: relative;*/
     color: var(--white-color);
     font-size: 2.0rem;
-    font-weight: 500;
+    font-weight: var(--font-medium);
+    padding: 0;
+    margin: 0;
 }
 
 .header__navbar-item,
@@ -75,7 +77,12 @@
 }
 
 .header__navbar-icon {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+}
+
+.header__navbar-icon:hover {
+    font-size: 2rem;
+    box-shadow: 0 0 0.3rem rgba(255, 255, 255, 0.8);
 }
 
 /* Main navbar */
@@ -528,8 +535,8 @@
 }
 
 .header__logo img {
-    width: 180px;
-    padding-right: 20px;
+    width: 150px;
+    padding-right: 0.3rem;
 }
 
 .header__logo-link {
@@ -545,6 +552,8 @@
 /* Search  */
 
 .header__search {
+    width: 70%;
+    margin-left: 10%;
     height: 40px;
     flex: 7;
     display: flex;
@@ -552,6 +561,7 @@
     background-color: var(--white-color);
     border-radius: 20px;
     min-width: 300px;
+    border: 1px solid #888888;
 }
 
 .header__search:focus-within {
@@ -738,6 +748,7 @@
     align-items: center;
     background-color: var(--white-color);
     border-radius: 20px;
+    border: 1px solid #888888;
     justify-content: center;
     margin-left: 12px;
     min-width: max-content;
