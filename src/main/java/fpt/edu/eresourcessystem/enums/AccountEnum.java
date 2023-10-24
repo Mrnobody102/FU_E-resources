@@ -53,8 +53,8 @@ public class AccountEnum {
     }
     public enum Gender {
         M("Male"),
-        F("Female"),
-        O("Other");
+        F("Female");
+//        O("Other");
         private final String displayValue;
 
         Gender(String displayValue) {

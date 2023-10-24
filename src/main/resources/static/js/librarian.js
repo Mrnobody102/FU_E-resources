@@ -15,16 +15,16 @@ function addIndexToTable(){
     }
 }
 
-$(document).ready(function () {
-
-    // SHOW is Admin
-    $('#role').change(function () {
-        if ($(this).val() === 'LIBRARIAN') {
-            $('#isAdminCheckbox').show();
-        } else {
-            $('#isAdminCheckbox').hide();
-        }
-    });
+// $(document).ready(function () {
+//
+//     // SHOW is Admin
+//     $('#role').change(function () {
+//         if ($(this).val() === 'LIBRARIAN') {
+//             $('#isAdminCheckbox').show();
+//         } else {
+//             $('#isAdminCheckbox').hide();
+//         }
+//     });
 
     /*
         PAGINATION
@@ -133,4 +133,4 @@ $(document).ready(function () {
         handleDeletion("/librarian/courses/deleteTopic/" + topicId, 'Topic is deleted');
     });
 
-});
+// });
