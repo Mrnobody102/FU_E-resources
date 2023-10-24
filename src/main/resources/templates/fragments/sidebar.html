@@ -2,17 +2,84 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
 >
-<body>
+<body th:fragment="lecturerSidebar">
 <!-- Student Library Sidebar  -->
-<div class="sidebar" id="sidebar" th:fragment="studentSidebar">
+<div class="sidebar" id="sidebar-lecturer">
     <nav class="sidebar__container">
 
-<!--        <div class="sidebar__account">-->
-<!--            <div id="toggle" class="sidebar__arrow">-->
-<!--                &lt;!&ndash;                <i class="fa-solid fa-arrow-circle-right"></i>&ndash;&gt;-->
-<!--                <i class="fa-solid fa-bars"></i>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--        <div class="sidebar__account">-->
+        <!--            <div id="toggle" class="sidebar__arrow">-->
+        <!--                &lt;!&ndash;                <i class="fa-solid fa-arrow-circle-right"></i>&ndash;&gt;-->
+        <!--                <i class="fa-solid fa-bars"></i>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <div class="sidebar__content">
+
+            <div class="sidebar__list border-bottom">
+                <a href="#" class="sidebar__link">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="sidebar__link-name">Home</span>
+                    <span class="sidebar__link-floating">Home</span>
+                </a>
+                <a th:href="@{/lecturer/courses}" class="sidebar__link">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span class="sidebar__link-name">Courses</span>
+                    <span class="sidebar__link-floating">Courses</span>
+                </a>
+            </div>
+            <h3 class="sidebar__title">
+                <span>Library</span>
+            </h3>
+
+            <div class="sidebar__list border-bottom">
+                <a th:href="@{/student/my_library}" class="sidebar__link active-link">
+                    <i class="fa-solid fa-book"></i>
+                    <span class="sidebar__link-name">My courses management</span>
+                    <span class="sidebar__link-floating">My courses management</span>
+                </a>
+
+                <a href="#" class="sidebar__link">
+                    <i class="fa-solid fa-note-sticky"></i>
+                    <span class="sidebar__link-name">My history</span>
+                    <span class="sidebar__link-floating">My history</span>
+                </a>
+
+                <a href="#" class="sidebar__link">
+                    <i class="fa-solid fa-question"></i>
+                    <span class="sidebar__link-name">Question & Answer</span>
+                    <span class="sidebar__link-floating">Question & Answer</span>
+                </a>
+            </div>
+            <h3 class="sidebar__title">
+                <span>Other</span>
+            </h3>
+            <div class="sidebar__list">
+                <a th:href="@{/student}">
+                    <i class="p-2 fas fa-chalkboard-teacher"></i>
+                    Login as student</a>
+                <a href="#" class="sidebar__link">
+                    <i class="fa-solid fa-comment"></i>
+                    <span class="sidebar__link-name">Feedback</span>
+                    <span class="sidebar__link-floating">Feedback</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+</div>
+</body>
+
+
+<body th:fragment="studentSidebar">
+<!-- Lecturer Sidebar  -->
+<div class="sidebar" id="sidebar">
+    <nav class="sidebar__container">
+
+        <!--        <div class="sidebar__account">-->
+        <!--            <div id="toggle" class="sidebar__arrow">-->
+        <!--                &lt;!&ndash;                <i class="fa-solid fa-arrow-circle-right"></i>&ndash;&gt;-->
+        <!--                <i class="fa-solid fa-bars"></i>-->
+        <!--            </div>-->
+        <!--        </div>-->
         <div class="sidebar__content">
 
             <div class="sidebar__list border-bottom">
@@ -66,11 +133,11 @@
                 <span>Other</span>
             </h3>
             <div class="sidebar__list">
-                <a href="#" class="sidebar__link">
-                    <i class="fa-solid fa-hand"></i>
-                    <span class="sidebar__link-name">Request documents</span>
-                    <span class="sidebar__link-floating">Request documents</span>
-                </a>
+<!--                <a href="#" class="sidebar__link">-->
+<!--                    <i class="fa-solid fa-hand"></i>-->
+<!--                    <span class="sidebar__link-name">Request documents</span>-->
+<!--                    <span class="sidebar__link-floating">Request documents</span>-->
+<!--                </a>-->
                 <a href="#" class="sidebar__link">
                     <i class="fa-solid fa-comment"></i>
                     <span class="sidebar__link-name">Feedback</span>
