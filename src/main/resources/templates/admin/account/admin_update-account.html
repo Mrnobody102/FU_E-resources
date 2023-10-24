@@ -146,20 +146,22 @@
                                         </select>
                                     </td>
                                 </tr>
-                                <tr id="isAdminCheckbox" class="" th:if="(${account.role.getDisplayValue() == 'LIBRARIAN'})">
-                                    <td></td>
-                                    <td>
-                                        <input type="checkbox" name="isAdmin" id="isAdmin"
-                                        th:checked="${isAdmin}"
-                                        >
-                                        <label for="isAdmin">Is Admin</label>
-                                    </td>
-                                </tr>
+<!--                                <tr id="isAdminCheckbox" class="" th:if="(${account.role.getDisplayValue() == 'LIBRARIAN'})">-->
+<!--                                    <td></td>-->
+<!--                                    <td>-->
+<!--                                        <input type="checkbox" name="isAdmin" id="isAdmin"-->
+<!--                                        th:checked="${isAdmin}"-->
+<!--                                        >-->
+<!--                                        <label for="isAdmin">Is Admin</label>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
 
                                 <tr>
                                     <td></td>
                                     <td>
-                                        <button type="submit" class="btn lib_btn-save">Save</button>
+                                        <button type="submit" class="btn lib_btn-save">Update</button>
+<!--                                        <button type="button" class="btn lib_btn-delete" >Delete</button>-->
+                                        <a class="delete-account" th:id="${account.accountId}">Delete</a>
                                     </td>
                                 </tr>
                             </table>
