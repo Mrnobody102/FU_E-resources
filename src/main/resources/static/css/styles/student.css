@@ -115,7 +115,7 @@
 }
 
 .sidebar__link:hover {
-    background-color: var(--background-block-color-hover);
+    background-color: var(--background-btn-color);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     color: var(--white-color);
@@ -125,7 +125,7 @@
     display: block;
     position: relative;
     margin-block: 1.5rem 1rem;
-    color: var(--background-block-color);
+    color: var(--background-btn-color-hover);
     font-size: 1.4rem;
 }
 
@@ -166,7 +166,7 @@
 
 /* Active link */
 .active-link {
-    background-color: var(--background-block-color);
+    background-color: var(--background-btn-color-hover);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
 }
@@ -306,6 +306,7 @@
 }
 .stu_course-filter{
     width: 15%;
+    margin-top: 2rem;
 }
 .stu_course-content{
     display: flex;
@@ -316,12 +317,127 @@
 }
 .student__course-document-view{
     width: 72%;
+    padding: 0.7rem;
 }
 
-.student__course-document-list{
+.student__course-document-list,
+.student__topic-info{
     width: 13%;
-    margin-left: 1rem;
+    height: 100vh; /* Set a fixed height or use a percentage */
+    overflow: auto;
 }
 .list-view-block a, .list-view-block input{
     display: block;
+}
+.course-info-content{
+    padding-top: 4rem;
+}
+.course-info{
+    display: flex;
+}
+.stu_save-course-link{
+    justify-content: right;
+}
+.student__course-info-view{
+    padding: 0.7rem 2rem 2rem 3rem;
+}
+.table-view-course-info,
+.table-view-course-info th,
+.table-view-course-info td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 0.5rem 1rem;
+}
+.table-view-course-info th{
+    text-align: right;
+}
+.table-view-course-info .course-info-code,
+.table-view-course-info .course-info-name{
+    font-weight: var(--font-medium);
+}
+
+.stu_save-course-link a{
+    border: 1px solid #888888;
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+    background: var(--background-btn-color-hover);
+}
+.stu_save-course-link a:hover{
+    background: var(--background-btn-color);
+}
+
+
+.lecturer-name{
+    font-weight: var(--font-medium);
+}
+.saved-course{
+    background: white;
+}
+
+.course-info-title i{
+    color: var(--background-btn-color-hover);
+    font-size: var(--large-font-size);
+    padding-right: 0.7rem;
+}
+
+.form-chose-doc-type input{
+    display: none;
+}
+
+.form-chose-doc-type label{
+    border-radius: 2rem;
+    padding: 0.3rem 1rem;
+    border: 1px solid #888888;
+}
+
+.form-chose-doc-type input:checked + label{
+    color: white;
+    background: var(--checked-background-color);
+}
+
+.doc-content-view, .doc-content-list{
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.doc-info-title{
+    font-size: var(--medium-font-size);
+    font-weight: var(--font-medium);
+    margin-bottom: 0;
+     color: var(--link-color);
+}
+.document-view-info{
+    padding: 0.5rem;
+}
+.doc-info-title:hover{
+    color: var(--hover-color);
+}
+.doc-info-general{
+    font-weight: var(--font-normal);
+    padding-left: 1rem;
+}
+.doc-info-general a{
+    font-weight: var(--font-normal);
+    padding-right: 4rem;
+}
+.stu__btn_save-doc{
+    padding: 0.7rem 2.2rem;
+    border: 1px solid #888888;
+    border-radius: 3rem;
+}
+.stu__btn_save-doc:hover {
+    background: var(--background-btn-color-hover);
+}
+.doc-content-view{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.list-view-block p{
+    margin: 0.3rem;
+}
+.stu__view-saved-courses{
+    margin-left: 2rem;
+    width: 100%;
+}
+.view-block-list{
+    width: 100%;
 }

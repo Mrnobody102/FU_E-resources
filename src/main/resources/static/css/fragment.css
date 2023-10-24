@@ -800,13 +800,13 @@ footer p {
 /* Filter  */
 .home-filter {
     padding: 12px 20px;
-    background-color: var(--second-back-ground);
-    margin: 12px;
+    /*background-color: var(--second-back-ground);*/
+    margin: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
+    /*border: 1px solid var(--border-color);*/
+    /*border-radius: 5px;*/
     min-width: max-content;
 }
 
@@ -830,10 +830,10 @@ footer p {
 
 /* Container: Courses */
 .home-courses {
-    margin: 0 12px 24px 12px;
-    background-color: var(--second-back-ground);
-    border-radius: 5px;
-    border: 1px solid var(--border-color);
+    margin: 2rem;
+    /*background-color: var(--second-back-ground);*/
+    /*border-radius: 5px;*/
+    /*border: 1px solid var(--border-color);*/
 }
 
 .home-courses__pagination-distance {
@@ -841,8 +841,7 @@ footer p {
 }
 
 .home__course-list {
-    margin: 0 12px 0 12px;
-    padding: 16px 26px;
+    margin: 2rem;
     min-width: 96%;
 }
 
@@ -891,7 +890,7 @@ footer p {
 
 /*Course filter*/
 .home__course-filter {
-    margin-top: 12px;
+    margin-top: 2rem;
     border-radius: 5px;
     /*background-color: var(--second-back-ground);*/
     border: 1px solid var(--border-color);

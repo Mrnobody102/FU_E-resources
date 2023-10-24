@@ -63,18 +63,18 @@ public class StudentController {
 
     @GetMapping({"/courses/{courseId}","/courseDetail"})
     public String viewCourseDetail(@PathVariable(required = false) String courseId, final Model model) {
-//        // auth
-//        Student student = getLoggedInStudent();
-//
-//        Course course = courseService.findByCourseId(courseId);
-//        List<Topic> topics = topicService.findByCourseId(courseId);
-//        model.addAttribute("course", course);
-//        model.addAttribute("topics", topics);
-//        if (studentService.checkCourseSaved(student.getStudentId(), courseId)) {
-//            model.addAttribute("saved", true);
-//        } else model.addAttribute("saved", false);
-//        return "student/course/student_course-detail";
-        return "student/course/courseDetailFrontEnd";
+        // auth
+        Student student = getLoggedInStudent();
+
+        Course course = courseService.findByCourseId(courseId);
+        List<Topic> topics = topicService.findByCourseId(courseId);
+        model.addAttribute("course", course);
+        model.addAttribute("topics", topics);
+        if (studentService.checkCourseSaved(student.getStudentId(), courseId)) {
+            model.addAttribute("saved", true);
+        } else model.addAttribute("saved", false);
+        return "student/course/student_course-detail";
+//        return "student/course/courseDetailFrontEnd";
     }
 
     @GetMapping("/courses/{courseId}/save_course")
@@ -116,5 +116,17 @@ public class StudentController {
         }
         model.addAttribute("coursesSaved", courses);
         return "student/library/student_saved_courses";
+    }
+
+
+    @GetMapping({"/topic/{topicId}","/topicDetail"})
+    public String viewTopicDetail(@PathVariable(required = false) String docId, final Model model) {
+        return "student/course/student_view-topic-detail";
+    }
+    @GetMapping({"/document/{docId}","/documentDetail"})
+    public String viewDocumentDetail(@PathVariable(required = false) String docId, final Model model) {
+//        // auth
+//        Student student = getLoggedInStudent();
+        return "student/course/student_document-detail";
     }
 }

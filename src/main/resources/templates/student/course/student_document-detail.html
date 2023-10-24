@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Librarian | Course | Add topic</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+
+
+    <style>
+        label.error {
+            margin-top: 5px;
+            margin-left: 5px;
+            display: block;
+            color: red;
+            /*font-size: smaller;*/
+        }
+    </style>
+
+</head>
+<body class="app_container">
+
+<header th:replace="~{fragments/header::studentHeaderSection}"></header>
+
+<div class="main_content">
+    <div class="container-content-wrapper">
+        <!--  Main-->
+        <div class="container-content row">
+            <div class="main-content stu_course-saved">
+                <div class="stu_course-saved-content d-flex">
+                    <div class="stu_sidebar">
+                        <div th:replace="~{fragments/sidebar}"></div>
+                    </div>
+                    <div class="stu_course-content main" id="main">
+                        <div class="student__course-topic-list">
+                            <div class="course-info">
+                                <div class="course-info-title">
+                                    <i class="fa-solid fa-folder"></i>
+                                    <span><h3 class="h3">PRJ301</h3></span>
+                                </div>
+                            </div>
+                            <div class="list-view-block border-bottom course-general-link-info">
+                                <a th:href="@{/student/courses/PRJ301}">Course Information</a>
+                            </div>
+                            <div class="list-view-block course-topic-list">
+                                <a href="">Material</a>
+                                <a href="">CLO1</a>
+                                <a href="">CLO2</a>
+                            </div>
+                        </div>
+                        <div class="student__course-document-view">
+                            <div class="student__document-type-list">
+                                <div class="list-view-inline top-doctype-list">
+                                    <form action="" method="" class="form-chose-doc-type">
+
+                                        <input name="docType" type="radio" id="radio1" value="All" checked>
+                                        <label for="radio1">All</label>
+
+                                        <input name="docType" type="radio" id="radio2" value="Reading">
+                                        <label for="radio2">Reading</label>
+
+                                        <input name="docType" type="radio" id="radio3" value="Lecturer Notes">
+                                        <label for="radio3">Lecturer Notes</label>
+
+                                        <input name="docType" type="radio" id="radio4" value="Reading">
+                                        <label for="radio4">Reading</label>
+
+                                        <input name="docType" type="radio" id="radio5" value="Reading">
+                                        <label for="radio5">Reading</label>
+
+                                        <input name="docType" type="radio" id="radio6" value="Reading">
+                                        <label for="radio6">Reading</label>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="doc-content-view" style="height: 500px ; background: #8beaa7">
+
+                            </div>
+
+                            <div class="list-view-inline bot-doctype-list">
+                                <form action="" method="" class="form-chose-doc-type">
+
+                                    <input name="docType" type="radio" id="radio-bot-1" value="All">
+                                    <label for="radio-bot-1">All</label>
+
+                                    <input name="docType" type="radio" id="radio-bot-2" value="Reading">
+                                    <label for="radio-bot-2">Reading</label>
+
+                                    <input name="docType" type="radio" id="radio-bot-3" value="Lecturer Notes">
+                                    <label for="radio-bot-3">Lecturer Notes</label>
+
+                                    <input name="docType" type="radio" id="radio-bot-4" value="Reading">
+                                    <label for="radio-bot-4">Reading</label>
+
+                                    <input name="docType" type="radio" id="radio-bot-5" value="Reading">
+                                    <label for="radio-bot-5">Reading</label>
+
+                                    <input name="docType" type="radio" id="radio-bot-6" value="Reading">
+                                    <label for="radio-bot-6">Reading</label>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="student__course-document-list">
+                            <div class="list-view-block doc-name-list">
+                                <div class="list-view-doc-title">
+                                    <p class="h3">Documents</p>
+                                </div>
+                                <form action="" method="" class="form-chose-doc-type">
+                                    <p>
+                                        <input name="docId" type="radio" id="doc-name1" value="Hello World">
+                                        <label for="doc-name1">Hello World</label>
+                                    </p>
+                                    <p>
+                                        <input name="docId" type="radio" id="doc-name2" value="Sort">
+                                        <label for="doc-name2">Sort</label>
+                                    </p>
+                                    <p>
+                                        <input name="docId" type="radio" id="doc-name3" value="Queue">
+                                        <label for="doc-name3">Queue</label>
+                                    </p>
+                                    <p>
+                                        <input name="docId" type="radio" id="doc-name4" value="Stack">
+                                        <label for="doc-name4">Stack</label>
+                                    </p>
+                                    <p>
+                                        <input name="docId" type="radio" id="doc-name5" value="Collections">
+                                        <label for="doc-name5">Collections</label>
+                                    </p>
+                                    <p>
+                                        <input name="docId" type="radio" id="doc-name6" value="Linked-list">
+                                        <label for="doc-name6">Linked-list</label>
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footerSection}"></div>
+
+<!--jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<!--Custom script-->
+<script th:src="@{/js/student.js}"></script>
+</body>
+</html>
