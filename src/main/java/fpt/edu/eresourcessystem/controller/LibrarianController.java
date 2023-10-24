@@ -464,15 +464,25 @@ public class LibrarianController {
         return "librarian/lecture/librarian_lectures";
     }
 
-    @GetMapping({"lectures/list"})
+    @GetMapping("/lectures/list/{pageIndex}")
+    public String listLecturersByPage(
+            @PathVariable Integer pageIndex,
+            @RequestParam(required = false, defaultValue = "") String search,
+            Model model
+    ) {
+        Page<Lecturer> page;
+        page = lecturerService.findLecturerByLecturerIdLike(search, pageIndex, pageSize);
+        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+
+        model.addAttribute("pages", pages);
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("lecturers", page.getContent());
+        model.addAttribute("search", search);
+        model.addAttribute("currentPage", pageIndex);
+
+        return "librarian/lecture/librarian_lectures"; // Adjust the view name as needed
+    }
 
 
-//    @GetMapping("/lectures")
-//    public Page<Lecturer> getLecturesByNameWithPagination(
-//            @RequestParam("name") String name,
-//            @RequestParam(value = "page", defaultValue = "0") int page,
-//            @RequestParam(value = "size", defaultValue = "10") int size) {
-////        Pageable pageable = PageRequest.of(page, size);
-////        return lectureService.findLecturesByNameWithPagination(name, pageable);
-//    }
+
 }

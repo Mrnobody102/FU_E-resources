@@ -4,6 +4,7 @@ import com.mongodb.lang.NonNull;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -28,5 +29,9 @@ public interface LecturerRepository extends MongoRepository<Lecturer, String> {
     @Query("SELECT l FROM lecturers l  where l.lecturerId in ?1")
     List<Lecturer> findByLecturerIds(List<String> ids);
 
-//    Page<Lecturer> findBy
+    Page<Lecturer> findLecturerByLecturerIdLike(String LecturerId, Pageable pageable );
+
+    Page<Lecturer> findLecturer( Pageable pageable );
+
+
 }

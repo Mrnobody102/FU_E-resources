@@ -37,11 +37,11 @@
                     <form class="d-flex" th:action="@{/librarian/lectures/list/1}" th:method="get">
                         <div class="d-flex">
                             <input class="lib_search-content" type="text" placeholder="Search lecture.." name="search"
-                                   th:value="${search}" id="search-text"/>
+                                   th:value="${search}" id="search-text"  />
                             <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
                                 <i class="lib_search-btn-icon fas fa-search"></i>
                             </button>
-                            <a class="lib_show-all-btn" th:href="@{/librarian/lectures/list}">Show All</a>
+                            <a class="lib_show-all-btn" th:href="@{/librarian/lectures/list/1}">Show All</a>
                         </div>
                     </form>
                     <div>
@@ -52,17 +52,17 @@
                     </div>
                 </div>
             </div>
-            <div class="table-view" th:if="${lectures ne null}">
+            <div class="table-view" th:if="${lecturers ne null}">
                 <table class="table table-striped table-sm">
                     <tr class="table-head">
-                        <th>Name</th>
-                        <th>Description</th>
+                        <th>ID</th>
+                        <th>Date Created</th>
                     </tr>
-                    <th:block th:each="lecture : ${lectures}">
+                    <th:block th:each="lecture : ${lecturers}">
                         <tr>
-                            <td><a th:href="@{'/librarian/lectures/' + ${lecture.id}}"
-                                   th:text="${lecture.name}"></a></td>
-                            <td><span class="description" th:text="${lecture.description}"></span></td>
+                            <td><a th:href="@{'/librarian/lectures/' + ${lecture.lecturerId}}"
+                                   th:text="${lecture.lecturerId}"></a></td>
+                            <td><span class="description" th:text="${lecture.accountId}"></span></td>
                         </tr>
                     </th:block>
                 </table>

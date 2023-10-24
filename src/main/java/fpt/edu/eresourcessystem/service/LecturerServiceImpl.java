@@ -5,6 +5,9 @@ import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.LecturerCourse;
 import fpt.edu.eresourcessystem.repository.LecturerCourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -77,5 +80,11 @@ public class LecturerServiceImpl implements LecturerService {
         return  lecturerRepository.findAll();
     }
 
+
+    public Page<Lecturer> findLecturerByLecturerIdLike(String lectureId, int pageIndex, int pageSize){
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+        Page<Lecturer> page = lecturerRepository.findLecturerByLecturerIdLike(lectureId, pageable);
+        return page;
+    }
 
 }
