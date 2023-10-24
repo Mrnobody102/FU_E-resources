@@ -73,5 +73,9 @@ public class LecturerServiceImpl implements LecturerService {
         return null;
     }
 
+    public List<Lecturer> findAllLecture(){
+        return  lecturerRepository.findAll();
+    }
+
 
 }
