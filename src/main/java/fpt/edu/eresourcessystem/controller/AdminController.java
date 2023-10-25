@@ -73,6 +73,11 @@ public class AdminController {
         return "admin/account/admin_accounts";
     }
 
+    @GetMapping({"/courseCreator"})
+    public String manageCourseCreators() {
+        return "admin/account/admin_course_creators";
+    }
+
     @GetMapping("/accounts/list/{pageIndex}")
     String findAccountByPage(@PathVariable Integer pageIndex,
                              @RequestParam(required = false, defaultValue = "") String search,
