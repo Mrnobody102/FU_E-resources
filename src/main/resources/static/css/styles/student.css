@@ -35,15 +35,21 @@
 
 /*=============== SIDEBAR ===============*/
 .sidebar {
+    position: fixed;
     width: 25rem;
-    min-height:80vh;
-    padding: 0 0 0 16px;
+    min-height:auto;
     background-color: white;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     z-index: var(--z-fixed);
     transition: left .4s;
     border-right: 2px solid var(--second-back-ground);
+    padding-left: 2rem;
+}
+
+.main{
+    margin-top: 3rem;
+    margin-left: 23rem;
 }
 
 .sidebar__container {
@@ -161,7 +167,7 @@
 
 /* Show sidebar */
 .show-sidebar {
-    left: 0;
+    /*left: 2rem;*/
 }
 
 /* Active link */
@@ -203,13 +209,13 @@
     }
 
     .sidebar {
-        left: 0;
-        top: calc(var(--header-height) + 1.5rem);
+        /*left: 0;*/
+        /*top: calc(var(--header-height) + 1.5rem);*/
         width: 25rem;
         transition: width .4s;
     }
     .sidebar__container {
-        /*padding-bottom: 4rem;*/
+        padding-bottom: 4rem;
         overflow: hidden;
     }
     .sidebar__logo {
