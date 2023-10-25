@@ -34,39 +34,48 @@
                                 <!-- Input  -->
                                 <div class="header__search-input-wrap">
                                     <input type="text" class="header__search-input"
-                                           placeholder="Search courses, documents, topics...">
+                                           placeholder="Search courses, documents, topics..." th:name="search"
+                                           th:id="search-text"
+                                           th:value="${search}">
                                     <!-- Header-search-history -->
                                     <div class="header__search-history">
                                         <h3 class="header__search-history-heading">
                                             Search history
                                         </h3>
                                         <ul class="header__search-history-list">
-
                                             <li class="header__search-history-item">
                                                 <a href="">Software</a>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
-                                <!-- Select-find-scope -->
+<!--                                <div class="header__search-select">-->
+<!--                                    <select name="filter" class="header__search-option">-->
+<!--                                        <option class="header__search-option-item" value="all">All result-->
+<!--                                            <i class="header__search-select-icon fas fa-angle-down"></i></option>-->
+<!--                                        <option class="header__search-option-item" value="name">Name</option>-->
+<!--                                        <option class="header__search-option-item" value="name">Code</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                                 Select-find-scope -->
                                 <div class="header__search-select">
                                     <span class="header__search-select-label">All results</span>
                                     <i class="header__search-select-icon fas fa-angle-down"></i>
-                                    <ul class="header__search-option">
-                                        <li class="header__search-option-item"
-                                            th:classappend="header__search-option-item--active">
+                                    <select class="header__search-option" name="filter">
+                                        <option class="header__search-option-item"
+                                            th:classappend="header__search-option-item--active"  name="filter" value="all">
                                             <span class="">All results</span>
                                             <i class="fas fa-check"></i>
-                                        </li>
-                                        <li class="header__search-option-item" onclick="search()">
+                                        </option>
+                                        <option class="header__search-option-item"   name="filter" value="name">
                                             <span class="">By name</span>
                                             <i class="fas fa-check"></i>
-                                        </li>
-                                        <li class="header__search-option-item" onclick="search()">
+                                        </option>
+                                        <option class="header__search-option-item"   name="filter" value="code">
                                             <span class="">By code</span>
                                             <i class="fas fa-check"></i>
-                                        </li>
-                                    </ul>
+                                        </option>
+                                    </select>
                                 </div>
                                 <button class="header__search-btn">
                                     <i class="header__search-btn-icon fas fa-search"></i>
@@ -112,7 +121,7 @@
                                     <nav th:if="${totalPage} > 1" aria-label="Page navigation example">
                                         <ul class="pagination">
                                             <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
-                                                <a class="page-link previous-page-course"
+                                                <a class="page-link previous-page-stu-course-number"
                                                    style="cursor: pointer">
                                                     &laquo;
                                                 </a>
@@ -125,13 +134,13 @@
                                                 </th:block>
                                                 <th:block th:if="${pageIndex != -1}">
                                                     <a th:text="${pageIndex}" th:value="${pageIndex}"
-                                                       class="page-link page-course-number"
+                                                       class="page-link page-stu-course-number"
                                                        style="cursor: pointer"
                                                     ></a>
                                                 </th:block>
                                             </li>
                                             <li th:class="${currentPage == totalPage} ? 'page-item disabled' : 'page-item'">
-                                                <a class="page-link next-page-course"
+                                                <a class="page-link next-page-stu-course-number"
                                                    style="cursor: pointer">
                                                     &raquo;
                                                 </a>
@@ -186,6 +195,11 @@
         crossorigin="anonymous"></script>
 <!--Custom script-->
 <script th:src="@{/js/student.js}"></script>
+<script>
+    $('form select').on('change', function () {
+        $(this).closest('form').submit();
+    });
+</script>
 </body>
 </html>
 

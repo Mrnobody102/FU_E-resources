@@ -49,5 +49,29 @@ $(document).ready(function () {
         PAGINATION
      */
 
+    // Account pagination
+    $(".page-stu-course-number").click(function () {
+
+        const search = $("#search-text").val();
+        let pageIndex = $(this).html();
+
+        window.location = "/student/search_course/" + pageIndex + "?search=" + search;
+    });
+
+    $(".previous-page-stu-course-number").click(function () {
+        const search = $("#search-text").val();
+        const pageIndex = $(".active .page-account-number").text();
+        const currentPage = parseInt(pageIndex);
+        if (currentPage > 1) {
+            window.location.href = "/student/search_course/" + (currentPage - 1) + "?search=" + search;
+        }
+    });
+
+    $(".next-page-stu-course-number").click(function () {
+        const search = $("#search-text").val();
+        const pageIndex = $(".active .page-account-number").text();
+        const currentPage = parseInt(pageIndex);
+        window.location.href = "/student/search_course/" + (currentPage + 1) + "?search=" + search;
+    });
 
 });

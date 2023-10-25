@@ -45,6 +45,6 @@ public interface CourseService {
 
     Page<Course> findByCourseNameOrCourseCode(String courseName, String courseCode, Integer pageIndex, Integer pageSize);
 
-    Page<Course> findByCourseName(String courseName, Integer pageIndex, Integer pageSize);
-    Page<Course> findByCourseCode(String courseCode, Integer pageIndex, Integer pageSize);
+    Page<Course> findByCourseNameLike(String courseName, Integer pageIndex, Integer pageSize);
+    Page<Course> findByCourseCodeLike(String courseCode, Integer pageIndex, Integer pageSize);
 }

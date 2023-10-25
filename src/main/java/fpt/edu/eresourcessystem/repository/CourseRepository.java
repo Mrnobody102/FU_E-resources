@@ -28,7 +28,7 @@ public interface CourseRepository extends
     Page<Course> filterMajor(String major, String code, String name, String description, Pageable pageable);
 
     Page<Course> findByCourseNameLikeOrCourseCodeLike(String courseName, String courseCode, Pageable pageable);
-    Page<Course> findByCourseName(String courseName, Pageable pageable);
-    Page<Course> findByCourseCode(String courseCode, Pageable pageable);
+    Page<Course> findByCourseNameLike(String courseName, Pageable pageable);
+    Page<Course> findByCourseCodeLike(String courseCode, Pageable pageable);
 
 }

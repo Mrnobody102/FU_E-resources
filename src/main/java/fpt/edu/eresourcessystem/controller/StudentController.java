@@ -60,8 +60,8 @@ public class StudentController {
 
     @GetMapping("/courses")
     public String getStudentCourse(@ModelAttribute Account account, final Model model) {
-        List<Course> courses = courseService.findAll();
-        model.addAttribute("courses", courses);
+//        List<Course> courses = courseService.findAll();
+//        model.addAttribute("courses", courses);
         return "student/course/student_courses";
     }
 
@@ -144,12 +144,12 @@ public class StudentController {
         if (null == filter || "all".equals(filter)) {
             page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, pageSize);
         } else if("name".equals(filter)){
-            page = courseService.findByCourseName(search, pageIndex, pageSize);
+            page = courseService.findByCourseNameLike(search, pageIndex, pageSize);
         } else{
-            page = courseService.findByCourseCode(search, pageIndex, pageSize);
+            page = courseService.findByCourseCodeLike(search, pageIndex, pageSize);
         }
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-        System.out.println(pages);
+//        System.out.println(pages);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
