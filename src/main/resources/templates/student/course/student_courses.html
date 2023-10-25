@@ -28,7 +28,6 @@
                         <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
                     </div>
                     <div class="stu_courses-content main" id="main">
-
                         <form th:action="@{/student/search_course/1}">
                             <div class="header__search">
                                 <!-- Input  -->
@@ -59,19 +58,22 @@
 <!--                                </div>-->
 <!--                                 Select-find-scope -->
                                 <div class="header__search-select">
-                                    <span class="header__search-select-label">All results</span>
-                                    <i class="header__search-select-icon fas fa-angle-down"></i>
-                                    <select class="header__search-option" name="filter">
-                                        <option class="header__search-option-item"
-                                            th:classappend="header__search-option-item--active"  name="filter" value="all">
+<!--                                    <span class="header__search-select-label">All results</span>-->
+<!--                                    <i class="header__search-select-icon fas fa-angle-down"></i>-->
+                                    <select class="search-course-select" name="filter">
+                                        <option class="search-course-option" name="filter" value="all"
+                                                th:selected="'all'==(${filter}) ">
                                             <span class="">All results</span>
                                             <i class="fas fa-check"></i>
                                         </option>
-                                        <option class="header__search-option-item"   name="filter" value="name">
+                                        <option class="search-course-option" name="filter" value="name"
+                                                th:selected="'name'==(${filter})"
+                                        >
                                             <span class="">By name</span>
                                             <i class="fas fa-check"></i>
                                         </option>
-                                        <option class="header__search-option-item"   name="filter" value="code">
+                                        <option class="search-course-option" name="filter" value="code"
+                                                th:selected="'code'==(${filter})">
                                             <span class="">By code</span>
                                             <i class="fas fa-check"></i>
                                         </option>
@@ -118,7 +120,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <nav th:if="${totalPage} > 1" aria-label="Page navigation example">
+                                    <nav th:if="${totalPage ne null} AND ${totalPage} >1" aria-label="Page navigation example">
                                         <ul class="pagination">
                                             <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
                                                 <a class="page-link previous-page-stu-course-number"
