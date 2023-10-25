@@ -35,53 +35,46 @@
         <h1 class="h2">User Profile</h1>
 
       </div>
-      <div class="lib_content">
+      <div class="lib_content2">
         <div class="lib_form">
           <div>
             <div>
                   <table>
                     <tr>
                       <td>Username</td>
-                      <td><p th:text="${account.username}"> </p>
+                      <td th:text="${account.username}">
                       </td>
                     </tr>
                     <tr>
                       <td>Password</td>
-                      <td><p th:text="${account.password}"></p>
+                      <td th:text="${account.password}">
                       </td>
                     </tr>
 
                     <tr>
                       <td>Email</td>
-                      <td><p th:text="${account.email}"></p>
+                      <td th:text="${account.email}">
                       </td>
                     </tr>
                     <tr>
                       <td>Full Name</td>
-                      <td><p th:text="${account.name}"></p>
-                      </td>
+                      <td th:text="${account.name}"></td>
                     </tr>
                     <tr>
                       <td>Date of birth</td>
-                      <td><p th:text="${account.dateOfBirth}"></p>
-                      </td>
+                      <td th:text="${account.dateOfBirth}"></td>
                     </tr>
                     <tr>
                       <td>Gender</td>
-                      <td>
-                          <p th:text="${account.gender.getDisplayValue()}"></p>
-                      </td>
+                      <td th:text="${account.gender.getDisplayValue()}"></td>
                     </tr>
                     <tr>
                       <td>Campus</td>
-                      <td>
-                        <p th:text="${account.campus.getDisplayValue()}"></p>
-                      </td>
+                      <td th:text="${account.campus.getDisplayValue()}"></td>
                     </tr>
                     <tr>
                       <td>Role</td>
-                      <td><p th:text="${account.role}"></p>
-                      </td>
+                      <td th:text="${account.role}"></td>
                     </tr>
 <!--                    <tr>-->
 <!--                      <td></td>-->
@@ -95,7 +88,8 @@
                     <tr>
                       <td></td>
                       <td>
-                        <a th:href="@{'/admin/accounts/update/'+${account.accountId}}">Edit</a>
+                        <a th:href="@{'/admin/accounts/'+${account.accountId} + '/update'}">Edit</a>
+                        <a class="delete-account" th:id="${account.accountId}">Delete</a>
                       </td>
                     </tr>
                   </table>
