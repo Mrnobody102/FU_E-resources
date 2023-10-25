@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
- lang="en">
+      lang="en">
 
 <!--LIBRARIAN HEADER-->
 <body th:fragment="headerLibrarianSection">
@@ -226,126 +226,89 @@
 </body>
 
 <!--LECTURER HEADER-->
-
 <body th:fragment="headerLecturerSection">
-<header class="header-lecturer">
-    <div class="grid">
+<!--     Header -->
+<header class="header">
+    <div class="stu__header-content">
         <!-- Header navbar -->
-        <nav class="header__navbar">
-            <h2 class="header__system-name header__navbar-list">
-                FPT University E-Resources
-            </h2>
-            <ul class="header__navbar-list">
-                <li class="header__navbar-item header__notify-appearance">
-                    <a href="" class="header__navbar-item-link">
-                        <i class="header__navbar-icon fas fa-bell"></i>
-                        Notifications
-                    </a>
-                    <!--Notifications Header-->
-                    <div class="header__notify header__bridge">
-                        <header class="header__notify-header">
-                            <h3>Received Notifications</h3>
-                        </header>
-                        <ul class="header__notify-list">
-                            <li class="header__notify-item header__notify-item--seen">
-                                <a href="" class="header__notify-link">
-                                    <img src="" alt="" class="header__notify-img">
-                                    <div class="header__notify-info">
-                                        <span class="header__notify-name">User huypqhe151329 has been sent a request</span>
-                                        <span class="header__notify-description">
-                                            Type: document request, Course: HCM202
-                                        </span>
-                                    </div>
-                                </a>
-                            </li>
-
-                        </ul>
-                        <footer class="header__notify-footer">
-                            <a href="" class="header__notify-footer-btn">See all</a>
-                        </footer>
-                    </div>
-                </li>
-                <!-- <li href="" class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">Login</li>
-                          <li href="" class="header__navbar-item header__navbar-item--strong">Sign Up</li> -->
-                <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
-                    <div class="header__navbar-user-wrap">
-                        <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name">Vũ Thanh Tùng</span>
-                    </div>
-                    <div class="header__navbar-user-option-list header__bridge">
-                        <div class="header__navbar-user-profile">
-                            <div class="header__navbar-user-profile-img-wrapper">
-                                <img th:src="@{/images/sample_account/avt.jpg}" alt=""
-                                     class="header__navbar-user-profile-img">
-                            </div>
-                            <div style="min-width: max-content">
-                                <p>Vũ Thanh Tùng</p>
-                                <p>20/02/2001 - Male</p>
-                            </div>
-                        </div>
-                        <div class="student__log-out">
-                            <a th:href="@{/logout}">
-                                Log out
-                            </a>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-        <!-- Header with search  -->
-        <div class="header-with-search">
-            <a href="/" class="header__logo-link">
+        <nav class="header__navbar row">
+            <div class="sidebar-system col-md-2">
+                <div class="sidebar__arrow row">
+                    <i id="toggleIdLecturer" class="fa-solid fa-bars col-md-2 sidebar-icon"></i>
+                    <h2 class="header__system-name col-md-10">
+                        <!-- FPT University-->
+                        E-Resources
+                    </h2>
+                </div>
+            </div>
+            <a href="/" class="header__logo-link col-md-2">
                 <div class="header__logo">
                     <img th:src="@{/images/appLogoIcon.webp}">
                 </div>
             </a>
+            <div class="header__link-list col-md-8">
+                <ul class="header__navbar-list">
+                    <li class="header__navbar-item header__notify-appearance">
+                        <a href="" class="header__navbar-item-link">
+                            <i class="header__navbar-icon fas fa-bell"></i>
+                            <!--                            Notifications-->
+                        </a>
+                        <!--Notifications Header-->
+                        <div class="header__notify header__bridge">
+                            <header class="header__notify-header">
+                                <h3>Received Notifications</h3>
+                            </header>
+                            <ul class="header__notify-list">
+                                <li class="header__notify-item header__notify-item--seen">
+                                    <a href="" class="header__notify-link">
+                                        <img src="" alt="" class="header__notify-img">
+                                        <div class="header__notify-info">
+                                            <span class="header__notify-name">User huypqhe151329 has been sent a request</span>
+                                            <span class="header__notify-description">
+                                            Type: document request, Course: HCM202
+                                        </span>
+                                        </div>
+                                    </a>
+                                </li>
 
-            <!-- Header-search -->
-            <div class="header__search">
-                <!-- Input  -->
-                <div class="header__search-input-wrap">
-                    <input type="text" class="header__search-input" placeholder="Search courses, documents, topics...">
-                    <!-- Header-search-history -->
-                    <div class="header__search-history">
-                        <h3 class="header__search-history-heading">
-                            Search history
-                        </h3>
-                        <ul class="header__search-history-list">
-
-                            <li class="header__search-history-item">
-                                <a href="">Software</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Select-find-scope -->
-                <div class="header__search-select">
-                    <span class="header__search-select-label">All results</span>
-                    <i class="header__search-select-icon fas fa-angle-down"></i>
-                    <ul class="header__search-option">
-                        <li class="header__search-option-item header__search-option-item--active">
-                            <span class="">All results</span>
-                            <i class="fas fa-check"></i>
-                        </li>
-                        <li class="header__search-option-item">
-                            <span class="">e-resources</span>
-                            <i class="fas fa-check"></i>
-                        </li>
-                    </ul>
-                </div>
-                <button class="header__search-btn">
-                    <i class="header__search-btn-icon fas fa-search"></i>
-                </button>
+                            </ul>
+                            <footer class="header__notify-footer">
+                                <a href="" class="header__notify-footer-btn">See all</a>
+                            </footer>
+                        </div>
+                    </li>
+                    <li class="header__navbar-item">
+                        <a href="" class="header__navbar-item-link">
+                            <i class="header__navbar-icon far fa-question-circle"></i>
+                            <!--                            Help-->
+                        </a>
+                    </li>
+                    <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
+                        <div class="header__navbar-user-wrap">
+                            <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
+                            <span class="header__navbar-user-name">Vũ Thanh Tùng</span>
+                        </div>
+                        <div class="header__navbar-user-option-list header__bridge">
+                            <div class="header__navbar-user-profile">
+                                <div class="header__navbar-user-profile-img-wrapper">
+                                    <img th:src="@{/images/sample_account/avt.jpg}" alt=""
+                                         class="header__navbar-user-profile-img">
+                                </div>
+                                <div style="min-width: max-content">
+                                    <p>Vũ Thanh Tùng</p>
+                                    <p>20/02/2001 - Male</p>
+                                </div>
+                            </div>
+                            <div class="student__log-out">
+                                <a th:href="@{/logout}">
+                                    Log out
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
-
-            <!-- Advance search -->
-            <div class="header__advance-search">
-                <a href="" class="header__advance-search-link">
-                    Advance search
-                </a>
-            </div>
-        </div>
-
+        </nav>
     </div>
 </header>
 </body>
@@ -355,156 +318,176 @@
 <body th:fragment="studentHeaderSection">
 <!--     Header -->
 <header class="header">
-    <div class="grid">
+    <div class="stu__header-content">
         <!-- Header navbar -->
-        <nav class="header__navbar">
-            <h2 class="header__system-name header__navbar-list">
-                FPT University E-Resources
-            </h2>
-            <ul class="header__navbar-list">
-                <li class="header__navbar-item header__notify-appearance">
-                    <a href="" class="header__navbar-item-link">
-                        <i class="header__navbar-icon fas fa-bell"></i>
-                        Notifications
-                    </a>
-                    <!--Notifications Header-->
-                    <div class="header__notify header__bridge">
-                        <header class="header__notify-header">
-                            <h3>Received Notifications</h3>
-                        </header>
-                        <ul class="header__notify-list">
-                            <li class="header__notify-item header__notify-item--seen">
-                                <a href="" class="header__notify-link">
-                                    <img src="" alt="" class="header__notify-img">
-                                    <div class="header__notify-info">
-                                        <span class="header__notify-name">User huypqhe151329 has been sent a request</span>
-                                        <span class="header__notify-description">
-                                            Type: document request, Course: HCM202
-                                        </span>
-                                    </div>
-                                </a>
-                            </li>
-
-                        </ul>
-                        <footer class="header__notify-footer">
-                            <a href="" class="header__notify-footer-btn">See all</a>
-                        </footer>
-                    </div>
-                </li>
-                <li class="header__navbar-item">
-                    <a href="" class="header__navbar-item-link">
-                        <i class="header__navbar-icon far fa-question-circle"></i>
-                        Help</a>
-                </li>
-                <!-- <li href="" class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">Login</li>
-                          <li href="" class="header__navbar-item header__navbar-item--strong">Sign Up</li> -->
-                <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
-                    <div class="header__navbar-user-wrap">
-                        <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name">Vũ Thanh Tùng</span>
-                    </div>
-                    <div class="header__navbar-user-option-list header__bridge">
-                        <div class="header__navbar-user-profile">
-                            <div class="header__navbar-user-profile-img-wrapper">
-                                <img th:src="@{/images/sample_account/avt.jpg}" alt=""
-                                     class="header__navbar-user-profile-img">
-                            </div>
-                            <div style="min-width: max-content">
-                                <p>Vũ Thanh Tùng</p>
-                                <p>20/02/2001 - Male</p>
-                            </div>
-                        </div>
-                        <div class="student__log-out">
-                            <a th:href="@{/logout}">
-                                Log out
-                            </a>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-        <!-- Header with search  -->
-        <div class="header-with-search">
-            <a href="/" class="header__logo-link">
+        <nav class="header__navbar row">
+            <div class="sidebar-system col-md-2">
+                <div class="sidebar__arrow row">
+                    <i id="toggle" class="fa-solid fa-bars col-md-2 sidebar-icon"></i>
+                    <h2 class="header__system-name col-md-10">
+                        <!-- FPT University-->
+                        E-Resources
+                    </h2>
+                </div>
+            </div>
+            <a href="/" class="header__logo-link col-md-2">
                 <div class="header__logo">
                     <img th:src="@{/images/appLogoIcon.webp}">
                 </div>
             </a>
+            <div class="header__link-list col-md-8">
+                <ul class="header__navbar-list">
+                    <li class="header__navbar-item header__notify-appearance">
+                        <a href="" class="header__navbar-item-link">
+                            <i class="header__navbar-icon fas fa-bell"></i>
+<!--                            Notifications-->
+                        </a>
+                        <!--Notifications Header-->
+                        <div class="header__notify header__bridge">
+                            <header class="header__notify-header">
+                                <h3>Received Notifications</h3>
+                            </header>
+                            <ul class="header__notify-list">
+                                <li class="header__notify-item header__notify-item--seen">
+                                    <a href="" class="header__notify-link">
+                                        <img src="" alt="" class="header__notify-img">
+                                        <div class="header__notify-info">
+                                            <span class="header__notify-name">User huypqhe151329 has been sent a request</span>
+                                            <span class="header__notify-description">
+                                            Type: document request, Course: HCM202
+                                        </span>
+                                        </div>
+                                    </a>
+                                </li>
 
-            <!-- Header-search -->
-            <div class="header__search">
-                <!-- Input  -->
-                <div class="header__search-input-wrap">
-                    <input type="text" class="header__search-input" placeholder="Search courses, documents, topics...">
-                    <!-- Header-search-history -->
-                    <div class="header__search-history">
-                        <h3 class="header__search-history-heading">
-                            Search history
-                        </h3>
-                        <ul class="header__search-history-list">
-
-                            <li class="header__search-history-item">
-                                <a href="">Software</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Select-find-scope -->
-                <div class="header__search-select">
-                    <span class="header__search-select-label">All results</span>
-                    <i class="header__search-select-icon fas fa-angle-down"></i>
-                    <ul class="header__search-option">
-                        <li class="header__search-option-item header__search-option-item--active">
-                            <span class="">All results</span>
-                            <i class="fas fa-check"></i>
-                        </li>
-                        <li class="header__search-option-item">
-                            <span class="">e-resources</span>
-                            <i class="fas fa-check"></i>
-                        </li>
-                    </ul>
-                </div>
-                <button class="header__search-btn">
-                    <i class="header__search-btn-icon fas fa-search"></i>
-                </button>
+                            </ul>
+                            <footer class="header__notify-footer">
+                                <a href="" class="header__notify-footer-btn">See all</a>
+                            </footer>
+                        </div>
+                    </li>
+                    <li class="header__navbar-item">
+                        <a href="" class="header__navbar-item-link">
+                            <i class="header__navbar-icon far fa-question-circle"></i>
+<!--                            Help-->
+                        </a>
+                    </li>
+                    <!-- <li href="" class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">Login</li>
+                              <li href="" class="header__navbar-item header__navbar-item--strong">Sign Up</li> -->
+                    <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
+                        <div class="header__navbar-user-wrap">
+                            <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
+                            <span class="header__navbar-user-name">Vũ Thanh Tùng</span>
+                        </div>
+                        <div class="header__navbar-user-option-list header__bridge">
+                            <div class="header__navbar-user-profile">
+                                <div class="header__navbar-user-profile-img-wrapper">
+                                    <img th:src="@{/images/sample_account/avt.jpg}" alt=""
+                                         class="header__navbar-user-profile-img">
+                                </div>
+                                <div style="min-width: max-content">
+                                    <p>Vũ Thanh Tùng</p>
+                                    <p>20/02/2001 - Male</p>
+                                </div>
+                            </div>
+                            <div class="student__log-out">
+                                <a th:href="@{/logout}">
+                                    Log out
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
+        </nav>
+        <!-- Header with search  -->
+        <!--        <div class="header-with-search">-->
+        <!--            <div class="sidebar__account">-->
+        <!--                <div id="toggle" class="sidebar__arrow">-->
+        <!--                    &lt;!&ndash;                <i class="fa-solid fa-arrow-circle-right"></i>&ndash;&gt;-->
+        <!--                    <i class="fa-solid fa-bars"></i>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--            <a href="/" class="header__logo-link">-->
+        <!--                <div class="header__logo">-->
+        <!--                    <img th:src="@{/images/appLogoIcon.webp}">-->
+        <!--                </div>-->
+        <!--            </a>-->
 
-            <!-- Advance search -->
-            <div class="header__advance-search">
-                <a href="" class="header__advance-search-link">
-                    Advance search
-                </a>
-            </div>
-        </div>
-<!--        <div class="header__navbar-main">-->
-<!--            <ul class="header__navbar-list">-->
-<!--                <li class="header__navbar-main-item">-->
-<!--                    <a th:href="@{/student/home}" class="header__navbar-item-main-link">-->
-<!--                        Home-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                <li class="header__navbar-main-item">-->
-<!--                    <a th:href="@{/student/courses}" class="header__navbar-item-main-link">-->
-<!--                        Courses-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                <li class="header__navbar-main-item">-->
-<!--                    <a th:href="@{/student/my_library}" class="header__navbar-item-main-link">-->
-<!--                        My Library-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                <li class="header__navbar-main-item">-->
-<!--                    <a href="" class="header__navbar-item-main-link">-->
-<!--                        Request documents-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                <li class="header__navbar-main-item">-->
-<!--                    <a href="" class="header__navbar-item-main-link">-->
-<!--                        Feedback-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
+        <!--            &lt;!&ndash; Header-search &ndash;&gt;-->
+        <!--            <div class="header__search">-->
+        <!--                &lt;!&ndash; Input  &ndash;&gt;-->
+        <!--                <div class="header__search-input-wrap">-->
+        <!--                    <input type="text" class="header__search-input" placeholder="Search courses, documents, topics...">-->
+        <!--                    &lt;!&ndash; Header-search-history &ndash;&gt;-->
+        <!--                    <div class="header__search-history">-->
+        <!--                        <h3 class="header__search-history-heading">-->
+        <!--                            Search history-->
+        <!--                        </h3>-->
+        <!--                        <ul class="header__search-history-list">-->
+
+        <!--                            <li class="header__search-history-item">-->
+        <!--                                <a href="">Software</a>-->
+        <!--                            </li>-->
+        <!--                        </ul>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                &lt;!&ndash; Select-find-scope &ndash;&gt;-->
+        <!--                <div class="header__search-select">-->
+        <!--                    <span class="header__search-select-label">All results</span>-->
+        <!--                    <i class="header__search-select-icon fas fa-angle-down"></i>-->
+        <!--                    <ul class="header__search-option">-->
+        <!--                        <li class="header__search-option-item header__search-option-item&#45;&#45;active">-->
+        <!--                            <span class="">All results</span>-->
+        <!--                            <i class="fas fa-check"></i>-->
+        <!--                        </li>-->
+        <!--                        <li class="header__search-option-item">-->
+        <!--                            <span class="">e-resources</span>-->
+        <!--                            <i class="fas fa-check"></i>-->
+        <!--                        </li>-->
+        <!--                    </ul>-->
+        <!--                </div>-->
+        <!--                <button class="header__search-btn">-->
+        <!--                    <i class="header__search-btn-icon fas fa-search"></i>-->
+        <!--                </button>-->
+        <!--            </div>-->
+
+        <!--            &lt;!&ndash; Advance search &ndash;&gt;-->
+        <!--            <div class="header__advance-search">-->
+        <!--                <a href="" class="header__advance-search-link">-->
+        <!--                    Advance search-->
+        <!--                </a>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--        <div class="header__navbar-main">-->
+        <!--            <ul class="header__navbar-list">-->
+        <!--                <li class="header__navbar-main-item">-->
+        <!--                    <a th:href="@{/student/home}" class="header__navbar-item-main-link">-->
+        <!--                        Home-->
+        <!--                    </a>-->
+        <!--                </li>-->
+        <!--                <li class="header__navbar-main-item">-->
+        <!--                    <a th:href="@{/student/courses}" class="header__navbar-item-main-link">-->
+        <!--                        Courses-->
+        <!--                    </a>-->
+        <!--                </li>-->
+        <!--                <li class="header__navbar-main-item">-->
+        <!--                    <a th:href="@{/student/my_library}" class="header__navbar-item-main-link">-->
+        <!--                        My Library-->
+        <!--                    </a>-->
+        <!--                </li>-->
+        <!--                <li class="header__navbar-main-item">-->
+        <!--                    <a href="" class="header__navbar-item-main-link">-->
+        <!--                        Request documents-->
+        <!--                    </a>-->
+        <!--                </li>-->
+        <!--                <li class="header__navbar-main-item">-->
+        <!--                    <a href="" class="header__navbar-item-main-link">-->
+        <!--                        Feedback-->
+        <!--                    </a>-->
+        <!--                </li>-->
+        <!--            </ul>-->
+        <!--        </div>-->
     </div>
 </header>
 </body>

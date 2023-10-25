@@ -1,32 +1,86 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      lang="en">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>E-Resource Lecturer Home</title>
+    <title>Personal course</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
-<body>
-<div class="app_container">
-    <!-- Header -->
-    <div th:replace="~{fragments/header::studentHeaderSection}"></div>
+<body class="app_container">
+<!-- Header -->
+<div th:replace="~{fragments/header::studentHeaderSection}"></div>
+<div class="main_content">
+    <div class="container-content-wrapper">
+        <!--  Main-->
+        <div class="container-content row">
+            <div class="main-content stu_course-saved">
+                <div class="stu_course-saved-content d-flex">
+                    <div class="stu_sidebar">
+                        <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
+                    </div>
+                    <div class="stu_course-saved-content main" id="main">
+                        <div class="header__search">
+                            <!-- Input  -->
+                            <div class="header__search-input-wrap">
+                                <input type="text" class="header__search-input"
+                                       placeholder="Search courses, documents, topics...">
+                                <!-- Header-search-history -->
+                                <div class="header__search-history">
+                                    <h3 class="header__search-history-heading">
+                                        Search history
+                                    </h3>
+                                    <ul class="header__search-history-list">
 
-    <!--  Main-->
-    <div class="main_content">
-        <div th:replace="~{fragments/sidebar}"></div>
+                                        <li class="header__search-history-item">
+                                            <a href="">Software</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Select-find-scope -->
+                            <div class="header__search-select">
+                                <span class="header__search-select-label">All results</span>
+                                <i class="header__search-select-icon fas fa-angle-down"></i>
+                                <ul class="header__search-option">
+                                    <li class="header__search-option-item header__search-option-item--active">
+                                        <span class="">All results</span>
+                                        <i class="fas fa-check"></i>
+                                    </li>
+                                    <li class="header__search-option-item">
+                                        <span class="">e-resources</span>
+                                        <i class="fas fa-check"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button class="header__search-btn">
+                                <i class="header__search-btn-icon fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-    <!-- Footer -->
-    <div th:replace="~{fragments/footer :: footerSection}"></div>
 </div>
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footerSection}"></div>
+
 
 <!--jquery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 <!--Custom script-->
 <script th:src="@{/js/student.js}"></script>
 </body>

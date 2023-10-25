@@ -38,8 +38,17 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
+    public Lecturer updateLecturer(Lecturer lecturer) {
+        Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getLecturerId());
+        if (!checkExist.isPresent()) {
+            return null;
+        }
+        return lecturerRepository.save(lecturer);
+    }
+
+    @Override
     public List<Course> findListManageCourse(Lecturer lecturer) {
-        Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getAccountId());
+        Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getLecturerId());
         if (checkExist.isPresent()) {
             if (null == checkExist.get().getLecturerCourses()) {
                 return null;
@@ -71,6 +80,12 @@ public class LecturerServiceImpl implements LecturerService {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<Lecturer> findAll() {
+        List<Lecturer> lecturers = lecturerRepository.findAll();
+        return lecturers;
     }
 
 

@@ -58,7 +58,7 @@ public class AdminController {
      */
     @GetMapping
     public String getLibrarianDashboard() {
-        return "librarian/librarian_dashboard";
+        return "admin/admin_dashboard";
     }
 
     /*
@@ -70,7 +70,7 @@ public class AdminController {
      */
     @GetMapping({"/accounts/list"})
     public String manageAccount() {
-        return "librarian/account/librarian_accounts";
+        return "admin/account/admin_accounts";
     }
 
     @GetMapping("/accounts/list/{pageIndex}")
@@ -93,7 +93,7 @@ public class AdminController {
         model.addAttribute("roles", AccountEnum.Role.values());
         model.addAttribute("roleSearch", role);
         model.addAttribute("currentPage", pageIndex);
-        return "librarian/account/librarian_accounts";
+        return "admin/account/admin_accounts";
     }
 
     /**
@@ -107,7 +107,7 @@ public class AdminController {
         model.addAttribute("roles", AccountEnum.Role.values());
         model.addAttribute("campuses", AccountEnum.Campus.values());
         model.addAttribute("genders", AccountEnum.Gender.values());
-        return "librarian/account/librarian_add-account";
+        return "admin/account/admin_add-account";
     }
 
     /**
@@ -118,7 +118,7 @@ public class AdminController {
     public String addAccount(@ModelAttribute AccountDTO accountDTO) {
         String email = accountDTO.getEmail();
         if (accountService.findByEmail(email) != null) {
-            return "redirect:/librarian/accounts/add?error";
+            return "redirect:/admin/accounts/add?error";
         }
 
         accountService.addAccount(accountDTO);
@@ -141,12 +141,12 @@ public class AdminController {
                 lecturerService.addLecturer(lecturer);
                 break;
             default:
-                return "redirect:/librarian/accounts/add?error";
+                return "redirect:/admin/accounts/add?error";
         }
 
         RedirectAttributes attributes = new RedirectAttributesModelMap();
         attributes.addFlashAttribute("account", accountDTO);
-        return "redirect:/librarian/accounts/add?success";
+        return "redirect:/admin/accounts/add?success";
     }
 
     /**
@@ -170,7 +170,7 @@ public class AdminController {
             model.addAttribute("campuses", AccountEnum.Campus.values());
             model.addAttribute("genders", AccountEnum.Gender.values());
             model.addAttribute("account", account);
-            return "librarian/account/librarian_update-account";
+            return "admin/account/admin_update-account";
         }
 
     }
@@ -192,7 +192,7 @@ public class AdminController {
             Account checkEmailDuplicate = accountService.findByEmail(account.getEmail());
             if (checkEmailDuplicate != null &&
                     !checkExist.getEmail().equalsIgnoreCase(account.getEmail())) {
-                String result = "redirect:/librarian/accounts/updated/" + account.getAccountId() + "?error";
+                String result = "redirect:/admin/accounts/updated/" + account.getAccountId() + "?error";
                 return result;
             }
             String role = String.valueOf(account.getRole());
@@ -224,7 +224,7 @@ public class AdminController {
                     }
                     break;
                 default:
-                    return "redirect:/librarian/accounts/updated/" + account.getAccountId() + "?error";
+                    return "redirect:/admin/accounts/updated/" + account.getAccountId() + "?error";
             }
             accountService.updateAccount(account);
             model.addAttribute("account", account);
@@ -232,7 +232,7 @@ public class AdminController {
             model.addAttribute("campuses", AccountEnum.Campus.values());
             model.addAttribute("genders", AccountEnum.Gender.values());
             model.addAttribute("success", "");
-            String result = "redirect:/librarian/accounts/updated/" + account.getAccountId() + "?success";
+            String result = "redirect:/admin/accounts/updated/" + account.getAccountId() + "?success";
             return result;
         }
     }
@@ -249,9 +249,9 @@ public class AdminController {
         System.out.println(check);
         if (null != check) {
             accountService.delete(check);
-            return "redirect:/librarian/accounts/list?success";
+            return "redirect:/admin/accounts/list?success";
         }
-        return "redirect:/librarian/accounts/list?error";
+        return "redirect:/admin/accounts/list?error";
     }
 
     /**
@@ -269,7 +269,7 @@ public class AdminController {
             return "exception/404";
         } else {
             model.addAttribute("account", account);
-            return "librarian/account/librarian_account-detail";
+            return "admin/account/admin_account-detail";
         }
 
     }

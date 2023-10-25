@@ -11,14 +11,15 @@
     --hover-color-2: #CEE8E9;
     --gradient-color: #8D72E1;
     --primary-color: #6C4AB6;
-    --background-block-color: #94d3aa;
-    --background-block-color-hover: #bae3c9;
+    --background-btn-color-hover: #94d3aa;
+    --background-btn-color: #bae3c9;
     --primary-color-rgb: 210, 68, 2;
     --primary-btn-color: #419a1d;
     --lib-dashboard-color: #0a53be;
     --second-back-ground: rgb(240, 234, 234);
     --content-width: 87.5%;
     --link-color: #0b74ec;
+    --checked-background-color:#0a58ca;
 
     /* Font */
     --body-font: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
@@ -93,6 +94,24 @@ li {
 }
 
 /* Demo  */
+.grid__column-1 {
+    /*padding-left: 12px;*/
+    /*padding-right: 12px;*/
+    width: 10%;
+
+}
+.grid__column-2 {
+    /*padding-left: 12px;*/
+    /*padding-right: 12px;*/
+    width: 20%;
+
+}
+.grid__column-7 {
+    /*padding-left: 12px;*/
+    /*padding-right: 12px;*/
+    width: 70%;
+
+}
 
 .grid__column-3 {
     /*padding-left: 12px;*/
@@ -349,7 +368,8 @@ li {
 }
 
 .course-info-title{
-    padding: 0.7em;
+    display: flex;
+    padding-top: 0.7em;
 }
 
 .course-info-topics{
@@ -381,7 +401,7 @@ li {
     font-size: 1rem;
 }
 .link-sidebar:hover{
-    background: var(--background-block-color);
+    background: var(--background-btn-color-hover);
 }
 .course-sidebar-code{
     margin: 0 0 1.5em 0;
@@ -427,4 +447,15 @@ li {
 
 .link{
     color: var(--link-color);
+}
+
+.list-view-block a ,
+.list-view-block input{
+    width: 100%;
+    padding: 0.7rem 1rem;
+}
+
+.list-view-block a:hover ,
+.list-view-block input:hover{
+    background: var(--background-btn-color-hover);
 }

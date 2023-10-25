@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
@@ -8,20 +9,23 @@ import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.service.CourseService;
 import fpt.edu.eresourcessystem.service.StudentService;
 import fpt.edu.eresourcessystem.service.TopicService;
+import fpt.edu.eresourcessystem.utils.CommonUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/student")
+@PropertySource("web-setting.properties")
 public class StudentController {
-
+    @Value("${page-size}")
+    private Integer pageSize;
     private final CourseService courseService;
 
     private final StudentService studentService;
@@ -56,13 +60,13 @@ public class StudentController {
 
     @GetMapping("/courses")
     public String getStudentCourse(@ModelAttribute Account account, final Model model) {
-        List<Course> courses = courseService.findAll();
-        model.addAttribute("courses", courses);
+//        List<Course> courses = courseService.findAll();
+//        model.addAttribute("courses", courses);
         return "student/course/student_courses";
     }
 
-    @GetMapping("/courses/{courseId}")
-    public String viewCourseDetail(@PathVariable String courseId, final Model model) {
+    @GetMapping({"/courses/{courseId}","/courseDetail"})
+    public String viewCourseDetail(@PathVariable(required = false) String courseId, final Model model) {
         // auth
         Student student = getLoggedInStudent();
 
@@ -74,6 +78,7 @@ public class StudentController {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);
         return "student/course/student_course-detail";
+//        return "student/course/courseDetailFrontEnd";
     }
 
     @GetMapping("/courses/{courseId}/save_course")
@@ -115,5 +120,43 @@ public class StudentController {
         }
         model.addAttribute("coursesSaved", courses);
         return "student/library/student_saved_courses";
+    }
+
+
+    @GetMapping({"/topic/{topicId}","/topicDetail"})
+    public String viewTopicDetail(@PathVariable(required = false) String docId, final Model model) {
+        return "student/course/student_view-topic-detail";
+    }
+    @GetMapping({"/document/{docId}","/documentDetail"})
+    public String viewDocumentDetail(@PathVariable(required = false) String docId, final Model model) {
+//        // auth
+//        Student student = getLoggedInStudent();
+        return "student/course/student_document-detail";
+    }
+    @GetMapping({"/search_course/{pageIndex}"})
+    public String viewSearchCourse(@PathVariable Integer pageIndex,
+                                     @RequestParam(required = false, defaultValue = "") String search,
+                                     @RequestParam(required = false, defaultValue = "all") String filter,
+                                     final Model model) {
+//        // auth
+//        Student student = getLoggedInStudent();
+        Page<Course> page;
+        if (null == filter || "all".equals(filter)) {
+            page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, pageSize);
+        } else if("name".equals(filter)){
+            page = courseService.findByCourseNameLike(search, pageIndex, pageSize);
+        } else{
+            page = courseService.findByCourseCodeLike(search, pageIndex, pageSize);
+        }
+        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+//        System.out.println(pages);
+        model.addAttribute("pages", pages);
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("courses", page.getContent());
+        model.addAttribute("search", search);
+        model.addAttribute("roles", AccountEnum.Role.values());
+        model.addAttribute("filter", filter);
+        model.addAttribute("currentPage", pageIndex);
+        return "student/course/student_courses";
     }
 }

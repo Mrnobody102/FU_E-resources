@@ -41,8 +41,8 @@
     <div class="grid app__container-content-wrapper">
         <div class="app__container-content">
             <div class="course-details-head">
-                <a th:href="@{/templates/librarian}">Home</a>
-                <span> &gt; <a th:href="@{/librarian/accounts/list}">Users management</a></span>
+                <a th:href="@{/admin}">Home</a>
+                <span> &gt; <a th:href="@{/admin/accounts/list}">Users management</a></span>
                 <span> &gt; Update user</span>
             </div>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -60,7 +60,7 @@
 <!--                        </div>-->
 <!--                    </div>-->
                     <div class="add-form-content">
-                        <form method="post" role="form" th:action="@{/librarian/accounts/update}"
+                        <form method="post" role="form" th:action="@{/admin/accounts/update}"
                               th:object="${account}" th:id="update-account">
                             <table class="table-form lib_table">
                                 <tr class="lib_input-wrapper">

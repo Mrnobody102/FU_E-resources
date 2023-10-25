@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>E-Resource Lecturer Home</title>
+    <title>Personal course</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
-<body>
+<body class="app_container">
 <!-- Header -->
 <div th:replace="~{fragments/header::headerLecturerSection}"></div>
 <div class="main_content">
@@ -73,10 +73,10 @@
                                     <div class="view-block-list">
                                         <ul class="home__course-list">
                                             <li class="home__course-item">
-                                                <div class="home__course-wrapper" th:each="course : ${coursesSaved}">
+                                                <div class="home__course-wrapper" th:each="course : ${coursesManagement}">
                                                     <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
                                                     <a class="home__course-name" th:text="${course.courseName}"
-                                                       th:href="@{'/student/courses/' + ${course.courseId}}"></a>
+                                                       th:href="@{'/lecturer/' + ${course.courseId}}"></a>
                                                     <p class="home__course-description" th:text="${course.description}"></p>
                                                     <ul class="home__course-lecturer-list">
                                                         <li th:if="${course.managerId ne null}"
@@ -99,22 +99,35 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <ul class="pagination home-courses__pagination-distance">
-                                        <li class="pagination-item">
-                                            <a href="" class="pagination-item__link">
-                                                <i class="pagination-item__icon fas fa-angle-left"></i>
-                                            </a>
-                                        </li>
-                                        <li class="pagination-item pagination-item--active">
-                                            <a href="" class="pagination-item__link">1</a>
-                                        </li>
+                                    <nav th:if="${totalPage} > 1" aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
+                                                <a class="page-link previous-page-course"
+                                                   style="cursor: pointer">
+                                                    &laquo;
+                                                </a>
+                                            </li>
 
-                                        <li class="pagination-item">
-                                            <a href="" class="pagination-item__link">
-                                                <i class="pagination-item__icon fas fa-angle-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                            <li th:each="pageIndex: ${pages}" class="page-item"
+                                                th:classappend=" (${currentPage == pageIndex}) ? 'active' : '' ">
+                                                <th:block th:if="${pageIndex == -1}">
+                                                    <span class="page-link">...</span>
+                                                </th:block>
+                                                <th:block th:if="${pageIndex != -1}">
+                                                    <a th:text="${pageIndex}" th:value="${pageIndex}"
+                                                       class="page-link page-course-number"
+                                                       style="cursor: pointer"
+                                                    ></a>
+                                                </th:block>
+                                            </li>
+                                            <li th:class="${currentPage == totalPage} ? 'page-item disabled' : 'page-item'">
+                                                <a class="page-link next-page-course"
+                                                   style="cursor: pointer">
+                                                    &raquo;
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
@@ -123,14 +136,14 @@
 
 
 
-                    <!--                    <div class="stu_course-saved-content main" id="main">-->
-                    <!--                        <ul>-->
-                    <!--                            <li th:each="courseSaved : ${coursesSaved}">-->
-                    <!--                                <a th:text="${courseSaved.getCourseName()}"-->
-                    <!--                                   th:href="@{'/student/courses/' + ${courseSaved.getCourseId()}}"></a>-->
-                    <!--                            </li>-->
-                    <!--                        </ul>-->
-                    <!--                    </div>-->
+<!--                    <div class="stu_course-saved-content main" id="main">-->
+<!--                        <ul>-->
+<!--                            <li th:each="courseSaved : ${coursesSaved}">-->
+<!--                                <a th:text="${courseSaved.getCourseName()}"-->
+<!--                                   th:href="@{'/student/courses/' + ${courseSaved.getCourseId()}}"></a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -138,6 +151,8 @@
 </div>
 <!-- Footer -->
 <div th:replace="~{fragments/footer :: footerSection}"></div>
+
+
 <!--jquery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Bootstrap script-->
