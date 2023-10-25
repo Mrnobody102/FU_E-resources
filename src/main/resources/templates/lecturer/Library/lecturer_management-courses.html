@@ -76,7 +76,7 @@
                                                 <div class="home__course-wrapper" th:each="course : ${coursesManagement}">
                                                     <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
                                                     <a class="home__course-name" th:text="${course.courseName}"
-                                                       th:href="@{'/student/courses/' + ${course.courseId}}"></a>
+                                                       th:href="@{'/lecturer/courses/' + ${course.courseId}}"></a>
                                                     <p class="home__course-description" th:text="${course.description}"></p>
                                                     <ul class="home__course-lecturer-list">
                                                         <li th:if="${course.managerId ne null}"

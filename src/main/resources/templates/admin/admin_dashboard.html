@@ -1,10 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
 
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+</head>
+<body class="app_container">
+<header th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<div class="main_content">
+    <div class="grid app__container-content-wrapper">
+        <div class="app__container-content">
+            <div class="lib-main_menu">
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/admin/accounts/list}">
+                        <i class="p-2 fa fa-user"></i>
+                        Accounts management</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/admin/feedbacks/list}">
+                        <i class="p-2 fa fa-comments"></i>
+                        Feedbacks management</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/admin/librarian}">
+                        <i class="p-2 fas fa-chalkboard-teacher"></i>
+                        Login as librarian</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/admin/lecturer}">
+                        <i class="p-2 fas fa-chalkboard-teacher"></i>
+                        Login as lecturer</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/admin/student}">
+                        <i class="p-2 fa fa-graduation-cap" aria-hidden="true"></i>
+                        Login as student</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/admin/settings}">
+                        <i class="p-2 fa fa-cog" aria-hidden="true"></i>
+                        Settings</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footerSection}"></div>
+
+<!--Custom script-->
+<script th:src="@{/js/librarian.js}"></script>
+
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 </body>
 </html>

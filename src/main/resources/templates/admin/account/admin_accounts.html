@@ -27,7 +27,7 @@
     <div class="grid app__container-content-wrapper">
         <div class="app__container-content">
             <div class="course-details-head">
-                <a th:href="@{/templates/librarian}">Home</a>
+                <a th:href="@{/admin}">Home</a>
                 <span> &gt; Users management</span>
             </div>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -41,7 +41,7 @@
             <div class="d-flex justify-content-center">
                 <div class="lib_data-list-wrapper">
                     <div class="lib_search-container">
-                        <form class="d-flex" th:action="@{/librarian/accounts/list/1}" method="get" th:id="search-form">
+                        <form class="d-flex" th:action="@{/admin/accounts/list/1}" method="get" th:id="search-form">
                             <div class="d-flex">
 
                                 <input class="lib_search-content" type="text" placeholder="Search user.."
@@ -49,7 +49,7 @@
                                 <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
                                     <i class="lib_search-btn-icon fas fa-search"></i>
                                 </button>
-                                <a class="btn lib_show-all-btn" th:href="@{/librarian/accounts/list/1}">Show AlL</a>
+                                <a class="btn lib_show-all-btn" th:href="@{/admin/accounts/list/1}">Show AlL</a>
                             </div>
 <!--                            <div>-->
 <!--                                <a class="btn lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">-->
@@ -71,7 +71,7 @@
                             </div>
                         </form>
                             <div>
-                                <a class="lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">
+                                <a class="lib_btn-add" type="button" th:href="@{/admin/accounts/add}">
                                     <i class="fa-solid fa-plus"></i>
                                     <span>New</span>
                                 </a>
@@ -90,14 +90,14 @@
                             </tr>
                             <th:block th:each="account : ${accounts}">
                                 <tr>
-                                    <td><a th:href="@{'/librarian/accounts/' + ${account.accountId}}"
+                                    <td><a th:href="@{'/admin/accounts/' + ${account.accountId}}"
                                            th:text="${account.email}"></a></td>
                                     <td th:text="${account.name}"></td>
                                     <td th:text="${account.role}"></td>
                                     <td th:text="${account.campus}"></td>
                                     <td colspan="2">
                                         <a class="update-account"
-                                           th:href="@{'/librarian/accounts/'+${account.accountId} + '/update'}">Update</a>
+                                           th:href="@{'/admin/accounts/'+${account.accountId} + '/update'}">Update</a>
                                         <a class="delete-account" th:id="${account.accountId}">Delete</a>
                                     </td>
                                 </tr>

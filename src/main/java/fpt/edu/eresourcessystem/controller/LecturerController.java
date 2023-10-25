@@ -1,6 +1,5 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
@@ -11,8 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -39,6 +38,10 @@ public class LecturerController {
         this.documentService = documentService;
     }
 
+    public Lecturer getLoggedInLecturer() {
+        return lecturerService.findAll().get(0);
+    }
+
     @GetMapping
     public String getLibraryManageDashboard(@ModelAttribute Account account) {
         return "lecturer/lecturer";
@@ -47,7 +50,7 @@ public class LecturerController {
     /*
         LECTURER COURSES
      */
-    @GetMapping({"/courses/list", "courses"})
+    @GetMapping({"/courses/list", "/courses"})
     public String showCourses() {
         return "lecturer/course/lecturer_courses";
     }
@@ -193,15 +196,15 @@ public class LecturerController {
         return "lecturer/course/lecturer_add-topic-to-course";
     }
 
-    @GetMapping("/manage_course/list/{pageIndex}")
-    public String findManageCourses(@PathVariable String pageIndex, final Model model) {
-        Lecturer lecturer = new Lecturer();
-        lecturer.setAccountId("65283bfc9bf46d65d5aa3f8f");
-        lecturer = lecturerService.findByAccountId(lecturer.getAccountId());
-        List<Course> courses = lecturerService.findListManageCourse(lecturer);
-        model.addAttribute("courses", courses);
-        return "lecturer/course/lecturer_courses";
-    }
+//    @GetMapping("/manage_course/list/{pageIndex}")
+//    public String findManageCourses(@PathVariable String pageIndex, final Model model) {
+//        Lecturer lecturer = new Lecturer();
+//        lecturer.setAccountId("65283bfc9bf46d65d5aa3f8f");
+//        lecturer = lecturerService.findByAccountId(lecturer.getAccountId());
+//        List<Course> courses = lecturerService.findListManageCourse(lecturer);
+//        model.addAttribute("courses", courses);
+//        return "lecturer/course/lecturer_courses";
+//    }
 
     @GetMapping("/lecturer/topic/detail/{topicId}")
     public String viewTopicDetail(@PathVariable String topicId, final Model model) {
@@ -213,13 +216,14 @@ public class LecturerController {
         model.addAttribute("documents", documents);
         return "lecturer/course/lecturer_topic-detail";
     }
-
-
-    @GetMapping("/search/{search}")
-    public ModelAndView findLecturer(@PathVariable String search) {
-        List<Account> lecturers = accountService.searchLecturer(search);
-        ModelAndView mv = new ModelAndView("search_list::search_list");
-        mv.addObject("lecturers", mv);
-        return mv;
+    @GetMapping({"/manage_course/list/{pageIndex}", "/my_library/{pageIndex}"})
+    public String viewCourseManaged(@PathVariable Integer pageIndex, final Model model) {
+        // get account authorized
+        Lecturer lecturer = getLoggedInLecturer();
+        //
+        List<String> lecturerCourses = lecturer.getLecturerCourses();
+        List<Course> courses = lecturerService.findListManageCourse(lecturer);
+        model.addAttribute("coursesManagement", courses);
+        return "lecturer/Library/lecturer_management-courses";
     }
 }

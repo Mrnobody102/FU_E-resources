@@ -73,5 +73,11 @@ public class LecturerServiceImpl implements LecturerService {
         return null;
     }
 
+    @Override
+    public List<Lecturer> findAll() {
+        List<Lecturer> lecturers = lecturerRepository.findAll();
+        return lecturers;
+    }
+
 
 }

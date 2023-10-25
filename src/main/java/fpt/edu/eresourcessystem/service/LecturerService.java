@@ -18,4 +18,6 @@ public interface LecturerService {
     List<Lecturer> findByListLecturerIds(List<String> ids);
 
     Lecturer findCurrentCourseLecturer(String courseId);
+
+    List<Lecturer> findAll();
 }
