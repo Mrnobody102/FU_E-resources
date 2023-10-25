@@ -28,76 +28,66 @@
                         <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
                     </div>
                     <div class="stu_courses-content main" id="main">
-                        <div class="header__search">
-                            <!-- Input  -->
-                            <div class="header__search-input-wrap">
-                                <input type="text" class="header__search-input"
-                                       placeholder="Search courses, documents, topics...">
-                                <!-- Header-search-history -->
-                                <div class="header__search-history">
-                                    <h3 class="header__search-history-heading">
-                                        Search history
-                                    </h3>
-                                    <ul class="header__search-history-list">
 
-                                        <li class="header__search-history-item">
-                                            <a href="">Software</a>
+                        <form th:action="@{/student/search_course/1}">
+                            <div class="header__search">
+                                <!-- Input  -->
+                                <div class="header__search-input-wrap">
+                                    <input type="text" class="header__search-input"
+                                           placeholder="Search courses, documents, topics...">
+                                    <!-- Header-search-history -->
+                                    <div class="header__search-history">
+                                        <h3 class="header__search-history-heading">
+                                            Search history
+                                        </h3>
+                                        <ul class="header__search-history-list">
+
+                                            <li class="header__search-history-item">
+                                                <a href="">Software</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- Select-find-scope -->
+                                <div class="header__search-select">
+                                    <span class="header__search-select-label">All results</span>
+                                    <i class="header__search-select-icon fas fa-angle-down"></i>
+                                    <ul class="header__search-option">
+                                        <li class="header__search-option-item"
+                                            th:classappend="header__search-option-item--active">
+                                            <span class="">All results</span>
+                                            <i class="fas fa-check"></i>
+                                        </li>
+                                        <li class="header__search-option-item" onclick="search()">
+                                            <span class="">By name</span>
+                                            <i class="fas fa-check"></i>
+                                        </li>
+                                        <li class="header__search-option-item" onclick="search()">
+                                            <span class="">By code</span>
+                                            <i class="fas fa-check"></i>
                                         </li>
                                     </ul>
                                 </div>
+                                <button class="header__search-btn">
+                                    <i class="header__search-btn-icon fas fa-search"></i>
+                                </button>
                             </div>
-                            <!-- Select-find-scope -->
-                            <div class="header__search-select">
-                                <span class="header__search-select-label">All results</span>
-                                <i class="header__search-select-icon fas fa-angle-down"></i>
-                                <ul class="header__search-option">
-                                    <li class="header__search-option-item header__search-option-item--active">
-                                        <span class="">All results</span>
-                                        <i class="fas fa-check"></i>
-                                    </li>
-                                    <li class="header__search-option-item">
-                                        <span class="">e-resources</span>
-                                        <i class="fas fa-check"></i>
-                                    </li>
-                                </ul>
-                            </div>
-                            <button class="header__search-btn">
-                                <i class="header__search-btn-icon fas fa-search"></i>
-                            </button>
-                        </div>
+                        </form>
+
 
                         <div class="stu__courses-list-view">
-                            <div class="list-course-content">
-<!--                                <div class="home-filter">-->
-<!--                                    <div class="home-filter__selection">-->
-<!--                                        <button class="home-filter__tag btn btn&#45;&#45;primary">-->
-<!--                                            Courses-->
-<!--                                        </button>-->
-<!--                                        <button class="home-filter__tag btn">Resources</button>-->
-<!--                                    </div>-->
-<!--                                    <div class="home-filter__selection">-->
-<!--                                        <span class="home-filter__label">Sort by</span>-->
-<!--                                        <div class="select">-->
-<!--                                            <span class="select-label">Date</span>-->
-<!--                                            <i class="select-input__icon fas fa-angle-down"></i>-->
-<!--                                            <ul class="select-list">-->
-<!--                                                <li class="select-item">-->
-<!--                                                    <a href="" class="select-link">Alphabet</a>-->
-<!--                                                    <a href="" class="select-link">Date</a>-->
-<!--                                                </li>-->
-<!--                                            </ul>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
+                            <div th:if="courses ne null" class="list-course-content">
                                 <div class="home-courses">
                                     <div class="home__course-content">
                                         <ul class="home__course-list">
                                             <li class="home__course-item">
                                                 <div class="home__course-wrapper" th:each="course : ${courses}">
-                                                    <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
+                                                    <h2 class="home__course-code" th:text="${course.courseCode}"
+                                                        href=""></h2>
                                                     <a class="home__course-name" th:text="${course.courseName}"
                                                        th:href="@{'/student/courses/' + ${course.courseId}}"></a>
-                                                    <p class="home__course-description" th:text="${course.description}"></p>
+                                                    <p class="home__course-description"
+                                                       th:text="${course.description}"></p>
                                                     <ul class="home__course-lecturer-list">
                                                         <li th:if="${course.managerId ne null}"
                                                             href="#" th:text="managerId">
@@ -119,22 +109,35 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <ul class="pagination home-courses__pagination-distance">
-                                        <li class="pagination-item">
-                                            <a href="" class="pagination-item__link">
-                                                <i class="pagination-item__icon fas fa-angle-left"></i>
-                                            </a>
-                                        </li>
-                                        <li class="pagination-item pagination-item--active">
-                                            <a href="" class="pagination-item__link">1</a>
-                                        </li>
+                                    <nav th:if="${totalPage} > 1" aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
+                                                <a class="page-link previous-page-course"
+                                                   style="cursor: pointer">
+                                                    &laquo;
+                                                </a>
+                                            </li>
 
-                                        <li class="pagination-item">
-                                            <a href="" class="pagination-item__link">
-                                                <i class="pagination-item__icon fas fa-angle-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                            <li th:each="pageIndex: ${pages}" class="page-item"
+                                                th:classappend=" (${currentPage == pageIndex}) ? 'active' : '' ">
+                                                <th:block th:if="${pageIndex == -1}">
+                                                    <span class="page-link">...</span>
+                                                </th:block>
+                                                <th:block th:if="${pageIndex != -1}">
+                                                    <a th:text="${pageIndex}" th:value="${pageIndex}"
+                                                       class="page-link page-course-number"
+                                                       style="cursor: pointer"
+                                                    ></a>
+                                                </th:block>
+                                            </li>
+                                            <li th:class="${currentPage == totalPage} ? 'page-item disabled' : 'page-item'">
+                                                <a class="page-link next-page-course"
+                                                   style="cursor: pointer">
+                                                    &raquo;
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                             <div class="stu_course-filter">

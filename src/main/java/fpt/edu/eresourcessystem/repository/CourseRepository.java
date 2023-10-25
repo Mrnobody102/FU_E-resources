@@ -27,4 +27,8 @@ public interface CourseRepository extends
     @Query("{$and: [{major: ?0}, {$or: [{code: {$regex: ?1}}, {name: {$regex: ?2}}, {description: {$regex: ?3}}]}]}")
     Page<Course> filterMajor(String major, String code, String name, String description, Pageable pageable);
 
+    Page<Course> findByCourseNameLikeOrCourseCodeLike(String courseName, String courseCode, Pageable pageable);
+    Page<Course> findByCourseName(String courseName, Pageable pageable);
+    Page<Course> findByCourseCode(String courseCode, Pageable pageable);
+
 }

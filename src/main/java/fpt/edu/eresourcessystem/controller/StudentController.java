@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
@@ -8,20 +9,23 @@ import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.service.CourseService;
 import fpt.edu.eresourcessystem.service.StudentService;
 import fpt.edu.eresourcessystem.service.TopicService;
+import fpt.edu.eresourcessystem.utils.CommonUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/student")
+@PropertySource("web-setting.properties")
 public class StudentController {
-
+    @Value("${page-size}")
+    private Integer pageSize;
     private final CourseService courseService;
 
     private final StudentService studentService;
@@ -128,5 +132,31 @@ public class StudentController {
 //        // auth
 //        Student student = getLoggedInStudent();
         return "student/course/student_document-detail";
+    }
+    @GetMapping({"/search_course/{pageIndex}"})
+    public String viewSearchCourse(@PathVariable Integer pageIndex,
+                                     @RequestParam(required = false, defaultValue = "") String search,
+                                     @RequestParam(required = false, defaultValue = "all") String filter,
+                                     final Model model) {
+//        // auth
+//        Student student = getLoggedInStudent();
+        Page<Course> page;
+        if (null == filter || "all".equals(filter)) {
+            page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, pageSize);
+        } else if("name".equals(filter)){
+            page = courseService.findByCourseName(search, pageIndex, pageSize);
+        } else{
+            page = courseService.findByCourseCode(search, pageIndex, pageSize);
+        }
+        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+        System.out.println(pages);
+        model.addAttribute("pages", pages);
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("courses", page.getContent());
+        model.addAttribute("search", search);
+        model.addAttribute("roles", AccountEnum.Role.values());
+        model.addAttribute("filter", filter);
+        model.addAttribute("currentPage", pageIndex);
+        return "student/course/student_courses";
     }
 }

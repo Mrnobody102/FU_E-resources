@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Topic;
 import org.springframework.data.domain.Page;
@@ -41,4 +42,9 @@ public interface CourseService {
 
 
     Page<Course> filterMajor(String major, String code, String name, String description, int pageIndex, int pageSize);
+
+    Page<Course> findByCourseNameOrCourseCode(String courseName, String courseCode, Integer pageIndex, Integer pageSize);
+
+    Page<Course> findByCourseName(String courseName, Integer pageIndex, Integer pageSize);
+    Page<Course> findByCourseCode(String courseCode, Integer pageIndex, Integer pageSize);
 }

@@ -184,4 +184,25 @@ public class CourseServiceImpl implements CourseService{
                 pageable);
         return page;
     }
+
+    @Override
+    public Page<Course> findByCourseNameOrCourseCode(String courseName, String courseCode, Integer pageIndex, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+        return courseRepository.findByCourseNameLikeOrCourseCodeLike(courseName, courseCode,
+                pageable);
+    }
+
+    @Override
+    public Page<Course> findByCourseName(String courseName, Integer pageIndex, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+        return courseRepository.findByCourseName(courseName,
+                pageable);
+    }
+
+    @Override
+    public Page<Course> findByCourseCode(String courseCode, Integer pageIndex, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+        return courseRepository.findByCourseCode(courseCode,
+                pageable);
+    }
 }
