@@ -216,14 +216,19 @@ public class LecturerController {
         model.addAttribute("documents", documents);
         return "lecturer/course/lecturer_topic-detail";
     }
-    @GetMapping({"/manage_course/list/{pageIndex}", "/my_library/{pageIndex}"})
-    public String viewCourseManaged(@PathVariable Integer pageIndex, final Model model) {
+    @GetMapping({"/manage_course/list/{pageIndex}", "/my_library"})
+    public String viewCourseManaged(@PathVariable(required = false) Integer pageIndex, final Model model) {
         // get account authorized
         Lecturer lecturer = getLoggedInLecturer();
-        //
-        List<String> lecturerCourses = lecturer.getLecturerCourses();
         List<Course> courses = lecturerService.findListManageCourse(lecturer);
         model.addAttribute("coursesManagement", courses);
+        List<Integer> pages = new ArrayList<>();
+        for (int i = 1; i < 11; i++) {
+            pages.add(i);
+        }
+        model.addAttribute("totalPage", 10);
+        model.addAttribute("pages", pages);
+        model.addAttribute("currentPage", pageIndex);
         return "lecturer/Library/lecturer_management-courses";
     }
 }

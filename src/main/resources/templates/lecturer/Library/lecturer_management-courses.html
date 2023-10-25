@@ -28,7 +28,7 @@
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar}"></div>
                     </div>
 
-                    <div class="stu_courses-content main" id="main">
+                    <div class="stu_courses-content main" id="main-lecturer">
                         <div class="header__search">
                             <!-- Input  -->
                             <div class="header__search-input-wrap">
@@ -76,7 +76,7 @@
                                                 <div class="home__course-wrapper" th:each="course : ${coursesManagement}">
                                                     <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
                                                     <a class="home__course-name" th:text="${course.courseName}"
-                                                       th:href="@{'/lecturer/courses/' + ${course.courseId}}"></a>
+                                                       th:href="@{'/lecturer/' + ${course.courseId}}"></a>
                                                     <p class="home__course-description" th:text="${course.description}"></p>
                                                     <ul class="home__course-lecturer-list">
                                                         <li th:if="${course.managerId ne null}"
@@ -99,22 +99,35 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <ul class="pagination home-courses__pagination-distance">
-                                        <li class="pagination-item">
-                                            <a href="" class="pagination-item__link">
-                                                <i class="pagination-item__icon fas fa-angle-left"></i>
-                                            </a>
-                                        </li>
-                                        <li class="pagination-item pagination-item--active">
-                                            <a href="" class="pagination-item__link">1</a>
-                                        </li>
+                                    <nav th:if="${totalPage} > 1" aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
+                                                <a class="page-link previous-page-course"
+                                                   style="cursor: pointer">
+                                                    &laquo;
+                                                </a>
+                                            </li>
 
-                                        <li class="pagination-item">
-                                            <a href="" class="pagination-item__link">
-                                                <i class="pagination-item__icon fas fa-angle-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                            <li th:each="pageIndex: ${pages}" class="page-item"
+                                                th:classappend=" (${currentPage == pageIndex}) ? 'active' : '' ">
+                                                <th:block th:if="${pageIndex == -1}">
+                                                    <span class="page-link">...</span>
+                                                </th:block>
+                                                <th:block th:if="${pageIndex != -1}">
+                                                    <a th:text="${pageIndex}" th:value="${pageIndex}"
+                                                       class="page-link page-course-number"
+                                                       style="cursor: pointer"
+                                                    ></a>
+                                                </th:block>
+                                            </li>
+                                            <li th:class="${currentPage == totalPage} ? 'page-item disabled' : 'page-item'">
+                                                <a class="page-link next-page-course"
+                                                   style="cursor: pointer">
+                                                    &raquo;
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>

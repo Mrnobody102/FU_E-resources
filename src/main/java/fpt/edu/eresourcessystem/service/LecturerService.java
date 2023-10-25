@@ -11,6 +11,9 @@ public interface LecturerService {
     List<Lecturer> findByCourseId(String courseId);
     Lecturer addLecturer(Lecturer lecturer);
 
+    Lecturer updateLecturer(Lecturer lecturer);
+
+
     List<Course> findListManageCourse(Lecturer lecturer);
 
     Lecturer findByAccountId(String accountId);

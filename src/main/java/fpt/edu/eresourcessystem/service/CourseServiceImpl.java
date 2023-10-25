@@ -4,9 +4,13 @@ import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +20,10 @@ import java.util.Optional;
 @Service("courseService")
 public class CourseServiceImpl implements CourseService{
     private final CourseRepository courseRepository;
+
+    @Autowired
+    MongoTemplate mongoTemplate;
+
 
     public CourseServiceImpl(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
@@ -156,7 +164,8 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public List<Course> findByListId(List<String> courseIds) {
-        List<Course> courses = courseRepository.findByListId(courseIds);
+        Query query = new Query(Criteria.where("courseId").in(courseIds));
+        List<Course> courses = mongoTemplate.find(query, Course.class);
         return courses;
     }
 
