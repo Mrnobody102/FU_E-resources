@@ -459,40 +459,30 @@ public class LibrarianController {
         }
     }
 
-//    @PostMapping("/documents/update")
-//    public String updateDocument(@ModelAttribute Document document, final Model model) {
-//        Document checkExist = documentService.findByDocumentId(document.getDocumentId());
-//        if (null == checkExist) {
-//            model.addAttribute("errorMessage", "document not exist.");
-//            return "exception/404";
-//        } else {
-//            Document checkCodeDuplicate = documentService.findByDocumentCode(document.getDocumentCode());
-//            if (checkCodeDuplicate != null &&
-//                    !checkExist.getDocumentCode().toLowerCase().equals(document.getDocumentCode())) {
-////                return "redirect:/librarian/documents/update?error";
-//            }
-//            documentService.updateDocument(document);
-//            model.addAttribute("document", document);
-//            List<Account> lecturers = accountService.findAllLecturer();
-//            model.addAttribute("lecturers", lecturers);
-//            model.addAttribute("success", "");
-//            return "librarian/document/librarian_update-document";
-//        }
-//    }
-//
-//    @GetMapping("/documents/{documentId}/delete")
-//    public String deleteDocument(@PathVariable String documentId) {
-//        Document checkExist = documentService.findByDocumentId(documentId);
-//        if (null != checkExist) {
-//            List<String> topics = checkExist.getTopics();
-//            if (null != topics) {
-//                for (String topicId : topics) {
-//                    topicService.delete(topicId);
-//                }
-//            }
-//            documentService.delete(checkExist);
-//            return "redirect:/librarian/documents/list?success";
-//        }
-//        return "redirect:/librarian/documents/list?error";
-//    }
+    @GetMapping({"/lectures"})
+    public String showLectures() {
+        return "librarian/lecture/librarian_lectures";
+    }
+
+    @GetMapping("/lectures/list/{pageIndex}")
+    public String listLecturersByPage(
+            @PathVariable Integer pageIndex,
+            @RequestParam(required = false, defaultValue = "") String search,
+            Model model
+    ) {
+        Page<Lecturer> page;
+        page = lecturerService.findLecturerByLecturerIdLike(search, pageIndex, pageSize);
+        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+
+        model.addAttribute("pages", pages);
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("lecturers", page.getContent());
+        model.addAttribute("search", search);
+        model.addAttribute("currentPage", pageIndex);
+
+        return "librarian/lecture/librarian_lectures"; // Adjust the view name as needed
+    }
+
+
+
 }

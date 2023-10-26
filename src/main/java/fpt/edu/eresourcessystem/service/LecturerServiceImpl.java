@@ -5,6 +5,9 @@ import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.LecturerCourse;
 import fpt.edu.eresourcessystem.repository.LecturerCourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +51,7 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public List<Course> findListManageCourse(Lecturer lecturer) {
-        Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getLecturerId());
+        Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getAccountId());
         if (checkExist.isPresent()) {
             if (null == checkExist.get().getLecturerCourses()) {
                 return null;
@@ -82,11 +85,15 @@ public class LecturerServiceImpl implements LecturerService {
         return null;
     }
 
-    @Override
-    public List<Lecturer> findAll() {
-        List<Lecturer> lecturers = lecturerRepository.findAll();
-        return lecturers;
+    public List<Lecturer> findAllLecture(){
+        return  lecturerRepository.findAll();
     }
 
+
+    public Page<Lecturer> findLecturerByLecturerIdLike(String lectureId, int pageIndex, int pageSize){
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+        Page<Lecturer> page = lecturerRepository.findLecturerByLecturerIdLike(lectureId, pageable);
+        return page;
+    }
 
 }
