@@ -1,11 +1,15 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 @Data
 @NoArgsConstructor
@@ -13,11 +17,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("feedbacks")
 public class Feedback {
     @Id
-    private String feedbackId;
-    private String studentId;
+    private String id;
+    @NotNull
+    @DocumentReference(lazy = true)
+    private Student student;
+
     private String feedbackEmotion;
+    @NotEmpty(message = "feedback.validation.content.required")
     private String feedbackContent;
 
+    // Delete flag
+    private CommonEnum.DeleteFlg deleteFlg;
     //Audit Log
     @CreatedBy
     private String createdBy;
@@ -27,4 +37,6 @@ public class Feedback {
     private String lastModifiedBy;
     @LastModifiedDate
     private String lastModifiedDate;
+
+    // Constructor DTO
 }

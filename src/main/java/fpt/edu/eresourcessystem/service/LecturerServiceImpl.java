@@ -1,10 +1,13 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.LecturerCourse;
+import fpt.edu.eresourcessystem.repository.CourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerCourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +20,9 @@ import java.util.Optional;
 public class LecturerServiceImpl implements LecturerService {
     private final LecturerRepository lecturerRepository;
     private final CourseService courseService;
-
     private final LecturerCourseRepository lecturerCourseRepository;
 
+    @Autowired
     public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseService courseService, LecturerCourseRepository lecturerCourseRepository) {
         this.lecturerRepository = lecturerRepository;
         this.courseService = courseService;
@@ -27,31 +30,24 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public List<Lecturer> findByCourseId(String courseId) {
-        return lecturerRepository.findByLecturerId(courseId);
+    public Lecturer findByCourseId(String courseId) {
+        return lecturerRepository.findByCourseId(courseId);
     }
 
     @Override
     public Lecturer addLecturer(Lecturer lecturer) {
-        Lecturer checkExist = lecturerRepository.findByAccountId(lecturer.getAccountId());
-        if (null == checkExist) {
-            return lecturerRepository.save(lecturer);
-        }
-        return null;
-    }
-
-    @Override
-    public Lecturer updateLecturer(Lecturer lecturer) {
-        Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getLecturerId());
-        if (!checkExist.isPresent()) {
-            return null;
-        }
+        lecturer.setDeleteFlg(CommonEnum.DeleteFlg.PRESERVED);
         return lecturerRepository.save(lecturer);
     }
 
     @Override
+    public List<Lecturer> findAll() {
+        return lecturerRepository.findAll();
+    }
+
+    @Override
     public List<Course> findListManageCourse(Lecturer lecturer) {
-        Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getAccountId());
+        Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getAccount().getId());
         if (checkExist.isPresent()) {
             if (null == checkExist.get().getLecturerCourses()) {
                 return null;
@@ -68,31 +64,31 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public List<Lecturer> findByListLecturerIds(List<String> ids) {
-        List<Lecturer> lecturers = lecturerRepository.findByLecturerIds(ids);
+        List<Lecturer> lecturers = lecturerRepository.findByIds(ids);
         return lecturers;
     }
 
     @Override
     public Lecturer findCurrentCourseLecturer(String courseId) {
         LecturerCourse lecturerCourse = lecturerCourseRepository.findCurrentCourseLecturer(courseId);
-        if(null!= lecturerCourse){
-            if(null!=lecturerCourse.getLecturerCourseId().getLecturerId()){
+        if (null != lecturerCourse) {
+            if (null != lecturerCourse.getId().getLecturerId()) {
                 Optional<Lecturer> lecturer = lecturerRepository.findById(
-                        lecturerCourse.getLecturerCourseId().getLecturerId());
+                        lecturerCourse.getId().getLecturerId());
                 return lecturer.orElse(null);
             }
         }
         return null;
     }
 
-    public List<Lecturer> findAllLecture(){
-        return  lecturerRepository.findAll();
+    public List<Lecturer> findAllLecture() {
+        return lecturerRepository.findAll();
     }
 
 
-    public Page<Lecturer> findLecturerByLecturerIdLike(String lectureId, int pageIndex, int pageSize){
+    public Page<Lecturer> findLecturerByLecturerIdLike(String lectureId, int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
-        Page<Lecturer> page = lecturerRepository.findLecturerByLecturerIdLike(lectureId, pageable);
+        Page<Lecturer> page = lecturerRepository.findLecturerByIdLike(lectureId, pageable);
         return page;
     }
 

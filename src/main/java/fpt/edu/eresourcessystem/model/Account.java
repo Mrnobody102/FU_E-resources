@@ -1,8 +1,10 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import fpt.edu.eresourcessystem.dto.AccountDTO;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
-import jakarta.validation.constraints.NotNull;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +23,7 @@ import java.time.LocalDate;
 @ToString
 public class Account {
     @Id
-    private String accountId;
+    private String id;
 
     @Indexed(unique = true)
     private String username;
@@ -29,6 +31,7 @@ public class Account {
     private String password;
 
     @Indexed(unique = true)
+    @NotEmpty(message = "account.validation.email.required")
     private String email;
 
     private String name;
@@ -42,7 +45,8 @@ public class Account {
 
     private AccountEnum.Status status;
 
-//    private String deleteFlg;
+    // Delete flag
+    private CommonEnum.DeleteFlg deleteFlg;
 
     //Audit Log
     @CreatedBy
@@ -53,4 +57,19 @@ public class Account {
     private String lastModifiedBy;
     @LastModifiedDate
     private String lastModifiedDate;
+
+    // Constructor DTO
+    public Account(AccountDTO accountDTO) {
+        this.id = accountDTO.getId();
+        this.username = accountDTO.getUsername();
+        this.password = accountDTO.getPassword();
+        this.email = accountDTO.getEmail();
+        this.name = accountDTO.getName();
+        this.dateOfBirth = accountDTO.getDateOfBirth();
+        this.gender = accountDTO.getGender();
+        this.campus = accountDTO.getCampus();
+        this.role = accountDTO.getRole();
+        this.status = AccountEnum.Status.ACTIVE;
+        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+    }
 }

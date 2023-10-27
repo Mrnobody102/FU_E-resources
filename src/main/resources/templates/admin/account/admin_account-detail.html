@@ -88,8 +88,8 @@
                     <tr>
                       <td></td>
                       <td>
-                        <a th:href="@{'/admin/accounts/'+${account.accountId} + '/update'}">Edit</a>
-                        <a class="delete-account" th:id="${account.accountId}">Delete</a>
+                        <a th:href="@{'/admin/accounts/'+${account.getId} + '/update'}">Edit</a>
+                        <a class="delete-account" th:id="${account.getId}">Delete</a>
                       </td>
                     </tr>
                   </table>

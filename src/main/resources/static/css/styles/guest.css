@@ -1,0 +1,337 @@
+* {box-sizing: border-box}
+body {font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin:0}
+.mySlides {display: none}
+img {vertical-align: middle;}
+
+/* Slideshow container */
+/*.slideshow-container {*/
+/*    max-width: 1000px;*/
+/*    position: relative;*/
+/*    margin: auto;*/
+/*    color: #1192ff;*/
+/*    font-weight: bold;*/
+/*}*/
+
+.slideshow-container {
+    width: 100%;
+    height: 85vh; /* Sử dụng chiều cao của cửa sổ trình duyệt */
+    overflow: hidden; /* Loại bỏ thanh cuộn nếu nội dung tràn ra khỏi kích thước container */
+    color: white;
+    font-weight: bold;
+}
+.mySlides {
+    width: 100%;
+    height: 100%; /* Điều này sẽ làm cho mỗi slide đầy đủ chiều rộng và chiều cao của màn hình */
+}
+
+.mySlides img {
+    width: 100%;
+    height: 100%; /* Điều này đảm bảo rằng ảnh bên trong mỗi slide cũng đầy đủ chiều rộng và chiều cao của màn hình */
+    object-fit: cover; /* Đảm bảo ảnh bao phủ toàn bộ kích thước khung hình */
+}
+
+/* Next & previous buttons */
+/*.prev, .next {*/
+/*    cursor: pointer;*/
+/*    position: absolute;*/
+/*    top: 50%;*/
+/*    width: auto;*/
+/*    padding: 16px;*/
+/*    margin-top: -22px;*/
+/*    color: white;*/
+/*    font-weight: bold;*/
+/*    font-size: 18px;*/
+/*    transition: 0.6s ease;*/
+/*    border-radius: 0 3px 3px 0;*/
+/*    user-select: none;*/
+/*}*/
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 52%;
+    width: 80px; /* Điều chỉnh kích thước lớn hơn gấp đôi */
+    height: 80px; /* Điều chỉnh kích thước lớn hơn gấp đôi */
+    line-height: 80px; /* Để căn giữa nội dung của nút */
+    text-align: center; /* Để căn giữa nội dung của nút */
+    margin-top: -20px; /* Để căn giữa nút theo chiều dọc */
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 50%; /* Làm tròn nút */
+    background-color: rgba(0, 0, 0, 0); /* Màu nền của nút */
+    user-select: none;
+}
+/* Position the "next button" to the right */
+/*.next {*/
+/*    right: 0;*/
+/*    border-radius: 3px 0 0 3px;*/
+/*}*/
+.next {
+    right: 0;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0);
+}
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+    /*color: #f2f2f2;*/
+    font-size: 70px;
+    padding: 50px 12px;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Number text (1/3 etc) */
+/*.numbertext {*/
+/*    color: #f2f2f2;*/
+/*    font-size: 12px;*/
+/*    padding: 8px 12px;*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*}*/
+
+/* The dots/bullets/indicators */
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+    background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+    .prev, .next,.text {font-size: 11px}
+}
+
+.lading-intro {
+    position: relative;
+    background-image: url(/static/images/sample_guest/background_library.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 600px;
+    border-radius: 12px;
+    padding: 32px;
+}
+.flex {
+    display: flex;
+}
+.justify-between {
+    justify-content: space-between;
+}
+/*.intro-title {*/
+/*    font-weight: bold;*/
+/*    font-size: 30px;*/
+/*    line-height: 50px;*/
+/*    color: #1192ff;*/
+/*    padding-left: 100px;*/
+/*}*/
+/*.intro-title2 {*/
+/*    font-weight: bold;*/
+/*    font-size: 25px;*/
+/*    line-height: 30px;*/
+/*    color: #1192ff;*/
+/*    padding-left: 100px;*/
+/*}*/
+
+/*.image-container {*/
+/*    position: relative;*/
+/*}*/
+.image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Điều này làm cho container căn giữa theo chiều dọc và ngang trên màn hình */
+}
+.image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 2%;
+}
+.text-overlay {
+    position: absolute;
+    top: 100px; /* Khoảng cách từ phía trên của container */
+    left: 400px; /* Khoảng cách từ phía trái của container */
+    /*top: 5%;*/
+    /*left: 13%;*/
+    /*padding: 20px; !* Để tạo khoảng cách giữa dòng chữ và biên của ảnh *!*/
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 50px;
+    color: white;
+    border-radius: 10px; /* Bo tròn góc cho nội dung */
+}
+
+.p-inside-img {
+    margin: 0; /* Để loại bỏ margin mặc định */
+}
+
+.information {
+    display: flex;
+    width: 100%;
+}
+
+.information-content {
+    flex: 1;
+    overflow: hidden; /* Giới hạn nội dung chỉ hiển thị trong phần kích thước của information */
+    padding-left: 330px;
+    font-family: Arial, sans-serif; /* Chọn font chữ */
+    font-size: 16px; /* Kích thước chữ */
+    line-height: 1.6; /* Khoảng cách giữa dòng */
+    color: #333; /* Màu chữ */
+}
+
+.information-img {
+    width: 50%; /* Chiếm 50% width của màn hình */
+}
+/* Đánh dấu các đoạn văn bản đặc biệt nếu cần */
+.information-content p strong {
+    font-weight: bold;
+    color: #E74C3C; /* Màu đỏ đậm cho văn bản đặc biệt */
+}
+
+/* Tạo hiệu ứng hover cho liên kết */
+.information-content a {
+    text-decoration: none;
+    color: #3498DB; /* Màu xanh cho liên kết */
+    transition: color 0.3s; /* Hiệu ứng màu khi hover */
+}
+
+.information-content p {
+    font-weight: bold;
+}
+
+/*contact us*/
+.contact-us {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    background-image: url(/static/images/sample_guest/background_contact.jpg);
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    max-width: 1100px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    /* Điều chỉnh độ cong của container */
+    text-align: center;
+    height: 400px;
+    /* Điều chỉnh chiều cao của container tại đây */
+    border: 2px solid black;
+    /* Đặt viền 2px màu cam */
+}
+
+.contact {
+    color: black;
+    font-size: 50px;
+    /* Điều chỉnh kích thước chữ của tiêu đề */
+    margin: 40px 0;
+    /* Tạo khoảng cách trên và dưới tiêu đề */
+}
+
+.address_infor {
+    color: rgb(146, 51, 16);
+    font-size: 20px;
+    /* Điều chỉnh kích thước chữ của đoạn văn bản */
+}
+
+.contact-address {
+    margin-top: 20px;
+}
+
+.contact-address p {
+    margin: 10px 0;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.contact-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+/*faq*/
+.help-faq {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+}
+
+
+h1 {
+    font-size: 36px;
+}
+
+.faq .question {
+    background-color: #1192ff;
+    margin: 20px 150px;
+    padding: 20px;
+    border-radius: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.question {
+    font-size: 24px;
+    background-color: #48a1ee;
+    /* Đổi màu nền thành cam */
+    color: #fff;
+    /* Đổi màu chữ thành trắng */
+    cursor: pointer;
+    padding: 10px;
+    /* Thêm khoảng cách giữa nội dung và viền */
+    border-radius: 5px;
+    /* Bo góc */
+    margin: 0;
+    /* Xóa margin mặc định */
+}
+
+.answer {
+    margin: 20px 150px;
+    font-size: 16px;
+    background-color: white;
+    color: #555;
+    display: none;
+    border: 2px solid #00f;
+    /* Thêm đường viền màu xanh dương */
+    border-radius: 20px;
+    /* Thêm đường viền cong */
+    padding: 20px;
+}

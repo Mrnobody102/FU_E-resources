@@ -39,7 +39,7 @@
                             <div class="list-view-block course-topic-list">
                                 <a href="">Material</a>
                                 <th:block th:each="topic : ${topics}">
-                                    <a th:href="@{'/student/topic/' + ${topic.topicId}}" th:text="${topic.topicTitle}"></a>
+                                    <a th:href="@{'/student/topic/' + ${topic.getId}}" th:text="${topic.topicTitle}"></a>
                                 </th:block>
                                 <a href="">CLO2</a>
                             </div>
@@ -49,7 +49,7 @@
                                 <div class="course-details-name">
                                 <p class="course-info-name">
                                     <i class="fa-regular fa-folder"></i>
-                                    <a class="course-info-name" th:href="@{'/student/courses/' + ${course.courseId}}"
+                                    <a class="course-info-name" th:href="@{'/student/courses/' + ${course.getId}}"
                                                th:text="|${course.courseCode} - ${course.courseName}|"></a> </p>
                                 </div>
                                 <div class="course-details-lecturer">
@@ -58,10 +58,10 @@
                                 </div>
                                 <div class="stu_save-course-link">
                                     <p><a class="unsaved-course" th:if="${saved} == false"
-                                          th:href="@{'/student/courses/'+ ${course.courseId} + '/save_course'}">Save Course</a>
+                                          th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">Save Course</a>
                                     </p>
                                     <p><a class="saved-course" th:if="${saved} == true"
-                                          th:href="@{'/student/courses/'+ ${course.courseId} + '/unsaved_course'}">Unsaved
+                                          th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">Unsaved
                                         Course</a></p>
                                 </div>
                             </div>
@@ -91,8 +91,8 @@
                                         </tr>
                                         <tr>
                                             <th>Lecturers</th>
-                                            <td th:if="course.managerId ne null">
-                                                <a href=""><span th:text="${course.managerId}"></span> </a>
+                                            <td th:if="course.lecturer ne null">
+                                                <a href=""><span th:text="${course.lecturer}"></span> </a>
                                             </td>
                                         </tr>
                                     </table>

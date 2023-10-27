@@ -96,12 +96,12 @@
                                                     <h2 class="home__course-code" th:text="${course.courseCode}"
                                                         href=""></h2>
                                                     <a class="home__course-name" th:text="${course.courseName}"
-                                                       th:href="@{'/student/courses/' + ${course.courseId}}"></a>
+                                                       th:href="@{'/student/courses/' + ${course.getId}}"></a>
                                                     <p class="home__course-description"
                                                        th:text="${course.description}"></p>
                                                     <ul class="home__course-lecturer-list">
-                                                        <li th:if="${course.managerId ne null}"
-                                                            href="#" th:text="managerId">
+                                                        <li th:if="${course.lecturer ne null}"
+                                                            href="#" th:text="lecturer">
                                                         </li>
                                                         <li class="home__course-lecturer-item">
                                                             <a class="home__course-lecturer-link"
@@ -158,21 +158,6 @@
                                             <p>Filter</p>
                                             <a href="" class="home__course-filter-clear">Clear all</a>
                                         </div>
-                                        <!--                            <div class="home__course-filter-type">-->
-                                        <!--                                <div class="home__course-filter-type-item">-->
-                                        <!--                                    <div class="home__course-filter-type-btn" onclick="toggleDropdown()">-->
-                                        <!--                                        <span>Major</span>-->
-                                        <!--                                        <i class="fa fa-caret-down"></i>-->
-                                        <!--                                    </div>-->
-                                        <!--                                    <div class="home__course-filter-dropdown dropdown-content">-->
-                                        <!--                                        <a th:each="major : ${majors}"-->
-                                        <!--                                           href=""-->
-                                        <!--                                           th:text="${major.getDisplayValue()}"-->
-                                        <!--                                           th:value="${major}">-->
-                                        <!--                                        </a>-->
-                                        <!--                                    </div>-->
-                                        <!--                                </div>-->
-                                        <!--                            </div>-->
                                     </div>
                                 </div>
                             </div>

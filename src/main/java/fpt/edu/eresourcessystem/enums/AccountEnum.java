@@ -6,8 +6,8 @@ import java.util.List;
 public class AccountEnum {
 
     public enum Status {
-        Active("Active"),
-        Inactive("Inactive");
+        ACTIVE("Active"),
+        INACTIVE("Inactive");
 
         private final String displayValue;
 

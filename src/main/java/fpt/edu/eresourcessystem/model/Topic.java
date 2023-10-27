@@ -1,11 +1,15 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import fpt.edu.eresourcessystem.dto.TopicDTO;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
 
@@ -15,13 +19,20 @@ import java.util.List;
 @AllArgsConstructor
 public class Topic {
     @Id
-    private String topicId;
-    private String courseId;
+    private String id;
+    @NotNull
+    @DocumentReference(lazy = true)
+    private Course course;
+    @DocumentReference(lazy = true)
+    private List<ResourceType> resourceTypes; // NEW
 
     private String topicTitle;
     private String topicDescription;
-    private List<String> documents;
+    @DocumentReference(lazy = true)
+    private List<Document> documents;
 
+    // Delete flag
+    private CommonEnum.DeleteFlg deleteFlg;
     //Audit Log
     @CreatedBy
     private String createdBy;
@@ -31,4 +42,12 @@ public class Topic {
     private String lastModifiedBy;
     @LastModifiedDate
     private String lastModifiedDate;
+
+    // Constructor DTO
+    public Topic(TopicDTO topicDTO) {
+        this.id = topicDTO.getId();
+        this.course = topicDTO.getCourse();
+        this.topicTitle = topicDTO.getTopicTitle();
+        this.topicDescription = topicDTO.getTopicDescription();
+    }
 }

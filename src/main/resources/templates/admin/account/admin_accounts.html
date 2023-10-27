@@ -93,7 +93,7 @@
                                 <tr>
                                     <td th:text="${iterStart.index +1}"></td>
                                     <td th:text="${account.name}"></td>
-                                    <td><a th:href="@{'/admin/accounts/' + ${account.accountId}}"
+                                    <td><a th:href="@{'/admin/accounts/' + ${account.getId}}"
                                            th:text="${account.email}"></a></td>
                                     <td th:text="${account.role}"></td>
                                     <td th:text="${account.campus}"></td>

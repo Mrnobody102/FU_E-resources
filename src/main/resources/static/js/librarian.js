@@ -58,28 +58,25 @@ function addIndexToTable(){
     $(".page-course-number").click(function () {
         const search = $("#search-text").val();
         const pageIndex = $(this).html();
-        const major = $("#major").val();
 
-        window.location = "/librarian/courses/list/" + pageIndex + "?search=" + search + "&major=" + major;
+        window.location = "/librarian/courses/list/" + pageIndex + "?search=" + search;
 
     });
 
     $(".previous-page-course").click(function () {
         const search = $("#search-text").val();
-        const major = $("#major").val();
         const pageIndex = $(".active .page-course-number").text();
         const currentPage = parseInt(pageIndex);
         if (currentPage > 1) {
-            window.location.href = "/librarian/courses/list/" + (currentPage - 1) + "?search=" + search + "&major=" + major;
+            window.location.href = "/librarian/courses/list/" + (currentPage - 1) + "?search=" + search;
         }
     });
 
     $(".next-page-course").click(function () {
         const search = $("#search-text").val();
-        const major = $("#major").val();
         const pageIndex = $(".active .page-course-number").text();
         const currentPage = parseInt(pageIndex);
-        window.location.href = "/librarian/courses/list/" + (currentPage + 1) + "?search=" + search + "&major=" + major;
+        window.location.href = "/librarian/courses/list/" + (currentPage + 1) + "?search=" + search;
     });
 
     // Function to handle deletion with Swal alert

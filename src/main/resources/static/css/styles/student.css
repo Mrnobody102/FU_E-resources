@@ -35,21 +35,15 @@
 
 /*=============== SIDEBAR ===============*/
 .sidebar {
-    position: fixed;
     width: 25rem;
-    min-height:auto;
+    min-height:80vh;
+    padding: 0 0 0 16px;
     background-color: white;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     z-index: var(--z-fixed);
     transition: left .4s;
     border-right: 2px solid var(--second-back-ground);
-    padding-left: 2rem;
-}
-
-.main{
-    margin-top: 3rem;
-    margin-left: 23rem;
 }
 
 .sidebar__container {
@@ -167,7 +161,7 @@
 
 /* Show sidebar */
 .show-sidebar {
-    /*left: 2rem;*/
+    left: 0;
 }
 
 /* Active link */
@@ -209,13 +203,13 @@
     }
 
     .sidebar {
-        /*left: 0;*/
-        /*top: calc(var(--header-height) + 1.5rem);*/
+        left: 0;
+        top: calc(var(--header-height) + 1.5rem);
         width: 25rem;
         transition: width .4s;
     }
     .sidebar__container {
-        padding-bottom: 4rem;
+        /*padding-bottom: 4rem;*/
         overflow: hidden;
     }
     .sidebar__logo {
@@ -283,7 +277,7 @@
     }
 
     .show-sidebar .sidebar__title::after {
-        opacity: 0;
+        opacity: 1;
     }
 
     .show-sidebar .sidebar__link:hover .sidebar__link-floating {
@@ -302,8 +296,6 @@
     /* Add padding main */
     .main-pd {
         width: calc(100% - 7rem);
-        margin-left: 5rem;
-        transition: opacity .5s;
     }
 }
 .stu__courses-list-view{
@@ -314,6 +306,7 @@
 }
 .stu_course-filter{
     width: 15%;
+    margin-top: 2rem;
 }
 .stu_course-content{
     display: flex;

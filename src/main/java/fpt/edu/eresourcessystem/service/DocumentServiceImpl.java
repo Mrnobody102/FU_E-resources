@@ -74,14 +74,14 @@ public class DocumentServiceImpl implements DocumentService {
     public Document addDocument(Document document, String id) throws IOException {
         //search file
         GridFSFile file = template.findOne( new Query(Criteria.where("_id").is(id)) );
-        if (null == document.getDocumentId()) {
+        if (null == document.getId()) {
             document.setContent( IOUtils.toByteArray(operations.getResource(file).getInputStream()) );
 
             System.out.println(operations.getResource(file).getFilename());
             Document result = documentRepository.save(document);
             return result;
         } else {
-            Optional<Document> checkExist = documentRepository.findById(document.getDocumentId());
+            Optional<Document> checkExist = documentRepository.findById(document.getId());
             if (!checkExist.isPresent()) {
                 document.setContent( IOUtils.toByteArray(operations.getResource(file).getInputStream()) );
                 Document result = documentRepository.save(document);
@@ -93,7 +93,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public Document updateDocument(Document document) throws IOException {
-        Optional<Document> checkExist = documentRepository.findById(document.getDocumentId());
+        Optional<Document> checkExist = documentRepository.findById(document.getId());
         if (checkExist.isPresent()) {
             Document result = documentRepository.save(document);
             return result;
@@ -109,11 +109,5 @@ public class DocumentServiceImpl implements DocumentService {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public List<Document> findDocumentsByTopicId(String topicId) {
-        List<Document> documents = documentRepository.findDocumentsByTopicId(topicId);
-        return documents;
     }
 }

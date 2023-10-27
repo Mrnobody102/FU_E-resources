@@ -2,6 +2,7 @@ package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
+import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.Topic;
 import org.springframework.data.domain.Page;
 
@@ -38,13 +39,12 @@ public interface CourseService {
     List<Course> findByListId(List<String> courseIds);
 
     Page<Course> findByCodeOrNameOrDescription(String code, String name, String description, int pageIndex, int pageSize);
-
-
-
-    Page<Course> filterMajor(String major, String code, String name, String description, int pageIndex, int pageSize);
+    List<Course> findByCodeOrName(String code, String name);
 
     Page<Course> findByCourseNameOrCourseCode(String courseName, String courseCode, Integer pageIndex, Integer pageSize);
 
     Page<Course> findByCourseNameLike(String courseName, Integer pageIndex, Integer pageSize);
     Page<Course> findByCourseCodeLike(String courseCode, Integer pageIndex, Integer pageSize);
+
+    Course updateLectureId(String courseId, Lecturer newLecture);
 }

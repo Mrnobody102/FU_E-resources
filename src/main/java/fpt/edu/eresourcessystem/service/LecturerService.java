@@ -9,11 +9,9 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface LecturerService {
-    List<Lecturer> findByCourseId(String courseId);
+    Lecturer findByCourseId(String courseId);
     Lecturer addLecturer(Lecturer lecturer);
-
-    Lecturer updateLecturer(Lecturer lecturer);
-
+    List<Lecturer> findAll();
 
     List<Course> findListManageCourse(Lecturer lecturer);
 
@@ -25,7 +23,4 @@ public interface LecturerService {
 
     Page<Lecturer> findLecturerByLecturerIdLike(String lectureId, int pageIndex, int pageSize);
 
-
-
-    List<Lecturer> findAll();
 }

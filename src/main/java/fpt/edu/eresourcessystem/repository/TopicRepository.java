@@ -13,6 +13,6 @@ public interface TopicRepository extends MongoRepository<Topic,String> {
     @Override
     List<Topic> findAll();
 
-    Optional<Topic> findById(String topicId);
+    Optional<Topic> findById(String id);
 
 }

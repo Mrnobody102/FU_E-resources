@@ -1,7 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.enums.AccountEnum;
-import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Student;
@@ -58,6 +57,12 @@ public class StudentController {
         COURSE
      */
 
+    /**
+     * Display 5 recent course
+     * @param account
+     * @param model
+     * @return recent courses
+     */
     @GetMapping("/courses")
     public String getStudentCourse(@ModelAttribute Account account, final Model model) {
 //        List<Course> courses = courseService.findAll();
@@ -74,7 +79,7 @@ public class StudentController {
         List<Topic> topics = topicService.findByCourseId(courseId);
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
-        if (studentService.checkCourseSaved(student.getStudentId(), courseId)) {
+        if (studentService.checkCourseSaved(student.getId(), courseId)) {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);
         return "student/course/student_course-detail";
@@ -86,7 +91,7 @@ public class StudentController {
         // get account authorized
         Student student = getLoggedInStudent();
         if (null != courseService.findByCourseId(courseId)) {
-            studentService.saveACourse(student.getStudentId(), courseId);
+            studentService.saveACourse(student.getId(), courseId);
         }
         return "redirect:/student/courses/" + courseId + "?success";
     }
@@ -97,13 +102,13 @@ public class StudentController {
         Student student = getLoggedInStudent();
 
         if (null != courseService.findByCourseId(courseId)) {
-            studentService.unsavedACourse(student.getStudentId(), courseId);
+            studentService.unsavedACourse(student.getId(), courseId);
         }
         return "redirect:/student/courses/" + courseId + "?success";
     }
 
     /*
-        STUDENT PERSONAL LIBRARY
+        STUDENT - MY LIBRARY
      */
 
     @GetMapping({"/my_library/saved_courses", "/my_library"})
@@ -152,6 +157,7 @@ public class StudentController {
 //        System.out.println(pages);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
+        System.out.println(page.getTotalPages());
         model.addAttribute("courses", page.getContent());
         model.addAttribute("search", search);
         model.addAttribute("roles", AccountEnum.Role.values());

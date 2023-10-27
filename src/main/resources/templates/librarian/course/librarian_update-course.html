@@ -39,7 +39,7 @@
       <div class="course-details-head">
         <a th:href="@{/librarian}">Home</a>
         <span> &gt; <a th:href="@{/librarian/courses/list}">Courses management</a></span>
-        <span> &gt; <a th:href="@{'/librarian/courses/' + ${course.courseId} }" th:text="|${course.courseCode} - ${course.courseName}|">
+        <span> &gt; <a th:href="@{'/librarian/courses/' + ${course.getId} }" th:text="|${course.courseCode} - ${course.courseName}|">
 
         </a></span>
         <span> &gt; Update course</span>

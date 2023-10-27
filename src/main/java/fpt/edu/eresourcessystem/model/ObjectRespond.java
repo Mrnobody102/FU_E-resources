@@ -1,4 +1,4 @@
-package fpt.edu.eresourcessystem.dto;
+package fpt.edu.eresourcessystem.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

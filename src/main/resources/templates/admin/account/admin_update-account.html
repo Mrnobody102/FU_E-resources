@@ -1,11 +1,10 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      lang="en">
+      lang="en" charset="UTF-8">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Librarian | Update account</title>
-
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
@@ -64,9 +63,9 @@
                               th:object="${account}" th:id="update-account">
                             <table class="table-form lib_table">
                                 <tr class="lib_input-wrapper">
-                                    <td class="lib_input-label"><label th:for="accountId">Account ID</label></td>
+                                    <td class="lib_input-label"><label th:for="id">Account ID</label></td>
                                     <td><input type="text"
-                                               class="lib_input form-control" th:field="*{accountId}"
+                                               class="lib_input form-control" th:field="*{id}"
                                                placeholder="Enter account ID" readonly>
                                     </td>
                                 </tr>
@@ -78,14 +77,13 @@
 
                                     </td>
                                 </tr>
-                                <tr class="lib_input-wrapper">
-                                    <td class="lib_input-label"><label th:for="password">Password</label></td>
-                                    <td><input type="text" th:id="password"
-                                               class="lib_input form-control" th:field="*{password}"
-                                               placeholder="Enter password" readonly>
-
-                                    </td>
-                                </tr>
+<!--                                <tr class="lib_input-wrapper">-->
+<!--                                    <td class="lib_input-label"><label th:for="password">Password</label></td>-->
+<!--                                    <td><input type="text" th:id="password"-->
+<!--                                               class="lib_input form-control" th:field="*{password}"-->
+<!--                                               placeholder="Enter password" readonly>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
 
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="email">Email</label></td>
@@ -161,7 +159,7 @@
                                     <td>
                                         <button type="submit" class="btn lib_btn-save">Update</button>
 <!--                                        <button type="button" class="btn lib_btn-delete" >Delete</button>-->
-                                        <a class="delete-account" th:id="${account.accountId}">Delete</a>
+                                        <a class="delete-account" th:id="${account.getId}">Delete</a>
                                     </td>
                                 </tr>
                             </table>
