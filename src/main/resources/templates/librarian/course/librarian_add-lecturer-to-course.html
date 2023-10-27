@@ -32,27 +32,27 @@
             </nav>
         </div>
         <div class="course-details-head">
-            <a th:href="@{'/lecturer/courses/detail/' + ${course.courseId}}"
+            <a th:href="@{'/lecturer/courses/detail/' + ${course.id}}"
                th:text="|${course.courseCode} - ${course.courseName}|"></a>
             <span> &gt; <a th:href="@{'/lecturer/courses/addTopic/' + ${course.id}}">Add topic</a> </span>
         </div>
-        <section>
-            <h1>Detail Subject</h1>
-            <hr />
-            <div class="add-content">
-                <div class="add-form">
-                    <div th:if="${param.success}">
-                        <div class="alert alert-info">Save course successful !!!</div>
-                    </div>
-                    <div th:if="${param.error}">
-                        <div class="alert alert-danger">Please check course information again !!!</div>
-                    </div>
-                    <div class="add-form-content">
-                        <table th:if="course ne null">
-                            <tr>
-                                <th>Course</th>
-                                <td th:text="| ${course.courseCode} - ${course.courseName}|"></td>
-                            </tr>
+<!--        <section>-->
+<!--            <h1>Detail Subject</h1>-->
+<!--            <hr />-->
+<!--            <div class="add-content">-->
+<!--                <div class="add-form">-->
+<!--                    <div th:if="${param.success}">-->
+<!--                        <div class="alert alert-info">Save course successful !!!</div>-->
+<!--                    </div>-->
+<!--                    <div th:if="${param.error}">-->
+<!--                        <div class="alert alert-danger">Please check course information again !!!</div>-->
+<!--                    </div>-->
+<!--                    <div class="add-form-content">-->
+<!--                        <table th:if="course ne null">-->
+<!--                            <tr>-->
+<!--                                <th>Course</th>-->
+<!--                                <td th:text="| ${course.courseCode} - ${course.courseName}|"></td>-->
+<!--                            </tr>-->
 <!--                            <tr>-->
 <!--                                <th>Topics</th>-->
 <!--                                <td th:if="topics ne null">-->
@@ -64,7 +64,7 @@
 <!--                                    </th:block>-->
 <!--                                </td>-->
 <!--                            </tr>-->
-                        </table>
+<!--                        </table>-->
 <!--                        <form method="post" role="form" th:action="@{/lecturer/courses/addTopic}"-->
 <!--                              th:object="${topic}" th:id="add-form">-->
 <!--                            <h3>Add topic</h3>-->
@@ -72,7 +72,7 @@
 <!--                                <tr>-->
 <!--                                    <td><label th:for="courseId">Course ID</label></td>-->
 <!--                                    <td><input type="text"-->
-<!--                                               class="form-control hidden" th:field="*{course}" th:id="courseId"-->
+<!--                                               class="form-control hidden" th:field="*{courseId}" th:id="courseId"-->
 <!--                                               placeholder="Enter course ID" readonly>-->
 <!--                                    </td>-->
 <!--                                </tr>-->
@@ -102,10 +102,10 @@
 <!--                                </tr>-->
 <!--                            </table>-->
 <!--                        </form>-->
-                    </div>
-                </div>
-            </div>
-        </section>
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </section>-->
     </main>
 
     <!-- Footer -->
@@ -125,4 +125,4 @@
 <script src="/js/lecturer.js"></script>
 </body>
 
-<!--</html>-->
+</html>

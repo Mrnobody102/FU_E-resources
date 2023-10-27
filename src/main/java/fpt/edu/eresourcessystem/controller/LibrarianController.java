@@ -302,20 +302,20 @@ public class LibrarianController {
 
         message.setFrom("maihoa362001@gmail.com");
         message.setTo(account.getEmail());
-        message.setSubject("Subject : Thông báo quản lý môn học "+ course.getCourseCode() );
+        message.setSubject("Subject : Thông báo quản lý môn học " + course.getCourseCode());
         message.setText("Body : " +
-                "Tên môn học: "+ course.getCourseName() );
+                "Tên môn học: " + course.getCourseName());
 
         javaMailSender.send(message);
 
         List<Topic> topics = topicService.findByCourseId(courseId);
 
-        if(null!=lecturer){
+        if (null != lecturer) {
             Account accountLecturer = lecturer.getAccount();
             model.addAttribute("accountLecturer", accountLecturer);
         }
         model.addAttribute("course", course);
-        model.addAttribute("topics", topics);
+//        model.addAttribute("topics", topics);
         return "librarian/course/librarian_course-detail";
     }
 
@@ -426,28 +426,12 @@ public class LibrarianController {
         }
     }
 
-    @GetMapping({"/lectures"})
-    public String showLectures() {
-        return "librarian/lecture/librarian_lectures";
-    }
-
-    @GetMapping("/lectures/list/{pageIndex}")
-    public String listLecturersByPage(
-            @PathVariable Integer pageIndex,
-            @RequestParam(required = false, defaultValue = "") String search,
-            Model model
-    ) {
-        Page<Lecturer> page;
-        page = lecturerService.findLecturerByLecturerIdLike(search, pageIndex, pageSize);
-        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-
-        model.addAttribute("pages", pages);
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("lecturers", page.getContent());
-        model.addAttribute("search", search);
-        model.addAttribute("currentPage", pageIndex);
-
-        return "librarian/lecture/librarian_lectures"; // Adjust the view name as needed
+    @GetMapping({"/lectures/{username}"})
+    public String findLecturerByUsername(@PathVariable String username, final Model model) {
+        Account account = accountService.findByUsername(username);
+        Lecturer lecturer = lecturerService.findByAccountId(account.getId());
+        model.addAttribute("lecturer", lecturer);
+        return "librarian/lecture/lecture_detail";
     }
 
 

@@ -1,4 +1,4 @@
-package fpt.edu.eresourcessystem.controller.RestControllers;
+package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

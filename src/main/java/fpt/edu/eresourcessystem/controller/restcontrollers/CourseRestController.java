@@ -1,4 +1,4 @@
-package fpt.edu.eresourcessystem.controller.RestControllers;
+package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Topic;
