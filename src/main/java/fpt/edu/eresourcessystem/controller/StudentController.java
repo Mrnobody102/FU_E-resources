@@ -54,13 +54,8 @@ public class StudentController {
     @GetMapping({"", "/home"})
     public String getStudentHome(@ModelAttribute Account account, final Model model) {
         Student student = getLoggedInStudent();
-        List<CourseLog> courseLogs = courseLogService.findStudentRecentView(student.getAccount().getId());
-        List<String> courseIds = new ArrayList<>();
-        for (CourseLog log:
-             courseLogs) {
-            courseIds.add(log.getCourseLogId().getCourseId());
-        }
-        List<Course> recentCourses = courseService.findByListId(courseIds);
+        List<String> courseLogs = courseLogService.findStudentRecentView(student.getAccount().getId());
+        List<Course> recentCourses = courseService.findByListId(courseLogs);
         model.addAttribute("recentCourses", recentCourses);
         return "student/student_home";
     }

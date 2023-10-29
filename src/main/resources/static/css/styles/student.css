@@ -303,7 +303,7 @@
     /* Add padding main */
     .main-pd {
         width: calc(100% - 7rem);
-        margin-left: 5rem;
+        margin-left: 7rem;
         transition: opacity .5s;
     }
 }
@@ -319,9 +319,6 @@
 .stu_course-content{
     display: flex;
     /*width: 100%;*/
-}
-.student__course-topic-list{
-    width: 15%;
 }
 .student__course-document-view{
     width: 72%;
@@ -345,6 +342,7 @@
 }
 .stu_save-course-link{
     justify-content: right;
+    margin-top: 2rem;
 }
 .student__course-info-view{
     padding: 0.7rem 2rem 2rem 3rem;
@@ -368,10 +366,10 @@
     border: 1px solid #888888;
     border-radius: 2rem;
     padding: 0.5rem 1rem;
-    background: var(--background-btn-color-hover);
+    background-color: var(--second-background-btn-color);
 }
 .stu_save-course-link a:hover{
-    background: var(--background-btn-color);
+    background: var(--second-background-btn-color-hover);
 }
 
 

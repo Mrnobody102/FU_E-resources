@@ -1,11 +1,8 @@
 package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.enums.CommonEnum;
-import fpt.edu.eresourcessystem.enums.CourseEnum;
-import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.CourseLog;
 import fpt.edu.eresourcessystem.repository.CourseLogRepository;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -13,7 +10,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,7 +36,7 @@ public class CourseLogServiceImpl implements CourseLogService{
     }
 
     @Override
-    public List<CourseLog> findStudentRecentView(String accountId) {
+    public List<String> findStudentRecentView(String accountId) {
 //        System.out.println(accountId);
         Criteria criteria = new Criteria();
 
@@ -53,7 +49,7 @@ public class CourseLogServiceImpl implements CourseLogService{
         // Use a Pageable to limit the result set to 5 documents
         PageRequest pageable = PageRequest.of(0, 5);
         query.with(pageable);
-        return mongoTemplate.find(query, CourseLog.class);
+        return mongoTemplate.findDistinct(query,"courseLogId.courseId" ,CourseLog.class, String.class);
     }
 
     @Override
