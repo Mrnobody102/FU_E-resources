@@ -197,8 +197,8 @@ public class CourseServiceImpl implements CourseService{
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         Criteria criteria = new Criteria();
         criteria.orOperator(
-                Criteria.where("courseCode").regex(courseCode, "i"),
-                Criteria.where("courseName").regex(courseName, "i")
+                Criteria.where("courseCode").regex(courseCode.trim(), "i"),
+                Criteria.where("courseName").regex(courseName.trim(), "i")
         );
         criteria.and("status").is(CourseEnum.Status.PUBLISH);
         criteria.and("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED);
@@ -215,7 +215,7 @@ public class CourseServiceImpl implements CourseService{
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         Criteria criteria = new Criteria();
         criteria.orOperator(
-                Criteria.where("courseName").regex(courseName, "i"),
+                Criteria.where("courseName").regex(courseName.trim(), "i"),
                 criteria.where("status").is(CourseEnum.Status.PUBLISH),
                 criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
         );
@@ -231,7 +231,7 @@ public class CourseServiceImpl implements CourseService{
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         Criteria criteria = new Criteria();
         criteria.orOperator(
-                Criteria.where("courseCode").regex(courseCode, "i"),
+                Criteria.where("courseCode").regex(courseCode.trim(), "i"),
                 criteria.where("status").is(CourseEnum.Status.PUBLISH),
                 criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
         );

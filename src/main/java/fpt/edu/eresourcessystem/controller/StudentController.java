@@ -1,10 +1,11 @@
 package fpt.edu.eresourcessystem.controller;
 
+import com.mongodb.internal.CheckedSupplier;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
-import fpt.edu.eresourcessystem.model.Account;
-import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Student;
-import fpt.edu.eresourcessystem.model.Topic;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.enums.CourseEnum;
+import fpt.edu.eresourcessystem.model.*;
+import fpt.edu.eresourcessystem.service.CourseLogService;
 import fpt.edu.eresourcessystem.service.CourseService;
 import fpt.edu.eresourcessystem.service.StudentService;
 import fpt.edu.eresourcessystem.service.TopicService;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +33,13 @@ public class StudentController {
     private final StudentService studentService;
 
     private final TopicService topicService;
+    private final CourseLogService courseLogService;
 
-    public StudentController(CourseService courseService, StudentService studentService, TopicService topicService) {
+    public StudentController(CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService) {
         this.courseService = courseService;
         this.studentService = studentService;
         this.topicService = topicService;
+        this.courseLogService = courseLogService;
     }
 
     public Student getLoggedInStudent() {
@@ -48,8 +53,15 @@ public class StudentController {
 
     @GetMapping({"", "/home"})
     public String getStudentHome(@ModelAttribute Account account, final Model model) {
-        List<Course> courses = courseService.findAll();
-        model.addAttribute("courses", courses);
+        Student student = getLoggedInStudent();
+        List<CourseLog> courseLogs = courseLogService.findStudentRecentView(student.getAccount().getId());
+        List<String> courseIds = new ArrayList<>();
+        for (CourseLog log:
+             courseLogs) {
+            courseIds.add(log.getCourseLogId().getCourseId());
+        }
+        List<Course> recentCourses = courseService.findByListId(courseIds);
+        model.addAttribute("recentCourses", recentCourses);
         return "student/student_home";
     }
 
@@ -74,8 +86,15 @@ public class StudentController {
     public String viewCourseDetail(@PathVariable(required = false) String courseId, final Model model) {
         // auth
         Student student = getLoggedInStudent();
-
         Course course = courseService.findByCourseId(courseId);
+        if(null == course || null == student){
+            return "exception/404";
+        }else if(null == course.getStatus() || CourseEnum.Status.PUBLISH!= course.getStatus()){
+            return "exception/404";
+        }
+        // add course log
+        CourseLog courseLog = new CourseLog(new CourseLogId(student.getAccount().getId(), courseId, CommonEnum.Action.VIEW, LocalDateTime.now()));
+        courseLogService.addCourseLog(courseLog);
         List<Topic> topics = topicService.findByCourseId(courseId);
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);

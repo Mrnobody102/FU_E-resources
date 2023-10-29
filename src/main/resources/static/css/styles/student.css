@@ -50,7 +50,7 @@
 
 .main{
     margin-top: 3rem;
-    margin-left: 23rem;
+    margin-left: 26rem;
 }
 
 .sidebar__container {
@@ -318,7 +318,7 @@
 }
 .stu_course-content{
     display: flex;
-    width: 100%;
+    /*width: 100%;*/
 }
 .student__course-topic-list{
     width: 15%;
@@ -448,4 +448,7 @@
 }
 .view-block-list{
     width: 100%;
+}
+.stu__div-content-recent-title{
+    margin-top: 3rem;
 }

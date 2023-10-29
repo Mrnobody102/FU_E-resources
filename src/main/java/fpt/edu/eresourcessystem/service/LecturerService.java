@@ -23,4 +23,5 @@ public interface LecturerService {
 
     Page<Lecturer> findLecturerByLecturerIdLike(String lectureId, int pageIndex, int pageSize);
 
+    Page<Course> findListManagingCourse(Lecturer lecturer, int pageIndex, int pageSize);
 }
