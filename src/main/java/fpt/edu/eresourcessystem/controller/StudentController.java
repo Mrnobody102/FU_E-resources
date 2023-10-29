@@ -163,6 +163,7 @@ public class StudentController {
         model.addAttribute("roles", AccountEnum.Role.values());
         model.addAttribute("filter", filter);
         model.addAttribute("currentPage", pageIndex);
+        model.addAttribute("search", search);
         return "student/course/student_courses";
     }
 }
