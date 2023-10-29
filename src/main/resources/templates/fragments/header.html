@@ -50,7 +50,7 @@
                 <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                     <div class="header__navbar-user-wrap">
                         <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name">Vũ Thanh Tùng</span>
+                        <span class="header__navbar-user-name">Vũ Thanh Tùng</span> <span>(Librarian)</span>
                     </div>
                 </li>
                 <li class="header__navbar-item">
@@ -166,13 +166,13 @@
                 <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                     <div class="header__navbar-user-wrap">
                         <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name">Vũ Thanh Tùng</span>
+                        <span class="header__navbar-user-name">Vũ Thanh Tùng</span> <span>(Admin)</span>
                     </div>
                 </li>
                 <li class="header__navbar-item">
                     <a th:href="@{/logout}" onclick="" class="header__navbar-item-link" style="font-weight: bold">
-                        <i class="header__navbar-icon fas fa-door-open" aria-hidden="true"></i>
-                        LOG OUT</a>
+                        <i class="header__navbar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+                        Logout</a>
                 </li>
             </ul>
         </nav>
@@ -289,7 +289,7 @@
                     <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                         <div class="header__navbar-user-wrap">
                             <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                            <span class="header__navbar-user-name">Vũ Thanh Tùng</span>
+                            <span class="header__navbar-user-name">Vũ Thanh Tùng</span> <span>(Lecturer)</span>
                         </div>
                         <div class="header__navbar-user-option-list header__bridge">
                             <div class="header__navbar-user-profile">
@@ -308,6 +308,11 @@
                                 </a>
                             </div>
                         </div>
+                    </li>
+                    <li class="header__navbar-item">
+                        <a th:href="@{/logout}" onclick="" class="header__navbar-item-link" style="font-weight: bold">
+                            <i class="header__navbar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+                            Logout</a>
                     </li>
                 </ul>
             </div>
@@ -380,7 +385,7 @@
                     <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                         <div class="header__navbar-user-wrap">
                             <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                            <span class="header__navbar-user-name">Vũ Thanh Tùng</span>
+                            <span class="header__navbar-user-name">Vũ Thanh Tùng</span> <span>(Student)</span>
                         </div>
                         <div class="header__navbar-user-option-list header__bridge">
                             <div class="header__navbar-user-profile">
@@ -399,6 +404,11 @@
                                 </a>
                             </div>
                         </div>
+                    </li>
+                    <li class="header__navbar-item">
+                        <a th:href="@{/logout}" onclick="" class="header__navbar-item-link" style="font-weight: bold">
+                            <i class="header__navbar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+                            Logout</a>
                     </li>
                 </ul>
             </div>
@@ -504,8 +514,13 @@
         <!-- Header navbar -->
         <nav class="header__navbar">
             <h2 class="header__system-name header__navbar-list">
-                FPT University E-Resources
+               E-Resources
             </h2>
+            <a href="/" class="header__logo-link col-md-2">
+                <div class="header__logo">
+                    <img alt="" th:src="@{/images/fptUniversityLogo.png}">
+                </div>
+            </a>
             <ul class="header__navbar-list">
                 <li class="header__navbar-item">
                     <a href="" class="header__navbar-item-link">
@@ -520,64 +535,11 @@
                 </li>
                 <li id="openLoginModal" class="header__navbar-item">
                     <a th:href="@{/login}" class="header__navbar-item-link" style="font-weight: bold">
-                        <i class="header__navbar-icon fa fa-user" aria-hidden="true"></i>
-                        LOGIN</a>
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        Login</a>
                 </li>
             </ul>
         </nav>
-        <!-- Header with search  -->
-        <div class="header-with-search">
-            <a href="/" class="header__logo-link">
-                <div class="header__logo">
-                    <img th:src="@{/images/appLogoIcon.webp}">
-                </div>
-            </a>
-
-            <!-- Header-search -->
-            <div class="header__search">
-                <!-- Input  -->
-                <div class="header__search-input-wrap">
-                    <input type="text" class="header__search-input" placeholder="Search courses, documents, topics...">
-                    <!-- Header-search-history -->
-                    <div class="header__search-history">
-                        <h3 class="header__search-history-heading">
-                            Search history
-                        </h3>
-                        <ul class="header__search-history-list">
-
-                            <li class="header__search-history-item">
-                                <a href="">Software</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Select-find-scope -->
-                <div class="header__search-select">
-                    <span class="header__search-select-label">All results</span>
-                    <i class="header__search-select-icon fas fa-angle-down"></i>
-                    <ul class="header__search-option">
-                        <li class="header__search-option-item header__search-option-item--active">
-                            <span class="">All results</span>
-                            <i class="fas fa-check"></i>
-                        </li>
-                        <li class="header__search-option-item">
-                            <span class="">e-resources</span>
-                            <i class="fas fa-check"></i>
-                        </li>
-                    </ul>
-                </div>
-                <button class="header__search-btn">
-                    <i class="header__search-btn-icon fas fa-search"></i>
-                </button>
-            </div>
-
-            <!-- Advance search -->
-            <div class="header__advance-search">
-                <a href="" class="header__advance-search-link">
-                    Advance search
-                </a>
-            </div>
-        </div>
     </div>
 </header>
 </body>

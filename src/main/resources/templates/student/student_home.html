@@ -29,10 +29,16 @@
                     </div>
                     <div class="stu_course-saved-content main" id="main">
                         <div class="header__search">
+                            <!--Label-->
+                            <div class="search-label">
+                                <label th:for="search">Search courses, documents, topics,...</label>
+                            </div>
                             <!-- Input  -->
                             <div class="header__search-input-wrap">
                                 <input type="text" class="header__search-input"
-                                       placeholder="Search courses, documents, topics...">
+                                       placeholder="Enter here ..."
+                                       name="search"
+                                       th:id="search" th:value="${search}">
                                 <!-- Header-search-history -->
                                 <div class="header__search-history">
                                     <h3 class="header__search-history-heading">
@@ -48,11 +54,15 @@
                             </div>
                             <!-- Select-find-scope -->
                             <div class="header__search-select">
-                                <span class="header__search-select-label">All results</span>
+                                <span class="header__search-select-label">          </span>
                                 <i class="header__search-select-icon fas fa-angle-down"></i>
                                 <ul class="header__search-option">
                                     <li class="header__search-option-item header__search-option-item--active">
                                         <span class="">All results</span>
+                                        <i class="fas fa-check"></i>
+                                    </li>
+                                    <li class="header__search-option-item">
+                                        <span class="">library</span>
                                         <i class="fas fa-check"></i>
                                     </li>
                                     <li class="header__search-option-item">

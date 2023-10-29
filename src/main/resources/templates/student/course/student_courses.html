@@ -29,12 +29,16 @@
                     <div class="stu_courses-content main" id="main">
                         <form th:action="@{/student/search_course/1}">
                             <div class="header__search">
+                                <!--Label-->
+                                <div class="search-label">
+                                    <label th:for="search">Search course</label>
+                                </div>
                                 <!-- Input  -->
                                 <div class="header__search-input-wrap">
                                     <input type="text" class="header__search-input"
-                                           placeholder="Search courses, documents, topics..." th:name="search"
-                                           th:id="search-text"
-                                           th:value="${search}">
+                                           placeholder="Enter course ..."
+                                           name="search"
+                                           th:id="search" th:value="${search}">
                                     <!-- Header-search-history -->
                                     <div class="header__search-history">
                                         <h3 class="header__search-history-heading">
