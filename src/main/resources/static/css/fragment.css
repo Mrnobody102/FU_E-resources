@@ -7,7 +7,7 @@
 
 /* HEADER */
 .header {
-    /*position: fixed;*/
+    position: fixed;
     min-width: 100%;
     height: 8rem;
     margin-top: 0;
@@ -792,7 +792,7 @@
 
 /* App Container: Category */
 .main_content {
-    /*margin-top: 8rem;*/
+    margin-top: 8rem;
     flex: 1;
     background-color: var(--white-color);
 }
