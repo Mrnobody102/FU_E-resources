@@ -73,7 +73,7 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         AccountDTO accountDTO = googleUtils.mapGooglePojoToAccountDTO(googlePojo);
-        return "redirect:/home";
+        return "redirect:/librarian";
     }
 
 }

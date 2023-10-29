@@ -73,90 +73,7 @@ public class LibrarianController {
         COURSES MANAGEMENT
      */
 
-    /**
-     * @param model
-     * @return
-     */
-    @GetMapping({"/courses/add"})
-    public String addCourse(final Model model) {
-        List<Account> lecturers = accountService.findAllLecturer();
-        model.addAttribute("course", new Course());
-        model.addAttribute("lecturers", lecturers);
-        model.addAttribute("statuses", CourseEnum.Status.values());
-        return "librarian/course/librarian_add-course";
-    }
 
-    /**
-     * @param course
-     * @param lecturer
-     * @return
-     */
-    @PostMapping("/courses/add")
-    public String addCourseProcess(@ModelAttribute Course course,
-                                   @RequestParam String lecturer) {
-
-
-        // check course code duplicate
-        Course checkExist = courseService.findByCourseCode(course.getCourseCode());
-        if (null == checkExist) {
-            // check lecturer param exist
-            if (lecturer != null && !"".equals(lecturer.trim())) {
-                // get account by email
-                Account account = accountService.findByEmail(lecturer);
-                if (null != account) {
-                    // get lecturer by account
-                    Lecturer findLecturer = lecturerService.findByAccountId(account.getId());
-
-                    if (null != findLecturer) {
-                        //save course
-                        Course result = courseService.addCourse(course);
-
-                        //check lecturer exist
-                        if (result != null) {
-                            // create new lecturerCourseId
-                            LecturerCourseId lecturerCourseId = new LecturerCourseId();
-                            lecturerCourseId.setLecturerId(findLecturer.getId());
-                            // set course Id that added
-                            lecturerCourseId.setCourseId(result.getId());
-                            lecturerCourseId.setCreatedDate(LocalDate.now());
-
-                            // save new lecturer manage to the course
-                            LecturerCourse lecturerCourse = new LecturerCourse();
-                            lecturerCourse.setId(lecturerCourseId);
-
-                            LecturerCourse addLecturerCourseResult = lecturerCourseService.add(lecturerCourse);
-                            // check save lecturerCourse to database
-                            if (null != addLecturerCourseResult) {
-
-                                // add lecturer to  course
-                                List<LecturerCourseId> lecturerCourseIds = new ArrayList<>();
-                                lecturerCourseIds.add(addLecturerCourseResult.getId());
-
-                                result.setLecturerCourseIds(lecturerCourseIds);
-
-                                // update course lecturers
-                                result = courseService.updateCourse(result);
-                                System.out.println(result);
-                                if (null != result) {
-                                    return "redirect:/librarian/courses/add?success";
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    return "redirect:/librarian/courses/add?error";
-                }
-
-            } else {
-                Course addedCourse = courseService.addCourse(course);
-                if (null != addedCourse) {
-                    return "redirect:/librarian/courses/add?success";
-                }
-            }
-        }
-        return "redirect:/librarian/courses/add?error";
-
-    }
 
     /**
      * @param courseId
@@ -432,6 +349,132 @@ public class LibrarianController {
         Lecturer lecturer = lecturerService.findByAccountId(account.getId());
         model.addAttribute("lecturer", lecturer);
         return "librarian/lecture/lecture_detail";
+    }
+
+
+    @GetMapping({"/courses/add"})
+    public String addCourse(final Model model) {
+        List<Account> lecturers = accountService.findAllLecturer();
+        model.addAttribute("course", new Course());
+        model.addAttribute("lecturers", lecturers);
+        model.addAttribute("statuses", CourseEnum.Status.values());
+        return "librarian/course/librarian_add-course";
+    }
+
+    /**
+     * @param course
+     * @param lecturer
+     * @return
+     */
+    @PostMapping("/courses/add")
+    public String addCourseProcess(@ModelAttribute Course course,
+                                   @RequestParam String lecturer) {
+
+
+        // check course code duplicate
+        Course checkExist = courseService.findByCourseCode(course.getCourseCode());
+        if (null == checkExist) {
+            // check lecturer param exist
+            if (lecturer != null && !"".equals(lecturer.trim())) {
+                // get account by email
+                Account account = accountService.findByEmail(lecturer);
+                if (null != account) {
+                    // get lecturer by account
+                    Lecturer findLecturer = lecturerService.findByAccountId(account.getId());
+
+                    if (null != findLecturer) {
+                        //save course
+                        Course result = courseService.addCourse(course);
+
+                        //check lecturer exist
+                        if (result != null) {
+                            // create new lecturerCourseId
+                            LecturerCourseId lecturerCourseId = new LecturerCourseId();
+                            lecturerCourseId.setLecturerId(findLecturer.getId());
+                            // set course Id that added
+                            lecturerCourseId.setCourseId(result.getId());
+                            lecturerCourseId.setCreatedDate(LocalDate.now());
+
+                            // save new lecturer manage to the course
+                            LecturerCourse lecturerCourse = new LecturerCourse();
+                            lecturerCourse.setId(lecturerCourseId);
+
+                            LecturerCourse addLecturerCourseResult = lecturerCourseService.add(lecturerCourse);
+                            // check save lecturerCourse to database
+                            if (null != addLecturerCourseResult) {
+
+                                // add lecturer to  course
+                                List<LecturerCourseId> lecturerCourseIds = new ArrayList<>();
+                                lecturerCourseIds.add(addLecturerCourseResult.getId());
+
+                                result.setLecturerCourseIds(lecturerCourseIds);
+
+                                // update course lecturers
+                                result = courseService.updateCourse(result);
+                                System.out.println(result);
+                                if (null != result) {
+                                    return "redirect:/librarian/courses/add?success";
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    return "redirect:/librarian/courses/add?error";
+                }
+
+            } else {
+                Course addedCourse = courseService.addCourse(course);
+                if (null != addedCourse) {
+                    return "redirect:/librarian/courses/add?success";
+                }
+            }
+        }
+        return "redirect:/librarian/courses/add?error";
+
+    }
+
+
+    @GetMapping({"/courses/{courseId}/add-lecture"})
+    public String addLecturer(@PathVariable String courseId, final Model model) {
+        Course course = courseService.findByCourseId(courseId);
+        Lecturer lecturers = lecturerService.findByCourseId(courseId);
+        List<Account> accounts = accountService.findAllLecturer();
+        model.addAttribute("course", course);
+        model.addAttribute("lecturers", lecturers);
+        model.addAttribute("accounts", accounts);
+        return "librarian/course/librarian_add-lecturer-to-course";
+    }
+
+    /**
+     * @param courseId
+     * @param model
+     * @return
+     */
+    @PostMapping({"/courses/{courseId}/add-lecture"})
+    public String addLecturer(@PathVariable String courseId, @RequestParam String username, final Model model) {
+        Account account = accountService.findByUsername(username);
+        Lecturer lecturer = lecturerService.findByAccountId(account.getId());
+        Course course = courseService.updateLectureId(courseId, lecturer);
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom("maihoa362001@gmail.com");
+        message.setTo(account.getEmail());
+        message.setSubject("Subject : Thông báo quản lý môn học " + course.getCourseCode());
+        message.setText("Body : " +
+                "Tên môn học: " + course.getCourseName());
+
+        javaMailSender.send(message);
+
+        List<Topic> topics = topicService.findByCourseId(courseId);
+
+        if (null != lecturer) {
+            Account accountLecturer = lecturer.getAccount();
+            model.addAttribute("accountLecturer", accountLecturer);
+        }
+        model.addAttribute("course", course);
+//        model.addAttribute("topics", topics);
+        return "librarian/course/librarian_course-detail";
     }
 
 
