@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import fpt.edu.eresourcessystem.dto.AccountDTO;
 import fpt.edu.eresourcessystem.model.GooglePojo;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Form;
@@ -54,4 +55,16 @@ public class GoogleUtils {
                 "", enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         return userDetail;
     }
+
+    public AccountDTO mapGooglePojoToAccountDTO(GooglePojo googlePojo) {
+        AccountDTO accountDTO = new AccountDTO();
+
+        // Set the properties of the AccountDTO using the GooglePojo
+        accountDTO.setUsername(googlePojo.getEmail()); // Assuming you want to use the email as the username
+        accountDTO.setEmail(googlePojo.getEmail());
+        // Set other properties as needed
+
+        return accountDTO;
+    }
+
 }

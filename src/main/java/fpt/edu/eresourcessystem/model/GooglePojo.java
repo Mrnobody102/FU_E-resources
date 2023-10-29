@@ -19,5 +19,8 @@ public class GooglePojo {
     private String family_name;
     private String link;
     private String picture;
-    // getter-setter
+    private String locale;
+
+    private String hd;
+
 }

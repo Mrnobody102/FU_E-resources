@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.dto.AccountDTO;
 import fpt.edu.eresourcessystem.model.GooglePojo;
 import fpt.edu.eresourcessystem.utils.GoogleUtils;
 import fpt.edu.eresourcessystem.utils.RedirectUtil;
@@ -70,6 +71,8 @@ public class AuthenticationController {
                 userDetail.getAuthorities());
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        AccountDTO accountDTO = googleUtils.mapGooglePojoToAccountDTO(googlePojo);
         return "redirect:/home";
     }
 
