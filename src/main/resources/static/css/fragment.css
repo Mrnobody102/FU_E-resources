@@ -7,17 +7,18 @@
 
 /* HEADER */
 .header {
-    min-width: max-content;
-    /*height: 175px;*/
-    height: auto;
+    position: fixed;
+    min-width: 100%;
+    height: 8rem;
+    margin-top: 0;
     /*background-color: var(--primary-color);*/
     /*background-image: linear-gradient(0, rgba(var(--primary-color-rgb), 0.6), var(--primary-color));*/
     background-image: linear-gradient(0, var(--gradient-color), var(--primary-color));
+    z-index: 1000; /* Đặt z-index để đảm bảo header ở phía trên của các phần tử khác */
 }
 
 .header-guest,
-.header-librarian,
-.header-lecturer {
+.header-librarian{
     /*height: 132px;*/
     height: auto;
     /*background-image: linear-gradient(0, rgba(var(--primary-color-rgb), 0.6), var(--primary-color));*/
@@ -28,8 +29,8 @@
 /* User navbar */
 .header__navbar {
     display: flex;
-    /*justify-content: space-between;*/
-    padding: 1.5rem 0 1rem 2rem;
+    align-items: center;
+    padding: 1.5rem 2rem 1.5rem 2rem;
 }
 
 .header__navbar-list {
@@ -39,9 +40,10 @@
 }
 
 .header__navbar-item {
-    margin: 8px;
-    position: relative;
+    align-items: center;
+    /*position: relative;*/
     font-size: 1.5rem;
+    margin-left: 1rem;
 }
 
 .header__system-name {
@@ -50,10 +52,12 @@
     color: var(--white-color);
     font-size: 2.0rem;
     font-weight: var(--font-medium);
-    padding: 0;
+    padding:0;
     margin: 0;
 }
-
+.header__logo{
+    margin-left: 2rem;
+}
 .header__navbar-item,
 .header__navbar-item-link {
     list-style: none;
@@ -553,7 +557,7 @@
 
 .header__search {
     width: 70%;
-    margin-left: 10%;
+    margin-left: 5%;
     height: 40px;
     flex: 7;
     display: flex;
@@ -576,7 +580,7 @@
 }
 
 .header__search-input {
-    width: 100%;
+    width: 70%;
     height: 100%;
     border: none;
     border-radius: 20px;
@@ -765,22 +769,25 @@
 }
 
 /* FOOTER */
-footer {
+.footer {
+    position: fixed;
+    bottom: 0;
     clear: both;
+    width: 100%;
     /*background-color: var(--primary-color);*/
     background-image: linear-gradient(0, var(--primary-color), var(--gradient-color));
     color: white;
     font-size: 1.4rem;
     text-align: center;
     padding: 10px;
-    z-index: 9;
+    z-index: 1000;
 }
 
-footer a {
+.footer a {
     color: white;
 }
 
-footer p {
+.footer p {
     margin: 6px;
 }
 
@@ -788,6 +795,7 @@ footer p {
 
 /* App Container: Category */
 .main_content {
+    margin-top: 8rem;
     flex: 1;
     background-color: var(--white-color);
 }
@@ -938,3 +946,25 @@ footer p {
     border-bottom-right-radius: 0;
 }
 
+.search-course-select{
+    border: none;
+    border-left: 1px solid #888888;
+    padding-left: 1rem;
+    margin-right: 1.5rem;
+}
+
+/* Chọn màu nền và màu chữ cho các tùy chọn */
+.search-course-option{
+    border: none;
+    color: #333;
+    padding: 1rem;
+}
+.search-course-option:hover {
+    background: #0dcaf0;
+}
+/* Thiết lập màu nền và màu chữ cho tùy chọn được chọn */
+.search-course-option:checked {
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+}

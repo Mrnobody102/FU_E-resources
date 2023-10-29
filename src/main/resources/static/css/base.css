@@ -9,10 +9,12 @@
     --hover-color: #825cf3;
     --bg-hover-color: #e3e6fc;
     --hover-color-2: #CEE8E9;
-    --gradient-color: #1e41cb;
-    --primary-color: #182ebe;
-    --background-btn-color-hover: #94d3aa;
-    --background-btn-color: #bae3c9;
+    /*--gradient-color: #1e41cb;*/
+    /*--primary-color: #182ebe;*/
+    --gradient-color: #114a9d;
+    --primary-color: #0a429d;
+    --background-btn-color-hover: #0a429d;
+    --background-btn-color: #0d55c5;
     --primary-color-rgb: 210, 68, 2;
     --primary-btn-color: #419a1d;
     --lib-dashboard-color: #0a53be;
@@ -458,4 +460,9 @@ li {
 .list-view-block a:hover ,
 .list-view-block input:hover{
     background: var(--background-btn-color-hover);
+}
+
+.admin-main-content,
+.librarian-main-content{
+    padding-top: 2rem;
 }

@@ -238,6 +238,6 @@ public class LecturerController {
         model.addAttribute("totalPage", 10);
         model.addAttribute("pages", pages);
         model.addAttribute("currentPage", pageIndex);
-        return "lecturer/Library/lecturer_management-courses";
+        return "lecturer/library/lecturer_management-courses";
     }
 }
