@@ -1,26 +1,30 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("majors")
-public class Major {
+@Document("student_notes")
+public class StudentNote {
     @Id
-    private String majorId;
-    private String majorName;
-    private String description;
+    private String id;
+    @NotNull
+    private String studentId;
 
-    private List<String> courses;
+    @NotEmpty(message = "studentNote.validation.content.required")
+    private String content;
 
+    // Delete flag
+    private CommonEnum.DeleteFlg deleteFlg;
     //Audit Log
     @CreatedBy
     private String createdBy;
@@ -30,4 +34,6 @@ public class Major {
     private String lastModifiedBy;
     @LastModifiedDate
     private String lastModifiedDate;
+
+    // Constructor DTO
 }

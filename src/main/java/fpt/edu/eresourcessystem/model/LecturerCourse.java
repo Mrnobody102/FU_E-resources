@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,11 +11,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("LecturerCourses")
+@Document("lecturer_courses")
 public class LecturerCourse {
     @Id
-    private LecturerCourseId lecturerCourseId;
+    private LecturerCourseId id;
 
+    // Delete flag
+    private CommonEnum.DeleteFlg deleteFlg;
     //Audit Log
     @CreatedBy
     private String createdBy;
@@ -25,4 +28,5 @@ public class LecturerCourse {
     @LastModifiedDate
     private String lastModifiedDate;
 
+    // Constructor DTO
 }

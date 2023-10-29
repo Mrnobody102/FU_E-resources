@@ -1,12 +1,15 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
 
@@ -16,12 +19,15 @@ import java.util.List;
 @Document("librarians")
 public class Librarian{
     @Id
-    private String librarianId;
+    private String id;
     @NotNull
-    private String accountId;
+    @DocumentReference
+    private Account account;
+    @DocumentReference(lazy = true)
+    private List<Course> createdCourses;
 
-    private List<String> createdCourses;
-
+    // Delete flag
+    private CommonEnum.DeleteFlg deleteFlg;
     //Audit Log
     @CreatedBy
     private String createdBy;
@@ -31,4 +37,7 @@ public class Librarian{
     private String lastModifiedBy;
     @LastModifiedDate
     private String lastModifiedDate;
+
+    // Constructor DTO
+
 }

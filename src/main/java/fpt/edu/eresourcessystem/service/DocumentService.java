@@ -19,7 +19,5 @@ public interface DocumentService {
     Document updateDocument(Document document) throws IOException;
 
     boolean delete(String documentId);
-    List<Document> findDocumentsByTopicId(String topicId);
-
     String addFile(MultipartFile file) throws IOException;
 }

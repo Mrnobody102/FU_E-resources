@@ -2,7 +2,7 @@ package fpt.edu.eresourcessystem.enums;
 
 public class DocumentEnum {
 
-    public enum DocumentDisplayEnum {
+    public enum DocumentStatusEnum {
         DISPLAY("1", "display"),
         HIDE("0", "hide");
 
@@ -10,23 +10,42 @@ public class DocumentEnum {
 
         private final String toString;
 
-        DocumentDisplayEnum(String displayValue, String toString) {
+        DocumentStatusEnum(String displayValue, String toString) {
             this.displayValue = displayValue;
             this.toString = toString;
         }
     }
 
-    public enum DocumentAccessLevelEnum {
-        PUBLIC,
-        EXCEPT_GUESTS,
-        PRIVATE // only uploader (Lecturer) and Librarians
+    public enum DefaultCourseResourceTypes {
+        MATERIALS("Materials");
+
+        private final String displayValue;
+
+        DefaultCourseResourceTypes(String displayValue) {
+            this.displayValue = displayValue;
+        }
+
+        public String getDisplayValue() {
+            return displayValue;
+        }
     }
 
-    public enum DocumentStateEnum {
-        WAIT(),
-        ON_PROCESS(),
-        SUCCESS(),
-        FAIL()
+    public enum DefaultTopicResourceTypes {
+        LECTURE_NOTE("Lecture note"),
+        READING("Reading"),
+        ASSIGNMENT("Assignment"),
+        EXERCISE("Exercise"),
+        COMMON_MATERIAL("Common material"); // default, auto save in Materials
+
+        private final String displayValue;
+
+        DefaultTopicResourceTypes(String displayValue) {
+            this.displayValue = displayValue;
+        }
+
+        public String getDisplayValue() {
+            return displayValue;
+        }
     }
 
     public enum DocumentFormat {
@@ -39,13 +58,12 @@ public class DocumentEnum {
         XLSX,
         MD,
         HTML,
-        TXT,
-        UNKNOWN;
+        TXT;
 
         public static DocumentFormat getDocType(String suffixName) {
             return switch (suffixName) {
                 case ".pdf" -> PDF;
-                case "docx" -> DOC;
+                case ".doc" -> DOC;
                 case ".docx" -> DOCX;
                 case ".ppt" -> PPT;
                 case ".pptx" -> PPTX;
@@ -54,10 +72,12 @@ public class DocumentEnum {
                 case ".md" -> MD;
                 case ".html" -> HTML;
                 case ".txt" -> TXT;
-                default -> UNKNOWN;
+                default -> throw new IllegalStateException("Unexpected document suffix name: " + suffixName);
             };
         }
     }
+
+    // ADD IMAGES + COMMON FILE ZIP, EXE...
 
     public enum AudioFileFormat {
         M4A,
@@ -66,7 +86,20 @@ public class DocumentEnum {
         MP4,
         WAV,
         WMA,
-        AAC
+        AAC;
+
+        public static AudioFileFormat getAudioType(String suffixName) {
+            return switch (suffixName) {
+                case ".m4a" -> M4A;
+                case ".flac" -> FLAC;
+                case ".mp3" -> MP3;
+                case ".mp4" -> MP4;
+                case ".wav" -> WAV;
+                case ".wma" -> WMA;
+                case ".aac" -> AAC;
+                default -> throw new IllegalStateException("Unexpected audio suffix name: " + suffixName);
+            };
+        }
     }
 
     public enum VideoFileFormat {
@@ -75,6 +108,18 @@ public class DocumentEnum {
         AVI,
         FLV,
         MKV,
-        WEBM
+        WEBM;
+
+        public static VideoFileFormat getVideoType(String suffixName) {
+            return switch (suffixName) {
+                case ".mp4" -> MP4;
+                case ".mov" -> MOV;
+                case ".avi" -> AVI;
+                case ".flv" -> FLV;
+                case ".mkv" -> MKV;
+                case ".webm" -> WEBM;
+                default -> throw new IllegalStateException("Unexpected video suffix name: " + suffixName);
+            };
+        }
     }
 }

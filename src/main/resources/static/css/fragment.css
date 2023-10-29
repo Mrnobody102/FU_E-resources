@@ -29,8 +29,8 @@
 /* User navbar */
 .header__navbar {
     display: flex;
-    /*justify-content: space-between;*/
-    padding: 1.5rem 0 1rem 2rem;
+    align-items: center;
+    padding: 1.5rem 2rem 1.5rem 2rem;
 }
 
 .header__navbar-list {
@@ -40,9 +40,10 @@
 }
 
 .header__navbar-item {
-    margin: 8px;
-    position: relative;
+    align-items: center;
+    /*position: relative;*/
     font-size: 1.5rem;
+    margin-left: 1rem;
 }
 
 .header__system-name {
@@ -51,10 +52,12 @@
     color: var(--white-color);
     font-size: 2.0rem;
     font-weight: var(--font-medium);
-    padding: 0;
+    padding:0;
     margin: 0;
 }
-
+.header__logo{
+    margin-left: 2rem;
+}
 .header__navbar-item,
 .header__navbar-item-link {
     list-style: none;

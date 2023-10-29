@@ -2,10 +2,8 @@ package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.AccountDTO;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
-import fpt.edu.eresourcessystem.model.Account;
-import fpt.edu.eresourcessystem.model.Lecturer;
-import fpt.edu.eresourcessystem.model.Librarian;
-import fpt.edu.eresourcessystem.model.Student;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import java.util.List;
 import java.util.Objects;
 
-// SỬA ĐƯỜNG LINK HTML
-// THÊM ASSMIN
 @Controller
 @RequestMapping("/admin")
 @PropertySource("web-setting.properties")
@@ -73,6 +69,11 @@ public class AdminController {
         return "admin/account/admin_accounts";
     }
 
+    @GetMapping({"/courseCreator"})
+    public String manageCourseCreators() {
+        return "admin/account/admin_course_creators";
+    }
+
     @GetMapping("/accounts/list/{pageIndex}")
     String findAccountByPage(@PathVariable Integer pageIndex,
                              @RequestParam(required = false, defaultValue = "") String search,
@@ -97,13 +98,13 @@ public class AdminController {
     }
 
     /**
-     * @param account
+     * @param accountDTO
      * @param model
      * @return
      */
     @GetMapping("/accounts/add")
-    public String addAccountProcess(@ModelAttribute Account account, final Model model) {
-        model.addAttribute("account", Objects.requireNonNullElseGet(account, Account::new));
+    public String addAccountProcess(@ModelAttribute AccountDTO accountDTO, final Model model) {
+        model.addAttribute("account", Objects.requireNonNullElseGet(accountDTO, Account::new));
         model.addAttribute("roles", AccountEnum.Role.values());
         model.addAttribute("campuses", AccountEnum.Campus.values());
         model.addAttribute("genders", AccountEnum.Gender.values());
@@ -117,27 +118,29 @@ public class AdminController {
     @PostMapping("/accounts/add")
     public String addAccount(@ModelAttribute AccountDTO accountDTO) {
         String email = accountDTO.getEmail();
+        String role = String.valueOf(accountDTO.getRole());
         if (accountService.findByEmail(email) != null) {
             return "redirect:/admin/accounts/add?error";
         }
-
-        accountService.addAccount(accountDTO);
-        String role = String.valueOf(accountDTO.getRole());
+        Account account = accountService.addAccount(accountDTO);
         switch (role) {
-            // Thêm ASSMIN
+            case "ADMIN":
+                Admin admin = new Admin();
+                admin.setAccount(account);
+                // THÊM
             case "LIBRARIAN":
                 Librarian librarian = new Librarian();
-                librarian.setAccountId(accountDTO.getAccountId());
+                librarian.setAccount(account);
                 librarianService.addLibrarian(librarian);
                 break;
             case "STUDENT":
                 Student student = new Student();
-                student.setAccountId(accountDTO.getAccountId());
+                student.setAccount(account);
                 studentService.addStudent(student);
                 break;
             case "LECTURER":
                 Lecturer lecturer = new Lecturer();
-                lecturer.setAccountId(accountDTO.getAccountId());
+                lecturer.setAccount(account);
                 lecturerService.addLecturer(lecturer);
                 break;
             default:
@@ -155,11 +158,11 @@ public class AdminController {
      * @return
      */
     @GetMapping({"/accounts/{accountId}/update", "/accounts/updated/{accountId}"})
-    public String updateAccountProcess(@PathVariable(required = false) String accountId, final Model model) {
+    public String updateAccount(@PathVariable(required = false) String accountId, final Model model) {
         if (null == accountId) {
             accountId = "";
         }
-        Account account = accountService.findByAccountId(accountId);
+        Account account = accountService.findById(accountId);
         if (null == account) {
             return "exception/404";
         } else {
@@ -176,55 +179,56 @@ public class AdminController {
     }
 
     /**
-     * @param account
+     * @param accountDTO
      * @param model
      * @return
      */
     @PostMapping("/accounts/update")
-    public String updateAccount(@ModelAttribute Account account,
+    public String updateAccountProcess(@ModelAttribute AccountDTO accountDTO,
                                 final Model model) {
-        Account checkExist = accountService.findByAccountId(account.getAccountId());
+        Account checkExist = accountService.findById(accountDTO.getId());
         if (null == checkExist) {
             model.addAttribute("errorMessage", "account not exist.");
             return "exception/404";
         } else {
 
-            Account checkEmailDuplicate = accountService.findByEmail(account.getEmail());
+            Account checkEmailDuplicate = accountService.findByEmail(accountDTO.getEmail());
             if (checkEmailDuplicate != null &&
-                    !checkExist.getEmail().equalsIgnoreCase(account.getEmail())) {
-                String result = "redirect:/admin/accounts/updated/" + account.getAccountId() + "?error";
+                    !checkExist.getEmail().equalsIgnoreCase(accountDTO.getEmail())) {
+                String result = "redirect:/admin/accounts/updated/" + accountDTO.getId() + "?error";
                 return result;
             }
-            String role = String.valueOf(account.getRole());
+            String role = String.valueOf(accountDTO.getRole());
+            Account account = new Account(accountDTO);
             System.out.println(role);
             switch (role) {
                 // Thêm ASSMIN
                 case "LIBRARIAN":
-                    Librarian librarian = librarianService.findByAccountId(account.getAccountId());
+                    Librarian librarian = librarianService.findByAccountId(accountDTO.getId());
                     if (librarian == null) {
                         librarian = new Librarian();
-                        librarian.setAccountId(account.getAccountId());
+                        librarian.setAccount(account);
                         librarianService.addLibrarian(librarian);
                     } else {
                         librarianService.updateLibrarian(librarian);
                     }
                     break;
                 case "STUDENT":
-                    if (null == studentService.findByAccountId(account.getAccountId())) {
+//                    if (null == studentService.findByAccountId(account.getId())) {
                         Student student = new Student();
-                        student.setAccountId(account.getAccountId());
+                        student.setAccount(account);
                         studentService.addStudent(student);
-                    }
+//                    }
                     break;
                 case "LECTURER":
-                    if (null == lecturerService.findByAccountId(account.getAccountId())) {
+                    if (null == lecturerService.findByAccountId(account.getId())) {
                         Lecturer lecturer = new Lecturer();
-                        lecturer.setAccountId(account.getAccountId());
+                        lecturer.setAccount(account);
                         lecturerService.addLecturer(lecturer);
                     }
                     break;
                 default:
-                    return "redirect:/admin/accounts/updated/" + account.getAccountId() + "?error";
+                    return "redirect:/admin/accounts/updated/" + account.getId() + "?error";
             }
             accountService.updateAccount(account);
             model.addAttribute("account", account);
@@ -232,7 +236,7 @@ public class AdminController {
             model.addAttribute("campuses", AccountEnum.Campus.values());
             model.addAttribute("genders", AccountEnum.Gender.values());
             model.addAttribute("success", "");
-            String result = "redirect:/admin/accounts/updated/" + account.getAccountId() + "?success";
+            String result = "redirect:/admin/accounts/updated/" + account.getId() + "?success";
             return result;
         }
     }
@@ -245,10 +249,11 @@ public class AdminController {
      */
     @GetMapping("/accounts/{accountId}/delete")
     public String deleteAccount(@PathVariable String accountId) {
-        Account check = accountService.findByAccountId(accountId);
-        System.out.println(check);
-        if (null != check) {
-            accountService.delete(check);
+        Account foundAccount = accountService.findById(accountId);
+        if (null != foundAccount) {
+            // SOFT DELETE
+            foundAccount.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+            accountService.updateAccount(foundAccount);
             return "redirect:/admin/accounts/list?success";
         }
         return "redirect:/admin/accounts/list?error";
@@ -264,7 +269,7 @@ public class AdminController {
         if (null == accountId) {
             accountId = "";
         }
-        Account account = accountService.findByAccountId(accountId);
+        Account account = accountService.findById(accountId);
         if (null == account) {
             return "exception/404";
         } else {

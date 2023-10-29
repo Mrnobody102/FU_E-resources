@@ -8,6 +8,7 @@
   <!-- CSS -->
   <link rel="stylesheet" th:href="@{/css/base.css}" />
   <link rel="stylesheet" th:href="@{/css/fragment.css}" />
+  <link rel="stylesheet" th:href="@{/css/styles/guest.css}">
 
 
 
@@ -18,8 +19,43 @@
 
   <div th:replace="~{fragments/header::guestHeaderSection}"></div>
   <!--  Main-->
-  <div th:replace="~{fragments/main}"></div>
+<!--  <div th:replace="~{fragments/main}"></div>-->
+  <section class="help-faq">
+    <div class="faq">
+      <h2 class="question" onclick="toggleAnswer(this)"> 1. Thời gian mở cửa và lịch trình hoạt động của thư
+        viện FPT như nào?</h2>
+      <p class="answer"> <strong>Thư viện Đại học FPT mở cửa tất cả các ngày trong tuần. </strong> <br>
+        Thứ 2 - 6: 8h - 21h <br>
+        Thứ 7 - Chủ nhật: 9h - 18h </p>
+    </div>
+    <div class="faq">
+      <h2 class="question" onclick="toggleAnswer(this)"> 2. Thư viện có phòng đọc và khu vực làm việc nhóm
+        không?</h2>
+      <p class="answer"> <strong> Do yêu cầu làm việc nhóm ở nhiều môn học, thư viện Đại học FPT có thiết kế phòng
+        riêng
+        cho những sinh viên có nhu cầu làm việc nhóm. </strong> <br>
+        Những sinh viên có nhu cầu sử dụng phòng cần đặt trước trên website thư viện của trường.
+      </p>
 
+    </div>
+    <div class="faq">
+      <h2 class="question" onclick="toggleAnswer(this)"> 3. Làm thế nào để yêu cầu mua sách mới hoặc đề xuất
+        bổ sung thêm tài liệu cho thư viện?</h2>
+      <p class="answer"> <strong> Thư viện Đại học FPT có hầu hết những đầu sách phục vụ cho việc học tập của sinh
+        viên.</strong> <br>
+        Tuy nhiên, một vài đầu sách mới chưa kịp bổ sung, nếu sinh viên có nhu cầu, đề xuất, có thể yêu cầu thư viện
+        bổ sung
+        thêm tài liệu, phục vụ việc học tập.</p>
+    </div>
+    <div class="faq">
+      <h2 class="question" onclick="toggleAnswer(this)"> 4. Làm thế nào để truy cập các nguồn tài liệu trực
+        tuyến tại thư viện FPT?</h2>
+      <p class="answer"><strong> Thư viện Đại học FPT có website online để truy cập nguồn tài liệu trực tiếp.
+      </strong> <br>
+        Sinh viên có thể truy cập vào website e-resource để tham khảo tài liệu trực tuyến phục vụ việc học tập.
+      </p>
+    </div>
+  </section>
   <!-- Footer -->
   <div th:replace="~{fragments/footer :: footerSection}"></div>
 </div>

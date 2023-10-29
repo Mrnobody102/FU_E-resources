@@ -32,9 +32,9 @@
       </nav>
     </div>
     <div class="course-details-head">
-      <a th:href="@{'/lecturer/courses/' + ${course.courseId}}"
+      <a th:href="@{'/lecturer/courses/' + ${course.getId}}"
          th:text="|${course.courseCode} - ${course.courseName}|"></a>
-      <span> &gt; <a th:href="@{'/lecturer/courses/addTopic/' + ${course.courseId}}">Add topic</a> </span>
+      <span> &gt; <a th:href="@{'/lecturer/courses/addTopic/' + ${course.getId}}">Add topic</a> </span>
     </div>
     <section>
       <h1>Detail Subject</h1>
@@ -57,8 +57,8 @@
                 <th>Topics</th>
                 <td th:if="topics ne null">
                   <th:block th:each="topic : ${topics}">
-                    <p> <a th:href="@{'/lecturer/courses/updateTopic/' + ${topic.topicId}}">Edit</a>
-                      | <a class="delete-topic" th:id="'/' + ${course.courseId} + '/' + ${topic.topicId}">Remove</a>
+                    <p> <a th:href="@{'/lecturer/courses/updateTopic/' + ${topic.getId}}">Edit</a>
+                      | <a class="delete-topic" th:id="'/' + ${course.getId} + '/' + ${topic.getId}">Remove</a>
                     <a th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></a>
                     </p>
                   </th:block>
@@ -72,7 +72,7 @@
                    <tr>
                        <td><label th:for="courseId">Course ID</label></td>
                        <td><input type="text"
-                            class="form-control hidden" th:field="*{courseId}" th:id="courseId"
+                            class="form-control hidden" th:field="*{course}" th:id="courseId"
                                   placeholder="Enter course ID" readonly>
                        </td>
                    </tr>

@@ -16,11 +16,22 @@
 
   <div th:replace="~{fragments/header::guestHeaderSection}"></div>
   <!--  Main-->
-  <div th:replace="~{fragments/main}"></div>
-
+  <!--  <div th:replace="~{fragments/main}"></div>-->
+  <section class="contact-us">
+    <div class="container">
+      <h1 class="contact" style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">Contact</h1>
+      <p class="address_infor"> <strong>Phòng 107 Tòa nhà Delta</strong></p>
+      <p class="address_infor"> <strong>Trường Đại học FPT, Khu CNC Hòa Lạc, Km29 Đại Lộ Thăng Long, Thạch Thất, Hà Nội</strong></p>
+      <div class="contact-address">
+        <p><strong>Email:</strong> <a href="mailto:thuvien_fu_hoalac@fpt.edu.vn">thuvien_fu_hoalac@fpt.edu.vn</a>
+        </p>
+        <p> <strong>Phone number:</strong> <a href="tel:02466805912">02466 805 912</a></p>
+      </div>
+    </div>
+  </section>
   <!-- Footer -->
   <div th:replace="~{fragments/footer :: footerSection}"></div>
 </div>
-<script th:src="@{/js/librarian.js}"></script>
+<script th:src="@{/js/guest.js}"></script>
 </body>
 </html>

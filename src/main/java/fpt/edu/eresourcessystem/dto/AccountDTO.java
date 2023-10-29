@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class AccountDTO {
 
     @NotNull
-    private String accountId;
+    private String id;
 
     @NotEmpty()
     private String username;
@@ -33,10 +33,15 @@ public class AccountDTO {
     private String name;
     private LocalDate dateOfBirth;
     private AccountEnum.Gender gender;
-
-    @NotEmpty(message = "account.validation.campus.required")
     private AccountEnum.Campus campus;
 
     @NotNull(message = "account.validation.role.required")
     private AccountEnum.Role role;
+
+    // Only use when response, no need in requests
+    private AccountEnum.Status status;
+    private String createdBy;
+    private String createdDate;
+    private String lastModifiedBy;
+    private String lastModifiedDate;
 }

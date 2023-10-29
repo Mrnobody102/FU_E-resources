@@ -23,8 +23,8 @@
   <!-- Content -->
   <main class="main_content">
     <div class="course-details-head">
-      <a th:href="@{'/lecturer/courses/detail/' + ${course.courseId}}">Back</a>
-      <span> &gt; <a th:href="@{'/lecturer/topic/detail/' + ${topic.topicId}}"
+      <a th:href="@{'/lecturer/courses/detail/' + ${course.getId}}">Back</a>
+      <span> &gt; <a th:href="@{'/lecturer/topic/detail/' + ${topic.getId}}"
                      th:text="${topic.topicTitle}"></a> </span>
     </div>
     <section>
@@ -47,7 +47,7 @@
             <button type="submit">
               <i class="fa fa-search"></i> Search
             </button>
-            <a class="btn-add" type="button" th:href="@{'/lecturer/document/add/'+ ${topic.topicId}}">
+            <a class="btn-add" type="button" th:href="@{'/lecturer/document/add/'+ ${topic.getId}}">
               Add new document
             </a>
           </form>
@@ -58,7 +58,7 @@
         <ul>
           <li>
             <div th:each="document : ${documents}">
-              <h6 th:text="${document.title}" th:href="@{'/lecturer/document/detail' + ${document.documentId}}"></h6>
+              <h6 th:text="${document.title}" th:href="@{'/lecturer/document/detail' + ${document.getId}}"></h6>
 
               <p th:text="${document.description}">
 <!--                Tài liệu này cung cấp sách giáo trình cho môn tư tưởng Hồ Chí Minh - HCM202-->
