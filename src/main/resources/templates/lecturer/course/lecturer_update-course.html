@@ -33,8 +33,8 @@
         </div>
         <div class="content-body">
           <div class="user-management-head">
-            <a th:href="@{'/lecturer/courses/' + ${course.courseId} }">Back</a>
-            <span> &gt; <a th:href="@{'/lecturer/courses/update/' + ${course.courseId}}"> Update Course</a> </span>
+            <a th:href="@{'/lecturer/courses/' + ${course.getId} }">Back</a>
+            <span> &gt; <a th:href="@{'/lecturer/courses/update/' + ${course.getId}}"> Update Course</a> </span>
           </div>
 
           <div class="add-content">
@@ -52,7 +52,7 @@
                        <tr>
                            <td><label th:for="courseId">Course ID</label></td>
                            <td><input type="text"
-                                class="form-control" th:field="*{courseId}"
+                                class="form-control" th:field="*{getId}"
                                 placeholder="Enter course ID"  readonly>
                            </td>
                        </tr>

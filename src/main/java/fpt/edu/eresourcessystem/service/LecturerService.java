@@ -4,15 +4,14 @@ import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.LecturerCourse;
 import fpt.edu.eresourcessystem.model.Student;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface LecturerService {
-    List<Lecturer> findByCourseId(String courseId);
+    Lecturer findByCourseId(String courseId);
     Lecturer addLecturer(Lecturer lecturer);
-
-    Lecturer updateLecturer(Lecturer lecturer);
-
+    List<Lecturer> findAll();
 
     List<Course> findListManageCourse(Lecturer lecturer);
 
@@ -22,5 +21,6 @@ public interface LecturerService {
 
     Lecturer findCurrentCourseLecturer(String courseId);
 
-    List<Lecturer> findAll();
+    Page<Lecturer> findLecturerByLecturerIdLike(String lectureId, int pageIndex, int pageSize);
+
 }

@@ -53,23 +53,6 @@
 
                             <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list/1}">Show AlL</a>
                         </div>
-<!--                        <div>-->
-<!--                            <a class="btn lib_btn-add" type="button" th:href="@{/librarian/courses/add}">Add new-->
-<!--                                course</a>-->
-<!--                        </div>-->
-<!--                        SELECT BY MAJOR-->
-<!--                        <div class="d-flex">-->
-<!--                            <select class="lib_filter" th:name="major" th:id="major" onchange="this.form.submit()">-->
-<!--                                <option value="all">All-->
-<!--                                </option>-->
-<!--                                <option th:each="major : ${majors}"-->
-<!--                                        th:text="${major.getDisplayValue()}"-->
-<!--                                        th:value="${major}"-->
-<!--                                        th:selected="(${majorSearch} == ${major.getToString()})">-->
-<!--                                </option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-
                     </form>
                     <div>
                         <a class="lib_btn-add" type="button" th:href="@{/librarian/courses/add}">
@@ -89,9 +72,9 @@
                     </tr>
                     <th:block th:each="course : ${courses}">
                         <tr>
-                            <td><a th:href="@{'/librarian/courses/' + ${course.courseId}}"
+                            <td><a th:href="@{'/librarian/courses/' + ${course.getId}}"
                                    th:text="${course.courseCode}"></a></td>
-                            <td><a class="link" th:href="@{'/librarian/courses/' + ${course.courseId}}"
+                            <td><a class="link" th:href="@{'/librarian/courses/' + ${course.getId}}"
                                                         th:text="${course.courseName}"></a></td>
                             <td><span class="code-archive-except" th:text="${course.description}"></span></td>
 <!--                            <td colspan="2">-->

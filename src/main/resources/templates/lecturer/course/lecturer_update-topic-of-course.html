@@ -32,9 +32,9 @@
       </nav>
     </div>
     <div class="course-details-head">
-      <a th:href="@{'/lecturer/courses/' + ${course.courseId}}"
+      <a th:href="@{'/lecturer/courses/' + ${course.getId}}"
          th:text="|${course.courseCode} - ${course.courseName}|"></a>
-      <span> &gt; <a th:href="@{'/lecturer/courses/updateTopic/' + ${topic.topicId}}">Update topic</a> </span>
+      <span> &gt; <a th:href="@{'/lecturer/courses/updateTopic/' + ${topic.getId}}">Update topic</a> </span>
     </div>
     <section>
       <h1>Detail Subject</h1>
@@ -57,27 +57,27 @@
                 <th>Topics</th>
                 <td th:if="topics ne null">
                   <th:block  th:each="topic : ${topics}">
-                    <p> <a  th:href="@{'/lecturer/courses/updateTopic/'+ ${topic.topicId}}">Edit</a>
-                      | <a class="delete-topic" th:id="'/' + ${course.courseId} + '/' + ${topic.topicId}">Remove</a>
+                    <p> <a  th:href="@{'/lecturer/courses/updateTopic/'+ ${topic.getId}}">Edit</a>
+                      | <a class="delete-topic" th:id="'/' + ${course.getId} + '/' + ${topic.getId}">Remove</a>
                       <a th:text="|${topic.topicTitle} : ${topic.topicDescription}|"> </a> </p>
                   </th:block>
                 </td>
               </tr>
             </table>
-            <form method="post" role="form" th:action="@{'/lecturer/courses/updateTopic/' + ${topic.topicId}}"
+            <form method="post" role="form" th:action="@{'/lecturer/courses/updateTopic/' + ${topic.getId}}"
                   th:object="${topic}" th:id="add-form">
               <h3>Update topic</h3>
               <table class="table-form add-table">
                 <tr>
                   <td><label th:for="courseId">Course ID</label></td>
                   <td><input type="text" th:id="courseId"
-                             class="form-control hidden" th:field="*{courseId}" readonly>
+                             class="form-control hidden" th:field="*{course}" readonly>
                   </td>
                 </tr>
                 <tr>
                   <td><label th:for="topicId">Topic ID</label></td>
                   <td><input type="text"
-                             class="form-control hidden" th:field="*{topicId}" readonly>
+                             class="form-control hidden" th:field="*{getId}" readonly>
                   </td>
                 </tr>
                 <tr>

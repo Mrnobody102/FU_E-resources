@@ -1,13 +1,9 @@
 package fpt.edu.eresourcessystem.model;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -24,7 +20,6 @@ public class LecturerCourseId {
     private String courseId;
 
     private LocalDate createdDate;
-
     private LocalDate lastModifiedDate;
 
     @Override

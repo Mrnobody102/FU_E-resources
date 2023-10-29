@@ -18,24 +18,15 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student addStudent(Student student) {
-        if (null == student.getAccountId()) {
-            Student result = studentRepository.save(student);
-            return result;
-        } else {
-            Student checkExist = studentRepository.findByAccountId(student.getAccountId());
-            if (null != checkExist) {
-                Student result = studentRepository.save(student);
-                return result;
-            }
-        }
-        return null;
+        System.out.println(student);
+        return studentRepository.insert(student);
     }
 
-    @Override
-    public Student findByAccountId(String accountId) {
-        Student student = studentRepository.findByAccountId(accountId);
-        return student;
-    }
+//    @Override
+//    public Student findByAccountId(String accountId) {
+//        Student student = studentRepository.findByAccountId(accountId);
+//        return student;
+//    }
 
     @Override
     public List<Student> findAll() {

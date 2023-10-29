@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
@@ -16,19 +18,25 @@
 </head>
 <body class="app_container">
 <header th:replace="~{fragments/header::headerLibrarianSection}"></header>
-<div class="main_content">
+<div class="main_content librarian-main-content">
     <div class="grid app__container-content-wrapper">
         <div class="app__container-content">
             <div class="lib-main_menu">
-                <div class="lib-main_menu-item">
-                    <a th:href="@{/librarian/accounts/list}">
-                        <i class="p-2 fa fa-user"></i>
-                        Accounts management</a>
-                </div>
+<!--                <div class="lib-main_menu-item">-->
+<!--                    <a th:href="@{/librarian/accounts/list}">-->
+<!--                        <i class="p-2 fa fa-user"></i>-->
+<!--                        Accounts management</a>-->
+<!--                </div>-->
                 <div class="lib-main_menu-item">
                     <a th:href="@{/librarian/courses/list}">
                         <i class="p-2 fa fa-book"></i>
                         Courses management</a>
+                </div>
+
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/librarian/lectures}">
+                        <i class="p-2 fa fa-book"></i>
+                        Assign course managers</a>
                 </div>
                 <div class="lib-main_menu-item">
                     <a th:href="@{/librarian/documents/list}">
@@ -40,16 +48,23 @@
                         <i class="p-2 fa fa-paper-plane"></i>
                         Requests management</a>
                 </div>
+<!--                <div class="lib-main_menu-item">-->
+<!--                    <a th:href="@{/librarian/feedbacks/list}">-->
+<!--                        <i class="p-2 fa fa-comments"></i>-->
+<!--                        Feedbacks management</a>-->
+<!--                </div>-->
+<!--                <div class="lib-main_menu-item">-->
+<!--                    <a th:href="@{/librarian/statistics}">-->
+<!--                        <i class="p-2 fa fa-database"></i>-->
+<!--                        Statistics </a>-->
+<!--                </div>-->
+
                 <div class="lib-main_menu-item">
-                    <a th:href="@{/librarian/feedbacks/list}">
-                        <i class="p-2 fa fa-comments"></i>
-                        Feedbacks management</a>
+<!--                    <a th:href="@{/librarian/statistics}">-->
+                        <i class="p-2 fa fa-file"></i>
+                        Document Reports </a>
                 </div>
-                <div class="lib-main_menu-item">
-                    <a th:href="@{/librarian/statistics}">
-                        <i class="p-2 fa fa-database"></i>
-                        Statistics and Reports</a>
-                </div>
+
                 <div class="lib-main_menu-item">
                     <a th:href="@{/lecturer}">
                         <i class="p-2 fas fa-chalkboard-teacher"></i>

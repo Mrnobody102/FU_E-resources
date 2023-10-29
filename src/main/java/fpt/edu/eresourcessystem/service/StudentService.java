@@ -7,7 +7,7 @@ import java.util.List;
 public interface StudentService {
     Student addStudent(Student student);
 
-    Student findByAccountId(String accountId);
+//    Student findByAccountId(String accountId);
 
     List<Student> findAll();
 

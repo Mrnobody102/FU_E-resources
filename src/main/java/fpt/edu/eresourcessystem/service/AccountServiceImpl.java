@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.dto.AccountDTO;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void addAccount(AccountDTO accountDTO) {
+    public Account addAccount(AccountDTO accountDTO) {
         Account account = new Account();
-        account.setAccountId(accountDTO.getAccountId());
+        account.setId(accountDTO.getId());
         account.setUsername(accountDTO.getUsername());
         account.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
         account.setEmail(accountDTO.getEmail());
@@ -48,12 +49,14 @@ public class AccountServiceImpl implements AccountService {
         account.setGender(accountDTO.getGender());
         account.setCampus(accountDTO.getCampus());
         account.setRole(accountDTO.getRole());
+        account.setDeleteFlg(CommonEnum.DeleteFlg.PRESERVED);
         accountRepository.insert(account);
+        return account;
     }
 
     @Override
     public Account updateAccount(Account account) {
-        Optional<Account> savedAccount = accountRepository.findById(account.getAccountId());
+        Optional<Account> savedAccount = accountRepository.findById(account.getId());
         if (savedAccount.isPresent()) {
             return accountRepository.save(account);
         }
@@ -66,7 +69,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account findByAccountId(String accountId) {
+    public Account findById(String accountId) {
         Optional<Account> account = accountRepository.findById(accountId);
         return account.orElse(null);
     }
@@ -97,18 +100,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean deleteById(String accountId) {
-        if (accountRepository.existsById(accountId)) {
-            accountRepository.removeAccountByAccountId(accountId);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public boolean delete(Account account) {
-        if (accountRepository.findById(account.getAccountId()).isPresent()) {
-            accountRepository.delete(account);
+        if (accountRepository.findById(account.getId()).isPresent()) {
+            account.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+            accountRepository.save(account);
             return true;
         }
         return false;
@@ -117,13 +112,5 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Page<Account> findAll(int pageIndex, int pageSize) {
         return null;
-    }
-
-    @Override
-    public List<Account> findByIds(List<String> ids) {
-        if (null == ids || ids.size() < 1) {
-            return null;
-        }
-        return accountRepository.findByIds(ids);
     }
 }

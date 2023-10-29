@@ -1,7 +1,8 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.model.Account;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Course;
+import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +22,22 @@ import java.util.Optional;
 public class CourseServiceImpl implements CourseService{
     private final CourseRepository courseRepository;
 
+    private final MongoTemplate mongoTemplate;
+
+
     @Autowired
-    MongoTemplate mongoTemplate;
-
-
-    public CourseServiceImpl(CourseRepository courseRepository) {
+    public CourseServiceImpl(CourseRepository courseRepository, MongoTemplate mongoTemplate) {
         this.courseRepository = courseRepository;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @Override
     public Course addCourse(Course course) {
-        if(null!=course && null==course.getCourseId()){
+        if(null!=course && null==course.getId()){
             if(null!=courseRepository.findByCourseCode(course.getCourseCode())){
                 return null;
             }else {
+                course.setDeleteFlg(CommonEnum.DeleteFlg.PRESERVED);
                 Course result = courseRepository.save(course);
                 return result;
             }
@@ -45,7 +48,7 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public Course updateCourse(Course course){
-        Optional<Course> savedCourse = courseRepository.findById(course.getCourseId());
+        Optional<Course> savedCourse = courseRepository.findById(course.getId());
         if(savedCourse.isPresent()){
            Course result =  courseRepository.save(course);
            return result;
@@ -72,9 +75,11 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public boolean delete(Course course) {
-        Optional<Course> check = courseRepository.findById(course.getCourseId());
+        Optional<Course> check = courseRepository.findById(course.getId());
         if(check.isPresent()){
-            courseRepository.delete(course);
+            // SOFT DELETE
+            course.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+            courseRepository.save(course);
             return true;
         }
         return false;
@@ -84,6 +89,13 @@ public class CourseServiceImpl implements CourseService{
     public Course findByCourseCode(String courseCode) {
         Course course = courseRepository.findByCourseCode(courseCode);
         return course;
+    }
+
+    @Override
+    public List<Course> findByCodeOrName(String code, String name) {
+        List<Course> courses = courseRepository.findByCodeOrName(code, name);
+        System.out.println(courses);
+        return courses;
     }
 
     @Override
@@ -113,12 +125,12 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public boolean addTopic(Topic topic) {
         // check course exist
-            Optional<Course> course = courseRepository.findById(topic.getCourseId());
+            Optional<Course> course = courseRepository.findById(topic.getCourse().getId());
             if(course.isPresent()) {
                 Course courseExisted = course.get();
 
                 // get topics of course
-                if (null == topic.getTopicId()) {
+                if (null == topic.getId()) {
                     return false;
                 }
                 List<String> topics = courseExisted.getTopics();
@@ -129,14 +141,14 @@ public class CourseServiceImpl implements CourseService{
                 // check topic existed in course
                 boolean checkTopicExist = false;
                 for (int i = 0; i < topics.size(); i++) {
-                    if (topics.get(i).equals(topic.getTopicId())) {
+                    if (topics.get(i).equals(topic.getId())) {
                         checkTopicExist = true;
                     }
                 }
                 // check topic not existed in course
                 if (!checkTopicExist) {
                     // add topic to course
-                    topics.add(topic.getTopicId());
+                    topics.add(topic.getId());
                     courseExisted.setTopics(topics);
                     courseRepository.save(courseExisted);
                 }
@@ -147,12 +159,12 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public Course removeTopic(Topic topic) {
-        Course course = findByCourseId(topic.getCourseId());
+        Course course = findByCourseId(topic.getCourse().getId());
         if (null != course) {
             // check delete success
             if (null != course.getTopics()) {
                 for (int i = 0; i < course.getTopics().size(); i++) {
-                    if (course.getTopics().get(i).equals(topic.getTopicId())) {
+                    if (course.getTopics().get(i).equals(topic.getId())) {
                         course.getTopics().remove(i);
                         return courseRepository.save(course);
                     }
@@ -178,14 +190,6 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public Page<Course> filterMajor(String major, String code, String name, String description, int pageIndex, int pageSize) {
-        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
-        Page<Course> page = courseRepository.filterMajor(major, code, name, description,
-                pageable);
-        return page;
-    }
-
-    @Override
     public Page<Course> findByCourseNameOrCourseCode(String courseName, String courseCode, Integer pageIndex, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         return courseRepository.findByCourseNameLikeOrCourseCodeLike(courseName, courseCode,
@@ -205,4 +209,21 @@ public class CourseServiceImpl implements CourseService{
         return courseRepository.findByCourseCodeLike(courseCode,
                 pageable);
     }
+
+    @Override
+    public Course updateLectureId(String courseId, Lecturer newLecture) {
+        Optional<Course> courseOptional = courseRepository.findById(courseId);
+
+        if (courseOptional.isPresent()) {
+            Course course = courseOptional.get();
+            course.setLecturer(newLecture);
+            return courseRepository.save(course);
+        } else {
+            // Xử lý trường hợp không tìm thấy khóa học với courseId
+            return null; // hoặc throw một exception tùy ý
+        }
+    }
+
+
+
 }

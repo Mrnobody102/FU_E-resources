@@ -1,12 +1,14 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 @Data
 @NoArgsConstructor
@@ -14,10 +16,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("admin") //tạm thời chưa dùng
 public class Admin {
     @Id
-    private String adminId;
-    @NotNull
-    private String accountId;
+    private String id;
 
+    @NotNull
+    @DocumentReference
+    private Account account;
+
+    // Delete flag
+    private CommonEnum.DeleteFlg deleteFlg;
     //Audit Log
     @CreatedBy
     private String createdBy;
@@ -27,4 +33,6 @@ public class Admin {
     private String lastModifiedBy;
     @LastModifiedDate
     private String lastModifiedDate;
+
+    // Constructor DTO
 }

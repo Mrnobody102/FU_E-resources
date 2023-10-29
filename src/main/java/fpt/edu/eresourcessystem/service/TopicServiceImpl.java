@@ -36,11 +36,11 @@ public class TopicServiceImpl implements TopicService{
 
     @Override
     public Topic addTopic(Topic topic) {
-        if(null==topic.getTopicId()) {
+        if(null==topic.getId()) {
             Topic result = topicRepository.save(topic);
             return result;
         }else{
-            Optional<Topic> checkExist = topicRepository.findById(topic.getTopicId());
+            Optional<Topic> checkExist = topicRepository.findById(topic.getId());
             if(!checkExist.isPresent()){
                 Topic result = topicRepository.save(topic);
                 return result;
@@ -56,7 +56,7 @@ public class TopicServiceImpl implements TopicService{
 
     @Override
     public Topic updateTopic(Topic topic) {
-        Optional<Topic> checkExist = topicRepository.findById(topic.getTopicId());
+        Optional<Topic> checkExist = topicRepository.findById(topic.getId());
        if(checkExist.isPresent()){
            Topic result = topicRepository.save(topic);
            return result;
@@ -78,4 +78,6 @@ public class TopicServiceImpl implements TopicService{
     public Topic addDocument(Topic topic) {
         return null;
     }
+
+
 }

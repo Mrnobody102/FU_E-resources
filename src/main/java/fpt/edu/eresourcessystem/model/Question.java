@@ -1,11 +1,15 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 @Data
 @NoArgsConstructor
@@ -13,15 +17,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("questions")
 public class Question {
     @Id
-    private String questionId;
+    private String id;
+    @NotEmpty(message = "question.validation.question.required")
     private String question;
-    private String studentId;
-    private String documentId;
+    @NotNull
+    @DocumentReference(lazy = true)
+    private Student student;
+    @NotNull
+    @DocumentReference(lazy = true)
+    private fpt.edu.eresourcessystem.model.Document documentId;
 
     // Answer
     private String answer;
-    private String lecturerId;
+    @DocumentReference(lazy = true)
+    private Lecturer lecturer;
 
+    // Delete flag
+    private CommonEnum.DeleteFlg deleteFlg;
     //Audit Log
     @CreatedBy
     private String createdBy;
@@ -31,4 +43,6 @@ public class Question {
     private String lastModifiedBy;
     @LastModifiedDate
     private String lastModifiedDate;
+
+    // Constructor DTO
 }

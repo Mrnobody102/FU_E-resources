@@ -1,5 +1,7 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.dto.CourseDTO;
+import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
@@ -87,8 +89,11 @@ public class LecturerController {
     }
 
     @PostMapping("/update")
-    public String updateCourse(@ModelAttribute Course course, final Model model) {
-        Course checkExist = courseService.findByCourseId(course.getCourseId());
+    public String updateCourse(@ModelAttribute CourseDTO courseDTO, final Model model) { //thêm tham số course state
+        // if status.equals("PUBLISH")
+        Course course = new Course(courseDTO, CourseEnum.Status.PUBLISH);
+        // else ...
+        Course checkExist = courseService.findByCourseId(course.getId());
         if (null == checkExist) {
             model.addAttribute("errorMessage", "Course not exist.");
             return "exception/404";
@@ -135,7 +140,7 @@ public class LecturerController {
         Course course = courseService.findByCourseId(courseId);
         List<Topic> topics = topicService.findByCourseId(courseId);
         Topic modelTopic = new Topic();
-        modelTopic.setCourseId(courseId);
+        modelTopic.setCourse(course);
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         model.addAttribute("topic", modelTopic);
@@ -146,10 +151,10 @@ public class LecturerController {
     public String addTopic(@ModelAttribute Topic topic, final Model model) {
         topic = topicService.addTopic(topic);
         courseService.addTopic(topic);
-        Course course = courseService.findByCourseId(topic.getCourseId());
-        List<Topic> topics = topicService.findByCourseId(topic.getCourseId());
+        Course course = courseService.findByCourseId(topic.getCourse().getId());
+        List<Topic> topics = topicService.findByCourseId(topic.getCourse().getId());
         Topic modelTopic = new Topic();
-        modelTopic.setCourseId(course.getCourseId());
+        modelTopic.setCourse(course);
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         model.addAttribute("topic", modelTopic);
@@ -159,8 +164,8 @@ public class LecturerController {
     @GetMapping({"/updateTopic/{topicId}"})
     public String editTopicProcess(@PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
-        Course course = courseService.findByCourseId(topic.getCourseId());
-        List<Topic> topics = topicService.findByCourseId(course.getCourseId());
+        Course course = courseService.findByCourseId(topic.getCourse().getId());
+        List<Topic> topics = topicService.findByCourseId(course.getId());
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         model.addAttribute("topic", topic);
@@ -188,7 +193,7 @@ public class LecturerController {
             Course course = courseService.findByCourseId(courseId);
             List<Topic> topics = topicService.findByCourseId(courseId);
             Topic modelTopic = new Topic();
-            modelTopic.setCourseId(courseId);
+            modelTopic.setCourse(course);
             model.addAttribute("course", course);
             model.addAttribute("topics", topics);
             model.addAttribute("topic", modelTopic);
@@ -206,16 +211,20 @@ public class LecturerController {
 //        return "lecturer/course/lecturer_courses";
 //    }
 
-    @GetMapping("/lecturer/topic/detail/{topicId}")
-    public String viewTopicDetail(@PathVariable String topicId, final Model model) {
-        Topic topic = topicService.findById(topicId);
-        Course course = courseService.findByCourseId(topic.getCourseId());
-        List<Document> documents = documentService.findDocumentsByTopicId(topicId);
-        model.addAttribute("course", course);
-        model.addAttribute("topic", topic);
-        model.addAttribute("documents", documents);
-        return "lecturer/course/lecturer_topic-detail";
-    }
+//    @GetMapping("/lecturer/topic/detail/{topicId}")
+//    public String viewTopicDetail(@PathVariable String topicId, final Model model) {
+//        Topic topic = topicService.findById(topicId);
+//        Course course = courseService.findByCourseId(topic.getCourse().getId());
+//        List<Document> documents = new ArrayList<>();
+//        for(ResourceType resourceType : topic.getResourceTypes()) {
+//            documents = documentService.findDocumentsByResourceTypeId(resourceType.getId());
+//        }
+//        model.addAttribute("course", course);
+//        model.addAttribute("topic", topic);
+//        model.addAttribute("documents", documents);
+//        return "lecturer/course/lecturer_topic-detail";
+//    }
+
     @GetMapping({"/manage_course/list/{pageIndex}", "/my_library"})
     public String viewCourseManaged(@PathVariable(required = false) Integer pageIndex, final Model model) {
         // get account authorized
@@ -229,6 +238,6 @@ public class LecturerController {
         model.addAttribute("totalPage", 10);
         model.addAttribute("pages", pages);
         model.addAttribute("currentPage", pageIndex);
-        return "lecturer/Library/lecturer_management-courses";
+        return "lecturer/library/lecturer_management-courses";
     }
 }

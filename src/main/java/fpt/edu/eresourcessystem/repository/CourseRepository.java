@@ -15,20 +15,47 @@ import java.util.Optional;
 public interface CourseRepository extends
         MongoRepository<Course, String> {
 
-    Optional<Course> findById(String courseId);
+    @Query("{ '_id' : ?0, 'deleteFlg' : 'PRESERVED' }")
+    Optional<Course> findById(String id);
 
+    @Query("{ 'courseCode' : ?0, 'deleteFlg' : 'PRESERVED' }")
     Course findByCourseCode(String courseCode);
 
-    @Query("SELECT c FROM Courses c WHERE c.courseId in ?1")
-    List<Course> findByListId(List<String> courseId);
+    @Query("SELECT c FROM Courses c WHERE c.id in ?1")
+    List<Course> findByListId(List<String> id);
 
+    @Query(("{$and:[{ 'deleteFlg' : 'PRESERVED' },"
+            + "{$or: ["
+            + "    {courseCode: {$regex: ?0}},"
+            + "    {courseName: {$regex: ?1}}"
+            + "    ]}"
+            + "]}"))
     Page<Course> findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(String code,String name,String description,Pageable pageable);
 
-    @Query("{$and: [{major: ?0}, {$or: [{code: {$regex: ?1}}, {name: {$regex: ?2}}, {description: {$regex: ?3}}]}]}")
-    Page<Course> filterMajor(String major, String code, String name, String description, Pageable pageable);
+    @Query("{$and:[{ 'deleteFlg' : 'PRESERVED' },"
+            + "{$or: ["
+            + "    {courseCode: {$regex: ?0}},"
+            + "    {courseName: {$regex: ?1}}"
+            + "    ]}"
+            + "]}")
+    List<Course> findByCodeOrName(String code, String name);
 
+    @Query("{$and: [{ 'deleteFlg' : 'PRESERVED' },"
+            + "{$or: ["
+            + "    {courseCode: {$regex: ?0}},"
+            + "    {courseName: {$regex: ?1}}"
+            + "    ]},"
+            + "{id: ?2}"
+            + "]}")
+    List<Course> findByCodeOrNameAndId(String code, String name, String id);
+
+    @Query("{ 'deleteFlg' : 'PRESERVED' }")
     Page<Course> findByCourseNameLikeOrCourseCodeLike(String courseName, String courseCode, Pageable pageable);
+
+    @Query("{ 'deleteFlg' : 'PRESERVED' }")
     Page<Course> findByCourseNameLike(String courseName, Pageable pageable);
+
+    @Query("{ 'deleteFlg' : 'PRESERVED' }")
     Page<Course> findByCourseCodeLike(String courseCode, Pageable pageable);
 
 }

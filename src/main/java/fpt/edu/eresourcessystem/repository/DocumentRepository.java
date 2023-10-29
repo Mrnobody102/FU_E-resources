@@ -16,15 +16,13 @@ public interface DocumentRepository extends
         MongoRepository<Document, String> {
 
     @NonNull
-    Optional<Document> findById(@NonNull String documentId);
-
-    List<Document> findDocumentsByTopicId(String topicId);
+    Optional<Document> findById(@NonNull String id);
 
     @Query("{$and: ["
             + "{$or: ["
-            + "    {topicId: {$regex: ?1}},"
-            + "    {topicId: null},"
-            + "    {topicId: ''}"
+            + "    {id: {$regex: ?1}},"
+            + "    {id: null},"
+            + "    {id: ''}"
             + "    ]},"
             + "{$or: ["
             + "    {title: {$regex: ?2}},"
