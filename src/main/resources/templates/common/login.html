@@ -23,15 +23,15 @@
                         <input type="password" name="password" class="auth-form__input" placeholder="Enter Password">
                     </div>
 
-                    <div class="auth-form__select">
-                        <label th:for="campus">Select campus</label>
-                        <select class="auth-form__select-tag" th:name="campus" th:id="campuses">
-                            <option th:each="campus : ${campuses}"
-                                    th:text="${campus}"
-                                    th:value="${campus}">
-                            </option>
-                        </select>
-                    </div>
+<!--                    <div class="auth-form__select">-->
+<!--                        <label th:for="campus">Select campus</label>-->
+<!--                        <select class="auth-form__select-tag" th:name="campus" th:id="campuses">-->
+<!--                            <option th:each="campus : ${campuses}"-->
+<!--                                    th:text="${campus}"-->
+<!--                                    th:value="${campus}">-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </div>-->
                     <div class="auth-form__aside">
                         <div class="auth-form__help">
                             <a href="" class="auth-form__help-link auth-form__help-forgot-password">Forgot
@@ -42,8 +42,8 @@
                     </div>
 
                     <div class="auth-form__controls">
-                        <a href="/" id="closeLoginForm" class="btn btn--hover auth-form__controls-back">BACK</a>
-                        <button type="submit" class="btn btn--primary">LOGIN</button>
+                        <a href="/" id="closeLoginForm" class="btn btn--hover auth-form__controls-back">Back</a>
+                        <button type="submit" class="btn btn--primary">Login</button>
                     </div>
                 </div>
             </div>

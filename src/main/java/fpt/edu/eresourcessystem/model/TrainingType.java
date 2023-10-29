@@ -44,5 +44,6 @@ public class TrainingType {
         this.id = trainingTypeDTO.getId();
         this.trainingTypeName = trainingTypeDTO.getTrainingTypeName();
         this.trainingTypeDescription = trainingTypeDTO.getTrainingTypeDescription();
+        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
 }

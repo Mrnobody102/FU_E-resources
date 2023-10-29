@@ -13,6 +13,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
 @EnableWebSecurity
@@ -59,13 +62,12 @@ public class SecurityConfig {
         // Authorization
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/**", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
-                        .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
-                        .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.LECTURER.name())
-                        .requestMatchers("/student/**").hasAnyRole(AccountEnum.Role.STUDENT.name())
-                        .anyRequest().authenticated()
-
-                )
+                        .anyRequest().permitAll())
+//                        .requestMatchers("/", "/home", "/guest", "/login",  "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
+//                        .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
+//                        .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.LECTURER.name())
+//                        .requestMatchers("/student/**").hasAnyRole(AccountEnum.Role.STUDENT.name())
+//                        .anyRequest().authenticated())
         ;
         // Exception Handling
         http.exceptionHandling(auth -> auth.accessDeniedPage("/access_denied"));

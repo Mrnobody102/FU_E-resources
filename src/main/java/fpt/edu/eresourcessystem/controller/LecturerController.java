@@ -201,16 +201,6 @@ public class LecturerController {
         return "lecturer/course/lecturer_add-topic-to-course";
     }
 
-//    @GetMapping("/manage_course/list/{pageIndex}")
-//    public String findManageCourses(@PathVariable String pageIndex, final Model model) {
-//        Lecturer lecturer = new Lecturer();
-//        lecturer.setAccountId("65283bfc9bf46d65d5aa3f8f");
-//        lecturer = lecturerService.findByAccountId(lecturer.getAccountId());
-//        List<Course> courses = lecturerService.findListManageCourse(lecturer);
-//        model.addAttribute("courses", courses);
-//        return "lecturer/course/lecturer_courses";
-//    }
-
 //    @GetMapping("/lecturer/topic/detail/{topicId}")
 //    public String viewTopicDetail(@PathVariable String topicId, final Model model) {
 //        Topic topic = topicService.findById(topicId);
@@ -229,8 +219,9 @@ public class LecturerController {
     public String viewCourseManaged(@PathVariable(required = false) Integer pageIndex, final Model model) {
         // get account authorized
         Lecturer lecturer = getLoggedInLecturer();
-        List<Course> courses = lecturerService.findListManageCourse(lecturer);
+        List<Course> courses = lecturer.getCourses();
         model.addAttribute("coursesManagement", courses);
+        System.out.println(courses);
         List<Integer> pages = new ArrayList<>();
         for (int i = 1; i < 11; i++) {
             pages.add(i);
@@ -238,6 +229,6 @@ public class LecturerController {
         model.addAttribute("totalPage", 10);
         model.addAttribute("pages", pages);
         model.addAttribute("currentPage", pageIndex);
-        return "lecturer/Library/lecturer_management-courses";
+        return "lecturer/course/lecturer_courses-management";
     }
 }

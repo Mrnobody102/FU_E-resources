@@ -95,7 +95,6 @@ public class LibrarianController {
     public String addCourseProcess(@ModelAttribute Course course,
                                    @RequestParam String lecturer) {
 
-
         // check course code duplicate
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
         if (null == checkExist) {
@@ -105,9 +104,9 @@ public class LibrarianController {
                 Account account = accountService.findByEmail(lecturer);
                 if (null != account) {
                     // get lecturer by account
-                    Lecturer findLecturer = lecturerService.findByAccountId(account.getId());
+                    Lecturer foundLecturer = lecturerService.findByAccountId(account.getId());
 
-                    if (null != findLecturer) {
+                    if (null != foundLecturer) {
                         //save course
                         Course result = courseService.addCourse(course);
 
@@ -115,7 +114,7 @@ public class LibrarianController {
                         if (result != null) {
                             // create new lecturerCourseId
                             LecturerCourseId lecturerCourseId = new LecturerCourseId();
-                            lecturerCourseId.setLecturerId(findLecturer.getId());
+                            lecturerCourseId.setLecturerId(foundLecturer.getId());
                             // set course Id that added
                             lecturerCourseId.setCourseId(result.getId());
                             lecturerCourseId.setCreatedDate(LocalDate.now());
@@ -133,9 +132,11 @@ public class LibrarianController {
                                 lecturerCourseIds.add(addLecturerCourseResult.getId());
 
                                 result.setLecturerCourseIds(lecturerCourseIds);
-
+                                result.setLecturer(foundLecturer);
                                 // update course lecturers
                                 result = courseService.updateCourse(result);
+                                foundLecturer.getCourses().add(course);
+                                lecturerService.updateLecturer(foundLecturer);
                                 System.out.println(result);
                                 if (null != result) {
                                     return "redirect:/librarian/courses/add?success";
@@ -433,6 +434,4 @@ public class LibrarianController {
         model.addAttribute("lecturer", lecturer);
         return "librarian/lecture/lecture_detail";
     }
-
-
 }

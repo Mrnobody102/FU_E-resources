@@ -16,6 +16,14 @@
     <properties>
         <java.version>17</java.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>cksource-mvn-repo</id>
+            <name>CKSource Maven Repository</name>
+            <url>https://maven.cksource.com/</url>
+        </repository>
+    </repositories>
+
 
     <dependencyManagement>
         <dependencies>
@@ -80,6 +88,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+        <dependency>
+            <groupId>nz.net.ultraq.thymeleaf</groupId>
+            <artifactId>thymeleaf-layout-dialect</artifactId>
+        </dependency>
         <!-- SB starter web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -118,12 +130,26 @@
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
         </dependency>
 
+        <!-- CK Finder-->
+        <dependency>
+            <groupId>com.cksource</groupId>
+            <artifactId>ckfinder3</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
         <!--Other-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
-<!--        <dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <!--        <dependency>-->
 <!--            <groupId>com.cloudinary</groupId>-->
 <!--            <artifactId>cloudinary-http44</artifactId>-->
 <!--            <version>1.17.0</version>-->

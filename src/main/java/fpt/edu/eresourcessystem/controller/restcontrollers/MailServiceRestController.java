@@ -1,6 +1,5 @@
 package fpt.edu.eresourcessystem.controller.restcontrollers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,11 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @org.springframework.web.bind.annotation.RestController
 public class MailServiceRestController {
 
-    @Autowired
+    final
     JavaMailSender javaMailSender;
 
+    public MailServiceRestController(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
+
     @RequestMapping("/sendEmail")
-    public String helloSpringBoot(){
+    public String helloSpringBoot() {
 
         SimpleMailMessage message = new SimpleMailMessage();
 

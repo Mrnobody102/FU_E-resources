@@ -34,5 +34,9 @@ public class Admin {
     @LastModifiedDate
     private String lastModifiedDate;
 
-    // Constructor DTO
+    // Constructor
+    public Admin(@NotNull Account account) {
+        this.account = account;
+        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+    }
 }

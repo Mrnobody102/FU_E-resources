@@ -41,20 +41,18 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public List<Lecturer> findAll() {
-        return lecturerRepository.findAll();
+    public Lecturer updateLecturer(Lecturer lecturer) {
+        Optional<Lecturer> foundLecturer = lecturerRepository.findById(lecturer.getId());
+        if(foundLecturer.isPresent()){
+            Lecturer result =  lecturerRepository.save(lecturer);
+            return result;
+        }
+        return null;
     }
 
     @Override
-    public List<Course> findListManageCourse(Lecturer lecturer) {
-        Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getAccount().getId());
-        if (checkExist.isPresent()) {
-            if (null == checkExist.get().getLecturerCourses()) {
-                return null;
-            }
-            return courseService.findByListId(checkExist.get().getLecturerCourses());
-        }
-        return null;
+    public List<Lecturer> findAll() {
+        return lecturerRepository.findAll();
     }
 
     @Override

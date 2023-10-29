@@ -93,7 +93,7 @@ public class StudentController {
         if (null != courseService.findByCourseId(courseId)) {
             studentService.saveACourse(student.getId(), courseId);
         }
-        return "redirect:/student/courses/" + courseId + "?success";
+        return "redirect:/student/courses/" + courseId;
     }
 
     @GetMapping("/courses/{courseId}/unsaved_course")

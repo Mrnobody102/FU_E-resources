@@ -3,8 +3,8 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Lecturer | Details Course</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-    <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
@@ -31,108 +31,81 @@
                     </div>
 
                     <div class="stu_courses-content" id="main-lecturer">
-                        <div class="header__search">
-                            <!-- Input  -->
-                            <div class="header__search-input-wrap">
-                                <input type="text" class="header__search-input"
-                                       placeholder="Search courses, documents, topics...">
-                                <!-- Header-search-history -->
-                                <div class="header__search-history">
-                                    <h3 class="header__search-history-heading">
-                                        Search history
-                                    </h3>
-                                    <ul class="header__search-history-list">
-
-                                        <li class="header__search-history-item">
-                                            <a href="">Software</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- Select-find-scope -->
-                            <div class="header__search-select">
-                                <span class="header__search-select-label">All results</span>
-                                <i class="header__search-select-icon fas fa-angle-down"></i>
-                                <ul class="header__search-option">
-                                    <li class="header__search-option-item header__search-option-item--active">
-                                        <span class="">By Name</span>
-                                        <i class="fas fa-check"></i>
-                                    </li>
-                                    <li class="header__search-option-item">
-                                        <span class="">By Code</span>
-                                        <i class="fas fa-check"></i>
-                                    </li>
-                                </ul>
-                            </div>
-                            <button class="header__search-btn">
-                                <i class="header__search-btn-icon fas fa-search"></i>
-                            </button>
-                        </div>
-
                         <div class="course-details-head">
                             <a th:href="@{/lecturer}">Home</a>
-                            <span> &gt; <a th:href="@{/lecturer/courses/list}"> Courses management</a> </span>
+                            <span> &gt; <a th:href="@{/lecturer/courses/list/1}"> Courses management</a> </span>
                             <span> &gt; <a th:href="@{'/lecturer/courses/' + ${course.getId}}"
                                            th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
                         </div>
-                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h1 class="h2">Course Detail </h1>
+                        <div id="main">
+                            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h1 class="h2">Course Detail </h1>
 
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered" th:if="course ne null">
-                                <tr>
-                                    <th>Course Code</th>
-                                    <td th:text="${course.courseCode}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Course Name</th>
-                                    <td th:text="${course.courseName}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Description</th>
-                                    <td th:text="${course.description}"> </td>
-                                <tr>
-                                    <th>Topics
-                                        <p><a class="update-course-topic" th:href="@{'/lecturer/courses/addTopic/' + ${course.getId}}">Edit</a>
-                                        </p>
-                                    </th>
-                                    <td th:if="topics ne null">
-                                        <th:block th:each="topic : ${topics}">
-                                            <p th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></p>
-                                        </th:block>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Lecturer
-                                        <!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>-->
-                                        <!--                            </p>-->
-                                    </th>
-                                    <td th:if="${accountLecturer ne null}">
-                                        <p th:text="|${accountLecturer.name} - ${accountLecturer.email} |"></p>
-                                        <p><a class="link update-course-topic" th:href="@{'/lecturer/courses/addLecturers/'+${course.getId}}">Edit</a>
-                                        </p>
-                                    </td>
-                                    <td th:unless="${accountLecturer ne null}">
-                                        <p>
-                                            <a class="link" th:href="@{'/lecturer/courses/addLecturers/'+${course.getId}}">
-                                                <i class="fa-solid fa-plus"></i>
-                                                <span  class="update-course-topic">Add</span>
-                                            </a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <td>
-                                        <a class="update-course" th:href="@{'/lecturer/courses/update/'+${course.getId}}">Edit course information</a>
-                                        | <a class="delete-course" th:id="${course.getId}">Delete</a>
-                                        | <a class="update-topics" th:href="@{'/lecturer/courses/topics/'+${course.getId}}">Edit topics</a>
-                                    </td>
-                                </tr>
-                            </table>
+                            </div>
 
+                            <div class="table-responsive">
+                                <table class="table table-bordered" th:if="course ne null">
+                                    <tr>
+                                        <th>Course Code</th>
+                                        <td th:text="${course.courseCode}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Course Name</th>
+                                        <td th:text="${course.courseName}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Description</th>
+                                        <td th:text="${course.description}"></td>
+                                    <tr>
+                                        <th>Topics
+                                            <p><a class="update-course-topic"
+                                                  th:href="@{'/lecturer/courses/addTopic/' + ${course.getId}}">Edit</a>
+                                            </p>
+                                        </th>
+                                        <td th:if="topics ne null">
+                                            <th:block th:each="topic : ${topics}">
+                                                <p th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></p>
+                                            </th:block>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Lecturer
+                                            <!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>-->
+                                            <!--                            </p>-->
+                                        </th>
+                                        <td th:if="${accountLecturer ne null}">
+                                            <p th:text="|${accountLecturer.name} - ${accountLecturer.email} |"></p>
+                                            <p><a class="link update-course-topic"
+                                                  th:href="@{'/lecturer/courses/addLecturers/'+${course.getId}}">Edit</a>
+                                            </p>
+                                        </td>
+                                        <td th:unless="${accountLecturer ne null}">
+                                            <p>
+                                                <a class="link"
+                                                   th:href="@{'/lecturer/courses/addLecturers/'+${course.getId}}">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                    <span class="update-course-topic">Add</span>
+                                                </a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <td>
+                                            <a class="update-course"
+                                               th:href="@{'/lecturer/courses/update/'+${course.getId}}">Edit course
+                                                information</a>
+                                            | <a class="delete-course" th:id="${course.getId}">Delete</a>
+                                            | <a class="update-topics"
+                                                 th:href="@{'/lecturer/courses/topics/'+${course.getId}}">Edit
+                                            topics</a>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -202,9 +175,6 @@
 
 
 <!--</div>-->
-
-
-
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

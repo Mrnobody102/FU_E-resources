@@ -11,10 +11,8 @@ import java.util.List;
 public interface LecturerService {
     Lecturer findByCourseId(String courseId);
     Lecturer addLecturer(Lecturer lecturer);
+    Lecturer updateLecturer(Lecturer lecturer);
     List<Lecturer> findAll();
-
-    List<Course> findListManageCourse(Lecturer lecturer);
-
     Lecturer findByAccountId(String accountId);
 
     List<Lecturer> findByListLecturerIds(List<String> ids);

@@ -45,6 +45,8 @@ public class Account {
 
     private AccountEnum.Status status;
 
+    private AccountEnum.AccountType accountType;
+
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
 
@@ -71,5 +73,7 @@ public class Account {
         this.role = accountDTO.getRole();
         this.status = AccountEnum.Status.ACTIVE;
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+        // Add - Self system account
+        this.accountType = AccountEnum.AccountType.SYSTEM_ACC;
     }
 }

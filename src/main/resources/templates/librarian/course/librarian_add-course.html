@@ -1,5 +1,6 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       lang="en">
 <head>
     <meta charset="utf-8">
@@ -20,6 +21,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+    <!-- CK Editor-->
+    <script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
+    <script th:src="@{/ckfinder/static/ckfinder.js}"></script>
 
     <style>
         label.error {
@@ -74,39 +79,37 @@
                                 </tr>
 
                                 <tr>
-                                    <td class="lib_input-label"><label th:for="description">Description</label></td>
-                                    <td><textarea type="text" th:id="description"
-                                                  class="lib_input form-control" th:field="*{description}"
-                                                  placeholder="Enter description" ></textarea>
+                                    <td class="lib_input-label"><label for="editor">Description</label></td>
+                                    <td><textarea id="editor" th:field="*{description}"></textarea>
                                     </td>
                                 </tr>
-<!--                                <tr>-->
-<!--                                    <td class="lib_input-label"><label th:for="lesson">Topic</label></td>-->
-<!--                                    <td><input type="text"-->
-<!--                                               class="lib_input form-control" name="lesson" th:id="lesson"-->
-<!--                                               placeholder="Enter lessons"/>-->
-<!--                                    </td>-->
-<!--                                </tr>-->
+                                <!--                                <tr>-->
+                                <!--                                    <td class="lib_input-label"><label th:for="lesson">Topic</label></td>-->
+                                <!--                                    <td><input type="text"-->
+                                <!--                                               class="lib_input form-control" name="lesson" th:id="lesson"-->
+                                <!--                                               placeholder="Enter lessons"/>-->
+                                <!--                                    </td>-->
+                                <!--                                </tr>-->
                                 <tr>
                                     <td class="lib_input-label"><label th:for="lecturer">Lecturers</label></td>
                                     <td><input type="text"
-                                                  class="lib_input form-control" th:name="lecturer" th:id="lecturer"
-                                                  />
+                                               class="lib_input form-control" th:name="lecturer" th:id="lecturer"
+                                    />
                                     </td>
                                 </tr>
-<!--                                <tr>-->
-<!--                                    <td class="lib_input-label"><label th:for="lecturerSelection">Lecturers</label></td>-->
-<!--                                    <td><select name="lecturerSelection" th:id="lecturerSelection">-->
-<!--                                        <option th:each="lecturer : ${lecturers}"-->
-<!--                                                th:text="|${lecturer.username} ( ${lecturer.name} )|"-->
-<!--                                                th:value="${lecturer.accountId}">-->
-<!--                                        </option>-->
-<!--                                    </select>-->
-<!--                                    </td>-->
-<!--                                </tr>-->
+                                <!--                                <tr>-->
+                                <!--                                    <td class="lib_input-label"><label th:for="lecturerSelection">Lecturers</label></td>-->
+                                <!--                                    <td><select name="lecturerSelection" th:id="lecturerSelection">-->
+                                <!--                                        <option th:each="lecturer : ${lecturers}"-->
+                                <!--                                                th:text="|${lecturer.username} ( ${lecturer.name} )|"-->
+                                <!--                                                th:value="${lecturer.accountId}">-->
+                                <!--                                        </option>-->
+                                <!--                                    </select>-->
+                                <!--                                    </td>-->
+                                <!--                                </tr>-->
                                 <tr>
                                     <td class="lib_input-label"><label th:for="statusSelection">Status</label></td>
-                                    <td><select  th:field="*{status}" name="status" th:id="statusSelection">
+                                    <td><select th:field="*{status}" name="status" th:id="statusSelection">
                                         <option th:each="status : ${statuses}"
                                                 th:text="${status.getDisplayValue()}"
                                                 th:value="${status}">
@@ -148,14 +151,14 @@
 <script th:inline="javascript">
     validate_addCourse();
 
-        var successParam = [[${param.success}]];
-        if (successParam) {
-            Swal.fire(
-                'Success!',
-                'Save course successful!',
-                'success'
-            );
-        }
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Save course successful!',
+            'success'
+        );
+    }
 
     var errorParam = [[${param.error}]];
     if (errorParam) {
@@ -165,6 +168,20 @@
             'error'
         );
     }
+
+    // CK editor
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            ckfinder: {
+                uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
+            },
+        })
+        .then(editor => {
+            console.log(Array.from(editor.ui.componentFactory.names()));
+        })
+        .catch(error => {
+            console.error(error);
+        });
 </script>
 </body>
 </html>
