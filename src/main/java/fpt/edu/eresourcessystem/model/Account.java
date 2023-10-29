@@ -45,6 +45,8 @@ public class Account {
 
     private AccountEnum.Status status;
 
+    private AccountEnum.AccountType accountType;
+
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
 

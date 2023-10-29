@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @org.springframework.web.bind.annotation.RestController
 public class MailServiceRestController {
 
-    @Autowired
+    final
     JavaMailSender javaMailSender;
+
+    public MailServiceRestController(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 
     @RequestMapping("/sendEmail")
     public String helloSpringBoot(){

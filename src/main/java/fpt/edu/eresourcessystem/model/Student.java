@@ -45,4 +45,8 @@ public class Student {
     private String lastModifiedDate;
 
     // Constructor DTO
+    public Student(@NotNull Account account) {
+        this.account = account;
+        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+    }
 }

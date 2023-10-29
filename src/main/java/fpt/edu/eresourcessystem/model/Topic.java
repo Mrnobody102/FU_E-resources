@@ -49,5 +49,6 @@ public class Topic {
         this.course = topicDTO.getCourse();
         this.topicTitle = topicDTO.getTopicTitle();
         this.topicDescription = topicDTO.getTopicDescription();
+        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
 }

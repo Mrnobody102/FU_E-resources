@@ -26,7 +26,8 @@ public class Lecturer {
     @DocumentReference
     private Account account;
 
-    private List<String> lecturerCourses;
+    @DocumentReference(lazy = true)
+    private List<Course> courses;
     private List<String> documents;
     private List<String> answers; // 1 answer per question
 

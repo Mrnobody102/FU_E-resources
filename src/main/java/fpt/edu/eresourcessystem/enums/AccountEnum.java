@@ -5,6 +5,12 @@ import java.util.List;
 
 public class AccountEnum {
 
+    public enum AccountType {
+        SYSTEM_ACC,
+        FPT_MAIL_ACC,
+        FEID_ACC;
+    }
+
     public enum Status {
         ACTIVE("Active"),
         INACTIVE("Inactive");

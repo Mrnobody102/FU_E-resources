@@ -38,6 +38,9 @@ public class Librarian{
     @LastModifiedDate
     private String lastModifiedDate;
 
-    // Constructor DTO
-
+    // Constructor
+    public Librarian(@NotNull Account account) {
+        this.account = account;
+        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+    }
 }

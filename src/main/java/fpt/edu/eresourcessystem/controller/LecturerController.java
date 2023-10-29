@@ -229,8 +229,9 @@ public class LecturerController {
     public String viewCourseManaged(@PathVariable(required = false) Integer pageIndex, final Model model) {
         // get account authorized
         Lecturer lecturer = getLoggedInLecturer();
-        List<Course> courses = lecturerService.findListManageCourse(lecturer);
+        List<Course> courses = lecturer.getCourses();
         model.addAttribute("coursesManagement", courses);
+        System.out.println(courses);
         List<Integer> pages = new ArrayList<>();
         for (int i = 1; i < 11; i++) {
             pages.add(i);
@@ -238,6 +239,6 @@ public class LecturerController {
         model.addAttribute("totalPage", 10);
         model.addAttribute("pages", pages);
         model.addAttribute("currentPage", pageIndex);
-        return "lecturer/Library/lecturer_management-courses";
+        return "lecturer/course/lecturer_courses-management";
     }
 }

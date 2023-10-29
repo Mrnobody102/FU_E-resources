@@ -71,12 +71,12 @@
                         </th>
                         <td th:if="${accountLecturer ne null}">
                            <p th:text="|${accountLecturer.name} - ${accountLecturer.email} |"></p>
-                            <p><a class="link update-course-topic" th:href="@{'/librarian/courses/'+${course.getId}+'/addLecturers'}">Edit</a>
+                            <p><a class="link update-course-topic" th:href="@{'/librarian/courses/'+${course.getId}+'/add-lecture'}">Edit</a>
                             </p>
                         </td>
                         <td th:unless="${accountLecturer ne null}">
                             <p>
-                                <a class="link" th:href="@{'/librarian/courses/'+${course.getId} +'/addLecturers'}">
+                                <a class="link" th:href="@{'/librarian/courses/'+${course.getId} +'/add-lecture'}">
                                     <i class="fa-solid fa-plus"></i>
                                     <span  class="update-course-topic">Add</span>
                                 </a>
