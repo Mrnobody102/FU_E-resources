@@ -430,7 +430,7 @@ public class LibrarianController {
         Account account = accountService.findByUsername(username);
         Lecturer lecturer = lecturerService.findByAccountId(account.getId());
         model.addAttribute("lecturer", lecturer);
-        return "librarian/lecture/lecture_detail";
+        return "librarian_lecture-detail";
     }
 
 
@@ -456,6 +456,9 @@ public class LibrarianController {
         Lecturer lecturer = lecturerService.findByAccountId(account.getId());
         Course course = courseService.updateLectureId(courseId, lecturer);
 
+        lecturer.getCourses().add(course);
+        lecturerService.updateLecturer(lecturer);
+
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom("maihoa362001@gmail.com");
@@ -475,6 +478,58 @@ public class LibrarianController {
         model.addAttribute("course", course);
 //        model.addAttribute("topics", topics);
         return "librarian/course/librarian_course-detail";
+    }
+
+    @GetMapping({"/lectures"})
+    public String showLectures( final Model model) {
+//        Course course = courseService.findByCourseId(courseId);
+//        List<Topic> topics = topicService.findByCourseId(courseId);
+//        Lecturer lecturer = lecturerService.findCurrentCourseLecturer(courseId);
+//
+//        if (null != lecturer) {
+//            Account accountLecturer = accountService.findById(lecturer.getAccount().getId());
+//            model.addAttribute("accountLecturer", accountLecturer);
+//        }
+        List<Lecturer> lecturers = lecturerService.findAll();
+        model.addAttribute("lecturers", lecturers);
+        return "librarian/lecture/librarian_lectures";
+//        return  "librarian/course/detailCourseTest";
+    }
+
+    @GetMapping({"/lectures/list"})
+    public String showLecture() {
+        return "librarian/lecture/librarian_lectures";
+    }
+
+    @GetMapping("/lectures/list/{pageIndex}")
+    String showLectureByPage(@PathVariable Integer pageIndex,
+                             @RequestParam(required = false, defaultValue = "") String search,
+                             final Model model, HttpServletRequest request) {
+//        Page<Course> page;
+//        page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
+//        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+//        model.addAttribute("pages", pages);
+//        model.addAttribute("totalPage", page.getTotalPages());
+//        model.addAttribute("courses", page.getContent());
+//        model.addAttribute("search", search);
+//        model.addAttribute("currentPage", pageIndex);
+        return "librarian/lecture/librarian_lectures";
+    }
+
+
+    @GetMapping({"/lectures/{lectureId}"})
+    public String showLectureDetail(@PathVariable String lectureId, final Model model) {
+//        Course course = courseService.findByCourseId(courseId);
+//        List<Topic> topics = topicService.findByCourseId(courseId);
+//        Lecturer lecturer = lecturerService.findCurrentCourseLecturer(courseId);
+//
+//        if (null != lecturer) {
+//            Account accountLecturer = accountService.findById(lecturer.getAccount().getId());
+//            model.addAttribute("accountLecturer", accountLecturer);
+//        }
+//        model.addAttribute("course", course);
+//        model.addAttribute("topics", topics);
+        return "librarian/lecture/librarian_lecture-detail";
     }
 
 

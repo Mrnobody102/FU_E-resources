@@ -33,5 +33,6 @@ public interface LecturerRepository extends MongoRepository<Lecturer, String> {
 
 //    Page<Lecturer> findLecturer( Pageable pageable );
 
+    Page<Lecturer> findLecturerByCreatedByLike (String createBy, Pageable pageable);
 
 }

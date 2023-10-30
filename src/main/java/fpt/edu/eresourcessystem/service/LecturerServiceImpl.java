@@ -8,13 +8,13 @@ import fpt.edu.eresourcessystem.repository.CourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerCourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
+import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service("lecturerService")
 public class LecturerServiceImpl implements LecturerService {
@@ -90,4 +90,22 @@ public class LecturerServiceImpl implements LecturerService {
         return page;
     }
 
+//    public Page<Lecturer> findLecturerByCreatedByLikeAndAccount_Name(String createdBy,String search, int pageIndex, int pageSize) {
+//        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+//        Page<Lecturer> page = lecturerRepository.findLecturerByCreatedByLikeAndAccount_Name(createdBy, search, pageable);
+//        System.out.println(page);
+//        return page;
+//    }
+
+
+    @Override
+    public Lecturer addLectureWithCourse(Lecturer lecturer) {
+        Optional<Lecturer> foundLecturer = lecturerRepository.findById(lecturer.getId());
+        if(foundLecturer.isPresent()){
+
+            Lecturer result =  lecturerRepository.save(lecturer);
+            return result;
+        }
+        return null;
+    }
 }

@@ -241,4 +241,6 @@ public class LecturerController {
         model.addAttribute("currentPage", pageIndex);
         return "lecturer/course/lecturer_courses-management";
     }
+
+
 }
