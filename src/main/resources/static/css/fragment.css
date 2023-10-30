@@ -569,6 +569,7 @@
     min-width: 300px;
     width: 70%;
     border: 1px solid #888888;
+    margin-top: 3rem;
 }
 
 .header__search:focus-within {
@@ -803,6 +804,7 @@
 /* App Container: Category */
 .main_content {
     margin-top: 8rem;
+    margin-bottom: 8rem;
     flex: 1;
     background-color: var(--white-color);
 }

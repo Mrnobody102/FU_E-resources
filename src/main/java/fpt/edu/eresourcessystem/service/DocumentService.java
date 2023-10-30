@@ -1,7 +1,9 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Document;
 import org.springframework.data.domain.Page;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -15,6 +17,7 @@ public interface DocumentService {
     Document addDocument(Document document, String id) throws IOException;
 
     Document findById(String documentId);
+    List<Document> findByListId(List<String> documentIds);
 
     Document updateDocument(Document document) throws IOException;
 

@@ -1,14 +1,10 @@
 package fpt.edu.eresourcessystem.controller;
 
-import com.mongodb.internal.CheckedSupplier;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
-import fpt.edu.eresourcessystem.service.CourseLogService;
-import fpt.edu.eresourcessystem.service.CourseService;
-import fpt.edu.eresourcessystem.service.StudentService;
-import fpt.edu.eresourcessystem.service.TopicService;
+import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -17,9 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,12 +28,14 @@ public class StudentController {
 
     private final TopicService topicService;
     private final CourseLogService courseLogService;
+    private final DocumentService documentService;
 
-    public StudentController(CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService) {
+    public StudentController(CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService) {
         this.courseService = courseService;
         this.studentService = studentService;
         this.topicService = topicService;
         this.courseLogService = courseLogService;
+        this.documentService = documentService;
     }
 
     public Student getLoggedInStudent() {
@@ -130,15 +126,29 @@ public class StudentController {
         // get account authorized
         Student student = getLoggedInStudent();
         List<String> savedCourses = student.getSavedCourses();
-        List<Course> courses = courseService.findByListId(savedCourses);
-        model.addAttribute("coursesSaved", courses);
+        if(null!=savedCourses){
+            List<Course> courses = courseService.findByListId(savedCourses);
+            model.addAttribute("coursesSaved", courses);
+        }
         return "student/library/student_saved_courses";
+    }
+
+    @GetMapping({"/my_library/saved_documents"})
+    public String viewDocumentSaved(final Model model) {
+        // get account authorized
+        Student student = getLoggedInStudent();
+        List<String> savedDocuments = student.getSavedDocuments();
+        if(null!=savedDocuments){
+            List<Document> documents = documentService.findByListId(savedDocuments);
+            model.addAttribute("documentsSaved", documents);
+        }
+        return "student/library/student_saved_documents";
     }
 
 
     @GetMapping({"/topic/{topicId}","/topicDetail"})
-    public String viewTopicDetail(@PathVariable(required = false) String docId, final Model model) {
-        return "student/course/student_view-topic-detail";
+    public String viewTopicDetail(@PathVariable(required = false) String topicId, final Model model) {
+        return "student/course/student_course-detail";
     }
     @GetMapping({"/document/{docId}","/documentDetail"})
     public String viewDocumentDetail(@PathVariable(required = false) String docId, final Model model) {

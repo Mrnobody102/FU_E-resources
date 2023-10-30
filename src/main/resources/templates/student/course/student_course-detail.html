@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
       lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>E-Resource Lecturer Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Librarian | Course | Add topic</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -12,10 +13,23 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+
+
+    <style>
+        label.error {
+            margin-top: 5px;
+            margin-left: 5px;
+            display: block;
+            color: red;
+            /*font-size: smaller;*/
+        }
+    </style>
+
 </head>
 <body class="app_container">
-<!-- Header -->
-<div th:replace="~{fragments/header::studentHeaderSection}"></div>
+
+<header th:replace="~{fragments/header::studentHeaderSection}"></header>
+
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
@@ -23,92 +37,200 @@
             <div class="main-content stu_course-saved">
                 <div class="stu_course-saved-content d-flex">
                     <div class="stu_sidebar">
-                        <div th:replace="~{fragments/sidebar :: studentSidebar}"></div>
+                        <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
                     </div>
-                    <div class="stu_course-content main d-flex" id="main">
-                        <div class="student__course-topic-list grid__column-1">
-                            <div class="course-info">
-                                <div class="course-info-title">
-                                    <i class="fa-solid fa-folder"></i>
-                                    <span><h3 class="h3" th:text="${course.courseCode}"></h3></span>
+                    <div class="stu_course-content main" id="main">
+                        <div class="student__course-document-view border-end">
+
+                            <div class="student__document-type-list">
+                                <div class="list-view-inline top-doctype-list">
+                                    <form action="" method="" class="form-chose-doc-type">
+
+                                        <input name="docType" type="radio" id="radio1" value="Info">
+                                        <label for="radio1">Course Information</label>
+
+                                        <input name="docType" type="radio" id="radio2" value="Reading">
+                                        <label for="radio2">Reading</label>
+
+                                        <input name="docType" type="radio" id="radio3" value="Lecturer Notes">
+                                        <label for="radio3">Lecturer Notes</label>
+
+                                        <input name="docType" type="radio" id="radio4" value="Reading">
+                                        <label for="radio4">Reading</label>
+
+                                        <input name="docType" type="radio" id="radio5" value="Reading">
+                                        <label for="radio5">Reading</label>
+
+                                        <input name="docType" type="radio" id="radio6" value="Reading">
+                                        <label for="radio6">Reading</label>
+                                    </form>
                                 </div>
                             </div>
-                            <div class="list-view-block course-general-link-info  border-bottom">
-                                <a href="">Lecturer: <span th:text="${course.lecturer.account.name}"></span></a>
-                                <a th:href="@{'/student/course_info/' + ${course.id} }">Course Information</a>
+                            <div class="doc-content-list">
+                                <div class="topic-list-content">
+                                    <div class="topic-view-list">
+                                        <!--Topic view-->
+                                        <div class="topic-item">
+                                            <div class="topic-title">
+                                                <h3 class="topic-info-title">
+                                                    <span>Topic 1</span>
+                                                </h3>
+                                            </div>
+                                            <!--Document view list-->
+                                            <div class="d-flex document-view-info border-bottom">
+                                                <div class="doc-info-head grid__column-7">
+                                                    <p class="doc-info-title"><a th:href="@{/student/documentDetail}">
+                                                        <span>Tai lieu tham khao C</span></a>
+                                                    </p>
+                                                    <p class="doc-info-description">
+                                                        <span>Tai lieu tham khao C - description</span>
+                                                    </p>
+                                                </div>
+                                                <div class="doc-info-date grid__column-2">
+                                                    <p><span>mm/dd/yyyy</span> <span>| Rating: 5</span><i class="fa-solid fa-star"></i></p>
+                                                </div>
+                                                <div class="grid__column-1">
+                                                    <form action="" method="">
+                                                        <input type="text" value="docId" hidden>
+                                                        <button class="stu__btn_save-doc" type="submit">
+                                                            <i class="fa-regular fa-bookmark"></i></button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <!--End Document view-->
+
+                                            <!--Document view list-->
+                                            <div class="d-flex document-view-info border-bottom">
+                                                <div class="doc-info-head grid__column-7">
+                                                    <p class="doc-info-title"><a th:href="@{/student/documentDetail}">
+                                                        <span>Tai lieu tham khao C</span></a>
+                                                    </p>
+                                                    <p class="doc-info-description">
+                                                        <span>Tai lieu tham khao C - description</span>
+                                                    </p>
+                                                </div>
+                                                <div class="doc-info-date grid__column-2">
+                                                    <p><span>mm/dd/yyyy</span> <span>| Rating: 5</span><i class="fa-solid fa-star"></i></p>
+                                                </div>
+                                                <div class="grid__column-1">
+                                                    <form action="" method="">
+                                                        <input type="text" value="docId" hidden>
+                                                        <button class="stu__btn_save-doc" type="submit">
+                                                            <i class="fa-regular fa-bookmark"></i></button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <!--End Document view-->
+                                        </div>
+                                        <!--End Topic view-->
+
+                                        <!--Topic view-->
+                                        <div class="topic-item">
+                                            <div class="topic-title">
+                                                <h3 class="topic-info-title">
+                                                    <span>Topic 1</span>
+                                                </h3>
+                                            </div>
+                                            <!--Document view list-->
+                                            <div class="d-flex document-view-info border-bottom">
+                                                <div class="doc-info-head grid__column-7">
+                                                    <p class="doc-info-title"><a th:href="@{/student/documentDetail}">
+                                                        <span>Tai lieu tham khao C</span></a>
+                                                    </p>
+                                                    <p class="doc-info-description">
+                                                        <span>Tai lieu tham khao C - description</span>
+                                                    </p>
+                                                </div>
+                                                <div class="doc-info-date grid__column-2">
+                                                    <p><span>mm/dd/yyyy</span> <span>| Rating: 5</span><i class="fa-solid fa-star"></i></p>
+                                                </div>
+                                                <div class="grid__column-1">
+                                                    <form action="" method="">
+                                                        <input type="text" value="docId" hidden>
+                                                        <button class="stu__btn_save-doc" type="submit">
+                                                            <i class="fa-regular fa-bookmark"></i></button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <!--End Document view-->
+
+                                            <!--Document view list-->
+                                            <div class="d-flex document-view-info border-bottom">
+                                                <div class="doc-info-head grid__column-7">
+                                                    <p class="doc-info-title link"><a th:href="@{/student/documentDetail}">
+                                                        <span>Tai lieu tham khao C</span></a>
+                                                    </p>
+                                                    <p class="doc-info-description">
+                                                        <span>Tai lieu tham khao C - description</span>
+                                                    </p>
+                                                </div>
+                                                <div class="doc-info-date grid__column-2">
+                                                    <p><span>mm/dd/yyyy</span> <span>| Rating: 5</span><i class="fa-solid fa-star"></i></p>
+                                                </div>
+                                                <div class="grid__column-1">
+                                                    <form action="" method="">
+                                                        <input type="text" value="docId" hidden>
+                                                        <button class="stu__btn_save-doc" type="submit">
+                                                            <i class="fa-regular fa-bookmark"></i></button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <!--End Document view-->
+                                        </div>
+                                        <!--End Topic view-->
+
+
+                                    </div>
+                                </div>
                             </div>
-                            <div class="stu_save-course-link">
-                                <p><a class="unsaved-course" th:if="${saved} == false"
-                                      th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">
-                                    <i class="fa-regular fa-square-minus"></i>
-                                    Unbookmark</a>
-                                </p>
-                                <p><a class="saved-course" th:if="${saved} == true"
-                                      th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">
-                                    <i class="fa-regular fa-bookmark"></i>
-                                    Bookmark</a></p>
+                            <div class="list-view-inline bot-doctype-list">
+                                <form action="" method="" class="form-chose-doc-type">
+                                    <input name="docType" type="radio" id="radio-bot-1" value="All">
+                                    <label for="radio-bot-1">Course Information</label>
+
+                                    <input name="docType" type="radio" id="radio-bot-2" value="Reading">
+                                    <label for="radio-bot-2">Reading</label>
+
+                                    <input name="docType" type="radio" id="radio-bot-3" value="Lecturer Notes">
+                                    <label for="radio-bot-3">Lecturer Notes</label>
+
+                                    <input name="docType" type="radio" id="radio-bot-4" value="Reading">
+                                    <label for="radio-bot-4">Reading</label>
+
+                                    <input name="docType" type="radio" id="radio-bot-5" value="Reading">
+                                    <label for="radio-bot-5">Reading</label>
+
+                                    <input name="docType" type="radio" id="radio-bot-6" value="Reading">
+                                    <label for="radio-bot-6">Reading</label>
+                                </form>
                             </div>
                         </div>
-                        <div class="student__course-info-view grid__column-8">
+                        <div class="student__topic-info">
                             <div class="course-details-head">
                                 <div class="course-details-name">
-                                <p class="course-info-name">
-                                    <i class="fa-regular fa-folder"></i>
-                                    <a class="course-info-name" th:href="@{'/student/courses/' + ${course.getId}}"
-                                               th:text="|${course.courseCode} - ${course.courseName}|"></a> </p>
-                                </div>
-                                <div class="course-details-lecturer">
+                                    <p class="course-info-name h2">
+                                        <i class="fa-solid fa-folder"></i>
+                                        <a class="course-info-name" th:href="@{'/student/courses/' + ${course.getId}}"
+                                           th:text="|${course.courseCode} - ${course.courseName}|"></a></p>
                                     <p class="course-info-lecturer">
-                                        <a href="">  <span class="lecturer-name">Lecturer Name</span> </a> </p>
-                                </div>
-                                <div class="stu_save-course-link">
-                                    <p><a class="unsaved-course" th:if="${saved} == false"
-                                          th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">
-                                        <i class="fa-regular fa-square-minus"></i>
-                                        Unbookmark</a>
-                                    </p>
-                                    <p><a class="saved-course" th:if="${saved} == true"
-                                          th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">
-                                        <i class="fa-regular fa-bookmark"></i>
-                                        Bookmark</a></p>
-                                </div>
-                            </div>
-                            <div class="course-info-content">
-                                <div class="view-course-info-content">
-                                    <table class="table-view-course-info" th:if="course ne null">
-                                        <tr>
-                                            <th>Course Code</th>
-                                            <td class="course-info-code" th:text="${course.courseCode}"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Course Name</th>
-                                            <td class="course-info-name" th:text="${course.courseName}"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Description</th>
-                                            <td th:text="${course.description}"></td>
-                                        <tr>
-                                            <th>Topics
-                                            </th>
-                                            <td th:if="topics ne null">
-                                                <th:block th:each="topic : ${topics}">
-                                                    <p th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></p>
-                                                </th:block>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                            <th>Lecturers</th>
-                                            <td th:if="course.lecturer ne null">
-                                                <a href=""><span th:text="${course.lecturer}"></span> </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-
+                                        <a href="">Lecturer: <span class="lecturer-name"
+                                                                   th:text="${course.lecturer.account.name}"></span>
+                                        </a></p>
+                                    <div class="stu_save-course-link">
+                                        <p><a class="unsaved-course" th:if="${saved} == false"
+                                              th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">
+                                            <i class="fa-solid fa-bookmark"></i>
+                                            Unbookmark</a>
+                                        </p>
+                                        <p><a class="saved-course" th:if="${saved} == true"
+                                              th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">
+                                            <i class="fa-regular fa-bookmark"></i>
+                                            Bookmark</a></p>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -118,6 +240,7 @@
 </div>
 <!-- Footer -->
 <div th:replace="~{fragments/footer :: footerSection}"></div>
+
 <!--jquery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Bootstrap script-->
