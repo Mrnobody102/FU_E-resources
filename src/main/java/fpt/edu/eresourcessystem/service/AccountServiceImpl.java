@@ -39,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account addAccount(AccountDTO accountDTO) {
-        Account account = new Account();
+        Account account = new Account(accountDTO);
         account.setId(accountDTO.getId());
         account.setUsername(accountDTO.getUsername());
         account.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
