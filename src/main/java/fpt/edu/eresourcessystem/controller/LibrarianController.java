@@ -237,15 +237,7 @@ public class LibrarianController {
     @GetMapping({"/courses/{courseId}"})
     public String showCourseDetail(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
-        List<Topic> topics = topicService.findByCourseId(courseId);
-        Lecturer lecturer = lecturerService.findCurrentCourseLecturer(courseId);
-
-        if (null != lecturer) {
-            Account accountLecturer = accountService.findById(lecturer.getAccount().getId());
-            model.addAttribute("accountLecturer", accountLecturer);
-        }
         model.addAttribute("course", course);
-        model.addAttribute("topics", topics);
         return "librarian/course/librarian_course-detail";
 //        return  "librarian/course/detailCourseTest";
     }

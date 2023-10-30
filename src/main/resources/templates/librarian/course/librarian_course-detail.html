@@ -53,30 +53,20 @@
                     <tr>
                         <th>Description</th>
                         <td th:text="${course.description}"> </td>
-                    <tr>
-                        <th>Topics
-                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addTopic/' + ${course.getId}}">Edit</a>
-                            </p>
-                        </th>
-                        <td th:if="topics ne null">
-                            <th:block th:each="topic : ${topics}">
-                                <p th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></p>
-                            </th:block>
-                        </td>
                     </tr>
                     <tr>
                         <th>Lecturer
 <!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>-->
 <!--                            </p>-->
                         </th>
-                        <td th:if="${accountLecturer ne null}">
-                           <p th:text="|${accountLecturer.name} - ${accountLecturer.email} |"></p>
-                            <p><a class="link update-course-topic" th:href="@{'/librarian/courses/'+${course.getId}+'/add-lecture'}">Edit</a>
+                        <td th:if="${course.getLecturer() ne null}">
+                           <p th:text="|${course.getLecturer().getAccount().getName()} - ${course.getLecturer().getAccount().getEmail()} |"></p>
+                            <p><a class="link update-course-topic" th:href="@{'/librarian/courses/'+${course.getId()}+'/add-lecture'}">Edit</a>
                             </p>
                         </td>
-                        <td th:unless="${accountLecturer ne null}">
+                        <td th:unless="${course.getLecturer()  ne null}">
                             <p>
-                                <a class="link" th:href="@{'/librarian/courses/'+${course.getId} +'/add-lecture'}">
+                                <a class="link" th:href="@{'/librarian/courses/'+${course.getId()} +'/add-lecture'}">
                                     <i class="fa-solid fa-plus"></i>
                                     <span  class="update-course-topic">Add</span>
                                 </a>
