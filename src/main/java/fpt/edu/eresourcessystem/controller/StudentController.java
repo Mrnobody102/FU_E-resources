@@ -130,13 +130,7 @@ public class StudentController {
         // get account authorized
         Student student = getLoggedInStudent();
         List<String> savedCourses = student.getSavedCourses();
-        List<Course> courses = new ArrayList<>();
-        if (null != savedCourses) {
-            for (String cId : savedCourses) {
-                Course course = courseService.findByCourseId(cId);
-                courses.add(course);
-            }
-        }
+        List<Course> courses = courseService.findByListId(savedCourses);
         model.addAttribute("coursesSaved", courses);
         return "student/library/student_saved_courses";
     }
@@ -161,17 +155,15 @@ public class StudentController {
 //        Student student = getLoggedInStudent();
         Page<Course> page;
         if (null == filter || "all".equals(filter)) {
-            page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, pageSize);
+            page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, 1);
         } else if("name".equals(filter)){
-            page = courseService.findByCourseNameLike(search, pageIndex, pageSize);
+            page = courseService.findByCourseNameLike(search, pageIndex, 1);
         } else{
-            page = courseService.findByCourseCodeLike(search, pageIndex, pageSize);
+            page = courseService.findByCourseCodeLike(search, pageIndex, 1);
         }
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-//        System.out.println(pages);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
-        System.out.println(page.getTotalPages());
         model.addAttribute("courses", page.getContent());
         model.addAttribute("search", search);
         model.addAttribute("roles", AccountEnum.Role.values());

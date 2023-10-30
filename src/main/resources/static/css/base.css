@@ -291,27 +291,34 @@ li {
 
 .pagination-item {
     list-style: none;
-    margin: 0 8px;
+    margin: 0 0.2rem;
+}
+.pagination-item__link:hover{
+    color: black;
+    background-color: var(--second-background-btn-color);
 }
 
 .pagination-item--active .pagination-item__link{
     color: white;
     background-color: var(--primary-btn-color);
 }
+.pagination-item--active .pagination-item__link:hover{
+    color: white;
+    background-color: var(--primary-btn-color);
+}
 
 .pagination-item__link {
-    --height: 32px;
+    --height: 2.5rem;
     display: block;
     text-decoration: none;
     color: black;
     font-size: 1.6rem;
     font-weight: 400;
-    min-width: 48px;
+    min-width: 3rem;
     height: var(--height);
     line-height: var(--height);
     text-align: center;
 }
-
 
 /* Animation */
 

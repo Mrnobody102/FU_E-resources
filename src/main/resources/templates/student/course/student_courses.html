@@ -38,7 +38,7 @@
                                     <input type="text" class="header__search-input"
                                            placeholder="Enter course ..."
                                            name="search"
-                                           th:id="search" th:value="${search}">
+                                           th:id="search-text" th:value="${search}">
                                     <!-- Header-search-history -->
                                     <div class="header__search-history">
                                         <h3 class="header__search-history-heading">
@@ -51,21 +51,12 @@
                                         </ul>
                                     </div>
                                 </div>
-<!--                                <div class="header__search-select">-->
-<!--                                    <select name="filter" class="header__search-option">-->
-<!--                                        <option class="header__search-option-item" value="all">All result-->
-<!--                                            <i class="header__search-select-icon fas fa-angle-down"></i></option>-->
-<!--                                        <option class="header__search-option-item" value="name">Name</option>-->
-<!--                                        <option class="header__search-option-item" value="name">Code</option>-->
-<!--                                    </select>-->
-<!--                                </div>-->
-<!--                                 Select-find-scope -->
                                 <div class="header__search-select">
 <!--                                    <span class="header__search-select-label">All results</span>-->
 <!--                                    <i class="header__search-select-icon fas fa-angle-down"></i>-->
                                     <select class="search-course-select" name="filter">
-                                        <option class="search-course-option" name="filter" value="all"
-                                                th:selected="'all'==(${filter}) ">
+                                        <option class="search-course-option" name="filter" value="all" th:id="filter"
+                                                th:selected="'all'==(${filter}) OR ''==(${filter})">
                                             <span class="">All results</span>
                                             <i class="fas fa-check"></i>
                                         </option>
@@ -90,6 +81,9 @@
 
 
                         <div class="stu__courses-list-view">
+                            <div th:if="${param.search} AND ${totalPage == null} OR ${totalPage == 0}" class="list-course-content-not-found">
+                                <p class="h3">No courses found.</p>
+                            </div>
                             <div th:if="courses ne null" class="list-course-content">
                                 <div class="home-courses">
                                     <div class="home__course-content">
@@ -103,19 +97,11 @@
                                                     <p class="home__course-description"
                                                        th:text="${course.description}"></p>
                                                     <ul class="home__course-lecturer-list">
-                                                        <li th:if="${course.lecturer ne null}"
-                                                            href="#" th:text="lecturer">
-                                                        </li>
-                                                        <li class="home__course-lecturer-item">
+                                                        <li class="home__course-lecturer-item" th:if="${course.lecturer ne null}">
                                                             <a class="home__course-lecturer-link"
                                                                href="">
-                                                                Mai K Đa
-                                                            </a>
-                                                        </li>
-                                                        <li class="home__course-lecturer-item">
-                                                            <a class="home__course-lecturer-link"
-                                                               href="">
-                                                                Nguyễn Ngọc Anh
+                                                                <span>Lecturer: </span>
+                                                                <span th:text="${course.lecturer.account.name}"></span>
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -124,48 +110,34 @@
                                         </ul>
                                     </div>
                                     <nav th:if="${totalPage ne null} AND ${totalPage} >1" aria-label="Page navigation example">
-                                        <ul class="pagination">
-                                            <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
-                                                <a class="page-link previous-page-stu-course-number"
-                                                   style="cursor: pointer">
-                                                    &laquo;
+                                        <ul class="pagination home-courses__pagination-distance">
+                                            <li class="pagination-item"
+                                                th:classappend=" ${currentPage == 1} ? 'disabled' : ''">
+                                                <a class="pagination-item__link previous-page-stu-course-number">
+                                                    <i class="pagination-item__icon fas fa-angle-left"></i>
                                                 </a>
                                             </li>
 
-                                            <li th:each="pageIndex: ${pages}" class="page-item"
-                                                th:classappend=" (${currentPage == pageIndex}) ? 'active' : '' ">
+                                            <li th:each="pageIndex: ${pages}" class="pagination-item"
+                                                th:classappend=" (${currentPage == pageIndex}) ? 'pagination-item--active' : '' ">
                                                 <th:block th:if="${pageIndex == -1}">
-                                                    <span class="page-link">...</span>
+                                                    <span class="pagination-item__link">...</span>
                                                 </th:block>
                                                 <th:block th:if="${pageIndex != -1}">
                                                     <a th:text="${pageIndex}" th:value="${pageIndex}"
-                                                       class="page-link page-stu-course-number"
-                                                       style="cursor: pointer"
-                                                    ></a>
+                                                       class="pagination-item__link page-stu-course-number"></a>
                                                 </th:block>
                                             </li>
-                                            <li th:class="${currentPage == totalPage} ? 'page-item disabled' : 'page-item'">
-                                                <a class="page-link next-page-stu-course-number"
-                                                   style="cursor: pointer">
-                                                    &raquo;
+                                            <li  class="pagination-item"
+                                                    th:class="${currentPage == totalPage} ? 'disabled' : ''">
+                                                <a class="pagination-item__link next-page-stu-course-number">
+                                                    <i class="pagination-item__icon fas fa-angle-right"></i>
                                                 </a>
                                             </li>
                                         </ul>
                                     </nav>
                                 </div>
                             </div>
-                            <div class="stu_course-filter">
-                                <div class="home__course-filter">
-                                    <div>
-                                        <div class="home__course-filter-title">
-                                            <p>Filter</p>
-                                            <a href="" class="home__course-filter-clear">Clear all</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
                         </div>
                     </div>
                 </div>

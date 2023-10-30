@@ -567,6 +567,7 @@
     background-color: var(--white-color);
     border-radius: 20px;
     min-width: 300px;
+    width: 70%;
     border: 1px solid #888888;
 }
 
@@ -895,7 +896,8 @@
 
 .home__course-lecturer-item {
     padding-right: 18px;
-    font-size: 1.4rem;
+    font-size: var(--normal-font-size);
+    font-weight: var(--font-medium);
 }
 
 .home__course-lecturer-link:hover {

@@ -308,13 +308,13 @@
     }
 }
 .stu__courses-list-view{
-    display: flex;
+    justify-content: center;
 }
 .list-course-content{
-    width: 85%;
+    width: 90%;
 }
 .stu_course-filter{
-    width: 15%;
+    /*width: 15%;*/
 }
 .stu_course-content{
     display: flex;
@@ -449,4 +449,7 @@
 }
 .stu__div-content-recent-title{
     margin-top: 3rem;
+}
+.list-course-content-not-found {
+    margin: 2rem;
 }
