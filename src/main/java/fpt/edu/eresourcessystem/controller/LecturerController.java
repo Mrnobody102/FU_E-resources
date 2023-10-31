@@ -154,7 +154,7 @@ public class LecturerController {
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         model.addAttribute("topic", modelTopic);
-        return "lecturer/course/lecturer_add-topic-to-course";
+        return "lecturer/topic/lecturer_add-topic-to-course";
     }
 
     @GetMapping({"/updateTopic/{topicId}"})
@@ -165,7 +165,7 @@ public class LecturerController {
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         model.addAttribute("topic", topic);
-        return "lecturer/course/lecturer_update-topic-of-course";
+        return "lecturer/topic/lecturer_update-topic-of-course";
     }
 
 
@@ -176,7 +176,7 @@ public class LecturerController {
             topicService.updateTopic(topic);
             return "redirect:/lecturer/courses/updateTopic/" + topicId;
         }
-        return "lecturer/course/lecturer_add-topic-to-course";
+        return "lecturer/topic/lecturer_add-topic-to-course";
 
     }
 
@@ -194,7 +194,7 @@ public class LecturerController {
             model.addAttribute("topics", topics);
             model.addAttribute("topic", modelTopic);
         }
-        return "lecturer/course/lecturer_add-topic-to-course";
+        return "lecturer/topic/lecturer_add-topic-to-course";
     }
 
 //    @GetMapping("/lecturer/topic/detail/{topicId}")
@@ -211,12 +211,10 @@ public class LecturerController {
 //        return "lecturer/course/lecturer_topic-detail";
 //    }
 
-    @GetMapping({"/courses/list/{pageIndex}", "/my_library"})
+    @GetMapping({"/courses/list/{pageIndex}", "/courses/list"})
     public String viewCourseManaged(@PathVariable(required = false) Integer pageIndex, final Model model) {
         // get account authorized
         Lecturer lecturer = getLoggedInLecturer();
-        System.out.println(lecturer);
-
         if (null == lecturer){
             return "common/login";
         }
@@ -224,7 +222,7 @@ public class LecturerController {
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("coursesManagement", page.getContent());
+        model.addAttribute("courses", page.getContent());
         return "lecturer/course/lecturer_courses";
     }
 }

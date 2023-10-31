@@ -85,12 +85,9 @@
                                                        th:href="@{'/lecturer/courses/' + ${course.id}}"></a>
                                                     <p class="home__course-description" th:text="${course.description}"></p>
                                                     <ul class="home__course-lecturer-list">
-                                                        <li th:if="${course.lecturer ne null}"
-                                                            href="#" th:text="lecturer">
-                                                        </li>
-                                                        <li class="home__course-lecturer-item">
+                                                        <li class="home__course-lecturer-item" th:if="${course.lecturer ne null}">
                                                             <a class="home__course-lecturer-link"
-                                                               href="">
+                                                               href="" th:text="${course.lecturer.account.name}">
                                                                 Mai K Đa
                                                             </a>
                                                         </li>

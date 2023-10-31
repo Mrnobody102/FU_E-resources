@@ -27,6 +27,7 @@ public class AdminController {
     @Value("${page-size}")
     private Integer pageSize;
     private final AccountService accountService;
+    private final AdminService adminService;
     private final LibrarianService librarianService;
     private final LecturerService lecturerService;
     private final StudentService studentService;
@@ -35,8 +36,9 @@ public class AdminController {
     private final DocumentService documentService;
 
     @Autowired
-    public AdminController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, DocumentService documentService) {
+    public AdminController(AccountService accountService, AdminService adminService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, DocumentService documentService) {
         this.accountService = accountService;
+        this.adminService = adminService;
         this.librarianService = librarianService;
         this.lecturerService = lecturerService;
         this.studentService = studentService;
@@ -127,7 +129,8 @@ public class AdminController {
             case "ADMIN":
                 Admin admin = new Admin();
                 admin.setAccount(account);
-                // THÊM
+                adminService.addAdmin(admin);
+                break;
             case "LIBRARIAN":
                 Librarian librarian = new Librarian();
                 librarian.setAccount(account);
@@ -202,7 +205,11 @@ public class AdminController {
             Account account = new Account(accountDTO);
             System.out.println(role);
             switch (role) {
-                // Thêm ASSMIN
+                case "ADMIN":
+                        Admin admin = new Admin();
+                        admin.setAccount(account);
+                        adminService.updateAdmin(admin);
+                    break;
                 case "LIBRARIAN":
                     Librarian librarian = librarianService.findByAccountId(accountDTO.getId());
                     if (librarian == null) {
