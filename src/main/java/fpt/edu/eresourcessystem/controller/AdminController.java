@@ -178,7 +178,6 @@ public class AdminController {
             model.addAttribute("account", account);
             return "admin/account/admin_update-account";
         }
-
     }
 
     /**

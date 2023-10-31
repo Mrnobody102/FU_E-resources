@@ -15,10 +15,13 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.data.domain.*;
+import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service("lecturerService")
 public class LecturerServiceImpl implements LecturerService {
@@ -62,18 +65,6 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public List<Course> findListManageCourse(Lecturer lecturer) {
-        Optional<Lecturer> checkExist = lecturerRepository.findById(lecturer.getAccount().getId());
-        if (checkExist.isPresent()) {
-            if (null == checkExist.get().getLecturerCourses()) {
-                return null;
-            }
-            return courseService.findByListId(checkExist.get().getLecturerCourses());
-        }
-        return null;
-    }
-
-    @Override
     public Lecturer findByAccountId(String accountId) {
         return lecturerRepository.findByAccountId(accountId);
     }
@@ -108,6 +99,43 @@ public class LecturerServiceImpl implements LecturerService {
         return page;
     }
 
+
+
+//    @Override
+//    public Lecturer addLectureWithCourse(Lecturer lecturer) {
+//        Optional<Lecturer> foundLecturer = lecturerRepository.findById(lecturer.getId());
+//        if(foundLecturer.isPresent()){
+//
+//            Lecturer result =  lecturerRepository.save(lecturer);
+//            return result;
+//        }
+//        return null;
+//    }
+
+    public Lecturer findLecturerByEmail(String email) {
+        return lecturerRepository.findByAccount_Email(email);
+    }
+
+    public boolean removeCourse(String lectureId, Course course) {
+        Optional<Lecturer> optionalLecture = lecturerRepository.findById(lectureId);
+
+        if (optionalLecture.isPresent()) {
+            Lecturer lecture = optionalLecture.get();
+
+            // Check if the course is associated with the lecture
+            if (lecture.getCourses().contains(course)) {
+                lecture.getCourses().remove(course);
+                lecturerRepository.save(lecture);
+
+                // Optionally, update the course to remove the lecture's association
+//                course.setLecturer(null);
+//                courseService.updateCourse(course);
+
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     public Page<Course> findListManagingCourse(Lecturer lecturer, int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);

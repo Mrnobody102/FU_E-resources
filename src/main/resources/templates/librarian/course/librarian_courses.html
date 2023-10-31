@@ -65,13 +65,15 @@
             <div class="table-view" th:if="${courses ne null}">
                 <table class="table table-striped table-sm">
                     <tr class="table-head">
+                        <th>STT</th>
                         <th>Code</th>
                         <th>Name</th>
                         <th>Descriptions</th>
 <!--                        <th></th>-->
                     </tr>
-                    <th:block th:each="course : ${courses}">
+                    <th:block th:each="course, iterStat  : ${courses}">
                         <tr>
+                            <td th:text="${iterStat.index +1}"> 1</td>
                             <td><a th:href="@{'/librarian/courses/' + ${course.getId}}"
                                    th:text="${course.courseCode}"></a></td>
                             <td><a class="link" th:href="@{'/librarian/courses/' + ${course.getId}}"

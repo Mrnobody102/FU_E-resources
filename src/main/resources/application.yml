@@ -1,13 +1,11 @@
-spring:
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            clientId: 618210662213-63n1o3sk8g83utv20j8i5vrdkge0ss94.apps.googleusercontent.com
-            clientSecret: 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
-            scope:
-              - email
-              - profile
-
-
+#spring:
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            clientId: 618210662213-63n1o3sk8g83utv20j8i5vrdkge0ss94.apps.googleusercontent.com
+#            clientSecret: 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
+#            scope:
+#              - email
+#              - profile

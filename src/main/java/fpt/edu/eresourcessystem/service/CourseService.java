@@ -47,4 +47,6 @@ public interface CourseService {
     Page<Course> findByCourseCodeLike(String courseCode, Integer pageIndex, Integer pageSize);
 
     Course updateLectureId(String courseId, Lecturer newLecture);
+
+    boolean removeLecture(String courseId);
 }

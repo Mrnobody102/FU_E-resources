@@ -55,14 +55,24 @@
             <div class="table-view" th:if="${lecturers ne null}">
                 <table class="table table-striped table-sm">
                     <tr class="table-head">
-                        <th>ID</th>
-                        <th>Date Created</th>
+                        <th>STT</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Course List</th>
                     </tr>
-                    <th:block th:each="lecture : ${lecturers}">
+                    <th:block th:each="lecture, iterStat : ${lecturers}">
                         <tr>
-                            <td><a th:href="@{'/librarian/lectures/' + ${lecture.getId}}"
-                                   th:text="${lecture.getId}"></a></td>
-                            <td><span class="description" th:text="${lecture.accountId}"></span></td>
+                            <td th:text="${iterStat.index +1}"> 1</td>
+                            <td><a th:href="@{'/librarian/lectures/' + ${lecture.getId()}}"
+                                   th:text="${lecture.getAccount().getName()}"></a></td>
+                            <td><span class="description" th:text="${lecture.getAccount().getEmail()}"></span></td>
+                            <td>
+                                <th:block th:each="course : ${lecture.getCourses()}">
+                                    <a th:href="@{'/librarian/courses/' + ${course.getId()}}">
+                                        <button class="button" th:text="${course.getCourseCode()}">Course</button>
+                                    </a>
+                                </th:block>
+                            </td>
                         </tr>
                     </th:block>
                 </table>

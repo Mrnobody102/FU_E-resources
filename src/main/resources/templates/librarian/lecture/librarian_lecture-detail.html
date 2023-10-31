@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lecture Detail</title>
+</head>
+<body>
+<div class="container">
+    <h1>Lecture Detail</h1>
+
+    <!-- Display Lecture Information -->
+    <div class="lecture-details">
+        <h2 th:text="${lecture.title}"></h2>
+        <p th:text="${lecture.description}"></p>
+        <p>Date: <span th:text="${#dates.format(lecture.date, 'dd/MM/yyyy HH:mm')}"></span></p>
+    </div>
+
+    <!-- Add more details as needed -->
+
+    <!-- Back Button to Navigate Back -->
+    <a th:href="@{/lectures}">Back to Lectures</a>
+</div>
+</body>
+</html>

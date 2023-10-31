@@ -23,6 +23,7 @@ public class CustomizeUserDetailsService implements UserDetailsService {
         this.accountRepository = accountRepository;
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // IN CASE LOAD ACCOUNT IS SELF-GENERATED FROM THE SYSTEM
@@ -33,8 +34,9 @@ public class CustomizeUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(authority);
         return new User(account.getEmail(), account.getPassword(), true, true, true, true, authorities);
-
         // IN CASE LOAD ACCOUNT FROM FPT GOOGLE MAIL
+
+
 
         // IN CASE LOAD ACCOUNT FROM FE-ID
     }
