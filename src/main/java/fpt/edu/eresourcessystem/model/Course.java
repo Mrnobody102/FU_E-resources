@@ -40,7 +40,8 @@ public class Course {
     @DocumentReference
     private TrainingType trainingType;
 
-    private List<String> topics;
+    @DocumentReference(lazy = true)
+    private List<Topic> topics;
     private List<String> students;
 
     @NotNull

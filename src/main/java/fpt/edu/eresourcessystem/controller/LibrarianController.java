@@ -12,6 +12,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +46,6 @@ public class LibrarianController {
 
     private final LecturerCourseService lecturerCourseService;
 
-    @Autowired
     public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, LecturerCourseService lecturerCourseService) {
         this.accountService = accountService;
         this.librarianService = librarianService;
@@ -93,6 +94,10 @@ public class LibrarianController {
     public String addCourseProcess(@ModelAttribute Course course,
                                    @RequestParam String lecturer) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Librarian librarian = librarianService.findByAccountId(accountService.findByEmail(currentPrincipalName).getId());
+        course.setLibrarian(librarian);
         // check course code duplicate
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
         if (null == checkExist) {
@@ -134,8 +139,9 @@ public class LibrarianController {
                                 // update course lecturers
                                 result = courseService.updateCourse(result);
                                 foundLecturer.getCourses().add(course);
+                                librarian.getCreatedCourses().add(course);
                                 lecturerService.updateLecturer(foundLecturer);
-                                System.out.println(result);
+                                librarianService.updateLibrarian(librarian);
                                 if (null != result) {
                                     return "redirect:/librarian/courses/add?success";
                                 }
@@ -148,6 +154,8 @@ public class LibrarianController {
 
             } else {
                 Course addedCourse = courseService.addCourse(course);
+                librarian.getCreatedCourses().add(course);
+                librarianService.updateLibrarian(librarian);
                 if (null != addedCourse) {
                     return "redirect:/librarian/courses/add?success";
                 }
@@ -250,10 +258,10 @@ public class LibrarianController {
     public String deleteCourse(@PathVariable String courseId) {
         Course checkExist = courseService.findByCourseId(courseId);
         if (null != checkExist) {
-            List<String> topics = checkExist.getTopics();
+            List<Topic> topics = checkExist.getTopics();
             if (null != topics) {
-                for (String topicId : topics) {
-                    topicService.delete(topicId);
+                for (Topic topic : topics) {
+                    topicService.delete(topic.getId());
                 }
             }
             courseService.delete(checkExist);
@@ -276,38 +284,6 @@ public class LibrarianController {
         model.addAttribute("lecturers", lecturers);
         model.addAttribute("accounts", accounts);
         return "librarian/course/librarian_add-lecturer-to-course";
-    }
-
-    /**
-     * @param courseId
-     * @param model
-     * @return
-     */
-    @PostMapping({"/courses/{courseId}/addLecturers"})
-    public String addLecturers(@PathVariable String courseId, @RequestParam String username, final Model model) {
-        Account account = accountService.findByUsername(username);
-        Lecturer lecturer = lecturerService.findByAccountId(account.getId());
-        Course course = courseService.updateLectureId(courseId, lecturer);
-
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        message.setFrom("maihoa362001@gmail.com");
-        message.setTo(account.getEmail());
-        message.setSubject("Subject : Thông báo quản lý môn học " + course.getCourseCode());
-        message.setText("Body : " +
-                "Tên môn học: " + course.getCourseName());
-
-        javaMailSender.send(message);
-
-        List<Topic> topics = topicService.findByCourseId(courseId);
-
-        if (null != lecturer) {
-            Account accountLecturer = lecturer.getAccount();
-            model.addAttribute("accountLecturer", accountLecturer);
-        }
-        model.addAttribute("course", course);
-//        model.addAttribute("topics", topics);
-        return "librarian/course/librarian_course-detail";
     }
 
     /**

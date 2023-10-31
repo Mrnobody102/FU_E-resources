@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Lecturer | Details Course</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+</head>
+
+<body class="app_container">
+<!-- Header -->
+<div class="row" th:replace="~{fragments/header::headerLecturerSection}"></div>
+<div class="main_content">
+    <div class="container-content-wrapper">
+        <!--  Main-->
+        <div class="container-content row">
+            <div class="main-content stu_course-saved">
+                <div class="stu_course-saved-content d-flex">
+                    <div class="stu_sidebar">
+                        <div th:replace="~{fragments/sidebar:: lecturerSidebar}"></div>
+                    </div>
+
+                    <div class="stu_courses-content m-3" id="main-lecturer">
+                        <div class="document-details-head">
+                            <a th:href="@{/lecturer}">Home</a>
+                            <span> &gt; <a th:href="@{/lecturer/documents/list}">Documents management</a></span>
+                            <span> &gt; Add new document</span>
+                        </div>
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Add document</h1>
+
+                        </div>
+                        <form method="post" role="form" th:action="@{/librarian/documents/add}" th:object="${document}"
+                              th:id="add-form" enctype="multipart/form-data">
+                            <table class="table-form lecturer_table">
+
+                                <tr>
+                                    <td class="lecturer_input-label"><label th:for="documentTitle">Document Code</label></td>
+                                    <td><input type="text" th:id="documentTitle" class="lecturer_input form-control"
+                                               th:field="*{title}" placeholder="Enter document code" required>
+                                        <p class="text-danger" th:errors="*{title}"
+                                           th:if="${#fields.hasErrors('title')}"></p>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="lecturer_input-label"><label th:for="description">Description</label></td>
+                                    <td><textarea type="text" th:id="description" class="lecturer_textarea form-control"
+                                                  th:field="*{description}" placeholder="Enter description"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="lecturer_input-label"><label for="resourceType">Resource Type:</label>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <select class="form-select" name="respondResourceType"
+                                                    style="font-size: 1.3rem"
+                                                    id="resourceType">
+                                                <option th:each="resourceType : ${resourceTypes}"
+                                                        th:text="${resourceType.getDisplayValue()}"
+                                                        th:value="${resourceType}">
+                                                </option>
+                                            </select>
+                                            <button type="button" class="lecturer_search-btn ms-2 border-0"><i
+                                                    class="fa-solid fa-plus" id="defineResourceType"></i></button>
+                                        </div>
+
+
+                                    </td>
+                                </tr>
+
+                                <tr id="inputResourceWrapper"
+                                    style="display: none;">
+                                    <td></td>
+                                    <td style="display: flex">
+                                        <input type="text" class="lecturer_input form-control" id="inputResource"
+                                               placeholder="Define your resource type...">
+                                        <button type="button" class="lecturer_search-btn ms-2 border-0" id="defineButton">
+                                            Define
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="lecturer_input-label"><label th:for="file">File Upload</label></td>
+                                    <td>
+                                        <input type="file" th:name="file" id="fileUploadInput"
+                                               class="file-input form-control" style="font-size: 1.3rem"
+                                               required>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <button type="submit" class="btn lecturer_btn-save" id="submitAllData">Save</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<script src="/js/lecturer.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script th:inline="javascript">
+    // Resource Type
+    $('#defineResourceType').click(function () {
+        $('#inputResourceWrapper').fadeIn();
+    });
+
+    $('#defineButton').click(function () {
+        var inputValue = $('#inputResource').val().trim();
+        var selectResource = $('#resourceType');
+        var isDuplicate = false;
+
+        if (inputValue === '') {
+            alert("Please enter a resource type!");
+            return;
+        }
+
+        selectResource.find('option').each(function () {
+            if ($(this).text() === inputValue) {
+                isDuplicate = true;
+                return false;
+            }
+        });
+
+        if (isDuplicate) {
+            Swal.fire(
+                'Error!',
+                'This resource type already exists!',
+                'error'
+            );
+        } else {
+            var confirmation = confirm("Are you sure you want to add this resource type?");
+            if (confirmation) {
+                var newOption = $('<option>').text(inputValue).val(inputValue);
+                selectResource.append(newOption);
+                selectResource.val(inputValue);
+            }
+        }
+    });
+
+    // VALIDATION AND SWAL
+    // validate_addDocument();
+
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Save document successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check document information again!',
+            'error'
+        );
+    }
+</script>
+</body>
+
+</html>

@@ -5,7 +5,7 @@ import fpt.edu.eresourcessystem.repository.LibrarianRepository;
 import org.springframework.stereotype.Service;
 
 @Service("librarianService")
-public class LibrarianServiceImpl implements LibrarianService{
+public class LibrarianServiceImpl implements LibrarianService {
     private final LibrarianRepository librarianRepository;
 
     public LibrarianServiceImpl(LibrarianRepository librarianRepository) {
@@ -19,16 +19,8 @@ public class LibrarianServiceImpl implements LibrarianService{
 
     @Override
     public Librarian updateLibrarian(Librarian librarian) {
-        if(null==librarian.getAccount()){
-            return null;
-        }else {
-            Librarian checkExist = librarianRepository.findByAccountId(librarian.getAccount().getId());
-            if(null!=checkExist){
-                Librarian result = librarianRepository.save(librarian);
-                return result;
-            }
-        }
-        return null;
+        Librarian result = librarianRepository.save(librarian);
+        return result;
     }
 
     @Override
@@ -36,7 +28,6 @@ public class LibrarianServiceImpl implements LibrarianService{
         Librarian librarian = librarianRepository.findByAccountId(accountId);
         return librarian;
     }
-
 
 
 }

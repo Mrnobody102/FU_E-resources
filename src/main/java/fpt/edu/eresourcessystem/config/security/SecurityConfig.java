@@ -56,7 +56,8 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http
-    , HandlerMappingIntrospector introspector) throws Exception {
+//    , HandlerMappingIntrospector introspector
+    ) throws Exception {
 
 
         // Disable  csrf
@@ -70,7 +71,8 @@ public class SecurityConfig implements WebMvcConfigurer {
         http.logout(auth -> auth.logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout"));
 
-        MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector).servletPath("/");
+//        MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector).servletPath("/");
+
         // Authorization
         http
                 .authorizeHttpRequests((requests) -> requests

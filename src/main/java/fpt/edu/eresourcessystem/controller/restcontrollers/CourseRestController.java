@@ -22,7 +22,6 @@ public class CourseRestController {
 
     private final LecturerCourseService lecturerCourseService;
 
-    @Autowired
     public CourseRestController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, DocumentService documentService, LecturerCourseService lecturerCourseService) {
         this.accountService = accountService;
         this.librarianService = librarianService;
@@ -45,17 +44,5 @@ public class CourseRestController {
     public ResponseEntity<List<Course>> searchCourses(@RequestParam("keyword") String keyword) {
         List<Course> courses = courseService.findByCodeOrName(keyword, keyword);
         return ResponseEntity.ok(courses);
-    }
-
-    /**
-     * API
-     * Get topics by course ID
-     * @param courseId
-     * @return list topics of this course
-     */
-    @GetMapping("/{courseId}/topics")
-    public ResponseEntity<List<Topic>> getTopicsByCourse(@PathVariable String courseId) {
-        List<Topic> topics = topicService.findByCourseId(courseId);
-        return ResponseEntity.ok(topics);
     }
 }

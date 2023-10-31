@@ -29,7 +29,7 @@ public class Topic {
     private String topicTitle;
     private String topicDescription;
     @DocumentReference(lazy = true)
-    private List<Document> documents;
+    private List<fpt.edu.eresourcessystem.model.Document> documents;
 
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;

@@ -15,25 +15,19 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.data.domain.*;
-import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
-@Service("lecturerService")
+@Service(value = "lecturerService")
 public class LecturerServiceImpl implements LecturerService {
     private final LecturerRepository lecturerRepository;
-    private final CourseService courseService;
     private final LecturerCourseRepository lecturerCourseRepository;
     private final MongoTemplate mongoTemplate;
 
-    @Autowired
-    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseService courseService, LecturerCourseRepository lecturerCourseRepository, MongoTemplate mongoTemplate) {
+    public LecturerServiceImpl(LecturerRepository lecturerRepository, LecturerCourseRepository lecturerCourseRepository, MongoTemplate mongoTemplate) {
         this.lecturerRepository = lecturerRepository;
-        this.courseService = courseService;
         this.lecturerCourseRepository = lecturerCourseRepository;
         this.mongoTemplate = mongoTemplate;
     }
@@ -88,11 +82,12 @@ public class LecturerServiceImpl implements LecturerService {
         return null;
     }
 
+    @Override
     public List<Lecturer> findAllLecture() {
         return lecturerRepository.findAll();
     }
 
-
+    @Override
     public Page<Lecturer> findLecturerByLecturerIdLike(String lectureId, int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         Page<Lecturer> page = lecturerRepository.findLecturerByIdLike(lectureId, pageable);
@@ -112,10 +107,12 @@ public class LecturerServiceImpl implements LecturerService {
 //        return null;
 //    }
 
+    @Override
     public Lecturer findLecturerByEmail(String email) {
         return lecturerRepository.findByAccount_Email(email);
     }
 
+    @Override
     public boolean removeCourse(String lectureId, Course course) {
         Optional<Lecturer> optionalLecture = lecturerRepository.findById(lectureId);
 

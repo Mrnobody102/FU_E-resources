@@ -72,6 +72,20 @@
                                 <i class="header__search-btn-icon fas fa-search"></i>
                             </button>
                         </div>
+                        <div class="stu__navbar-favourite">
+                            <ul class="stu__navbar-favourite-list border-bottom">
+                                <li class="stu__navbar-favourite-item stu__navbar-active">
+                                    <a href="/student/my_library/saved_courses">
+                                        Courses
+                                    </a>
+                                </li>
+                                <li class="stu__navbar-favourite-item">
+                                    <a href="/student/my_library/saved_documents">
+                                        Documents
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
 
                         <div class="stu__courses-list-view">
                             <div class="stu__view-saved-courses">
@@ -88,13 +102,7 @@
                                                         <li class="home__course-lecturer-item" th:if="${course.lecturer ne null}">
                                                             <a class="home__course-lecturer-link"
                                                                href="" th:text="${course.lecturer.account.name}">
-                                                                Mai K Đa
-                                                            </a>
-                                                        </li>
-                                                        <li class="home__course-lecturer-item">
-                                                            <a class="home__course-lecturer-link"
-                                                               href="">
-                                                                Nguyễn Ngọc Anh
+
                                                             </a>
                                                         </li>
                                                     </ul>

@@ -86,9 +86,7 @@ public class StudentController {
         // add course log
         CourseLog courseLog = new CourseLog(new CourseLogId(student.getAccount().getId(), courseId, CommonEnum.Action.VIEW, LocalDateTime.now()));
         courseLogService.addCourseLog(courseLog);
-        List<Topic> topics = topicService.findByCourseId(courseId);
         model.addAttribute("course", course);
-        model.addAttribute("topics", topics);
         if (studentService.checkCourseSaved(student.getId(), courseId)) {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);

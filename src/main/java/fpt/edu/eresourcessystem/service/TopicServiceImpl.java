@@ -28,13 +28,6 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
-    public List<Topic> findByCourseId(String courseId) {
-        Query query = new Query(Criteria.where("courseId").is(courseId));
-        List<Topic> topics =  mongoTemplate.find(query, Topic.class);
-        return  topics;
-    }
-
-    @Override
     public Topic addTopic(Topic topic) {
         if(null==topic.getId()) {
             Topic result = topicRepository.save(topic);

@@ -11,8 +11,6 @@ import java.util.Optional;
 @Service("lecturerCourseService")
 public class LecturerCourseServiceImpl implements LecturerCourseService{
     private final LecturerCourseRepository lecturerCourseRepository;
-
-    @Autowired
     public LecturerCourseServiceImpl(LecturerCourseRepository lecturerCourseRepository) {
         this.lecturerCourseRepository = lecturerCourseRepository;
 

@@ -136,7 +136,7 @@ public class CourseServiceImpl implements CourseService{
                 if (null == topic.getId()) {
                     return false;
                 }
-                List<String> topics = courseExisted.getTopics();
+                List<Topic> topics = courseExisted.getTopics();
                 if (null == courseExisted.getTopics()) {
                     topics = new ArrayList<>();
                 }
@@ -151,7 +151,7 @@ public class CourseServiceImpl implements CourseService{
                 // check topic not existed in course
                 if (!checkTopicExist) {
                     // add topic to course
-                    topics.add(topic.getId());
+                    topics.add(topic);
                     courseExisted.setTopics(topics);
                     courseRepository.save(courseExisted);
                 }

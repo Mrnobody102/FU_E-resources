@@ -14,11 +14,12 @@
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
 
 <body class="app_container">
 <!-- Header -->
-<div th:replace="~{fragments/header::headerLecturerSection}"></div>
+<div class="row" th:replace="~{fragments/header::headerLecturerSection}"></div>
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
@@ -41,43 +42,19 @@
                                 <h1 class="h2" th:text="${course.courseCode} + ' - ' + ${course.courseName}"></h1>
                                 <p th:text="${course.description}"></p>
                             </div>
-                            <a class="btn btn--hover" th:href="@{'/lecturer/courses/' + ${course.id} + '/add_topic'}">
-                                + Add topic
-                            </a>
+                            <div>
+                                <a th:href="@{'/lecturer/courses/' + ${course.id} + '/add_topic'}">
+                                    Add topic
+                                </a>
+                            </div>
                         </div>
                         <div>
-                            <div class="doc-content-list">
-                                <div class="topic-list-content">
-                                    <div class="topic-view-list">
-                                        <!--Topic view-->
-                                        <div class="topic-item" th:each="topic : ${course.topics}">
-                                            <div class="topic-title">
-                                                <h3 class="topic-info-title">
-                                                    <a th:href="@{'/lecturer/topics/' + ${topic.id}}"
-                                                       th:text="${topic.topicTitle}"></a>
-                                                </h3>
-                                            </div>
-                                            <!--Document view list-->
-                                            <div class="d-flex justify-content-between document-view-info border-bottom">
-                                                <div class="doc-info-head grid__column-7">
-                                                    <p class="doc-info-title"><a th:href="@{/student/documentDetail}">
-                                                        <span>Tai lieu tham khao C</span></a>
-                                                    </p>
-                                                    <p class="doc-info-description">
-                                                        <span>Tai lieu tham khao C - description</span>
-                                                    </p>
-                                                </div>
-                                                <div class="grid__column-1">
-                                                    <button class="stu__btn_save-doc" type="submit">
-                                                        <i class="fa-regular fa-edit"></i></button>
-                                                </div>
-                                            </div>
-                                            <!--End Document view-->
-                                        </div>
-                                        <!--End Topic view-->
-                                    </div>
-                                </div>
-                            </div>
+                            <ul class="list-group" th:each="topic : ${topics}">
+                                <li class="list-group-item">
+                                    <a th:href="@{'/lecturer/topics/' + ${topic.getId()}}" th:text="${topic.topicTitle}">
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

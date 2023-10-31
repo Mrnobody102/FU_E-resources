@@ -396,7 +396,6 @@
 }
 
 .doc-content-view, .doc-content-list{
-    padding-top: 2rem;
     padding-bottom: 2rem;
 }
 .doc-info-title{
@@ -444,5 +443,9 @@
 
 #toggleIdLecturer {
     cursor: pointer;
+}
+
+#main-lecturer {
+    width: 100%;
 }
 

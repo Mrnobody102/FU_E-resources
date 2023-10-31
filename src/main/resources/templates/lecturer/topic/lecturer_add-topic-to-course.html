@@ -3,114 +3,101 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Details Subject</title>
-  <link rel="stylesheet" th:href="@{/css/base.css}"/>
-  <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-  <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
-          rel="stylesheet"
-  />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Lecturer | Details Course</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
 
-<body>
-<div class="app_container">
-  <!-- Header -->
-  <div class="row" th:replace="~{fragments/header::headerLecturerSection}"></div>
+<body class="app_container">
+<!-- Header -->
+<div class="row" th:replace="~{fragments/header::headerLecturerSection}"></div>
+<div class="main_content">
+    <div class="container-content-wrapper">
+        <!--  Main-->
+        <div class="container-content row">
+            <div class="main-content stu_course-saved">
+                <div class="stu_course-saved-content d-flex">
+                    <div class="stu_sidebar">
+                        <div th:replace="~{fragments/sidebar:: lecturerSidebar}"></div>
+                    </div>
 
-  <!-- Content -->
-  <main class="main_content">
-    <div class="sidebar librarianCourseSidebar">
-      <nav id="sidebar">
-        <ul class="list-unstyled components func_list">
-          <li class="func_item">
-            <a th:href="@{/lecturer}">Home</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <div class="course-details-head">
-      <a th:href="@{'/lecturer/courses/' + ${course.getId}}"
-         th:text="|${course.courseCode} - ${course.courseName}|"></a>
-      <span> &gt; <a th:href="@{'/lecturer/courses/addTopic/' + ${course.getId}}">Add topic</a> </span>
-    </div>
-    <section>
-      <h1>Detail Subject</h1>
-      <hr />
-      <div class="add-content">
-        <div class="add-form">
-          <div th:if="${param.success}">
-            <div class="alert alert-info">Save course successful !!!</div>
-          </div>
-          <div th:if="${param.error}">
-            <div class="alert alert-danger">Please check course information again !!!</div>
-          </div>
-          <div class="add-form-content">
-            <table th:if="course ne null">
-              <tr>
-                <th>Course</th>
-                <td th:text="| ${course.courseCode} - ${course.courseName}|"></td>
-              </tr>
-              <tr>
-                <th>Topics</th>
-                <td th:if="topics ne null">
-                  <th:block th:each="topic : ${topics}">
-                    <p> <a th:href="@{'/lecturer/courses/updateTopic/' + ${topic.getId}}">Edit</a>
-                      | <a class="delete-topic" th:id="'/' + ${course.getId} + '/' + ${topic.getId}">Remove</a>
-                    <a th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></a>
-                    </p>
-                  </th:block>
-                </td>
-              </tr>
-            </table>
-            <form method="post" role="form" th:action="@{/lecturer/courses/addTopic}"
-                  th:object="${topic}" th:id="add-form">
-              <h3>Add topic</h3>
-              <table class="table-form add-table">
-                   <tr>
-                       <td><label th:for="courseId">Course ID</label></td>
-                       <td><input type="text"
-                            class="form-control hidden" th:field="*{course}" th:id="courseId"
-                                  placeholder="Enter course ID" readonly>
-                       </td>
-                   </tr>
-                <tr>
-                  <td><label th:for="topicTitle">Topic Title</label></td>
-                  <td><input type="text"
-                             class="form-control" th:field="*{topicTitle}"
-                             placeholder="Enter topic title" required>
-                    <p class="text-danger" th:errors="*{topicTitle}"
-                       th:if="${#fields.hasErrors('topicTitle')}"></p>
-                  </td>
-                </tr>
-                <tr>
-                  <td><label th:for="topicDescription">Topic Description</label></td>
-                  <td><input type="text"
-                             class="form-control" th:field="*{topicDescription}"
-                             placeholder="Enter description">
-                    <p class="text-danger" th:errors="*{topicDescription}"
-                       th:if="${#fields.hasErrors('topicDescription')}"></p>
-                  </td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>
-                    <button type="submit" class="btn btn-save">Save</button>
-                  </td>
-                </tr>
-              </table>
-            </form>
-          </div>
+                    <div class="stu_courses-content m-3" id="main-lecturer">
+                        <div class="course-details-head">
+                            <a th:href="@{/lecturer}">Home > </a>
+                            <a th:href="@{'/lecturer/courses/' + ${course.getId}}"
+                               th:text="|${course.courseCode} - ${course.courseName}|"></a>
+                            <span> &gt; Add topic </span>
+                        </div>
+                        <section>
+                            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <div>
+                                    <h1 class="h2" th:text="${course.courseCode} + ' - ' + ${course.courseName}"></h1>
+                                </div>
+                            </div>
+                            <div class="add-content">
+                                <div class="add-form">
+                                    <div class="add-form-content">
+                                        <form method="post" role="form" th:action="@{/lecturer/add_topic}"
+                                              th:object="${topic}" th:id="add-form">
+                                            <h3>Add topic</h3>
+                                            <table class="table-form add-table">
+                                                <tr>
+                                                    <td><label th:for="courseId">Course ID</label></td>
+                                                    <td><input type="text"
+                                                               class="form-control hidden" th:field="*{course}"
+                                                               th:id="courseId"
+                                                               placeholder="Enter course ID" readonly>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label th:for="topicTitle">Topic Title</label></td>
+                                                    <td><input type="text"
+                                                               class="form-control" th:field="*{topicTitle}"
+                                                               placeholder="Enter topic title" required>
+                                                        <p class="text-danger" th:errors="*{topicTitle}"
+                                                           th:if="${#fields.hasErrors('topicTitle')}"></p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label th:for="topicDescription">Topic Description</label></td>
+                                                    <td><input type="text"
+                                                               class="form-control" th:field="*{topicDescription}"
+                                                               placeholder="Enter description">
+                                                        <p class="text-danger" th:errors="*{topicDescription}"
+                                                           th:if="${#fields.hasErrors('topicDescription')}"></p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-save">Save</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+    </div>
 </div>
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

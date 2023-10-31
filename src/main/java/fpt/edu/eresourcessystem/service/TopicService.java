@@ -8,8 +8,6 @@ import java.util.List;
 public interface TopicService {
     List<Topic> findAll();
 
-    List<Topic> findByCourseId(String courseId);
-
     Topic addTopic(Topic topic);
 
     Topic findById(String topicId);

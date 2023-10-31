@@ -19,10 +19,10 @@ public interface LecturerRepository extends MongoRepository<Lecturer, String> {
     Optional<Lecturer> findById(@NonNull String id);
 
     @NonNull
-    @Override
     List<Lecturer> findAll();
 
     Lecturer findByAccountId(String accountId);
+
     @Query("SELECT l FROM lecturers l  where l.id in ?1")
     List<Lecturer> findByIds(List<String> ids);
 

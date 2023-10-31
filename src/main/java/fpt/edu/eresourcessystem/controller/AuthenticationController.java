@@ -32,12 +32,11 @@ import java.util.List;
 public class AuthenticationController {
     private final AccountService accountService;
 
-    @Autowired
-    private GoogleUtils googleUtils;
+    private final GoogleUtils googleUtils;
 
-    @Autowired
-    public AuthenticationController(AccountService accountService) {
+    public AuthenticationController(AccountService accountService, GoogleUtils googleUtils) {
         this.accountService = accountService;
+        this.googleUtils = googleUtils;
     }
 
     @GetMapping({"/login"})
