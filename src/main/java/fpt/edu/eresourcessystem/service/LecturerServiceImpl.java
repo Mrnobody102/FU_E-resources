@@ -107,5 +107,24 @@ public class LecturerServiceImpl implements LecturerService {
         return lecturerRepository.findByAccount_Email(email);
     }
 
+    public boolean removeCourse(String lectureId, Course course) {
+        Optional<Lecturer> optionalLecture = lecturerRepository.findById(lectureId);
 
+        if (optionalLecture.isPresent()) {
+            Lecturer lecture = optionalLecture.get();
+
+            // Check if the course is associated with the lecture
+            if (lecture.getCourses().contains(course)) {
+                lecture.getCourses().remove(course);
+                lecturerRepository.save(lecture);
+
+                // Optionally, update the course to remove the lecture's association
+//                course.setLecturer(null);
+//                courseService.updateCourse(course);
+
+                return true;
+            }
+        }
+        return false;
+    }
 }

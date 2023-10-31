@@ -175,7 +175,7 @@ public class LibrarianController {
             List<Account> lecturers = accountService.findAllLecturer();
             model.addAttribute("lecturers", lecturers);
             model.addAttribute("course", course);
-            model.addAttribute("status", CourseEnum.Status.values());
+            model.addAttribute("statuses", CourseEnum.Status.values());
             return "librarian/course/librarian_update-course";
         }
     }
@@ -437,9 +437,11 @@ public class LibrarianController {
 
     @GetMapping({"/courses/{courseId}/remove-lecture"})
     public String removeLecture(@PathVariable String courseId, final Model model) {
-        boolean removed =  courseService.removeLecture(courseId);
-        if (true == removed) {
-            return "redirect:/librarian/courses/{courseId}/add-lecture?success";
+        Course course = courseService.findByCourseId(courseId);
+        boolean removed =lecturerService.removeCourse(course.getLecturer().getId(), course);
+        boolean removed1 =  courseService.removeLecture(courseId);
+        if (true == removed && removed1 == true) {
+                return "redirect:/librarian/courses/{courseId}/add-lecture?success";
         }
         else return  "redirect:/librarian/courses/{courseId}/add-lecture?error";
 

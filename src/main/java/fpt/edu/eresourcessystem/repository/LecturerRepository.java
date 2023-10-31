@@ -35,7 +35,7 @@ public interface LecturerRepository extends MongoRepository<Lecturer, String> {
 
     Page<Lecturer> findLecturerByCreatedByLike (String createBy, Pageable pageable);
 
-    @Query("{ 'account.email' : ?0 }")
+    @Query("{ 'Account.email' : ?0 }")
     Lecturer findByAccount_Email(String email);
 
 

@@ -23,5 +23,6 @@ public interface LecturerService {
 
     Lecturer findLecturerByEmail(String email);
 
+    boolean removeCourse(String lectureId,Course courseId);
 
 }

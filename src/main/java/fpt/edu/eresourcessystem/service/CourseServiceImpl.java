@@ -231,9 +231,7 @@ public class CourseServiceImpl implements CourseService{
             return false;
         }
         course.setLecturer(null); // Assuming lecturer is a reference to the lecture
-
         courseRepository.save(course);
-
         return true;
     }
 

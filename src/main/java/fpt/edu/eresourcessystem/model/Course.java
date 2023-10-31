@@ -79,4 +79,23 @@ public class Course {
     public Course draftCourse(CourseDTO courseDTO){
         return new Course(courseDTO, CourseEnum.Status.DRAFT);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Course course = (Course) o;
+
+        if (lecturer != null ? !lecturer.getId().equals(course.lecturer.getId()) : course.lecturer != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        // Implement a hashCode method if you override equals
+        return lecturer != null ? lecturer.getId().hashCode() : 0;
+    }
 }
