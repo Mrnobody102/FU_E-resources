@@ -429,12 +429,20 @@ public class LibrarianController {
     @GetMapping({"/courses/{courseId}/add-lecture"})
     public String addLecturer(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
-        Lecturer lecturers = lecturerService.findByCourseId(courseId);
         List<Account> accounts = accountService.findAllLecturer();
         model.addAttribute("course", course);
-        model.addAttribute("lecturers", lecturers);
         model.addAttribute("accounts", accounts);
-        return "librarian/course/librarian_add-lecturer-to-course";
+        return "librarian/course/librarian_course-detail";
+    }
+
+    @GetMapping({"/courses/{courseId}/remove-lecture"})
+    public String removeLecture(@PathVariable String courseId, final Model model) {
+        boolean removed =  courseService.removeLecture(courseId);
+        if (true == removed) {
+            return "redirect:/librarian/courses/{courseId}/add-lecture?success";
+        }
+        else return  "redirect:/librarian/courses/{courseId}/add-lecture?error";
+
     }
 
     /**
@@ -443,8 +451,8 @@ public class LibrarianController {
      * @return
      */
     @PostMapping({"/courses/{courseId}/add-lecture"})
-    public String addLecturer(@PathVariable String courseId, @RequestParam String username, final Model model) {
-        Account account = accountService.findByUsername(username);
+    public String addLecturer(@PathVariable String courseId, @RequestParam String lecturerEmail, final Model model) {
+        Account account = accountService.findByUsername(lecturerEmail);
         Lecturer lecturer = lecturerService.findByAccountId(account.getId());
         Course course = courseService.updateLectureId(courseId, lecturer);
 
@@ -461,12 +469,10 @@ public class LibrarianController {
 
         javaMailSender.send(message);
 
-        List<Topic> topics = topicService.findByCourseId(courseId);
-
-        if (null != lecturer) {
-            Account accountLecturer = lecturer.getAccount();
-            model.addAttribute("accountLecturer", accountLecturer);
-        }
+//        if (null != lecturer) {
+//            Account accountLecturer = lecturer.getAccount();
+//            model.addAttribute("accountLecturer", accountLecturer);
+//        }
         model.addAttribute("course", course);
 //        model.addAttribute("topics", topics);
         return "librarian/course/librarian_course-detail";

@@ -90,22 +90,22 @@ public class LecturerServiceImpl implements LecturerService {
         return page;
     }
 
-//    public Page<Lecturer> findLecturerByCreatedByLikeAndAccount_Name(String createdBy,String search, int pageIndex, int pageSize) {
-//        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
-//        Page<Lecturer> page = lecturerRepository.findLecturerByCreatedByLikeAndAccount_Name(createdBy, search, pageable);
-//        System.out.println(page);
-//        return page;
+
+
+//    @Override
+//    public Lecturer addLectureWithCourse(Lecturer lecturer) {
+//        Optional<Lecturer> foundLecturer = lecturerRepository.findById(lecturer.getId());
+//        if(foundLecturer.isPresent()){
+//
+//            Lecturer result =  lecturerRepository.save(lecturer);
+//            return result;
+//        }
+//        return null;
 //    }
 
-
-    @Override
-    public Lecturer addLectureWithCourse(Lecturer lecturer) {
-        Optional<Lecturer> foundLecturer = lecturerRepository.findById(lecturer.getId());
-        if(foundLecturer.isPresent()){
-
-            Lecturer result =  lecturerRepository.save(lecturer);
-            return result;
-        }
-        return null;
+    public Lecturer findLecturerByEmail(String email) {
+        return lecturerRepository.findByAccount_Email(email);
     }
+
+
 }

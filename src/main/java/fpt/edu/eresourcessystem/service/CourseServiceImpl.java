@@ -224,6 +224,19 @@ public class CourseServiceImpl implements CourseService{
         }
     }
 
+    public boolean removeLecture(String courseId) {
+        Course course = courseRepository.findById(courseId).orElse(null);
+
+        if (course == null) {
+            return false;
+        }
+        course.setLecturer(null); // Assuming lecturer is a reference to the lecture
+
+        courseRepository.save(course);
+
+        return true;
+    }
+
 
 
 }

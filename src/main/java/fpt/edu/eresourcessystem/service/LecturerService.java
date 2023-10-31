@@ -21,8 +21,7 @@ public interface LecturerService {
 
     Page<Lecturer> findLecturerByLecturerIdLike(String lectureId, int pageIndex, int pageSize);
 
-//    Page<Lecturer> findLecturerByCreatedByLikeAndAccount_Name(String createdBy, String search, int pageIndex, int pageSize);
+    Lecturer findLecturerByEmail(String email);
 
-    public Lecturer addLectureWithCourse(Lecturer lecturer);
 
 }
