@@ -4,7 +4,6 @@ import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.LecturerCourse;
-import fpt.edu.eresourcessystem.repository.CourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerCourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerRepository;
 import org.springframework.beans.factory.annotation.Autowired;

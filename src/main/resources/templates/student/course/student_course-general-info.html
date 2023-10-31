@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>E-Resource Lecturer Home</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+</head>
+<body class="app_container">
+<!-- Header -->
+<div th:replace="~{fragments/header::studentHeaderSection}"></div>
+<div class="main_content">
+    <div class="container-content-wrapper">
+        <!--  Main-->
+        <div class="container-content row">
+            <div class="main-content stu_course-saved">
+                <div class="stu_course-saved-content d-flex">
+                    <div class="stu_sidebar">
+                        <div th:replace="~{fragments/sidebar :: studentSidebar}"></div>
+                    </div>
+                    <div class="stu_course-content main d-flex" id="main">
+                        <div class="student__course-topic-list grid__column-1">
+                            <div class="course-info">
+                                <div class="course-info-title">
+                                    <i class="fa-solid fa-folder"></i>
+                                    <span><h3 class="h3" th:text="${course.courseCode}"></h3></span>
+                                </div>
+                            </div>
+                            <div class="list-view-block course-general-link-info  border-bottom">
+                                <a href="">Lecturer: <span th:text="${course.lecturer.account.name}"></span></a>
+                                <a th:href="@{'/student/course_info/' + ${course.id} }">Course Information</a>
+                            </div>
+                            <div class="stu_save-course-link">
+                                <p><a class="unsaved-course" th:if="${saved} == false"
+                                      th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">
+                                    <i class="fa-solid fa-bookmark"></i>
+                                    Unbookmark</a>
+                                </p>
+                                <p><a class="saved-course" th:if="${saved} == true"
+                                      th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">
+                                    <i class="fa-regular fa-bookmark"></i>
+                                    Bookmark</a></p>
+                            </div>
+                        </div>
+                        <div class="student__course-info-view grid__column-8">
+                            <div class="course-details-head">
+                                <div class="course-details-name">
+                                <p class="course-info-name">
+                                    <i class="fa-regular fa-folder"></i>
+                                    <a class="course-info-name" th:href="@{'/student/courses/' + ${course.getId}}"
+                                               th:text="|${course.courseCode} - ${course.courseName}|"></a> </p>
+                                </div>
+                                <div class="course-details-lecturer">
+                                    <p class="course-info-lecturer">
+                                        <a href="">  <span class="lecturer-name">Lecturer Name</span> </a> </p>
+                                </div>
+                                <div class="stu_save-course-link">
+                                    <p><a class="unsaved-course" th:if="${saved} == false"
+                                          th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">
+                                        <i class="fa-regular fa-square-minus"></i>
+                                        Unbookmark</a>
+                                    </p>
+                                    <p><a class="saved-course" th:if="${saved} == true"
+                                          th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">
+                                        <i class="fa-regular fa-bookmark"></i>
+                                        Bookmark</a></p>
+                                </div>
+                            </div>
+                            <div class="course-info-content">
+                                <div class="view-course-info-content">
+                                    <table class="table-view-course-info" th:if="course ne null">
+                                        <tr>
+                                            <th>Course Code</th>
+                                            <td class="course-info-code" th:text="${course.courseCode}"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Course Name</th>
+                                            <td class="course-info-name" th:text="${course.courseName}"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Description</th>
+                                            <td th:text="${course.description}"></td>
+                                        <tr>
+                                            <th>Topics
+                                            </th>
+                                            <td th:if="topics ne null">
+                                                <th:block th:each="topic : ${topics}">
+                                                    <p th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></p>
+                                                </th:block>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <th>Lecturers</th>
+                                            <td th:if="course.lecturer ne null">
+                                                <a href=""><span th:text="${course.lecturer}"></span> </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footerSection}"></div>
+<!--jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<!--Custom script-->
+<script th:src="@{/js/student.js}"></script>
+</body>
+</html>

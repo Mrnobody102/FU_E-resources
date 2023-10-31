@@ -38,7 +38,7 @@
                                 <input type="text" class="header__search-input"
                                        placeholder="Enter here ..."
                                        name="search"
-                                       th:id="search" th:value="${search}">
+                                       th:id="search-text" th:value="${search}">
                                 <!-- Header-search-history -->
                                 <div class="header__search-history">
                                     <h3 class="header__search-history-heading">
@@ -94,19 +94,11 @@
                                                            th:href="@{'/student/courses/' + ${course.id}}"></a>
                                                         <p class="home__course-description" th:text="${course.description}"></p>
                                                         <ul class="home__course-lecturer-list">
-                                                            <li th:if="${course.lecturer ne null}"
-                                                                href="#" th:text="lecturer">
-                                                            </li>
-                                                            <li class="home__course-lecturer-item">
+                                                            <li class="home__course-lecturer-item" th:if="${course.lecturer ne null}">
                                                                 <a class="home__course-lecturer-link"
                                                                    href="">
-                                                                    Mai K Đa
-                                                                </a>
-                                                            </li>
-                                                            <li class="home__course-lecturer-item">
-                                                                <a class="home__course-lecturer-link"
-                                                                   href="">
-                                                                    Nguyễn Ngọc Anh
+                                                                    <span>Lecturer: </span>
+                                                                    <span th:text="${course.lecturer.account.name}"></span>
                                                                 </a>
                                                             </li>
                                                         </ul>

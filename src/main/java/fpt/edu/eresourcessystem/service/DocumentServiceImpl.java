@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.service;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
+import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.repository.DocumentRepository;
 import org.apache.commons.io.IOUtils;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
@@ -17,6 +19,7 @@ import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.Doc;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -24,14 +27,16 @@ import java.util.Optional;
 @Service("documentService")
 public class DocumentServiceImpl implements DocumentService {
     private DocumentRepository documentRepository;
+    private final MongoTemplate mongoTemplate;
 
     private GridFsTemplate template;
 
     private GridFsOperations operations;
 
     @Autowired
-    public DocumentServiceImpl(DocumentRepository documentRepository, GridFsTemplate template, GridFsOperations operations) {
+    public DocumentServiceImpl(DocumentRepository documentRepository, MongoTemplate mongoTemplate, GridFsTemplate template, GridFsOperations operations) {
         this.documentRepository = documentRepository;
+        this.mongoTemplate = mongoTemplate;
         this.template = template;
         this.operations = operations;
     }
@@ -53,6 +58,13 @@ public class DocumentServiceImpl implements DocumentService {
     public Document findById(String documentId) {
         Optional<Document> document = documentRepository.findById(documentId);
         return document.orElse(null);
+    }
+
+    @Override
+    public List<Document> findByListId(List<String> documentIds) {
+            Query query = new Query(Criteria.where("id").in(documentIds));
+            List<Document> documents = mongoTemplate.find(query, Document.class);
+            return documents;
     }
 
     @Override

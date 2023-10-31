@@ -204,10 +204,10 @@ public class CourseServiceImpl implements CourseService{
         criteria.and("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED);
 
         Query query = new Query(criteria).with(pageable);
-
         List<Course> results = mongoTemplate.find(query, Course.class);
-        return PageableExecutionUtils.getPage(results, pageable,
-                () -> mongoTemplate.count(query, Course.class));
+        Page<Course> page =  PageableExecutionUtils.getPage(results, pageable,
+                () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Course.class));
+        return page;
     }
 
     @Override
@@ -222,8 +222,9 @@ public class CourseServiceImpl implements CourseService{
 
         Query query = new Query(criteria).with(pageable);
         List<Course> results = mongoTemplate.find(query, Course.class);
-        return PageableExecutionUtils.getPage(results, pageable,
-                () -> mongoTemplate.count(query, Course.class));
+        Page<Course> page =  PageableExecutionUtils.getPage(results, pageable,
+                () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Course.class));
+        return page;
     }
 
     @Override
@@ -237,12 +238,13 @@ public class CourseServiceImpl implements CourseService{
         );
 
         Query query = new Query(criteria).with(pageable);
-        List<Course> results = mongoTemplate.find(query, Course.class);
 //        long total = mongoTemplate.count(query, Course.class);
 //        Page<Course> page = new PageImpl<>(results, pageable, total);
 //        return page;
-        return PageableExecutionUtils.getPage(results, pageable,
-                () -> mongoTemplate.count(query, Course.class));
+        List<Course> results = mongoTemplate.find(query, Course.class);
+        Page<Course> page =  PageableExecutionUtils.getPage(results, pageable,
+                () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Course.class));
+        return page;
     }
 
     @Override

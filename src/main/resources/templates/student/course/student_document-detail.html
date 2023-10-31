@@ -40,23 +40,7 @@
                         <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
                     </div>
                     <div class="stu_course-content main" id="main">
-                        <div class="student__course-topic-list">
-                            <div class="course-info">
-                                <div class="course-info-title">
-                                    <i class="fa-solid fa-folder"></i>
-                                    <span><h3 class="h3">PRJ301</h3></span>
-                                </div>
-                            </div>
-                            <div class="list-view-block border-bottom course-general-link-info">
-                                <a th:href="@{/student/courses/PRJ301}">Course Information</a>
-                            </div>
-                            <div class="list-view-block course-topic-list">
-                                <a href="">Material</a>
-                                <a href="">CLO1</a>
-                                <a href="">CLO2</a>
-                            </div>
-                        </div>
-                        <div class="student__course-document-view">
+                        <div class="student__course-document-view  border-end">
                             <div class="student__document-type-list">
                                 <div class="list-view-inline top-doctype-list">
                                     <form action="" method="" class="form-chose-doc-type">
@@ -81,6 +65,21 @@
                                     </form>
                                 </div>
                             </div>
+                            <div class="stu__navbar-view-doc">
+                                <ul class="stu__navbar-view-doc-list border-bottom">
+                                    <li class="stu__navbar-view-doc-item stu__navbar-active">
+                                        <a th:href="@{/student/my_library/saved_courses}">
+                                            Question & Answer
+                                        </a>
+                                    </li>
+                                    <li class="stu__navbar-view-doc-item">
+                                        <a th:href="@{/student/my_library/saved_documents}">
+                                            Notes
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
                             <div class="doc-content-view" style="height: 500px ; background: #8beaa7">
 
                             </div>
@@ -109,9 +108,37 @@
                             </div>
                         </div>
                         <div class="student__course-document-list">
+                            <div class="document-details-info">
+                                <p class="doc-info-name h2">
+                                    <i class="fa-solid fa-file"></i>
+                                    <a class="doc-info-name" href="">Document title</a></p>
+                                <p class="course-info-lecturer">
+                                    <a href="">Lecturer: <span class="lecturer-name"
+                                    >Nguyen Thi Tra My</span>
+                                    </a></p>
+                                <div class="resource-type-list">
+                                    <p class="resource-type-item"><span>Course</span>-<span>Topic</span></p>
+                                    <p class="resource-type-item"><span>Course</span>-<span>Topic</span></p>
+                                </div>
+                                <div class="stu_save-course-link">
+                                    <p><a class="unsaved-course">
+                                        <i class="fa-regular fa-bookmark"></i>
+                                        Bookmark</a>
+                                    </p>
+                                    <!--                                    <p><a class="unsaved-course" th:if="${saved} == false"-->
+                                    <!--                                          th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">-->
+                                    <!--                                        <i class="fa-solid fa-bookmark"></i>-->
+                                    <!--                                        Unbookmark</a>-->
+                                    <!--                                    </p>-->
+                                    <!--                                    <p><a class="saved-course" th:if="${saved} == true"-->
+                                    <!--                                          th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">-->
+                                    <!--                                        <i class="fa-regular fa-bookmark"></i>-->
+                                    <!--                                        Bookmark</a></p>-->
+                                </div>
+                            </div>
                             <div class="list-view-block doc-name-list">
                                 <div class="list-view-doc-title">
-                                    <p class="h3">Documents</p>
+                                    <p class="h3">Other Documents</p>
                                 </div>
                                 <form action="" method="" class="form-chose-doc-type">
                                     <p>
@@ -141,7 +168,6 @@
                                 </form>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

@@ -567,7 +567,9 @@
     background-color: var(--white-color);
     border-radius: 20px;
     min-width: 300px;
+    width: 70%;
     border: 1px solid #888888;
+    margin-top: 3rem;
 }
 
 .header__search:focus-within {
@@ -802,6 +804,7 @@
 /* App Container: Category */
 .main_content {
     margin-top: 8rem;
+    margin-bottom: 8rem;
     flex: 1;
     background-color: var(--white-color);
 }
@@ -895,7 +898,8 @@
 
 .home__course-lecturer-item {
     padding-right: 18px;
-    font-size: 1.4rem;
+    font-size: var(--normal-font-size);
+    font-weight: var(--font-medium);
 }
 
 .home__course-lecturer-link:hover {

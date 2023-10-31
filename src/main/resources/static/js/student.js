@@ -53,25 +53,28 @@ $(document).ready(function () {
     $(".page-stu-course-number").click(function () {
 
         const search = $("#search-text").val();
+        const filter = $("#filter").val();
         let pageIndex = $(this).html();
 
-        window.location = "/student/search_course/" + pageIndex + "?search=" + search;
+        window.location = "/student/search_course/" + pageIndex + "?search=" + search + "&filter=" +filter;
     });
 
     $(".previous-page-stu-course-number").click(function () {
         const search = $("#search-text").val();
+        const filter = $("#filter").val();
         const pageIndex = $(".active .page-account-number").text();
         const currentPage = parseInt(pageIndex);
         if (currentPage > 1) {
-            window.location.href = "/student/search_course/" + (currentPage - 1) + "?search=" + search;
+            window.location.href = "/student/search_course/" + (currentPage - 1) + "?search=" + search + "&filter=" + filter;
         }
     });
 
     $(".next-page-stu-course-number").click(function () {
         const search = $("#search-text").val();
+        const filter = $("#filter").val();
         const pageIndex = $(".active .page-account-number").text();
         const currentPage = parseInt(pageIndex);
-        window.location.href = "/student/search_course/" + (currentPage + 1) + "?search=" + search;
+        window.location.href = "/student/search_course/" + (currentPage + 1) + "?search=" + search+ "&filter=" + filter;
     });
 
 });
