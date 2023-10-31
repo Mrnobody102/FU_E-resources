@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
-<body>
+<body class="app_container">
 <!-- Header -->
 <div th:replace="~{fragments/header::headerLecturerSection}"></div>
 <div class="main_content">
@@ -67,57 +67,57 @@
                             </button>
                         </div>
 
-                        <div class="stu__courses-list-view">
-                            <div class="stu__view-saved-courses">
-                                <div class="stu__view-list-course-content">
-                                    <div class="view-block-list">
-                                        <ul class="home__course-list">
-                                            <li class="home__course-item">
-                                                <div class="home__course-wrapper" th:each="course : ${coursesSaved}">
-                                                    <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
-                                                    <a class="home__course-name" th:text="${course.courseName}"
-                                                       th:href="@{'/student/courses/' + ${course.courseId}}"></a>
-                                                    <p class="home__course-description" th:text="${course.description}"></p>
-                                                    <ul class="home__course-lecturer-list">
-                                                        <li th:if="${course.lecturer ne null}"
-                                                            href="#" th:text="lecturer">
-                                                        </li>
-                                                        <li class="home__course-lecturer-item">
-                                                            <a class="home__course-lecturer-link"
-                                                               href="">
-                                                                Mai K Đa
-                                                            </a>
-                                                        </li>
-                                                        <li class="home__course-lecturer-item">
-                                                            <a class="home__course-lecturer-link"
-                                                               href="">
-                                                                Nguyễn Ngọc Anh
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <ul class="pagination home-courses__pagination-distance">
-                                        <li class="pagination-item">
-                                            <a href="" class="pagination-item__link">
-                                                <i class="pagination-item__icon fas fa-angle-left"></i>
-                                            </a>
-                                        </li>
-                                        <li class="pagination-item pagination-item--active">
-                                            <a href="" class="pagination-item__link">1</a>
-                                        </li>
+<!--                        <div class="stu__courses-list-view">-->
+<!--                            <div class="stu__view-saved-courses">-->
+<!--                                <div class="stu__view-list-course-content">-->
+<!--                                    <div class="view-block-list">-->
+<!--                                        <ul class="home__course-list">-->
+<!--                                            <li class="home__course-item">-->
+<!--                                                <div class="home__course-wrapper" th:each="course : ${coursesSaved}">-->
+<!--                                                    <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>-->
+<!--                                                    <a class="home__course-name" th:text="${course.courseName}"-->
+<!--                                                       th:href="@{'/student/courses/' + ${course.courseId}}"></a>-->
+<!--                                                    <p class="home__course-description" th:text="${course.description}"></p>-->
+<!--                                                    <ul class="home__course-lecturer-list">-->
+<!--                                                        <li th:if="${course.lecturer ne null}"-->
+<!--                                                            href="#" th:text="lecturer">-->
+<!--                                                        </li>-->
+<!--                                                        <li class="home__course-lecturer-item">-->
+<!--                                                            <a class="home__course-lecturer-link"-->
+<!--                                                               href="">-->
+<!--                                                                Mai K Đa-->
+<!--                                                            </a>-->
+<!--                                                        </li>-->
+<!--                                                        <li class="home__course-lecturer-item">-->
+<!--                                                            <a class="home__course-lecturer-link"-->
+<!--                                                               href="">-->
+<!--                                                                Nguyễn Ngọc Anh-->
+<!--                                                            </a>-->
+<!--                                                        </li>-->
+<!--                                                    </ul>-->
+<!--                                                </div>-->
+<!--                                            </li>-->
+<!--                                        </ul>-->
+<!--                                    </div>-->
+<!--                                    <ul class="pagination home-courses__pagination-distance">-->
+<!--                                        <li class="pagination-item">-->
+<!--                                            <a href="" class="pagination-item__link">-->
+<!--                                                <i class="pagination-item__icon fas fa-angle-left"></i>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                        <li class="pagination-item pagination-item&#45;&#45;active">-->
+<!--                                            <a href="" class="pagination-item__link">1</a>-->
+<!--                                        </li>-->
 
-                                        <li class="pagination-item">
-                                            <a href="" class="pagination-item__link">
-                                                <i class="pagination-item__icon fas fa-angle-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+<!--                                        <li class="pagination-item">-->
+<!--                                            <a href="" class="pagination-item__link">-->
+<!--                                                <i class="pagination-item__icon fas fa-angle-right"></i>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                     </div>
 
 

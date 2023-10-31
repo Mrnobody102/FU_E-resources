@@ -95,6 +95,7 @@ public class LibrarianController {
     public String addCourseProcess(@ModelAttribute Course course,
                                    @RequestParam String lecturer) {
 
+
         // check course code duplicate
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
         if (null == checkExist) {

@@ -16,17 +16,21 @@ import jakarta.inject.Named;
  */
 @Named
 public class ConfigBasedAuthenticator implements Authenticator {
-    private final ApplicationContext applicationContext;
-
-    @Inject
-    public ConfigBasedAuthenticator(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
+    //    private final ApplicationContext applicationContext;
+//
+//    @Inject
+//    public ConfigBasedAuthenticator(ApplicationContext applicationContext) {
+//        this.applicationContext = applicationContext;
+//    }
+//
+//    @Override
+//    public boolean authenticate() {
+//        CustomConfig config = applicationContext.getBean(CustomConfig.class);
+//
+//        return config.isEnabled();
+//    }
     @Override
     public boolean authenticate() {
-        CustomConfig config = applicationContext.getBean(CustomConfig.class);
-
-        return config.isEnabled();
+        return true;
     }
 }

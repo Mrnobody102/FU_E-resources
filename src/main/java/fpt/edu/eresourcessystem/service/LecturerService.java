@@ -13,6 +13,9 @@ public interface LecturerService {
     Lecturer addLecturer(Lecturer lecturer);
     Lecturer updateLecturer(Lecturer lecturer);
     List<Lecturer> findAll();
+
+    List<Course> findListManageCourse(Lecturer lecturer);
+
     Lecturer findByAccountId(String accountId);
 
     List<Lecturer> findByListLecturerIds(List<String> ids);
@@ -21,4 +24,5 @@ public interface LecturerService {
 
     Page<Lecturer> findLecturerByLecturerIdLike(String lectureId, int pageIndex, int pageSize);
 
+    Page<Course> findListManagingCourse(Lecturer lecturer, int pageIndex, int pageSize);
 }

@@ -13,7 +13,7 @@
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
 </head>
-<body>
+<body class="app_container">
 <!-- Header -->
 <div th:replace="~{fragments/header::studentHeaderSection}"></div>
 <div class="main_content">
@@ -25,26 +25,31 @@
                     <div class="stu_sidebar">
                         <div th:replace="~{fragments/sidebar :: studentSidebar}"></div>
                     </div>
-                    <div class="stu_course-content main" id="main">
-                        <div class="student__course-topic-list">
+                    <div class="stu_course-content main d-flex" id="main">
+                        <div class="student__course-topic-list grid__column-1">
                             <div class="course-info">
                                 <div class="course-info-title">
                                     <i class="fa-solid fa-folder"></i>
                                     <span><h3 class="h3" th:text="${course.courseCode}"></h3></span>
                                 </div>
                             </div>
-                            <div class="list-view-block border-bottom course-general-link-info">
-                                <a th:href="@{/student/courses/PRJ301}">Course Information</a>
+                            <div class="list-view-block course-general-link-info  border-bottom">
+                                <a href="">Lecturer: <span th:text="${course.lecturer.account.name}"></span></a>
+                                <a th:href="@{'/student/course_info/' + ${course.id} }">Course Information</a>
                             </div>
-                            <div class="list-view-block course-topic-list">
-                                <a href="">Material</a>
-                                <th:block th:each="topic : ${topics}">
-                                    <a th:href="@{'/student/topic/' + ${topic.getId}}" th:text="${topic.topicTitle}"></a>
-                                </th:block>
-                                <a href="">CLO2</a>
+                            <div class="stu_save-course-link">
+                                <p><a class="unsaved-course" th:if="${saved} == false"
+                                      th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">
+                                    <i class="fa-regular fa-square-minus"></i>
+                                    Unbookmark</a>
+                                </p>
+                                <p><a class="saved-course" th:if="${saved} == true"
+                                      th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">
+                                    <i class="fa-regular fa-bookmark"></i>
+                                    Bookmark</a></p>
                             </div>
                         </div>
-                        <div class="student__course-info-view">
+                        <div class="student__course-info-view grid__column-8">
                             <div class="course-details-head">
                                 <div class="course-details-name">
                                 <p class="course-info-name">
@@ -58,11 +63,14 @@
                                 </div>
                                 <div class="stu_save-course-link">
                                     <p><a class="unsaved-course" th:if="${saved} == false"
-                                          th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">Save Course</a>
+                                          th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">
+                                        <i class="fa-regular fa-square-minus"></i>
+                                        Unbookmark</a>
                                     </p>
                                     <p><a class="saved-course" th:if="${saved} == true"
-                                          th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">Unsaved
-                                        Course</a></p>
+                                          th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">
+                                        <i class="fa-regular fa-bookmark"></i>
+                                        Bookmark</a></p>
                                 </div>
                             </div>
                             <div class="course-info-content">

@@ -6,21 +6,31 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+import org.springframework.web.servlet.resource.VersionResourceResolver;
+
+import java.time.Duration;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+@EnableWebMvc
+public class SecurityConfig implements WebMvcConfigurer {
 
     private CustomizeUserDetailsService customizeUserDetailsService;
 
@@ -45,7 +55,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http
+    , HandlerMappingIntrospector introspector) throws Exception {
 
 
         // Disable  csrf
@@ -59,16 +70,32 @@ public class SecurityConfig {
         http.logout(auth -> auth.logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout"));
 
+        MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector).servletPath("/");
         // Authorization
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .anyRequest().permitAll())
-//                        .requestMatchers("/", "/home", "/guest", "/login",  "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
-//                        .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
-//                        .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.LECTURER.name())
-//                        .requestMatchers("/student/**").hasAnyRole(AccountEnum.Role.STUDENT.name())
-//                        .anyRequest().authenticated())
+                        .requestMatchers("/**", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
+                        .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
+                        .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.LECTURER.name())
+                        .requestMatchers("/student/**").hasAnyRole(AccountEnum.Role.STUDENT.name())
+//
+//                        .requestMatchers(mvcMatcherBuilder.pattern("/")).permitAll()
+//                        .requestMatchers(mvcMatcherBuilder.pattern("/home")).permitAll()
+//                        .requestMatchers(mvcMatcherBuilder.pattern("/guest")).permitAll()
+//                        .requestMatchers(mvcMatcherBuilder.pattern("/login")).permitAll()
+//                        .requestMatchers(mvcMatcherBuilder.pattern("/ckfinder/*")).permitAll()
+
+//                        .requestMatchers(new AntPathRequestMatcher("images/**")).permitAll()
+//                        .requestMatchers(new AntPathRequestMatcher("css/**")).permitAll()
+//                        .requestMatchers(new AntPathRequestMatcher("js/**")).permitAll()
+//                        .requestMatchers(new AntPathRequestMatcher("assets/**")).permitAll()
+                        // Auth detail
+//                        .requestMatchers(mvcMatcherBuilder.pattern("/librarian/**")).hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
+//                        .requestMatchers(mvcMatcherBuilder.pattern("/lecturer/**")).hasAnyRole(AccountEnum.Role.LECTURER.name())
+//                        .requestMatchers(mvcMatcherBuilder.pattern("/student/**")).hasAnyRole(AccountEnum.Role.STUDENT.name())
+                        .anyRequest().authenticated())
         ;
+
         // Exception Handling
         http.exceptionHandling(auth -> auth.accessDeniedPage("/access_denied"));
         

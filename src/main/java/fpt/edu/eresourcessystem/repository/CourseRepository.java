@@ -50,12 +50,12 @@ public interface CourseRepository extends
     List<Course> findByCodeOrNameAndId(String code, String name, String id);
 
     @Query("{ 'deleteFlg' : 'PRESERVED' }")
-    Page<Course> findByCourseNameLikeOrCourseCodeLike(String courseName, String courseCode, Pageable pageable);
+    Page<Course> findByCourseNameLikeOrCourseCodeLikeIgnoreCase(String courseName, String courseCode, Pageable pageable);
 
     @Query("{ 'deleteFlg' : 'PRESERVED' }")
-    Page<Course> findByCourseNameLike(String courseName, Pageable pageable);
+    Page<Course> findByCourseNameLikeIgnoreCase(String courseName, Pageable pageable);
 
     @Query("{ 'deleteFlg' : 'PRESERVED' }")
-    Page<Course> findByCourseCodeLike(String courseCode, Pageable pageable);
+    Page<Course> findByCourseCodeLikeIgnoreCase(String courseCode, Pageable pageable);
 
 }

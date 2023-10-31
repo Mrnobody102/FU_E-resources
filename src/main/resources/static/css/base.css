@@ -9,10 +9,14 @@
     --hover-color: #825cf3;
     --bg-hover-color: #e3e6fc;
     --hover-color-2: #CEE8E9;
-    --gradient-color: #1e41cb;
-    --primary-color: #182ebe;
-    --background-btn-color-hover: #1e41cb;
-    --background-btn-color: #72a5e7;
+    /*--gradient-color: #1e41cb;*/
+    /*--primary-color: #182ebe;*/
+    --gradient-color: #114a9d;
+    --primary-color: #0a429d;
+    --background-btn-color-hover: #0a429d;
+    --background-btn-color: #0d55c5;
+    --second-background-btn-color-hover: #efdada;
+    --second-background-btn-color: #efdddd;
     --primary-color-rgb: 210, 68, 2;
     --primary-btn-color: #419a1d;
     --lib-dashboard-color: #0a53be;
@@ -111,6 +115,9 @@ li {
     /*padding-right: 12px;*/
     width: 70%;
 
+}
+.grid__column-8{
+    width: 80%;
 }
 
 .grid__column-3 {
@@ -457,5 +464,10 @@ li {
 
 .list-view-block a:hover ,
 .list-view-block input:hover{
-    background: var(--background-btn-color-hover);
+    background: var(--second-back-ground);
+}
+
+.admin-main-content,
+.librarian-main-content{
+    padding-top: 2rem;
 }

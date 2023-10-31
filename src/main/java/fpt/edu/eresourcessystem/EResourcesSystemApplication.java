@@ -26,7 +26,7 @@ public class EResourcesSystemApplication implements ServletContextInitializer, W
         // Register the CKFinder's servlet.
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("ckfinder", new CKFinderServlet());
         dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping("/ckfinder/*");
+//        dispatcher.addMapping("/ckfinder/*");
         dispatcher.setInitParameter("scan-path", "fpt.edu.eresourcessystem.config.ckfinder");
 
         FilterRegistration.Dynamic filter = servletContext.addFilter("x-content-options", new Filter() {

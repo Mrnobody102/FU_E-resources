@@ -35,15 +35,22 @@
 
 /*=============== SIDEBAR ===============*/
 .sidebar {
+    position: fixed;
     width: 25rem;
-    min-height:80vh;
-    padding: 0 0 0 16px;
+    min-height:auto;
     background-color: white;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     z-index: var(--z-fixed);
     transition: left .4s;
     border-right: 2px solid var(--second-back-ground);
+    padding-left: 2rem;
+    padding-top: 3rem;
+}
+
+.main{
+    margin-top: 3rem;
+    margin-left: 26rem;
 }
 
 .sidebar__container {
@@ -296,6 +303,8 @@
     /* Add padding main */
     .main-pd {
         width: calc(100% - 7rem);
+        margin-left: 7rem;
+        transition: opacity .5s;
     }
 }
 .stu__courses-list-view{
@@ -306,14 +315,10 @@
 }
 .stu_course-filter{
     width: 15%;
-    margin-top: 2rem;
 }
 .stu_course-content{
     display: flex;
-    width: 100%;
-}
-.student__course-topic-list{
-    width: 15%;
+    /*width: 100%;*/
 }
 .student__course-document-view{
     width: 72%;
@@ -337,6 +342,7 @@
 }
 .stu_save-course-link{
     justify-content: right;
+    margin-top: 2rem;
 }
 .student__course-info-view{
     padding: 0.7rem 2rem 2rem 3rem;
@@ -360,10 +366,10 @@
     border: 1px solid #888888;
     border-radius: 2rem;
     padding: 0.5rem 1rem;
-    background: var(--background-btn-color-hover);
+    background-color: var(--second-background-btn-color);
 }
 .stu_save-course-link a:hover{
-    background: var(--background-btn-color);
+    background: var(--second-background-btn-color-hover);
 }
 
 
@@ -440,4 +446,7 @@
 }
 .view-block-list{
     width: 100%;
+}
+.stu__div-content-recent-title{
+    margin-top: 3rem;
 }

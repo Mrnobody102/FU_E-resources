@@ -21,21 +21,22 @@
                     <span class="sidebar__link-name">Home</span>
                     <span class="sidebar__link-floating">Home</span>
                 </a>
-                <a th:href="@{/lecturer/courses}" class="sidebar__link">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span class="sidebar__link-name">Courses</span>
-                    <span class="sidebar__link-floating">Courses</span>
-                </a>
             </div>
             <h3 class="sidebar__title">
                 <span>Library</span>
             </h3>
 
             <div class="sidebar__list border-bottom">
-                <a th:href="@{/lecturer/manage_course/list/1}" class="sidebar__link active-link">
+                <a th:href="@{/lecturer/courses/list/1}" class="sidebar__link active-link">
                     <i class="fa-solid fa-book"></i>
                     <span class="sidebar__link-name">My courses management</span>
                     <span class="sidebar__link-floating">My courses management</span>
+                </a>
+
+                <a href="#" class="sidebar__link">
+                    <i class="fa-solid fa-file"></i>
+                    <span class="sidebar__link-name">My documents</span>
+                    <span class="sidebar__link-floating">My documents</span>
                 </a>
 
                 <a href="#" class="sidebar__link">
@@ -103,14 +104,14 @@
             <div class="sidebar__list border-bottom">
                 <a th:href="@{/student/my_library}" class="sidebar__link active-link">
                     <i class="fa-solid fa-book"></i>
-                    <span class="sidebar__link-name">Saved courses</span>
-                    <span class="sidebar__link-floating">Saved courses</span>
+                    <span class="sidebar__link-name">My favourite courses</span>
+                    <span class="sidebar__link-floating">My favourite courses</span>
                 </a>
 
                 <a href="#" class="sidebar__link">
                     <i class="fa-solid fa-file"></i>
-                    <span class="sidebar__link-name">Saved documents</span>
-                    <span class="sidebar__link-floating">Saved documents</span>
+                    <span class="sidebar__link-name">My documents</span>
+                    <span class="sidebar__link-floating">My documents</span>
                 </a>
 
                 <a href="#" class="sidebar__link">

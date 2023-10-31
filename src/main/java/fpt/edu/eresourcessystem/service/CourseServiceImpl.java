@@ -1,17 +1,20 @@
 package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -176,7 +179,7 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public List<Course> findByListId(List<String> courseIds) {
-        Query query = new Query(Criteria.where("courseId").in(courseIds));
+        Query query = new Query(Criteria.where("id").in(courseIds));
         List<Course> courses = mongoTemplate.find(query, Course.class);
         return courses;
     }
@@ -192,22 +195,54 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public Page<Course> findByCourseNameOrCourseCode(String courseName, String courseCode, Integer pageIndex, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
-        return courseRepository.findByCourseNameLikeOrCourseCodeLike(courseName, courseCode,
-                pageable);
+        Criteria criteria = new Criteria();
+        criteria.orOperator(
+                Criteria.where("courseCode").regex(courseCode.trim(), "i"),
+                Criteria.where("courseName").regex(courseName.trim(), "i")
+        );
+        criteria.and("status").is(CourseEnum.Status.PUBLISH);
+        criteria.and("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED);
+
+        Query query = new Query(criteria).with(pageable);
+
+        List<Course> results = mongoTemplate.find(query, Course.class);
+        return PageableExecutionUtils.getPage(results, pageable,
+                () -> mongoTemplate.count(query, Course.class));
     }
 
     @Override
     public Page<Course> findByCourseNameLike(String courseName, Integer pageIndex, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
-        return courseRepository.findByCourseNameLike(courseName,
-                pageable);
+        Criteria criteria = new Criteria();
+        criteria.orOperator(
+                Criteria.where("courseName").regex(courseName.trim(), "i"),
+                criteria.where("status").is(CourseEnum.Status.PUBLISH),
+                criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+        );
+
+        Query query = new Query(criteria).with(pageable);
+        List<Course> results = mongoTemplate.find(query, Course.class);
+        return PageableExecutionUtils.getPage(results, pageable,
+                () -> mongoTemplate.count(query, Course.class));
     }
 
     @Override
     public Page<Course> findByCourseCodeLike(String courseCode, Integer pageIndex, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
-        return courseRepository.findByCourseCodeLike(courseCode,
-                pageable);
+        Criteria criteria = new Criteria();
+        criteria.orOperator(
+                Criteria.where("courseCode").regex(courseCode.trim(), "i"),
+                criteria.where("status").is(CourseEnum.Status.PUBLISH),
+                criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+        );
+
+        Query query = new Query(criteria).with(pageable);
+        List<Course> results = mongoTemplate.find(query, Course.class);
+//        long total = mongoTemplate.count(query, Course.class);
+//        Page<Course> page = new PageImpl<>(results, pageable, total);
+//        return page;
+        return PageableExecutionUtils.getPage(results, pageable,
+                () -> mongoTemplate.count(query, Course.class));
     }
 
     @Override

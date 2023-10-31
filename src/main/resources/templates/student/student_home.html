@@ -29,10 +29,16 @@
                     </div>
                     <div class="stu_course-saved-content main" id="main">
                         <div class="header__search">
+                            <!--Label-->
+                            <div class="search-label">
+                                <label th:for="search">Search courses, documents, topics,...</label>
+                            </div>
                             <!-- Input  -->
                             <div class="header__search-input-wrap">
                                 <input type="text" class="header__search-input"
-                                       placeholder="Search courses, documents, topics...">
+                                       placeholder="Enter here ..."
+                                       name="search"
+                                       th:id="search" th:value="${search}">
                                 <!-- Header-search-history -->
                                 <div class="header__search-history">
                                     <h3 class="header__search-history-heading">
@@ -48,11 +54,15 @@
                             </div>
                             <!-- Select-find-scope -->
                             <div class="header__search-select">
-                                <span class="header__search-select-label">All results</span>
+                                <span class="header__search-select-label">          </span>
                                 <i class="header__search-select-icon fas fa-angle-down"></i>
                                 <ul class="header__search-option">
                                     <li class="header__search-option-item header__search-option-item--active">
                                         <span class="">All results</span>
+                                        <i class="fas fa-check"></i>
+                                    </li>
+                                    <li class="header__search-option-item">
+                                        <span class="">library</span>
                                         <i class="fas fa-check"></i>
                                     </li>
                                     <li class="header__search-option-item">
@@ -65,6 +75,53 @@
                                 <i class="header__search-btn-icon fas fa-search"></i>
                             </button>
                         </div>
+
+                        <div class="stu__recent-course-content">
+                            <div class="stu__div-content-recent-title">
+                                <h2 class="p border-bottom">
+                                    Recent
+                                </h2>
+                            </div>
+                            <div class="stu__courses-list-recent">
+                                <div class="stu__view-recent-courses">
+                                    <div class="stu__view-list-course-content">
+                                        <div class="view-inline-list">
+                                            <ul class="home__course-list  d-flex">
+                                                <li class="home__course-item grid__column-2"  th:each="course : ${recentCourses}">
+                                                    <div class="home__course-wrapper">
+                                                        <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
+                                                        <a class="home__course-name" th:text="${course.courseName}"
+                                                           th:href="@{'/student/courses/' + ${course.id}}"></a>
+                                                        <p class="home__course-description" th:text="${course.description}"></p>
+                                                        <ul class="home__course-lecturer-list">
+                                                            <li th:if="${course.lecturer ne null}"
+                                                                href="#" th:text="lecturer">
+                                                            </li>
+                                                            <li class="home__course-lecturer-item">
+                                                                <a class="home__course-lecturer-link"
+                                                                   href="">
+                                                                    Mai K Đa
+                                                                </a>
+                                                            </li>
+                                                            <li class="home__course-lecturer-item">
+                                                                <a class="home__course-lecturer-link"
+                                                                   href="">
+                                                                    Nguyễn Ngọc Anh
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
                     </div>
                 </div>
             </div>

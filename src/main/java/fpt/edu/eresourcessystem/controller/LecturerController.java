@@ -1,6 +1,8 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.CourseDTO;
+import fpt.edu.eresourcessystem.enums.AccountEnum;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,16 +32,18 @@ public class LecturerController {
     private final TopicService topicService;
 
     private final DocumentService documentService;
+    private final CourseLogService courseLogService;
 
     @Autowired
     public LecturerController(CourseService courseService, AccountService accountService,
                               LecturerService lecturerService, TopicService topicService,
-                              DocumentService documentService) {
+                              DocumentService documentService, CourseLogService courseLogService) {
         this.courseService = courseService;
         this.accountService = accountService;
         this.lecturerService = lecturerService;
         this.topicService = topicService;
         this.documentService = documentService;
+        this.courseLogService = courseLogService;
     }
 
     public Lecturer getLoggedInLecturer() {
@@ -52,25 +58,6 @@ public class LecturerController {
     /*
         LECTURER COURSES
      */
-    @GetMapping({"/courses/list", "/courses"})
-    public String showCourses() {
-        return "lecturer/course/lecturer_courses";
-    }
-
-    @GetMapping("/courses/list/{pageIndex}")
-    String showCoursesByPage(@PathVariable Integer pageIndex,
-                             @RequestParam(required = false, defaultValue = "") String search,
-                             final Model model) {
-        Page<Course> page;
-        page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
-        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-        model.addAttribute("pages", pages);
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("courses", page.getContent());
-        model.addAttribute("search", search);
-        model.addAttribute("currentPage", pageIndex);
-        return "lecturer/course/lecturer_courses";
-    }
 
     @GetMapping({"/courses/{courseId}/update"})
     public String updateCourseProcess(@PathVariable(required = false) String courseId, final Model model) {
@@ -112,9 +99,18 @@ public class LecturerController {
         }
     }
 
-    @GetMapping({"/{courseId}"})
+    @GetMapping({"courses/{courseId}"})
     public String showCourseDetail(@PathVariable String courseId, final Model model) {
+        Lecturer lecturer = getLoggedInLecturer();
         Course course = courseService.findByCourseId(courseId);
+        if(null==course || null == lecturer){
+            return "exception/404";
+        }
+
+        // add course log
+        CourseLog courseLog = new CourseLog(new CourseLogId(lecturer.getAccount().getId(), courseId, CommonEnum.Action.VIEW, LocalDateTime.now()));
+        courseLogService.addCourseLog(courseLog);
+
         List<Topic> topics = topicService.findByCourseId(courseId);
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
@@ -215,20 +211,20 @@ public class LecturerController {
 //        return "lecturer/course/lecturer_topic-detail";
 //    }
 
-    @GetMapping({"/manage_course/list/{pageIndex}", "/my_library"})
+    @GetMapping({"/courses/list/{pageIndex}", "/my_library"})
     public String viewCourseManaged(@PathVariable(required = false) Integer pageIndex, final Model model) {
         // get account authorized
         Lecturer lecturer = getLoggedInLecturer();
-        List<Course> courses = lecturer.getCourses();
-        model.addAttribute("coursesManagement", courses);
-        System.out.println(courses);
-        List<Integer> pages = new ArrayList<>();
-        for (int i = 1; i < 11; i++) {
-            pages.add(i);
+        System.out.println(lecturer);
+
+        if (null == lecturer){
+            return "common/login";
         }
-        model.addAttribute("totalPage", 10);
+        Page<Course> page = lecturerService.findListManagingCourse(lecturer, pageIndex, pageSize);
+        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         model.addAttribute("pages", pages);
-        model.addAttribute("currentPage", pageIndex);
-        return "lecturer/course/lecturer_courses-management";
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("coursesManagement", page.getContent());
+        return "lecturer/course/lecturer_courses";
     }
 }
