@@ -123,6 +123,9 @@
                                     </td>
                                 </tr>
                                 <tr class="lib_input-wrapper">
+<!--                                    <td class="lib_input-label"><label th:for="status">Campus</label></td>-->
+                                </tr>
+                                <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="campus">Campus</label></td>
                                     <td><select class="lib_input" th:field="*{campus}" th:id="campus">
                                         <option
@@ -159,7 +162,8 @@
                                     <td>
                                         <button type="submit" class="btn lib_btn-save">Update</button>
 <!--                                        <button type="button" class="btn lib_btn-delete" >Delete</button>-->
-                                        <a class="delete-account" th:id="${account.getId}">Delete</a>
+                                        <button type="button" class="btn lib_btn-delete delete-account" th:id="${account.getId}">Delete</button>
+<!--                                        <a class="delete-account" th:id="${account.getId}">Delete</a>-->
                                     </td>
                                 </tr>
                             </table>
@@ -187,6 +191,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
 <script th:src="@{/js/validation.js}"></script>
+<script th:src="@{/js/librarian.js}"></script>
 
 <script th:inline="javascript">
     validate_updateAccount();

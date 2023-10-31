@@ -92,9 +92,10 @@
                             <th:block th:each="account, iterStart : ${accounts}">
                                 <tr>
                                     <td th:text="${iterStart.index +1}"></td>
-                                    <td th:text="${account.name}"></td>
-                                    <td><a th:href="@{'/admin/accounts/' + ${account.getId}}"
-                                           th:text="${account.email}"></a></td>
+                                    <td><a th:href="@{'/admin/accounts/' + ${account.getId} + '/update'}"
+                                           th:text="${account.name}"></a></td>
+<!--                                    <td th:text="${account.name}"></td>-->
+                                    <td th:text="${account.email}"></td>
                                     <td th:text="${account.role}"></td>
                                     <td th:text="${account.campus}"></td>
 <!--                                    <td colspan="2">-->

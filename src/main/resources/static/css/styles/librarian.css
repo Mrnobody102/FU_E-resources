@@ -43,6 +43,7 @@
 
 .lib_show-all-btn {
   margin-left: 12px;
+  margin-right: 12px;
   border: 1px solid var(--border-color);
 }
 
@@ -62,6 +63,15 @@
 }
 
 .lib_btn-save:hover {
+  color: var(--hover-color-2);
+}
+
+.lib_btn-delete {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.lib_btn-delete:hover {
   color: var(--hover-color-2);
 }
 
