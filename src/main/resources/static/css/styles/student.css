@@ -502,3 +502,52 @@ stu__navbar-view-doc-item:hover{
     margin:0;
     padding: 0;
 }
+.stu__note-in-doc-edit-space{
+    margin-left: 2rem;
+    width: 90%;
+    height: 300px;
+}
+.stu__save-note{
+    text-align: right;
+    margin-right: 7%;
+    margin-top: 1rem;
+}
+.stu__save-note button{
+    padding: 0.5rem 1.5rem;
+    border: white;
+    background-color: var(--second-background-btn-color);
+}
+.stu__save-note button:hover{
+    color: var(--link-color);
+    background-color: var(--second-background-btn-color-hover);
+}
+.view-note-link,
+.view-question-link{
+    text-align: right;
+    margin-right: 7%;
+    margin-top: 1rem;
+}
+.stu__note-date,
+.stu__question-date,
+.stu__answer-date,
+.stu__answer-lecturer
+{
+    font-size: var(--normal-font-size);
+}
+.view-note-link-item,
+.view-question-link-item{
+    font-size: var(--medium-font-size);
+    font-weight: var(--font-medium);
+}
+.view-note-link-item:hover,
+.view-question-link-item:hover{
+    text-decoration: underline;
+}
+.stu__note-in-doc-head
+{
+    margin-left: 2rem;
+}
+
+.stu__answer-in-doc-content{
+    margin-left: 3rem;
+}

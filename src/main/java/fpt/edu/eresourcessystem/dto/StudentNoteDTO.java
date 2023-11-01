@@ -15,6 +15,7 @@ public class StudentNoteDTO {
     private String studentId;
 
     private String content;
+    private String docId;
 
     // Only use when response, no need in requests
     private String createdBy;

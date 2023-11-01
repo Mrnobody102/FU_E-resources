@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Librarian | Course | Add topic</title>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
+  <link rel="stylesheet" th:href="@{/css/base.css}"/>
+  <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+  <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+
+
+  <style>
+    label.error {
+      margin-top: 5px;
+      margin-left: 5px;
+      display: block;
+      color: red;
+      /*font-size: smaller;*/
+    }
+  </style>
+
+</head>
+<body class="app_container">
+
+<header th:replace="~{fragments/header::studentHeaderSection}"></header>
+
+<div class="main_content">
+  <div class="container-content-wrapper">
+    <!--  Main-->
+    <div class="container-content row">
+      <div class="main-content stu_course-saved">
+        <div class="stu_course-saved-content d-flex">
+          <div class="stu_sidebar">
+            <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
+          </div>
+          <div class="stu_course-content main" id="main">
+            <div class="student__course-document-view border-end">
+
+              <div class="student__document-type-list">
+                <div class="list-view-inline top-doctype-list">
+                  <form action="" method="" class="form-chose-doc-type">
+
+                    <input name="docType" type="radio" id="radio1" value="Info">
+                    <label for="radio1">Course Information</label>
+
+                    <input name="docType" type="radio" id="radio2" value="Reading">
+                    <label for="radio2">Reading</label>
+
+                    <input name="docType" type="radio" id="radio3" value="Lecturer Notes">
+                    <label for="radio3">Lecturer Notes</label>
+
+                    <input name="docType" type="radio" id="radio4" value="Reading">
+                    <label for="radio4">Reading</label>
+
+                    <input name="docType" type="radio" id="radio5" value="Reading">
+                    <label for="radio5">Reading</label>
+
+                    <input name="docType" type="radio" id="radio6" value="Reading">
+                    <label for="radio6">Reading</label>
+                  </form>
+                </div>
+              </div>
+              <div class="doc-content-list">
+                <div class="topic-list-content">
+                  <div class="topic-view-list">
+                    <!--Topic view-->
+                    <div class="topic-item">
+                      <div class="topic-title">
+                        <h3 class="topic-info-title">
+                          <span>Topic 1</span>
+                        </h3>
+                      </div>
+                      <!--Document view list-->
+                      <div class="d-flex document-view-info border-bottom">
+                        <div class="doc-info-head grid__column-7">
+                          <p class="doc-info-title"><a th:href="@{/student/documentDetail}">
+                            <span>Tai lieu tham khao C</span></a>
+                          </p>
+                          <p class="doc-info-description">
+                            <span>Tai lieu tham khao C - description</span>
+                          </p>
+                        </div>
+                        <div class="doc-info-date grid__column-2">
+                          <p><span>mm/dd/yyyy</span> <span>| Rating: 5</span><i class="fa-solid fa-star"></i></p>
+                        </div>
+                        <div class="grid__column-1">
+                          <form action="" method="">
+                            <input type="text" value="docId" hidden>
+                            <button class="stu__btn_save-doc" type="submit">
+                              <i class="fa-regular fa-bookmark"></i></button>
+                          </form>
+                        </div>
+                      </div>
+                      <!--End Document view-->
+
+                      <!--Document view list-->
+                      <div class="d-flex document-view-info border-bottom">
+                        <div class="doc-info-head grid__column-7">
+                          <p class="doc-info-title"><a th:href="@{/student/documentDetail}">
+                            <span>Tai lieu tham khao C</span></a>
+                          </p>
+                          <p class="doc-info-description">
+                            <span>Tai lieu tham khao C - description</span>
+                          </p>
+                        </div>
+                        <div class="doc-info-date grid__column-2">
+                          <p><span>mm/dd/yyyy</span> <span>| Rating: 5</span><i class="fa-solid fa-star"></i></p>
+                        </div>
+                        <div class="grid__column-1">
+                          <form action="" method="">
+                            <input type="text" value="docId" hidden>
+                            <button class="stu__btn_save-doc" type="submit">
+                              <i class="fa-regular fa-bookmark"></i></button>
+                          </form>
+                        </div>
+                      </div>
+                      <!--End Document view-->
+                    </div>
+                    <!--End Topic view-->
+
+                    <!--Topic view-->
+                    <div class="topic-item">
+                      <div class="topic-title">
+                        <h3 class="topic-info-title">
+                          <span>Topic 1</span>
+                        </h3>
+                      </div>
+                      <!--Document view list-->
+                      <div class="d-flex document-view-info border-bottom">
+                        <div class="doc-info-head grid__column-7">
+                          <p class="doc-info-title"><a th:href="@{/student/documentDetail}">
+                            <span>Tai lieu tham khao C</span></a>
+                          </p>
+                          <p class="doc-info-description">
+                            <span>Tai lieu tham khao C - description</span>
+                          </p>
+                        </div>
+                        <div class="doc-info-date grid__column-2">
+                          <p><span>mm/dd/yyyy</span> <span>| Rating: 5</span><i class="fa-solid fa-star"></i></p>
+                        </div>
+                        <div class="grid__column-1">
+                          <form action="" method="">
+                            <input type="text" value="docId" hidden>
+                            <button class="stu__btn_save-doc" type="submit">
+                              <i class="fa-regular fa-bookmark"></i></button>
+                          </form>
+                        </div>
+                      </div>
+                      <!--End Document view-->
+
+                      <!--Document view list-->
+                      <div class="d-flex document-view-info border-bottom">
+                        <div class="doc-info-head grid__column-7">
+                          <p class="doc-info-title link"><a th:href="@{/student/documentDetail}">
+                            <span>Tai lieu tham khao C</span></a>
+                          </p>
+                          <p class="doc-info-description">
+                            <span>Tai lieu tham khao C - description</span>
+                          </p>
+                        </div>
+                        <div class="doc-info-date grid__column-2">
+                          <p><span>mm/dd/yyyy</span> <span>| Rating: 5</span><i class="fa-solid fa-star"></i></p>
+                        </div>
+                        <div class="grid__column-1">
+                          <form action="" method="">
+                            <input type="text" value="docId" hidden>
+                            <button class="stu__btn_save-doc" type="submit">
+                              <i class="fa-regular fa-bookmark"></i></button>
+                          </form>
+                        </div>
+                      </div>
+                      <!--End Document view-->
+                    </div>
+                    <!--End Topic view-->
+
+
+                  </div>
+                </div>
+              </div>
+              <div class="list-view-inline bot-doctype-list">
+                <form action="" method="" class="form-chose-doc-type">
+                  <input name="docType" type="radio" id="radio-bot-1" value="All">
+                  <label for="radio-bot-1">Course Information</label>
+
+                  <input name="docType" type="radio" id="radio-bot-2" value="Reading">
+                  <label for="radio-bot-2">Reading</label>
+
+                  <input name="docType" type="radio" id="radio-bot-3" value="Lecturer Notes">
+                  <label for="radio-bot-3">Lecturer Notes</label>
+
+                  <input name="docType" type="radio" id="radio-bot-4" value="Reading">
+                  <label for="radio-bot-4">Reading</label>
+
+                  <input name="docType" type="radio" id="radio-bot-5" value="Reading">
+                  <label for="radio-bot-5">Reading</label>
+
+                  <input name="docType" type="radio" id="radio-bot-6" value="Reading">
+                  <label for="radio-bot-6">Reading</label>
+                </form>
+              </div>
+            </div>
+            <div class="student__topic-info">
+              <div class="course-details-head">
+                <div class="course-details-name">
+                  <p class="course-info-name h2">
+                    <i class="fa-solid fa-folder"></i>
+                    <a class="course-info-name" th:href="@{'/student/courses/' + ${course.getId}}"
+                       th:text="|${course.courseCode} - ${course.courseName}|"></a></p>
+                  <p class="course-info-lecturer">
+                    <a href="">Lecturer: <span class="lecturer-name"
+                                               th:text="${course.lecturer.account.name}"></span>
+                    </a></p>
+                  <div class="stu_save-course-link">
+                    <p><a class="unsaved-course" th:if="${saved} == false"
+                          th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">
+                      <i class="fa-solid fa-bookmark"></i>
+                      Unbookmark</a>
+                    </p>
+                    <p><a class="saved-course" th:if="${saved} == true"
+                          th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">
+                      <i class="fa-regular fa-bookmark"></i>
+                      Bookmark</a></p>
+                  </div>
+                </div>
+                <div class="topic-detail">
+                  <div class="topic-details-title link-primary active">
+                    <a th:href="@{'/student/topics/' + ${topic.id}}" th:text="${topic.topicTitle}"></a>
+                  </div>
+                  <div class="list-other-topics">
+                    <div class="list-other-topics-header">
+                      <p>Others</p>
+                    </div>
+                    <div th:if="${topics ne null}">
+                      <div th:each="t : ${topics}">
+                        <a th:href="@{'/student/topics/' + ${t.id}}" th:text="${t.topicTitle}"></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footerSection}"></div>
+
+<!--jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<!--Custom script-->
+<script th:src="@{/js/student.js}"></script>
+</body>
+</html>
