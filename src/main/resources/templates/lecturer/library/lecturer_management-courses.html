@@ -76,11 +76,11 @@
                                                 <div class="home__course-wrapper" th:each="course : ${coursesManagement}">
                                                     <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
                                                     <a class="home__course-name" th:text="${course.courseName}"
-                                                       th:href="@{'/lecturer/' + ${course.id}}"></a>
+                                                       th:href="@{'/lecturer/' + ${course.courseId}}"></a>
                                                     <p class="home__course-description" th:text="${course.description}"></p>
                                                     <ul class="home__course-lecturer-list">
-                                                        <li th:if="${course.lecturer ne null}"
-                                                            href="#" th:text="lecturer">
+                                                        <li th:if="${course.managerId ne null}"
+                                                            href="#" th:text="managerId">
                                                         </li>
                                                         <li class="home__course-lecturer-item">
                                                             <a class="home__course-lecturer-link"
@@ -136,14 +136,14 @@
 
 
 
-<!--                    <div class="stu_course-saved-content main" id="main">-->
-<!--                        <ul>-->
-<!--                            <li th:each="courseSaved : ${coursesSaved}">-->
-<!--                                <a th:text="${courseSaved.getCourseName()}"-->
-<!--                                   th:href="@{'/student/courses/' + ${courseSaved.getCourseId()}}"></a>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
+                    <!--                    <div class="stu_course-saved-content main" id="main">-->
+                    <!--                        <ul>-->
+                    <!--                            <li th:each="courseSaved : ${coursesSaved}">-->
+                    <!--                                <a th:text="${courseSaved.getCourseName()}"-->
+                    <!--                                   th:href="@{'/student/courses/' + ${courseSaved.getCourseId()}}"></a>-->
+                    <!--                            </li>-->
+                    <!--                        </ul>-->
+                    <!--                    </div>-->
                 </div>
             </div>
         </div>
