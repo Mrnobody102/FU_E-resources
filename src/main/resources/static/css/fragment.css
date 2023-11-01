@@ -778,8 +778,8 @@
 
 /* FOOTER */
 .footer {
-    position: fixed;
-    bottom: 0;
+    /*position: fixed;*/
+    /*bottom: 0;*/
     clear: both;
     width: 100%;
     /*background-color: var(--primary-color);*/

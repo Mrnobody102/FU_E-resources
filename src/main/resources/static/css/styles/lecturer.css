@@ -448,4 +448,16 @@
 #main-lecturer {
     width: 100%;
 }
-
+.lec__edit-topic-icon{
+    font-size: var(--medium-font-size);
+    border-radius: 0.2rem;
+    border: 1px solid #888888;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+}
+.lec__add-doc-icon{
+    font-size: var(--medium-font-size);
+    border-radius: 0.2rem;
+    border: 1px solid #888888;
+    margin-bottom: 0.5rem;
+}
