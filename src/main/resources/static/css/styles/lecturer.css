@@ -356,13 +356,15 @@
     font-weight: var(--font-medium);
 }
 
-.stu_save-course-link a{
+.stu_save-course-link a
+,.stu_save-doc-link a{
     border: 1px solid #888888;
     border-radius: 2rem;
     padding: 0.5rem 1rem;
     background: var(--background-btn-color-hover);
 }
-.stu_save-course-link a:hover{
+.stu_save-course-link a:hover,
+.stu_save-doc-link a:hover{
     background: var(--background-btn-color);
 }
 
@@ -472,4 +474,17 @@
 
 .lecturer__input-doc {
     width: 60%;
+}
+.lec__edit-topic-icon{
+    font-size: var(--medium-font-size);
+    border-radius: 0.2rem;
+    border: 1px solid #888888;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+}
+.lec__add-doc-icon{
+    font-size: var(--medium-font-size);
+    border-radius: 0.2rem;
+    border: 1px solid #888888;
+    margin-bottom: 0.5rem;
 }

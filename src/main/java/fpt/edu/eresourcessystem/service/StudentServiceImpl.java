@@ -55,6 +55,22 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public boolean checkDocSaved(String studentId, String docId) {
+        Optional<Student> student = studentRepository.findById(studentId);
+        if (student.isPresent()) {
+            Student existedStudent = student.get();
+            if (null != existedStudent.getSavedDocuments()) {
+                for (String dId : existedStudent.getSavedDocuments()) {
+                    if (dId.equals(docId)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public boolean saveACourse(String studentId, String courseId) {
         Optional<Student> student = studentRepository.findById(studentId);
         if (!student.isPresent()) {
@@ -94,6 +110,52 @@ public class StudentServiceImpl implements StudentService {
                 savedCourses.remove(cId);
                 student.get().setSavedCourses(savedCourses);
                 updateStudent(student.get());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean saveADoc(String studentId, String docId) {
+        Optional<Student> student = studentRepository.findById(studentId);
+        if (!student.isPresent()) {
+            return false;
+        }
+        List<String> savedDocuments = student.get().getSavedDocuments();
+        // check student have saved any course
+        if (null == savedDocuments) {
+            savedDocuments = new ArrayList<>();
+        }
+        // check course existed in saved course
+        for (String dId : savedDocuments) {
+            if (docId.equals(dId)) {
+                return false;
+            }
+        }
+        savedDocuments.add(docId);
+        student.get().setSavedDocuments(savedDocuments);
+        updateStudentSavedCourse(student.get());
+        return true;
+    }
+
+    @Override
+    public boolean unsavedADoc(String studentId, String documentId) {
+        Optional<Student> student = studentRepository.findById(studentId);
+        if (!student.isPresent()) {
+            return false;
+        }
+        List<String> savedDocuments = student.get().getSavedDocuments();
+        // check student have saved any course
+        if (null == savedDocuments) {
+            savedDocuments = new ArrayList<>();
+        }
+        // check course existed in saved course and delete
+        for (String dId : savedDocuments) {
+            if (documentId.equals(dId)) {
+                savedDocuments.remove(dId);
+                student.get().setSavedDocuments(savedDocuments);
+                updateStudentSavedCourse(student.get());
                 return true;
             }
         }

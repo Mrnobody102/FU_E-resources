@@ -6,6 +6,8 @@ import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
@@ -31,6 +33,7 @@ public class StudentController {
     private final TopicService topicService;
     private final CourseLogService courseLogService;
     private final DocumentService documentService;
+    private final StudentNoteService studentNoteService;
 
     public StudentController(AccountService accountService, CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService) {
         this.accountService = accountService;
@@ -39,6 +42,7 @@ public class StudentController {
         this.topicService = topicService;
         this.courseLogService = courseLogService;
         this.documentService = documentService;
+        this.studentNoteService = studentNoteService;
     }
 
     public Student getLoggedInStudent() {
@@ -65,7 +69,6 @@ public class StudentController {
 
     /**
      * Display 5 recent course
-     *
      * @param account
      * @param model
      * @return recent courses
@@ -77,14 +80,41 @@ public class StudentController {
         return "student/course/student_courses";
     }
 
-    @GetMapping({"/courses/{courseId}", "/courseDetail"})
+    @GetMapping({"/search_course/{pageIndex}"})
+    public String viewSearchCourse(@PathVariable Integer pageIndex,
+                                   @RequestParam(required = false, defaultValue = "") String search,
+                                   @RequestParam(required = false, defaultValue = "all") String filter,
+                                   final Model model) {
+//        // auth
+//        Student student = getLoggedInStudent();
+        Page<Course> page;
+        if (null == filter || "all".equals(filter)) {
+            page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, 1);
+        } else if("name".equals(filter)){
+            page = courseService.findByCourseNameLike(search, pageIndex, 1);
+        } else{
+            page = courseService.findByCourseCodeLike(search, pageIndex, 1);
+        }
+        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+        model.addAttribute("pages", pages);
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("courses", page.getContent());
+        model.addAttribute("search", search);
+        model.addAttribute("roles", AccountEnum.Role.values());
+        model.addAttribute("filter", filter);
+        model.addAttribute("currentPage", pageIndex);
+        model.addAttribute("search", search);
+        return "student/course/student_courses";
+    }
+
+    @GetMapping({"/courses/{courseId}","/courseDetail"})
     public String viewCourseDetail(@PathVariable(required = false) String courseId, final Model model) {
         // auth
         Student student = getLoggedInStudent();
         Course course = courseService.findByCourseId(courseId);
-        if (null == course || null == student) {
+        if(null == course || null == student){
             return "exception/404";
-        } else if (null == course.getStatus() || CourseEnum.Status.PUBLISH != course.getStatus()) {
+        }else if(null == course.getStatus() || CourseEnum.Status.PUBLISH!= course.getStatus()){
             return "exception/404";
         }
         // add course log
@@ -119,11 +149,6 @@ public class StudentController {
         return "redirect:/student/courses/" + courseId + "?success";
     }
 
-    @GetMapping({"/topic/{topicId}"})
-    public String viewTopicDetail(@PathVariable(required = false) String topicId, final Model model) {
-        return "student/course/student_course-detail";
-    }
-
     /*
         DOCUMENT
     */
@@ -137,31 +162,48 @@ public class StudentController {
         return "student/course/student_document-detail";
     }
 
-    @GetMapping({"/search_course/{pageIndex}"})
-    public String viewSearchCourse(@PathVariable Integer pageIndex,
-                                   @RequestParam(required = false, defaultValue = "") String search,
-                                   @RequestParam(required = false, defaultValue = "all") String filter,
-                                   final Model model) {
-//        // auth
-//        Student student = getLoggedInStudent();
-        Page<Course> page;
-        if (null == filter || "all".equals(filter)) {
-            page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, 1);
-        } else if ("name".equals(filter)) {
-            page = courseService.findByCourseNameLike(search, pageIndex, 1);
-        } else {
-            page = courseService.findByCourseCodeLike(search, pageIndex, 1);
+    @GetMapping("/documents/{documentId}/save_document")
+    public String saveDocument(@PathVariable String documentId,
+                               HttpServletRequest request,
+                               HttpSession session) {
+        // get account authorized
+        Student student = getLoggedInStudent();
+        if (null != documentService.findById(documentId)) {
+            studentService.saveADoc(student.getId(), documentId);
+            // Get the last URL from the session
+            String lastURL = (String) session.getAttribute("lastURL");
+            if (lastURL != null) {
+                // Redirect to the last URL
+                return "redirect:" + lastURL;
+            } else {
+                // If the last URL is not available, redirect to a default URL
+                return "redirect:/student/my_library/saved_documents";
+            }
         }
-        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-        model.addAttribute("pages", pages);
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("courses", page.getContent());
-        model.addAttribute("search", search);
-        model.addAttribute("roles", AccountEnum.Role.values());
-        model.addAttribute("filter", filter);
-        model.addAttribute("currentPage", pageIndex);
-        model.addAttribute("search", search);
-        return "student/course/student_courses";
+        return "common/login";
+
+    }
+
+    @GetMapping("/documents/{documentId}/unsaved_document")
+    public String unsavedDoc(@PathVariable String documentId,
+                             HttpServletRequest request,
+                             HttpSession session) {
+        // get account authorized
+        Student student = getLoggedInStudent();
+
+        if (null != documentService.findById(documentId)) {
+            studentService.unsavedACourse(student.getId(), documentId);
+            // Get the last URL from the session
+            String lastURL = (String) session.getAttribute("lastURL");
+            if (lastURL != null) {
+                // Redirect to the last URL
+                return "redirect:" + lastURL;
+            } else {
+                // If the last URL is not available, redirect to a default URL
+                return "redirect:/student/my_library/saved_documents";
+            }
+        }
+        return "common/login";
     }
 
     /*
@@ -173,7 +215,7 @@ public class StudentController {
         // get account authorized
         Student student = getLoggedInStudent();
         List<String> savedCourses = student.getSavedCourses();
-        if (null != savedCourses) {
+        if(null!=savedCourses){
             List<Course> courses = courseService.findByListId(savedCourses);
             model.addAttribute("coursesSaved", courses);
         }
@@ -185,11 +227,17 @@ public class StudentController {
         // get account authorized
         Student student = getLoggedInStudent();
         List<String> savedDocuments = student.getSavedDocuments();
-        if (null != savedDocuments) {
+        if(null!=savedDocuments){
             List<Document> documents = documentService.findByListId(savedDocuments);
             model.addAttribute("documentsSaved", documents);
         }
         return "student/library/student_saved_documents";
+    }
+
+
+    @GetMapping({"/topic/{topicId}","/topicDetail"})
+    public String viewTopicDetail(@PathVariable(required = false) String topicId, final Model model) {
+        return "student/course/student_course-detail";
     }
 
 

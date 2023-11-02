@@ -57,6 +57,8 @@
                                                 <h3 class="topic-info-title">
                                                     <a th:href="@{'/lecturer/topics/' + ${topic.id}}"
                                                        th:text="${topic.topicTitle}"></a>
+                                                    <a class="lec__edit-topic-icon" th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}"> <i class="fa-regular fa-edit"></i> </a>
+                                                    <a class="lec__add-doc-icon" th:href="@{'/lecturer/documents/add'}"> + Add document </a>
                                                 </h3>
                                             </div>
                                             <!--Document view list-->

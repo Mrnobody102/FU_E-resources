@@ -17,7 +17,12 @@ public interface StudentService {
 
     boolean checkCourseSaved(String studentId, String courseId);
 
+    boolean checkDocSaved(String studentId, String docId);
+
     boolean saveACourse(String studentId, String CourseId);
 
     boolean unsavedACourse(String studentId, String courseId);
+
+    boolean saveADoc(String studentId, String CourseId);
+    boolean unsavedADoc(String studentId, String documentId);
 }

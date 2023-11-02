@@ -62,15 +62,15 @@
                                         <i class="fa-regular fa-bookmark"></i>
                                         Bookmark</a>
                                     </p>
-                                    <!--                                    <p><a class="unsaved-course" th:if="${saved} == false"-->
-                                    <!--                                          th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">-->
-                                    <!--                                        <i class="fa-solid fa-bookmark"></i>-->
-                                    <!--                                        Unbookmark</a>-->
-                                    <!--                                    </p>-->
-                                    <!--                                    <p><a class="saved-course" th:if="${saved} == true"-->
-                                    <!--                                          th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">-->
-                                    <!--                                        <i class="fa-regular fa-bookmark"></i>-->
-                                    <!--                                        Bookmark</a></p>-->
+                                    <p><a class="unsaved-course" th:if="${saved ne null} AND ${saved} == false"
+                                          th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">
+                                        <i class="fa-solid fa-bookmark"></i>
+                                        Unbookmark</a>
+                                    </p>
+                                    <p><a class="saved-course" th:if="${saved ne null} AND ${saved} == true"
+                                          th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">
+                                        <i class="fa-regular fa-bookmark"></i>
+                                        Bookmark</a></p>
                                 </div>
                             </div>
                             <div class="student__course-document-view">
@@ -175,5 +175,6 @@
         crossorigin="anonymous"></script>
 <!--Custom script-->
 <script th:src="@{/js/student.js}"></script>
+<script th:src="@{/js/student-doc-detail.js}"></script>
 </body>
 </html>
