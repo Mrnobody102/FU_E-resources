@@ -39,8 +39,8 @@
                     <div class="stu_sidebar">
                         <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
                     </div>
-                    <div class="stu_course-content main" id="main">
-                        <div class="student__course-document-view border-end">
+                    <div class="stu_course-content main d-flex" id="main">
+                        <div class="student__course-document-view border-end" style="flex: 3">
 
                             <div class="student__document-type-list">
                                 <div class="list-view-inline top-doctype-list">
@@ -205,7 +205,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="student__topic-info">
+                        <div class="student__topic-info" style="flex: 1">
                             <div class="course-details-head">
                                 <div class="course-details-name">
                                     <p class="course-info-name h2">

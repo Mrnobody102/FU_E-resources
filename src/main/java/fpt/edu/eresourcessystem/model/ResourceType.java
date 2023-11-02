@@ -23,11 +23,9 @@ public class ResourceType {
     private String id;
     @NotEmpty
     private String resourceTypeName;
-    @NotNull
+
     @DocumentReference(lazy = true)
-    private Topic topic;
-    @DocumentReference(lazy = true)
-    private List<String> documents;
+    private List<fpt.edu.eresourcessystem.model.Document> documents;
 
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
@@ -42,8 +40,8 @@ public class ResourceType {
     private String lastModifiedDate;
 
     // Constructor DTO
-    public ResourceType(ResourceTypeDTO resourceTypeDTO) {
-        this.resourceTypeName = resourceTypeDTO.getResourceTypeName();
-        this.topic = resourceTypeDTO.getTopic();
+    public ResourceType(String getResourceTypeName) {
+        this.resourceTypeName = getResourceTypeName;
+        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
 }

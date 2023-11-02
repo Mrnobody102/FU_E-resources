@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.dto.ResourceTypeDTO;
 import fpt.edu.eresourcessystem.model.ResourceType;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface ResourceTypeService {
 
     List<ResourceType> findByCourseId(String courseId);
 
-    ResourceType addResourceType(ResourceType ResourceType);
+    ResourceType addResourceType(String ResourceType);
 
     ResourceType findById(String ResourceTypeId);
 

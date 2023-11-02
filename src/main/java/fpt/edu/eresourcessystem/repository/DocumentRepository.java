@@ -14,9 +14,7 @@ import java.util.Optional;
 @Repository("documentRepository")
 public interface DocumentRepository extends
         MongoRepository<Document, String> {
-
-    @NonNull
-    Optional<Document> findById(@NonNull String id);
+    Optional<Document> findById(String id);
 
     @Query("{$and: ["
             + "{$or: ["

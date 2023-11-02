@@ -7,9 +7,11 @@ import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -86,7 +88,6 @@ public class AdminController {
             page = accountService.findByRoleAndUsernameLikeOrEmailLike(role, search, search, pageIndex, pageSize);
         }
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-        System.out.println(pages);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("accounts", page.getContent());
@@ -159,7 +160,7 @@ public class AdminController {
      * @return
      */
     @GetMapping({"/accounts/{accountId}/update", "/accounts/updated/{accountId}"})
-    public String updateAccount(@PathVariable(required = false) String accountId, final Model model) {
+    public String updateAccountProcess(@PathVariable(required = false) String accountId, final Model model) {
         if (null == accountId) {
             accountId = "";
         }
@@ -184,8 +185,8 @@ public class AdminController {
      * @return
      */
     @PostMapping("/accounts/update")
-    public String updateAccountProcess(@ModelAttribute AccountDTO accountDTO,
-                                final Model model) {
+    public String updateAccount(@ModelAttribute AccountDTO accountDTO,
+                                       final Model model) {
         Account checkExist = accountService.findById(accountDTO.getId());
         if (null == checkExist) {
             model.addAttribute("errorMessage", "account not exist.");
@@ -203,9 +204,11 @@ public class AdminController {
             System.out.println(role);
             switch (role) {
                 case "ADMIN":
+                    if (null == adminService.findByAccountId(account.getId())) {
                         Admin admin = new Admin();
                         admin.setAccount(account);
                         adminService.updateAdmin(admin);
+                    }
                     break;
                 case "LIBRARIAN":
                     Librarian librarian = librarianService.findByAccountId(accountDTO.getId());
@@ -218,17 +221,17 @@ public class AdminController {
                     }
                     break;
                 case "STUDENT":
-//                    if (null == studentService.findByAccountId(account.getId())) {
+                    if (null == studentService.findByAccountId(account.getId())) {
                         Student student = new Student();
                         student.setAccount(account);
-                        studentService.addStudent(student);
-//                    }
+                        studentService.updateStudent(student);
+                    }
                     break;
                 case "LECTURER":
                     if (null == lecturerService.findByAccountId(account.getId())) {
                         Lecturer lecturer = new Lecturer();
                         lecturer.setAccount(account);
-                        lecturerService.addLecturer(lecturer);
+                        lecturerService.updateLecturer(lecturer);
                     }
                     break;
                 default:
@@ -252,34 +255,54 @@ public class AdminController {
      * @return list of accounts after delete
      */
     @GetMapping("/accounts/{accountId}/delete")
+    @Transactional
     public String deleteAccount(@PathVariable String accountId) {
         Account foundAccount = accountService.findById(accountId);
+        AccountEnum.Role role = foundAccount.getRole();
         if (null != foundAccount) {
             // SOFT DELETE
+
+            switch (role) {
+                case ADMIN:
+                    Admin admin = adminService.findByAccountId(accountId);
+                    admin.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+                    adminService.updateAdmin(admin);
+                    break;
+                case LIBRARIAN:
+                    Librarian librarian = librarianService.findByAccountId(accountId);
+                    librarian.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+                    librarianService.updateLibrarian(librarian);
+
+                    break;
+                case LECTURER:
+                    Lecturer lecturer = lecturerService.findByAccountId(accountId);
+                    lecturer.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+                    lecturerService.updateLecturer(lecturer);
+                    // Xóa quyền quản lý môn học + ghi log
+                    // Xóa mềm topic đã tạo
+                    // Xóa mềm resource type đã tạo
+                    // Xóa mềm tài liệu đã đăng
+
+                    break;
+                case STUDENT:
+                    Student student = studentService.findByAccountId(accountId);
+                    student.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+                    studentService.updateStudent(student);
+                    // Xóa mềm note on document
+                    // Xóa mềm question của student
+                    // Xóa mềm saved course
+                    // Xóa mềm saved document
+                    // Xóa mềm student self note
+
+                    break;
+            }
             foundAccount.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
             accountService.updateAccount(foundAccount);
-            return "redirect:/admin/accounts/list?success";
+
+            return "redirect:/admin/accounts/list/1?success";
         }
-        return "redirect:/admin/accounts/list?error";
+        return "redirect:/admin/accounts" + accountId + "/update";
     }
 
-    /**
-     * @param accountId
-     * @param model
-     * @return
-     */
-    @GetMapping({"accounts/{accountId}"})
-    public String getAccountDetail(@PathVariable(required = false) String accountId, final Model model) {
-        if (null == accountId) {
-            accountId = "";
-        }
-        Account account = accountService.findById(accountId);
-        if (null == account) {
-            return "exception/404";
-        } else {
-            model.addAttribute("account", account);
-            return "admin/account/admin_account-detail";
-        }
 
-    }
 }

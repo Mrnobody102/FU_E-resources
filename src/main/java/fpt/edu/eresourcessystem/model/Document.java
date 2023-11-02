@@ -22,8 +22,10 @@ public class Document {
     private String id;
 
     @NotEmpty(message = "course.validation.resourceType.required")
-    @DocumentReference(lazy = true)
-    private List<ResourceType> resourceTypes;
+    @DocumentReference
+    private Topic topics;
+    @DocumentReference
+    private ResourceType resourceType;
 
     @NotEmpty(message = "course.validation.title.required")
     private String title;
@@ -35,7 +37,7 @@ public class Document {
 
     private byte[] content;
 
-    private String contentLink; //link video, audio - cloud
+    private String editorContent; //link video, audio - cloud
 
     private List<String> notes;
     private List<String> questions;
@@ -54,9 +56,12 @@ public class Document {
 
     public Document(DocumentDTO documentDTO) {
         this.id = documentDTO.getId();
-        this.resourceTypes = documentDTO.getResourceTypes();
+        this.topics = documentDTO.getTopic();
+        this.resourceType = documentDTO.getResourceType();
         this.title = documentDTO.getTitle();
         this.description = documentDTO.getDescription();
+        this.content = documentDTO.getContent();
+        this.editorContent = documentDTO.getEditorContent();
         this.docStatus = documentDTO.getDocStatus();
         this.suffix = documentDTO.getSuffix();
         this.docType = DocumentEnum.DocumentFormat.getDocType(documentDTO.getSuffix());

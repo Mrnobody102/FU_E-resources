@@ -11,6 +11,9 @@ import java.util.List;
 public interface CourseService {
     Course addCourse(Course Course);
     Course updateCourse(Course Course);
+
+    boolean softDelete(Course course);
+
     boolean delete(Course course);
 
     /*

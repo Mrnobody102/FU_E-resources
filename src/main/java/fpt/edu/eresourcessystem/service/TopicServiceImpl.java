@@ -1,11 +1,10 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.repository.TopicRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,11 +13,13 @@ import java.util.Optional;
 @Service("topicService")
 public class TopicServiceImpl implements TopicService{
     private final TopicRepository topicRepository;
-    @Autowired
+    private final DocumentService documentService;
     MongoTemplate mongoTemplate;
 
-    public TopicServiceImpl(TopicRepository topicRepository) {
+    public TopicServiceImpl(TopicRepository topicRepository, DocumentService documentService, MongoTemplate mongoTemplate) {
         this.topicRepository = topicRepository;
+        this.documentService = documentService;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @Override
@@ -58,6 +59,22 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
+    public boolean softDelete(Topic topic) {
+        Optional<Topic> check = topicRepository.findById(topic.getId());
+        if(check.isPresent()){
+            // Soft delete document first
+            for(Document document:topic.getDocuments()) {
+                documentService.softDelete(document);
+            }
+            // Soft delete topic
+            topic.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+            topicRepository.save(topic);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean delete(String topicId) {
         Optional<Topic> check = topicRepository.findById(topicId);
         if(check.isPresent()){
@@ -66,11 +83,5 @@ public class TopicServiceImpl implements TopicService{
         }
         return false;
     }
-
-    @Override
-    public Topic addDocument(Topic topic) {
-        return null;
-    }
-
 
 }

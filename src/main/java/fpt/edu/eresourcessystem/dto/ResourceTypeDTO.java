@@ -16,7 +16,6 @@ public class ResourceTypeDTO {
     @Id
     private String id;
     private String resourceTypeName;
-    private Topic topic;
 
     // Only use when response, no need in requests
     private List<String> documents;
@@ -24,9 +23,4 @@ public class ResourceTypeDTO {
     private String createdDate;
     private String lastModifiedBy;
     private String lastModifiedDate;
-
-    public ResourceTypeDTO(String resourceTypeName, Topic topic) {
-        this.resourceTypeName = resourceTypeName;
-        this.topic = topic;
-    }
 }

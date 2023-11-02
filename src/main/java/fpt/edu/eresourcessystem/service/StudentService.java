@@ -11,7 +11,9 @@ public interface StudentService {
 
     List<Student> findAll();
 
-    void updateStudentSavedCourse(Student student);
+    Student findByAccountId(String accountId);
+
+    void updateStudent(Student student);
 
     boolean checkCourseSaved(String studentId, String courseId);
 

@@ -24,12 +24,10 @@ public class Topic {
     @DocumentReference(lazy = true)
     private Course course;
     @DocumentReference(lazy = true)
-    private List<ResourceType> resourceTypes; // NEW
+    private List<fpt.edu.eresourcessystem.model.Document> documents; // NEW
 
     private String topicTitle;
     private String topicDescription;
-    @DocumentReference(lazy = true)
-    private List<fpt.edu.eresourcessystem.model.Document> documents;
 
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;

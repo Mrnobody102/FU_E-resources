@@ -15,14 +15,11 @@ import java.util.Optional;
 public interface CourseRepository extends
         MongoRepository<Course, String> {
 
-    @Query("{ '_id' : ?0, 'deleteFlg' : 'PRESERVED' }")
+//    @Query("{ '_id' : ?0, 'deleteFlg' : 'PRESERVED' }")
     Optional<Course> findById(String id);
 
     @Query("{ 'courseCode' : ?0, 'deleteFlg' : 'PRESERVED' }")
     Course findByCourseCode(String courseCode);
-
-    @Query("SELECT c FROM Courses c WHERE c.id in ?1")
-    List<Course> findByListId(List<String> id);
 
     @Query(("{$and:[{ 'deleteFlg' : 'PRESERVED' },"
             + "{$or: ["

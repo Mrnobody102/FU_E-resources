@@ -45,20 +45,20 @@
                 <p th:text="${course.courseCode} + ' - ' + ${course.courseName}"></p>
               </div>
               <div>
-                <a class="btn btn-light" th:href="@{'/lecturer/documents/add'}">
+                <a class="btn btn--hover" th:href="@{'/lecturer/topics/' + ${topic.id} +'/documents/add'}">
                   + Add document
                 </a>
               </div>
             </div>
             <div>
               <!--Document view list-->
-              <div class="d-flex document-view-info border-bottom">
+              <div class="d-flex document-view-info border-bottom" th:each="document : ${topic.getDocuments()}">
                 <div class="doc-info-head grid__column-7">
                   <p class="doc-info-title"><a th:href="@{/student/documentDetail}">
-                    <span>Tai lieu tham khao C</span></a>
+                    <span th:text="${document.title}"></span></a>
                   </p>
                   <p class="doc-info-description">
-                    <span>Tai lieu tham khao C - description</span>
+                    <span th:text="${document.description}"></span>
                   </p>
                 </div>
                 <div class="doc-info-date grid__column-2">

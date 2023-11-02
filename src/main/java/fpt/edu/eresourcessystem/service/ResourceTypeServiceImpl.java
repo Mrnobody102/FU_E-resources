@@ -12,63 +12,65 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("ResourceTypeService")
-public class ResourceTypeServiceImpl implements ResourceTypeService{
-    private final ResourceTypeRepository ResourceTypeRepository;
+public class ResourceTypeServiceImpl implements ResourceTypeService {
+    private final ResourceTypeRepository resourceTypeRepository;
     @Autowired
     MongoTemplate mongoTemplate;
 
     public ResourceTypeServiceImpl(ResourceTypeRepository ResourceTypeRepository) {
-        this.ResourceTypeRepository = ResourceTypeRepository;
+        this.resourceTypeRepository = ResourceTypeRepository;
     }
 
     @Override
     public List<ResourceType> findAll() {
-        List<ResourceType> ResourceTypes = ResourceTypeRepository.findAll();
+        List<ResourceType> ResourceTypes = resourceTypeRepository.findAll();
         return ResourceTypes;
     }
 
     @Override
     public List<ResourceType> findByCourseId(String courseId) {
         Query query = new Query(Criteria.where("courseId").is(courseId));
-        List<ResourceType> ResourceTypes =  mongoTemplate.find(query, ResourceType.class);
-        return  ResourceTypes;
+        List<ResourceType> ResourceTypes = mongoTemplate.find(query, ResourceType.class);
+        return ResourceTypes;
     }
 
     @Override
-    public ResourceType addResourceType(ResourceType ResourceType) {
-        if(null==ResourceType.getId()) {
-            ResourceType result = ResourceTypeRepository.save(ResourceType);
+    public ResourceType addResourceType(String ResourceType) {
+        ResourceType resourceType = new ResourceType(ResourceType);
+        if (null == resourceType.getId()) {
+            ResourceType result = resourceTypeRepository.save(resourceType);
             return result;
-        }else{
-            Optional<ResourceType> checkExist = ResourceTypeRepository.findById(ResourceType.getId());
-            if(!checkExist.isPresent()){
-                ResourceType result = ResourceTypeRepository.save(ResourceType);
+        } else {
+            Optional<ResourceType> checkExist = resourceTypeRepository.findById(resourceType.getId());
+            if (!checkExist.isPresent()) {
+                ResourceType result = resourceTypeRepository.save(resourceType);
                 return result;
-            }return null;
+            }
+            return null;
         }
     }
 
     @Override
     public ResourceType findById(String ResourceTypeId) {
-        Optional<ResourceType> ResourceType = ResourceTypeRepository.findById(ResourceTypeId);
+        Optional<ResourceType> ResourceType = resourceTypeRepository.findById(ResourceTypeId);
         return ResourceType.orElse(null);
     }
 
     @Override
     public ResourceType updateResourceType(ResourceType ResourceType) {
-        Optional<ResourceType> checkExist = ResourceTypeRepository.findById(ResourceType.getId());
-       if(checkExist.isPresent()){
-           ResourceType result = ResourceTypeRepository.save(ResourceType);
-           return result;
-       }
-       return null;
+        Optional<ResourceType> checkExist = resourceTypeRepository.findById(ResourceType.getId());
+        if (checkExist.isPresent()) {
+            ResourceType result = resourceTypeRepository.save(ResourceType);
+            return result;
+        }
+        return null;
     }
 
     @Override
     public boolean delete(String ResourceTypeId) {
-        Optional<ResourceType> check = ResourceTypeRepository.findById(ResourceTypeId);
-        if(check.isPresent()){
-            ResourceTypeRepository.deleteById(ResourceTypeId);
+        Optional<ResourceType> check = resourceTypeRepository.findById(ResourceTypeId);
+        if (check.isPresent()) {
+            resourceTypeRepository.deleteById(ResourceTypeId);
             return true;
         }
         return false;

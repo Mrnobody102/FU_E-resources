@@ -479,3 +479,14 @@ li {
 .librarian-main-content{
     padding-top: 2rem;
 }
+
+.btn-save {
+    background-color: var(--background-btn-color-hover);
+    color: white;
+    margin-top: 1rem;
+}
+
+.btn-save:hover {
+    background-color: var(--primary-btn-color);
+    color: var(--hover-color-2);
+}

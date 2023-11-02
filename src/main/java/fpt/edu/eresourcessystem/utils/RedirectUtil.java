@@ -30,6 +30,10 @@ public class RedirectUtil {
 
                 return "/student";
 
+            } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
+
+                return "/admin";
+
             }
         }
         return "/login?error";

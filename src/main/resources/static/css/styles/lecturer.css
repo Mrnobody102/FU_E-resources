@@ -449,3 +449,27 @@
     width: 100%;
 }
 
+/*Add doc*/
+
+.lecturer_input-label {
+    padding: 8px 18px;
+    text-align: right;
+}
+
+.lecturer_input-label-doc {
+    padding-top: 8px;
+    padding-bottom: 4px;
+}
+
+.lecturer_input {
+    height: 30px;
+    font-size: 1.3rem;
+}
+
+.lecturer_textarea {
+    font-size: 1.3rem;
+}
+
+.lecturer__input-doc {
+    width: 60%;
+}

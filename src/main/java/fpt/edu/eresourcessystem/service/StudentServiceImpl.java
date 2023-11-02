@@ -22,12 +22,6 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.insert(student);
     }
 
-//    @Override
-//    public Student findByAccountId(String accountId) {
-//        Student student = studentRepository.findByAccountId(accountId);
-//        return student;
-//    }
-
     @Override
     public List<Student> findAll() {
         List<Student> students = studentRepository.findAll();
@@ -35,7 +29,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void updateStudentSavedCourse(Student student) {
+    public Student findByAccountId(String accountId) {
+        return studentRepository.findByAccountId(accountId);
+    }
+
+    @Override
+    public void updateStudent(Student student) {
         studentRepository.save(student);
     }
 
@@ -74,7 +73,7 @@ public class StudentServiceImpl implements StudentService {
         }
         savedCourses.add(courseId);
         student.get().setSavedCourses(savedCourses);
-        updateStudentSavedCourse(student.get());
+        updateStudent(student.get());
         return true;
     }
 
@@ -94,7 +93,7 @@ public class StudentServiceImpl implements StudentService {
             if (courseId.equals(cId)) {
                 savedCourses.remove(cId);
                 student.get().setSavedCourses(savedCourses);
-                updateStudentSavedCourse(student.get());
+                updateStudent(student.get());
                 return true;
             }
         }

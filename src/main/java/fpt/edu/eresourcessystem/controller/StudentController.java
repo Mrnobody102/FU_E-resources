@@ -22,6 +22,8 @@ import java.util.List;
 public class StudentController {
     @Value("${page-size}")
     private Integer pageSize;
+
+    private final AccountService accountService;
     private final CourseService courseService;
 
     private final StudentService studentService;
@@ -30,7 +32,8 @@ public class StudentController {
     private final CourseLogService courseLogService;
     private final DocumentService documentService;
 
-    public StudentController(CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService) {
+    public StudentController(AccountService accountService, CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService) {
+        this.accountService = accountService;
         this.courseService = courseService;
         this.studentService = studentService;
         this.topicService = topicService;
@@ -62,6 +65,7 @@ public class StudentController {
 
     /**
      * Display 5 recent course
+     *
      * @param account
      * @param model
      * @return recent courses
@@ -73,14 +77,14 @@ public class StudentController {
         return "student/course/student_courses";
     }
 
-    @GetMapping({"/courses/{courseId}","/courseDetail"})
+    @GetMapping({"/courses/{courseId}", "/courseDetail"})
     public String viewCourseDetail(@PathVariable(required = false) String courseId, final Model model) {
         // auth
         Student student = getLoggedInStudent();
         Course course = courseService.findByCourseId(courseId);
-        if(null == course || null == student){
+        if (null == course || null == student) {
             return "exception/404";
-        }else if(null == course.getStatus() || CourseEnum.Status.PUBLISH!= course.getStatus()){
+        } else if (null == course.getStatus() || CourseEnum.Status.PUBLISH != course.getStatus()) {
             return "exception/404";
         }
         // add course log
@@ -115,58 +119,37 @@ public class StudentController {
         return "redirect:/student/courses/" + courseId + "?success";
     }
 
-    /*
-        STUDENT - MY LIBRARY
-     */
-
-    @GetMapping({"/my_library/saved_courses", "/my_library"})
-    public String viewCourseSaved(final Model model) {
-        // get account authorized
-        Student student = getLoggedInStudent();
-        List<String> savedCourses = student.getSavedCourses();
-        if(null!=savedCourses){
-            List<Course> courses = courseService.findByListId(savedCourses);
-            model.addAttribute("coursesSaved", courses);
-        }
-        return "student/library/student_saved_courses";
-    }
-
-    @GetMapping({"/my_library/saved_documents"})
-    public String viewDocumentSaved(final Model model) {
-        // get account authorized
-        Student student = getLoggedInStudent();
-        List<String> savedDocuments = student.getSavedDocuments();
-        if(null!=savedDocuments){
-            List<Document> documents = documentService.findByListId(savedDocuments);
-            model.addAttribute("documentsSaved", documents);
-        }
-        return "student/library/student_saved_documents";
-    }
-
-
-    @GetMapping({"/topic/{topicId}","/topicDetail"})
+    @GetMapping({"/topic/{topicId}"})
     public String viewTopicDetail(@PathVariable(required = false) String topicId, final Model model) {
         return "student/course/student_course-detail";
     }
-    @GetMapping({"/document/{docId}","/documentDetail"})
-    public String viewDocumentDetail(@PathVariable(required = false) String docId, final Model model) {
-//        // auth
-//        Student student = getLoggedInStudent();
+
+    /*
+        DOCUMENT
+    */
+    @GetMapping({"/documents/{docId}"})
+    public String viewDocumentDetail(@PathVariable String docId, final Model model) {
+        Document document = documentService.findById(docId);
+        Account account = accountService.findByEmail(document.getCreatedBy());
+        model.addAttribute("document", document);
+        model.addAttribute("account", account);
+
         return "student/course/student_document-detail";
     }
+
     @GetMapping({"/search_course/{pageIndex}"})
     public String viewSearchCourse(@PathVariable Integer pageIndex,
-                                     @RequestParam(required = false, defaultValue = "") String search,
-                                     @RequestParam(required = false, defaultValue = "all") String filter,
-                                     final Model model) {
+                                   @RequestParam(required = false, defaultValue = "") String search,
+                                   @RequestParam(required = false, defaultValue = "all") String filter,
+                                   final Model model) {
 //        // auth
 //        Student student = getLoggedInStudent();
         Page<Course> page;
         if (null == filter || "all".equals(filter)) {
             page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, 1);
-        } else if("name".equals(filter)){
+        } else if ("name".equals(filter)) {
             page = courseService.findByCourseNameLike(search, pageIndex, 1);
-        } else{
+        } else {
             page = courseService.findByCourseCodeLike(search, pageIndex, 1);
         }
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
@@ -180,4 +163,34 @@ public class StudentController {
         model.addAttribute("search", search);
         return "student/course/student_courses";
     }
+
+    /*
+        STUDENT - MY LIBRARY
+     */
+
+    @GetMapping({"/my_library/saved_courses", "/my_library"})
+    public String viewCourseSaved(final Model model) {
+        // get account authorized
+        Student student = getLoggedInStudent();
+        List<String> savedCourses = student.getSavedCourses();
+        if (null != savedCourses) {
+            List<Course> courses = courseService.findByListId(savedCourses);
+            model.addAttribute("coursesSaved", courses);
+        }
+        return "student/library/student_saved_courses";
+    }
+
+    @GetMapping({"/my_library/saved_documents"})
+    public String viewDocumentSaved(final Model model) {
+        // get account authorized
+        Student student = getLoggedInStudent();
+        List<String> savedDocuments = student.getSavedDocuments();
+        if (null != savedDocuments) {
+            List<Document> documents = documentService.findByListId(savedDocuments);
+            model.addAttribute("documentsSaved", documents);
+        }
+        return "student/library/student_saved_documents";
+    }
+
+
 }

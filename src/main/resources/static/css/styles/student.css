@@ -321,16 +321,17 @@
     /*width: 100%;*/
 }
 .student__course-document-view{
-    width: 85%;
-    padding: 0.7rem;
+    /*padding: 0.7rem;*/
 }
 
 .student__course-document-list,
 .student__topic-info{
     width: 15%;
-    height: 100vh; /* Set a fixed height or use a percentage */
     overflow: auto;
     padding-left: 1rem;
+    margin-top: 2rem;
+    margin-left: 2rem;
+    border-left: 1px solid var(--second-back-ground);
 }
 .list-view-block a, .list-view-block input{
     display: block;
@@ -342,7 +343,6 @@
     display: flex;
 }
 .course-info-name, .doc-info-name{
-    display: inline;
     font-weight: var(--font-medium);
 
 }
@@ -415,6 +415,11 @@
 .form-chose-doc-type input:checked + label{
     color: white;
     background: var(--checked-background-color);
+}
+
+.document-details-info {
+    display: flex;
+    justify-content: space-between;
 }
 
 .doc-content-view, .doc-content-list{

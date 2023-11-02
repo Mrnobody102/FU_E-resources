@@ -17,30 +17,23 @@ import java.util.List;
 public class DocumentDTO {
     private String id;
     @NotNull
-    private List<Topic> topics;
-    private String resourceType;
+    private Topic topic;
+    private ResourceType resourceType;
 
     @NotEmpty(message = "document.validation.title.required")
     private String title;
     private String description;
     private String suffix;
     private byte[] content;
-    private String contentLink; //link video, audio - cloud
+    private String editorContent; //link video, audio - cloud
 
     // Only use when response, no need in requests
+    private List<String> notes;
+    private List<String> questions;
     private DocumentEnum.DocumentStatusEnum docStatus;
     private String createdBy;
     private String createdDate;
     private String lastModifiedBy;
     private String lastModifiedDate;
 
-    public List<ResourceType> getResourceTypes(){
-        List<ResourceType> resourceTypeDTOs = new ArrayList<>();
-        for(Topic topic:topics){
-            ResourceTypeDTO resourceTypeDTO = new ResourceTypeDTO(this.resourceType, topic);
-            ResourceType resourceType = new ResourceType(resourceTypeDTO);
-            resourceTypeDTOs.add(resourceType);
-        }
-        return resourceTypeDTOs;
-    }
 }

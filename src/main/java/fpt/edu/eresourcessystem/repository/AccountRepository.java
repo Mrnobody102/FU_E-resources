@@ -28,8 +28,6 @@ public interface AccountRepository extends
     @NonNull
     Optional<Account> findById(@NonNull String id);
 
-    void removeAccountById(String id);
-
     @Query("SELECT FROM Accounts a WHERE a.role = 'LECTURER' AND a.deleteFlg = 'PRESERVED'")
     List<Account> findAllLecturer();
 
@@ -37,11 +35,11 @@ public interface AccountRepository extends
             "a.email LIKE ?1 )")
     List<Account> searchLecturer(String search);
 
-//    @Query("SELECT a FROM Account a WHERE a.username LIKE 'huypq1801@gmail.com'")
+    @Query("{$and: [{'deleteFlg' : 'PRESERVED'}, {$or: [{username: {$regex: ?0}}, {email: {$regex: ?1}}]}]}")
     Page<Account> findByUsernameLikeOrEmailLike(String username, String email, Pageable pageable);
-    @Query("SELECT FROM Accounts WHERE id in ?1 AND a.deleteFlg = 'PRESERVED'")
-    List<Account> findByIds(List<String> ids);
 
     @Query("{$and: [{'deleteFlg' : 'PRESERVED'}, {role: ?0}, {$or: [{username: {$regex: ?1}}, {email: {$regex: ?2}}]}]}")
     Page<Account> filterRole(String role, String username, String email, Pageable pageable);
+
+    void removeAccountById(String id);
 }

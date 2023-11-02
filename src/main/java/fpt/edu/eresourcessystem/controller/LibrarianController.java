@@ -1,5 +1,8 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.dto.CourseDTO;
+import fpt.edu.eresourcessystem.dto.DocumentDTO;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -86,14 +89,14 @@ public class LibrarianController {
     }
 
     /**
-     * @param course
+     * @param courseDTO
      * @param lecturer
      * @return
      */
     @PostMapping("/courses/add")
-    public String addCourseProcess(@ModelAttribute Course course,
-                                   @RequestParam String lecturer) {
-
+    public String addCourseProcess(@ModelAttribute CourseDTO courseDTO,
+                                   @RequestParam(value = "lecturer") String lecturer) {
+        Course course = new Course(courseDTO, CourseEnum.Status.HIDE);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Librarian librarian = librarianService.findByAccountId(accountService.findByEmail(currentPrincipalName).getId());
@@ -103,18 +106,18 @@ public class LibrarianController {
         if (null == checkExist) {
             // check lecturer param exist
             if (lecturer != null && !"".equals(lecturer.trim())) {
-                // get account by email
+                // get account by EMAIL
                 Account account = accountService.findByEmail(lecturer);
                 if (null != account) {
                     // get lecturer by account
                     Lecturer foundLecturer = lecturerService.findByAccountId(account.getId());
-
                     if (null != foundLecturer) {
-                        //save course
+                        // ADD COURSE
                         Course result = courseService.addCourse(course);
-
-                        //check lecturer exist
+                        // Xử lý sau khi add course
+                        // check lecturer exist
                         if (result != null) {
+                            // Add log lecturer_course
                             // create new lecturerCourseId
                             LecturerCourseId lecturerCourseId = new LecturerCourseId();
                             lecturerCourseId.setLecturerId(foundLecturer.getId());
@@ -140,8 +143,11 @@ public class LibrarianController {
                                 result = courseService.updateCourse(result);
                                 foundLecturer.getCourses().add(course);
                                 librarian.getCreatedCourses().add(course);
-                                lecturerService.updateLecturer(foundLecturer);
+                                // Thêm course vào danh sách tạo của librarian
                                 librarianService.updateLibrarian(librarian);
+                                // Thêm course vào danh sách quản lý của lecturer
+                                lecturerService.updateLecturer(foundLecturer);
+
                                 if (null != result) {
                                     return "redirect:/librarian/courses/add?success";
                                 }
@@ -170,8 +176,8 @@ public class LibrarianController {
      * @param model
      * @return
      */
-    @GetMapping({"/courses/update/{courseId}"})
-    public String updateCourseProcess(@PathVariable(required = false) String courseId,
+    @GetMapping({"/courses/{courseId}/update"})
+    public String updateCourseProcess(@PathVariable String courseId,
                                       final Model model) {
         if (null == courseId) {
             courseId = "";
@@ -196,21 +202,20 @@ public class LibrarianController {
     @PostMapping("/courses/update")
     public String updateCourse(@ModelAttribute Course course, final Model model) {
         Course checkExist = courseService.findByCourseId(course.getId());
+
         if (null == checkExist) {
-            model.addAttribute("errorMessage", "course not exist.");
-            return "exception/404";
+            return "redirect:/librarian/courses/" + course.getId()+ "/update?error";
         } else {
             Course checkCodeDuplicate = courseService.findByCourseCode(course.getCourseCode());
             if (checkCodeDuplicate != null &&
-                    !checkExist.getCourseCode().toLowerCase().equals(course.getCourseCode())) {
-//                return "redirect:/librarian/courses/update?error";
+                    !checkExist.getCourseCode().equalsIgnoreCase(course.getCourseCode())) {
+                return "redirect:/librarian/courses/" + course.getId()+ "/update?error";
             }
-            courseService.updateCourse(course);
-            model.addAttribute("course", course);
-            List<Account> lecturers = accountService.findAllLecturer();
-            model.addAttribute("lecturers", lecturers);
-            model.addAttribute("success", "");
-            return "librarian/course/librarian_update-course";
+            checkExist.setCourseCode(course.getCourseCode());
+            checkExist.setCourseName(course.getCourseName());
+            checkExist.setDescription(course.getDescription());
+            courseService.updateCourse(checkExist);
+            return "redirect:/librarian/courses/" + course.getId()+ "/update?success";
         }
     }
 
@@ -247,7 +252,6 @@ public class LibrarianController {
         Course course = courseService.findByCourseId(courseId);
         model.addAttribute("course", course);
         return "librarian/course/librarian_course-detail";
-//        return  "librarian/course/detailCourseTest";
     }
 
     /**
@@ -256,18 +260,12 @@ public class LibrarianController {
      */
     @GetMapping("/courses/{courseId}/delete")
     public String deleteCourse(@PathVariable String courseId) {
-        Course checkExist = courseService.findByCourseId(courseId);
-        if (null != checkExist) {
-            List<Topic> topics = checkExist.getTopics();
-            if (null != topics) {
-                for (Topic topic : topics) {
-                    topicService.delete(topic.getId());
-                }
-            }
-            courseService.delete(checkExist);
-            return "redirect:/librarian/courses/list?success";
+        Course checkExistCourse = courseService.findByCourseId(courseId);
+        if (null != checkExistCourse) {
+            courseService.softDelete(checkExistCourse);
+            return "redirect:/librarian/courses/list/1?success";
         }
-        return "redirect:/librarian/courses/list?error";
+        return "redirect:/librarian/courses/list/1?error";
     }
 
     /**
@@ -353,7 +351,7 @@ public class LibrarianController {
     }
 
     @PostMapping("/documents/add")
-    public String addDocumentProcess(@ModelAttribute Document document,
+    public String addDocumentProcess(@ModelAttribute DocumentDTO documentDTO,
 //                                     @RequestParam(value="topicIds") String topicIds,
 //                                     @RequestParam(value="respondResourceType") String respondResourceType,
                                      @RequestParam("file") MultipartFile file) throws IOException {
@@ -374,7 +372,7 @@ public class LibrarianController {
 
         // thêm check file trước khi add
         String id = documentService.addFile(file);
-        documentService.addDocument(document, id);
+        documentService.addDocument(documentDTO, id);
         return "redirect:/librarian/documents/add?success";
     }
 
@@ -414,12 +412,11 @@ public class LibrarianController {
     @GetMapping({"/courses/{courseId}/remove-lecture"})
     public String removeLecture(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
-        boolean removed =lecturerService.removeCourse(course.getLecturer().getId(), course);
-        boolean removed1 =  courseService.removeLecture(courseId);
+        boolean removed = lecturerService.removeCourse(course.getLecturer().getId(), course);
+        boolean removed1 = courseService.removeLecture(courseId);
         if (true == removed && removed1 == true) {
-                return "redirect:/librarian/courses/{courseId}/add-lecture?success";
-        }
-        else return  "redirect:/librarian/courses/{courseId}/add-lecture?error";
+            return "redirect:/librarian/courses/{courseId}/add-lecture?success";
+        } else return "redirect:/librarian/courses/{courseId}/add-lecture?error";
 
     }
 
@@ -457,7 +454,7 @@ public class LibrarianController {
     }
 
     @GetMapping({"/lectures"})
-    public String showLectures( final Model model) {
+    public String showLectures(final Model model) {
 //        Course course = courseService.findByCourseId(courseId);
 //        List<Topic> topics = topicService.findByCourseId(courseId);
 //        Lecturer lecturer = lecturerService.findCurrentCourseLecturer(courseId);

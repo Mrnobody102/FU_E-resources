@@ -22,10 +22,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 
-    <!-- CK Editor-->
-    <script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
-    <script th:src="@{/ckfinder/static/ckfinder.js}"></script>
-
     <style>
         label.error {
             margin-top: 5px;
@@ -79,8 +75,8 @@
                                 </tr>
 
                                 <tr>
-                                    <td class="lib_input-label"><label for="editor">Description</label></td>
-                                    <td><textarea id="editor" th:field="*{description}"></textarea>
+                                    <td class="lib_input-label"><label for="description">Description</label></td>
+                                    <td><textarea class="lib_textarea form-control" id="description" th:field="*{description}"></textarea>
                                     </td>
                                 </tr>
                                 <!--                                <tr>-->
@@ -169,19 +165,6 @@
         );
     }
 
-    // CK editor
-    ClassicEditor
-        .create(document.querySelector('#editor'), {
-            ckfinder: {
-                uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
-            },
-        })
-        .then(editor => {
-            console.log(Array.from(editor.ui.componentFactory.names()));
-        })
-        .catch(error => {
-            console.error(error);
-        });
 </script>
 </body>
 </html>

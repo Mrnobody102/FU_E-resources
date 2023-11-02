@@ -62,16 +62,16 @@ public class DocumentEnum {
 
         public static DocumentFormat getDocType(String suffixName) {
             return switch (suffixName) {
-                case ".pdf" -> PDF;
-                case ".doc" -> DOC;
-                case ".docx" -> DOCX;
-                case ".ppt" -> PPT;
-                case ".pptx" -> PPTX;
-                case ".xls" -> XLS;
-                case ".xlsx" -> XLSX;
-                case ".md" -> MD;
-                case ".html" -> HTML;
-                case ".txt" -> TXT;
+                case "pdf" -> DocumentFormat.PDF;
+                case "doc" -> DocumentFormat.DOC;
+                case "docx" -> DocumentFormat.DOCX;
+                case "ppt" -> DocumentFormat.PPT;
+                case "pptx" -> DocumentFormat.PPTX;
+                case "xls" -> DocumentFormat.XLS;
+                case "xlsx" -> DocumentFormat.XLSX;
+                case "md" -> DocumentFormat.MD;
+                case "html" -> DocumentFormat.HTML;
+                case "txt" -> DocumentFormat.TXT;
                 default -> throw new IllegalStateException("Unexpected document suffix name: " + suffixName);
             };
         }

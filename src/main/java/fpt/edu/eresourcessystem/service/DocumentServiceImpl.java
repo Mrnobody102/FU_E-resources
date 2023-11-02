@@ -3,8 +3,11 @@ package fpt.edu.eresourcessystem.service;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
-import fpt.edu.eresourcessystem.model.Course;
+import fpt.edu.eresourcessystem.dto.DocumentDTO;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Document;
+import fpt.edu.eresourcessystem.model.ResourceType;
+import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.repository.DocumentRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +20,11 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.print.Doc;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,9 +66,9 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public List<Document> findByListId(List<String> documentIds) {
-            Query query = new Query(Criteria.where("id").in(documentIds));
-            List<Document> documents = mongoTemplate.find(query, Document.class);
-            return documents;
+        Query query = new Query(Criteria.where("id").in(documentIds));
+        List<Document> documents = mongoTemplate.find(query, Document.class);
+        return documents;
     }
 
     @Override
@@ -83,20 +87,22 @@ public class DocumentServiceImpl implements DocumentService {
 
 
     @Override
-    public Document addDocument(Document document, String id) throws IOException {
+    public Document addDocument(DocumentDTO documentDTO, String id) throws IOException {
         //search file
-        GridFSFile file = template.findOne( new Query(Criteria.where("_id").is(id)) );
-        if (null == document.getId()) {
-            document.setContent( IOUtils.toByteArray(operations.getResource(file).getInputStream()) );
+        GridFSFile file = template.findOne(new Query(Criteria.where("_id").is(id)));
+        if (null == documentDTO.getId()) {
+            documentDTO.setContent(IOUtils.toByteArray(operations.getResource(file).getInputStream()));
+            String filename = StringUtils.cleanPath(file.getFilename());
+            String fileExtension = StringUtils.getFilenameExtension(filename);
+            documentDTO.setSuffix(fileExtension);
 
-            System.out.println(operations.getResource(file).getFilename());
-            Document result = documentRepository.save(document);
+            Document result = documentRepository.save(new Document(documentDTO));
             return result;
         } else {
-            Optional<Document> checkExist = documentRepository.findById(document.getId());
+            Optional<Document> checkExist = documentRepository.findById(documentDTO.getId());
             if (!checkExist.isPresent()) {
-                document.setContent( IOUtils.toByteArray(operations.getResource(file).getInputStream()) );
-                Document result = documentRepository.save(document);
+                documentDTO.setContent(IOUtils.toByteArray(operations.getResource(file).getInputStream()));
+                Document result = documentRepository.save(new Document(documentDTO));
                 return result;
             }
             return null;
@@ -111,6 +117,20 @@ public class DocumentServiceImpl implements DocumentService {
             return result;
         }
         return null;
+    }
+
+    @Override
+    public boolean softDelete(Document document) {
+        Optional<Document> check = documentRepository.findById(document.getId());
+        if (check.isPresent()) {
+            // Here: Soft delete note, question & answer
+
+            // Soft delete
+            document.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+            documentRepository.save(document);
+            return true;
+        }
+        return false;
     }
 
     @Override

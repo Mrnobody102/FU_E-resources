@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("admin") //tạm thời chưa dùng
+@Document("admin")
 public class Admin {
     @Id
     private String id;

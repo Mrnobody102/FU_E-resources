@@ -12,10 +12,10 @@ import java.util.Optional;
 
 @Repository("studentRepository")
 public interface StudentRepository extends MongoRepository<Student, String> {
-//    @Query("SELECT s FROM students s WHERE s.accountId = ?1")
-//    Student findByAccountId(String accountId);
-
     @NonNull
     @Override
     List<Student> findAll();
+
+
+    Student findByAccountId(String accountId);
 }

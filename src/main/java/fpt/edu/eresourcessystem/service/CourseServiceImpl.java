@@ -8,7 +8,6 @@ import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -24,13 +23,15 @@ import java.util.Optional;
 @Service("courseService")
 public class CourseServiceImpl implements CourseService{
     private final CourseRepository courseRepository;
+    private final TopicService topicService;
 
     private final MongoTemplate mongoTemplate;
 
 
     @Autowired
-    public CourseServiceImpl(CourseRepository courseRepository, MongoTemplate mongoTemplate) {
+    public CourseServiceImpl(CourseRepository courseRepository, TopicService topicService, MongoTemplate mongoTemplate) {
         this.courseRepository = courseRepository;
+        this.topicService = topicService;
         this.mongoTemplate = mongoTemplate;
     }
 
@@ -40,7 +41,6 @@ public class CourseServiceImpl implements CourseService{
             if(null!=courseRepository.findByCourseCode(course.getCourseCode())){
                 return null;
             }else {
-                course.setDeleteFlg(CommonEnum.DeleteFlg.PRESERVED);
                 Course result = courseRepository.save(course);
                 return result;
             }
@@ -77,12 +77,27 @@ public class CourseServiceImpl implements CourseService{
 
 
     @Override
+    public boolean softDelete(Course course) {
+        Optional<Course> check = courseRepository.findById(course.getId());
+        if(check.isPresent()){
+            // Soft delete topic first
+            for(Topic topic:course.getTopics()){
+                topicService.softDelete(topic);
+            }
+
+            // SOFT DELETE Course
+            course.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+            courseRepository.save(course);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean delete(Course course) {
         Optional<Course> check = courseRepository.findById(course.getId());
         if(check.isPresent()){
-            // SOFT DELETE
-            course.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
-            courseRepository.save(course);
+            courseRepository.delete(course);
             return true;
         }
         return false;

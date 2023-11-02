@@ -1,7 +1,8 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.CourseDTO;
-import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.dto.DocumentDTO;
+import fpt.edu.eresourcessystem.dto.ResourceTypeDTO;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -12,12 +13,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,15 +32,17 @@ public class LecturerController {
     private final AccountService accountService;
     private final LecturerService lecturerService;
     private final TopicService topicService;
+    private final ResourceTypeService resourceTypeService;
 
     private final DocumentService documentService;
     private final CourseLogService courseLogService;
 
-    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService, DocumentService documentService, CourseLogService courseLogService) {
+    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, CourseLogService courseLogService) {
         this.courseService = courseService;
         this.accountService = accountService;
         this.lecturerService = lecturerService;
         this.topicService = topicService;
+        this.resourceTypeService = resourceTypeService;
         this.documentService = documentService;
         this.courseLogService = courseLogService;
     }
@@ -58,7 +62,6 @@ public class LecturerController {
      */
 
     /**
-     *
      * @param pageIndex
      * @param model
      * @return
@@ -67,7 +70,7 @@ public class LecturerController {
     public String viewCourseManaged(@PathVariable(required = false) Integer pageIndex, final Model model) {
         // get account authorized
         Lecturer lecturer = getLoggedInLecturer();
-        if (null == lecturer){
+        if (null == lecturer) {
             return "common/login";
         }
         Page<Course> page = lecturerService.findListManagingCourse(lecturer, pageIndex, pageSize);
@@ -77,6 +80,7 @@ public class LecturerController {
         model.addAttribute("courses", page.getContent());
         return "lecturer/course/lecturer_courses";
     }
+
     @GetMapping({"/courses/{courseId}/update"})
     public String updateCourseProcess(@PathVariable(required = false) String courseId, final Model model) {
         if (null == courseId) {
@@ -121,13 +125,13 @@ public class LecturerController {
     public String showCourseDetail(@PathVariable String courseId, final Model model) {
         Lecturer lecturer = getLoggedInLecturer();
         Course course = courseService.findByCourseId(courseId);
-        if(null==course || null == lecturer){
+        if (null == course || null == lecturer) {
             return "exception/404";
         }
 
         // add course log
-        CourseLog courseLog = new CourseLog(new CourseLogId(lecturer.getAccount().getId(), courseId, CommonEnum.Action.VIEW, LocalDateTime.now()));
-        courseLogService.addCourseLog(courseLog);
+//        CourseLog courseLog = new CourseLog(new CourseLogId(lecturer.getAccount().getId(), courseId, CommonEnum.Action.VIEW, LocalDateTime.now()));
+//        courseLogService.addCourseLog(courseLog);
 
         List<Topic> topics = course.getTopics();
         model.addAttribute("course", course);
@@ -161,7 +165,7 @@ public class LecturerController {
     }
 
     // Cần tối ưu
-    @PostMapping({"/add_topic"})
+    @PostMapping({"topics/add_topic"})
     public String addTopic(@ModelAttribute Topic topic, final Model model) {
         topic = topicService.addTopic(topic);
         courseService.addTopic(topic);
@@ -176,7 +180,7 @@ public class LecturerController {
     }
 
     // Cần tối ưu
-    @GetMapping({"/{topicId}/update_topic"})
+    @GetMapping({"topics/{topicId}/update_topic"})
     public String editTopicProcess(@PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
         Course course = courseService.findByCourseId(topic.getCourse().getId());
@@ -188,7 +192,7 @@ public class LecturerController {
     }
 
 
-    @PostMapping({"{topicId}/update_topic"})
+    @PostMapping({"topics/{topicId}/update_topic"})
     public String editTopic(@PathVariable String topicId, @ModelAttribute Topic topic) {
         Topic checkTopicExist = topicService.findById(topicId);
         if (null != checkTopicExist) {
@@ -199,7 +203,7 @@ public class LecturerController {
 
     }
 
-    @GetMapping({"{topicId}/delete_topic/"})
+    @GetMapping({"topics/{topicId}/delete_topic/"})
     public String deleteTopic(@PathVariable String courseId, @PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
         if (null != topic) {
@@ -213,13 +217,8 @@ public class LecturerController {
     public String viewTopicDetail(@PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
         Course course = courseService.findByCourseId(topic.getCourse().getId());
-        List<Document> documents = topic.getDocuments();
-//        for(ResourceType resourceType : topic.getResourceTypes()) {
-//            documents = documentService.findDocumentsByResourceTypeId(resourceType.getId());
-//        }
         model.addAttribute("course", course);
         model.addAttribute("topic", topic);
-        model.addAttribute("documents", documents);
         return "lecturer/topic/lecturer_topic-detail";
     }
 
@@ -263,39 +262,50 @@ public class LecturerController {
         return "lecturer/document/lecturer_document-detail";
     }
 
-    @GetMapping({"/documents/add"})
-    public String addDocument(final Model model) {
+    @GetMapping({"topics/{topicId}/documents/add"})
+    public String addDocumentInTopic(@PathVariable String topicId, final Model model) {
+        Topic topic = topicService.findById(topicId);
         model.addAttribute("document", new Document());
-        model.addAttribute("courses", courseService.findAll());
+        model.addAttribute("topic", topic);
         model.addAttribute("resourceTypes", DocumentEnum.DefaultTopicResourceTypes.values());
 //        System.out.println(DocumentEnum.DefaultTopicResourceTypes.values());
         return "lecturer/document/lecturer_add-document";
     }
 
     @PostMapping("/documents/add")
-    public String addDocumentProcess(@ModelAttribute Document document,
-//                                     @RequestParam(value="topicIds") String topicIds,
-//                                     @RequestParam(value="respondResourceType") String respondResourceType,
+    @Transactional
+    public String addDocumentProcess(@ModelAttribute DocumentDTO documentDTO,
+                                     @RequestParam(value = "topicId") String topicId,
+                                     @RequestParam(value = "respondResourceType") String respondResourceType,
                                      @RequestParam("file") MultipartFile file) throws IOException {
-//        List<ResourceType> resourceTypes = new ArrayList<>();
-//        List<String> selectedTopicIds = Arrays.asList(topicIds.split(","));
-//        for(String topic:selectedTopicIds) {
-//            ResourceType resourceType = new ResourceType();
-//            resourceType.setResourceTypeName(respondResourceType);
-//            resourceType.setTopicId(topic);
-//            resourceType.getDocuments().add(document.getDocumentId());
-//            // Add resource type
-//            resourceTypes.add(resourceTypeService.addResourceType(resourceType));
-//        }
-//        List<String> resourceTypeIds = resourceTypes.stream()
-//                .map(ResourceType::getResourceTypeId)
-//                .collect(Collectors.toList());
-//        document.setResourceTypeId(resourceTypeIds);
+        // Thêm resource type
+        ResourceType resourceType = resourceTypeService.addResourceType(respondResourceType);
+        // set resource type vào document
+        documentDTO.setResourceType(resourceType);
+        // set topic vào document
+        Topic topic = topicService.findById(topicId);
+        documentDTO.setTopic(topic);
 
+        // Xử lý file
         // thêm check file trước khi add
         String id = documentService.addFile(file);
-        documentService.addDocument(document, id);
-        return "redirect:/librarian/documents/add?success";
+
+        Document document = documentService.addDocument(documentDTO, id);
+        // Xử lý sau khi add document
+        List<Document> documents = resourceType.getDocuments();
+        if (documents == null) {
+            documents = new ArrayList<>();
+        }
+        documents.add(document);
+        // Thêm document vào resource type
+        resourceType.setDocuments(documents);
+        resourceTypeService.updateResourceType(resourceType);
+
+        // Thêm document vào topic
+        topic.setDocuments(documents);
+        topicService.updateTopic(topic);
+
+        return "redirect:/lecturer/topics/" + topicId;
     }
 
     @GetMapping({"/documents/update/{documentId}"})
@@ -311,4 +321,5 @@ public class LecturerController {
             model.addAttribute("courses", courseService.findAll());
             return "lecturer/document/";
         }
-    }}
+    }
+}

@@ -46,11 +46,11 @@
                             <div class="add-content">
                                 <div class="add-form">
                                     <div class="add-form-content">
-                                        <form method="post" role="form" th:action="@{/lecturer/add_topic}"
+                                        <form method="post" role="form" th:action="@{/lecturer/topics/add_topic}"
                                               th:object="${topic}" th:id="add-form">
                                             <h3>Add topic</h3>
-                                            <table class="table-form add-table">
-                                                <tr>
+                                            <table class="table-form add-table" style="width: 70%">
+                                                <tr class="d-none">
                                                     <td><label th:for="courseId">Course ID</label></td>
                                                     <td><input type="text"
                                                                class="form-control hidden" th:field="*{course}"
@@ -59,19 +59,19 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td><label th:for="topicTitle">Topic Title</label></td>
+                                                    <td class="lecturer_input-label"><label th:for="topicTitle">Title:</label></td>
                                                     <td><input type="text"
-                                                               class="form-control" th:field="*{topicTitle}"
+                                                               class="lecturer_input form-control" th:field="*{topicTitle}"
                                                                placeholder="Enter topic title" required>
                                                         <p class="text-danger" th:errors="*{topicTitle}"
                                                            th:if="${#fields.hasErrors('topicTitle')}"></p>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td><label th:for="topicDescription">Topic Description</label></td>
-                                                    <td><input type="text"
-                                                               class="form-control" th:field="*{topicDescription}"
-                                                               placeholder="Enter description">
+                                                    <td class="lecturer_input-label" ><label th:for="topicDescription">Description:</label></td>
+                                                    <td><textarea
+                                                               class="lecturer_textarea form-control" th:field="*{topicDescription}"
+                                                                  placeholder="Enter description"></textarea>
                                                         <p class="text-danger" th:errors="*{topicDescription}"
                                                            th:if="${#fields.hasErrors('topicDescription')}"></p>
                                                     </td>
