@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.model.Student;
+import fpt.edu.eresourcessystem.model.StudentNote;
 
 import java.util.List;
 

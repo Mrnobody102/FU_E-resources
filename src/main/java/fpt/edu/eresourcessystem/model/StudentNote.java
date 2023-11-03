@@ -21,7 +21,8 @@ public class StudentNote {
     private String id;
     @NotNull
     private String studentId;
-
+    private String title;
+    private String description;
     @NotEmpty(message = "note.validation.note.required")
     private String content;
 

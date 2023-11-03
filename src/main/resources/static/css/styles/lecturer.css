@@ -435,7 +435,7 @@
 .list-view-block p{
     margin: 0.3rem;
 }
-.stu__view-saved-courses{
+.stu__view-saved-courses, .stu__view-my-notes {
     margin-left: 2rem;
     width: 100%;
 }

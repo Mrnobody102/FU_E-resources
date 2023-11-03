@@ -11,11 +11,11 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -31,14 +31,14 @@ public class StudentController {
     private final TopicService topicService;
     private final CourseLogService courseLogService;
     private final DocumentService documentService;
-    private final DocumentNoteService documentNoteService;
-    public StudentController(CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService, DocumentNoteService documentNoteService) {
+    private final StudentNoteService studentNoteService;
+    public StudentController(CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService, StudentNoteService studentNoteService) {
         this.courseService = courseService;
         this.studentService = studentService;
         this.topicService = topicService;
         this.courseLogService = courseLogService;
         this.documentService = documentService;
-        this.documentNoteService = documentNoteService;
+        this.studentNoteService = studentNoteService;
     }
 
     public Student getLoggedInStudent() {
@@ -248,4 +248,28 @@ public class StudentController {
         model.addAttribute("search", search);
         return "student/course/student_courses";
     }
+
+    /**
+     * STUDENT - MY NOTES
+     */
+
+    @GetMapping({"/my_library/my_notes/{pageIndex}"})
+    public String viewMyNote(@RequestParam(required = false, defaultValue = "") String search, @PathVariable Integer pageIndex, final Model model) {
+        // get account authorized
+        Student student = getLoggedInStudent();
+        Page<StudentNote>  page = studentNoteService.getNoteByStudent(student.getId(), pageIndex, pageSize);
+        if(null!=page){
+            List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+            model.addAttribute("pages", pages);
+            model.addAttribute("totalPage", page.getTotalPages());
+            model.addAttribute("studentNotes", page.getContent());
+            model.addAttribute("search", search);
+            model.addAttribute("roles", AccountEnum.Role.values());
+            model.addAttribute("currentPage", pageIndex);
+            model.addAttribute("search", search);
+        }
+        return "student/library/student_my-notes";
+    }
+
+
 }

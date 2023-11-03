@@ -559,15 +559,14 @@
 
 .header__search {
     justify-content: center;
-    margin-left: 5%;
+    margin-left: 2rem;
     height: 40px;
     flex: 7;
     display: flex;
     align-items: center;
     background-color: var(--white-color);
     border-radius: 20px;
-    min-width: 300px;
-    width: 70%;
+    width: 85%;
     border: 1px solid #888888;
     margin-top: 3rem;
 }
@@ -588,7 +587,7 @@
 }
 
 .header__search-input {
-    width: 100%;
+    width: auto;
     height: 100%;
     border: none;
     border-radius: 20px;
@@ -857,12 +856,19 @@
     margin: 0 0 24px 0;
 }
 
-.home__course-list {
-    margin: 2rem;
+.home__course-list,.home__note-list {
+    margin: 2rem 2rem 2rem 0;
     min-width: 96%;
 }
+.home__course-wrapper,.home__note-wrapper {
+    padding: 16px;
+    background-color: white;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .16);
+}
 
-.home__course-wrapper {
+.home__course-wrapper-inline{
     padding: 16px;
     background-color: white;
     margin-bottom: 12px;
@@ -871,13 +877,23 @@
     margin-left: 0.5rem;
     height: 24rem;
 }
+.home__course-wrapper-inline:first-child{
+    margin-left: 0rem;
+}
 
 .home__course-code {
     margin-top: 0;
     color: var(--title-color);
 }
-
 .home__course-name {
+    font-size: 2.2rem;
+    font-weight: bold;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+.home__course-name-inline {
     font-size: 2.2rem;
     font-weight: bold;
     display: -webkit-box;
@@ -885,19 +901,32 @@
     -webkit-line-clamp: 3;
     overflow: hidden;
 }
+.home__note-title{
+    font-size: var(--medium-font-size);
+    font-weight: bold;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
 
-.home__course-name:hover {
+.home__course-name:hover,
+.home__note-title:hover{
     text-decoration: underline;
 }
 
-.home__course-description {
+.home__course-description,
+.home__note-description {
     font-size: 1.3rem;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
 }
-
+.home__note-date {
+    font-size: var(--normal-font-size);
+    font-weight: var(--font-medium);
+}
 .home__course-lecturer-list {
     display: flex;
 }

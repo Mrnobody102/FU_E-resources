@@ -81,7 +81,7 @@
 
 
                         <div class="stu__courses-list-view">
-                            <div th:if="${param.search} AND ${totalPage == null} OR ${totalPage == 0}" class="list-course-content-not-found">
+                            <div th:if="${param.search} AND ${totalPage == null} OR ${totalPage == 0}" class="list-content-not-found">
                                 <p class="h3">No courses found.</p>
                             </div>
                             <div th:if="courses ne null" class="list-course-content">

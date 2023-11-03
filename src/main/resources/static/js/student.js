@@ -77,4 +77,32 @@ $(document).ready(function () {
         window.location.href = "/student/search_course/" + (currentPage + 1) + "?search=" + search+ "&filter=" + filter;
     });
 
+
+    // Account pagination
+    $(".page-stu-note-number").click(function () {
+
+        const search = $("#search-text").val();
+        const filter = $("#filter").val();
+        let pageIndex = $(this).html();
+
+        window.location = "/student/my_library/my_notes/" + pageIndex + "?search=" + search + "&filter=" +filter;
+    });
+
+    $(".previous-page-stu-note-number").click(function () {
+        const search = $("#search-text").val();
+        const filter = $("#filter").val();
+        const pageIndex = $(".pagination-item--active .page-stu-note-number").text();
+        const currentPage = parseInt(pageIndex);
+        if (currentPage > 1) {
+            window.location.href = "/student/my_library/my_notes/" + (currentPage - 1) + "?search=" + search + "&filter=" + filter;
+        }
+    });
+
+    $(".next-page-stu-note-number").click(function () {
+        const search = $("#search-text").val();
+        const filter = $("#filter").val();
+        const pageIndex = $(".pagination-item--active .page-stu-note-number").text();
+        const currentPage = parseInt(pageIndex);
+        window.location.href = "/student/my_library/my_notes/" + (currentPage + 1) + "?search=" + search+ "&filter=" + filter;
+    });
 });

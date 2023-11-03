@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service("studentNoteService")
+@Service("documentNoteService")
 public class DocumentNoteServiceImpl implements DocumentNoteService {
     private final DocumentNoteRepository documentNoteRepository;
 

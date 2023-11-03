@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository("studentNoteRepository")
+@Repository("documentNoteRepository")
 public interface DocumentNoteRepository extends MongoRepository<DocumentNote, String> {
 
     Optional<DocumentNote> findById(String studentNoteId);
