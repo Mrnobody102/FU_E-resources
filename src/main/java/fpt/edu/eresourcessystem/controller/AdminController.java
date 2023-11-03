@@ -76,43 +76,32 @@ public class AdminController {
 //        return "admin/account/admin_course_creators";
 //    }
 
+    @GetMapping("/course/{courseId}")
+    String getCourseByLibrarian(@PathVariable String courseId, final Model model){
+        return "admin/account/admin_course_detail";
+    }
+
+    /*
+    This function to display librarians and created course by that librarians
+     */
     @GetMapping("/courseCreator")
-    String findCourseByLibrarian(
-            final Model model) {
+    String findCourseByLibrarian(final Model model) {
 
-//        List<Account> librarianList = accountService.findAllLibrarian();
-//            List<Librarian> courseList = librarianService.findAllLibrariansWithCourses();
+        List<Account> librarianList = accountService.findAllLibrarian();
+        for (int i = 0; i < librarianList.size(); i++) {
+            String librarianId = librarianList.get(i).getId();
 
-        AggregationResults<Librarian> result = librarianService.findLibrarianAndCourses();
-        List<Librarian> librarians = result.getMappedResults();
-
-        Page<Account> page;
-        for (Librarian librarian : librarians) {
-            System.out.println("Librarian Name: " + librarian.getAccount().getName());
-            System.out.println("Librarian Email: " + librarian.getAccount().getEmail());
-            System.out.println(librarian.getCreatedCourses());
-
-            List<Course> courses = courseService.findCoursesByLibrarian(librarian);
-            System.out.println(courses.size());
-//            if (librarian.getCreatedCourses() != null) {
-//                System.out.println("Number of Created Courses: " + librarian.getCreatedCourses().size());
-//                for (Course course : librarian.getCreatedCourses()) {
-//                    System.out.println("Course Name: " + course.getCourseName());
-//                    System.out.println("Course Code: " + course.getCourseCode());
-//                    // Thêm các trường khác của khóa học vào đây nếu cần
-//                }
-//            } else {
-//                System.out.println("No Created Courses for this Librarian");
-//            }
-            for (Course course: courses
-                 ) {
-                System.out.println(course.getCourseCode());
+            Librarian librarian = librarianService.findByAccountId(librarianId);
+            if (null == librarian) {
+                return "exception/404";
             }
+            List<Course> courses = librarian.getCreatedCourses();
+
+            System.out.println(courses.size());
+            model.addAttribute("librarianList", librarianList);
+            model.addAttribute("librarians", librarian);
+            model.addAttribute("courses", courses);
         }
-
-
-//        System.out.println(librarianList);
-        model.addAttribute("librarians", librarians);
 
         return "admin/account/admin_course_creators";
     }
