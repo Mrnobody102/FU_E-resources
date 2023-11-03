@@ -868,6 +868,8 @@
     margin-bottom: 12px;
     border-radius: 5px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .16);
+    margin-left: 0.5rem;
+    height: 24rem;
 }
 
 .home__course-code {
@@ -878,6 +880,10 @@
 .home__course-name {
     font-size: 2.2rem;
     font-weight: bold;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
 }
 
 .home__course-name:hover {

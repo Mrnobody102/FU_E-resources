@@ -53,7 +53,8 @@ public class StudentController {
     @GetMapping({"", "/home"})
     public String getStudentHome(@ModelAttribute Account account, final Model model) {
         Student student = getLoggedInStudent();
-        List<String> courseLogs = courseLogService.findStudentRecentView(student.getAccount().getId());
+        List<String> courseLogs = courseLogService.findStudentRecentView(student.getAccount().getEmail());
+//        System.out.println(courseLogs);
         List<Course> recentCourses = courseService.findByListId(courseLogs);
         model.addAttribute("recentCourses", recentCourses);
         return "student/student_home";
@@ -88,7 +89,8 @@ public class StudentController {
         }
         // add course log
         CourseLog courseLog = new CourseLog(courseId, CommonEnum.Action.VIEW);
-        courseLogService.addCourseLog(courseLog);
+        courseLog = courseLogService.addCourseLog(courseLog);
+        System.out.println(courseLog);
         model.addAttribute("course", course);
         if (studentService.checkCourseSaved(student.getId(), courseId)) {
             model.addAttribute("saved", true);
@@ -229,11 +231,11 @@ public class StudentController {
 //        Student student = getLoggedInStudent();
         Page<Course> page;
         if (null == filter || "all".equals(filter)) {
-            page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, 1);
+            page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, pageSize);
         } else if("name".equals(filter)){
-            page = courseService.findByCourseNameLike(search, pageIndex, 1);
+            page = courseService.findByCourseNameLike(search, pageIndex, pageSize);
         } else{
-            page = courseService.findByCourseCodeLike(search, pageIndex, 1);
+            page = courseService.findByCourseCodeLike(search, pageIndex, pageSize);
         }
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         model.addAttribute("pages", pages);
