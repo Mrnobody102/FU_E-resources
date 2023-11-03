@@ -22,12 +22,14 @@ public class LecturerServiceImpl implements LecturerService {
     private final CourseService courseService;
     private final LecturerCourseRepository lecturerCourseRepository;
 
+
     @Autowired
     public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseService courseService, LecturerCourseRepository lecturerCourseRepository) {
         this.lecturerRepository = lecturerRepository;
         this.courseService = courseService;
         this.lecturerCourseRepository = lecturerCourseRepository;
     }
+
 
     @Override
     public Lecturer findByCourseId(String courseId) {

@@ -33,11 +33,16 @@ public interface AccountRepository extends
     @Query("SELECT FROM Accounts a WHERE a.role = 'LECTURER' AND a.deleteFlg = 'PRESERVED'")
     List<Account> findAllLecturer();
 
+
+    @Query("{$and: [{'deleteFlg' : 'PRESERVED'}, {'role': 'LIBRARIAN'}]}")
+    List<Account> findAllLibrarian();
+
+
     @Query("SELECT FROM Accounts a WHERE a.deleteFlg = 'PRESERVED' AND a.role = 'LECTURER' AND (a.username LIKE  ?1  OR " +
             "a.email LIKE ?1 )")
     List<Account> searchLecturer(String search);
 
-//    @Query("SELECT a FROM Account a WHERE a.username LIKE 'huypq1801@gmail.com'")
+    //    @Query("SELECT a FROM Account a WHERE a.username LIKE 'huypq1801@gmail.com'")
     Page<Account> findByUsernameLikeOrEmailLike(String username, String email, Pageable pageable);
     @Query("SELECT FROM Accounts WHERE id in ?1 AND a.deleteFlg = 'PRESERVED'")
     List<Account> findByIds(List<String> ids);

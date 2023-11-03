@@ -33,6 +33,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public List<Account> findAllLibrarian() {
+        return accountRepository.findAllLibrarian();
+    }
+
+
+    @Override
     public List<Account> searchLecturer(String search) {
         return accountRepository.searchLecturer(search);
     }
@@ -40,16 +46,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account addAccount(AccountDTO accountDTO) {
         Account account = new Account(accountDTO);
-        account.setId(accountDTO.getId());
-        account.setUsername(accountDTO.getUsername());
-        account.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
-        account.setEmail(accountDTO.getEmail());
-        account.setName(accountDTO.getName());
-        account.setDateOfBirth(accountDTO.getDateOfBirth());
-        account.setGender(accountDTO.getGender());
-        account.setCampus(accountDTO.getCampus());
-        account.setRole(accountDTO.getRole());
-        account.setDeleteFlg(CommonEnum.DeleteFlg.PRESERVED);
         accountRepository.insert(account);
         return account;
     }

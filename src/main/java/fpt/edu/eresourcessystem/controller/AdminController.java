@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -69,8 +71,49 @@ public class AdminController {
         return "admin/account/admin_accounts";
     }
 
-    @GetMapping({"/courseCreator"})
-    public String manageCourseCreators() {
+//    @GetMapping({"/courseCreator"})
+//    public String manageCourseCreators() {
+//        return "admin/account/admin_course_creators";
+//    }
+
+    @GetMapping("/courseCreator")
+    String findCourseByLibrarian(
+            final Model model) {
+
+//        List<Account> librarianList = accountService.findAllLibrarian();
+//            List<Librarian> courseList = librarianService.findAllLibrariansWithCourses();
+
+        AggregationResults<Librarian> result = librarianService.findLibrarianAndCourses();
+        List<Librarian> librarians = result.getMappedResults();
+
+        Page<Account> page;
+        for (Librarian librarian : librarians) {
+            System.out.println("Librarian Name: " + librarian.getAccount().getName());
+            System.out.println("Librarian Email: " + librarian.getAccount().getEmail());
+            System.out.println(librarian.getCreatedCourses());
+
+            List<Course> courses = courseService.findCoursesByLibrarian(librarian);
+            System.out.println(courses.size());
+//            if (librarian.getCreatedCourses() != null) {
+//                System.out.println("Number of Created Courses: " + librarian.getCreatedCourses().size());
+//                for (Course course : librarian.getCreatedCourses()) {
+//                    System.out.println("Course Name: " + course.getCourseName());
+//                    System.out.println("Course Code: " + course.getCourseCode());
+//                    // Thêm các trường khác của khóa học vào đây nếu cần
+//                }
+//            } else {
+//                System.out.println("No Created Courses for this Librarian");
+//            }
+            for (Course course: courses
+                 ) {
+                System.out.println(course.getCourseCode());
+            }
+        }
+
+
+//        System.out.println(librarianList);
+        model.addAttribute("librarians", librarians);
+
         return "admin/account/admin_course_creators";
     }
 
@@ -185,7 +228,7 @@ public class AdminController {
      */
     @PostMapping("/accounts/update")
     public String updateAccountProcess(@ModelAttribute AccountDTO accountDTO,
-                                final Model model) {
+                                       final Model model) {
         Account checkExist = accountService.findById(accountDTO.getId());
         if (null == checkExist) {
             model.addAttribute("errorMessage", "account not exist.");
@@ -215,9 +258,9 @@ public class AdminController {
                     break;
                 case "STUDENT":
 //                    if (null == studentService.findByAccountId(account.getId())) {
-                        Student student = new Student();
-                        student.setAccount(account);
-                        studentService.addStudent(student);
+                    Student student = new Student();
+                    student.setAccount(account);
+                    studentService.addStudent(student);
 //                    }
                     break;
                 case "LECTURER":
