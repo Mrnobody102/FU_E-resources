@@ -1,6 +1,6 @@
 package fpt.edu.eresourcessystem.controller.restcontrollers;
 
-import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
+import fpt.edu.eresourcessystem.dto.DocumentNoteDTO;
 import fpt.edu.eresourcessystem.model.DocumentNote;
 import fpt.edu.eresourcessystem.model.Student;
 import fpt.edu.eresourcessystem.service.DocumentNoteService;
@@ -27,9 +27,9 @@ public class DocumentNoteRestController {
     public ResponseEntity<DocumentNote> addStudentNote(@RequestParam String content) {
         // get current account
         Student student = getLoggedInStudent();
-        StudentNoteDTO studentNoteDTO = new StudentNoteDTO();
-        studentNoteDTO.setContent(content);
-        DocumentNote result = documentNoteService.addStudentNote(new DocumentNote(studentNoteDTO));
+        DocumentNoteDTO documentNoteDTO = new DocumentNoteDTO();
+        documentNoteDTO.setContent(content);
+        DocumentNote result = documentNoteService.addStudentNote(new DocumentNote(documentNoteDTO));
         return ResponseEntity.ok(result);
     }
 

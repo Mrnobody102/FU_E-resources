@@ -87,7 +87,7 @@ public class StudentController {
             return "exception/404";
         }
         // add course log
-        CourseLog courseLog = new CourseLog(new CourseLogId(student.getAccount().getId(), courseId, CommonEnum.Action.VIEW, LocalDateTime.now()));
+        CourseLog courseLog = new CourseLog(courseId, CommonEnum.Action.VIEW);
         courseLogService.addCourseLog(courseLog);
         model.addAttribute("course", course);
         if (studentService.checkCourseSaved(student.getId(), courseId)) {

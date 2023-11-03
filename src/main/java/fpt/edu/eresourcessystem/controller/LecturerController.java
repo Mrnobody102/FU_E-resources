@@ -126,7 +126,7 @@ public class LecturerController {
         }
 
         // add course log
-        CourseLog courseLog = new CourseLog(new CourseLogId(lecturer.getAccount().getId(), courseId, CommonEnum.Action.VIEW, LocalDateTime.now()));
+        CourseLog courseLog = new CourseLog(courseId, CommonEnum.Action.VIEW);
         courseLogService.addCourseLog(courseLog);
 
         List<Topic> topics = course.getTopics();

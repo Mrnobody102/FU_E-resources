@@ -25,11 +25,11 @@ public class CourseLogServiceImpl implements CourseLogService{
 
     @Override
     public CourseLog addCourseLog(CourseLog courseLog) {
-        if(null == courseLog || null == courseLog.getCourseLogId()){
+        if(null == courseLog || null == courseLog.getId()){
             return null;
         }
-        if(null == courseLog.getCourseLogId().getTime()){
-            courseLog.getCourseLogId().setTime(LocalDateTime.now());
+        if(null == courseLog.getCreatedDate()){
+            courseLog.setCreatedBy(LocalDateTime.now().toString());
         }
         CourseLog result =  courseLogRepository.save(courseLog);
         return result;
@@ -41,15 +41,15 @@ public class CourseLogServiceImpl implements CourseLogService{
         Criteria criteria = new Criteria();
 
         // Sort by the "time" in descending order to get the most recent documents
-        criteria.and("courseLogId.time").exists(true); // Ensure "time" field exists
-        criteria.and("courseLogId.action").is(CommonEnum.Action.VIEW);
-        criteria.and("courseLogId.accountId").is(accountId);
-        Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("time")));
+        criteria.and("courseLog.createdDate").exists(true); // Ensure "time" field exists
+        criteria.and("courseLog.action").is(CommonEnum.Action.VIEW);
+        criteria.and("courseLog.createdBy").is(accountId);
+        Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("createdDate")));
 
         // Use a Pageable to limit the result set to 5 documents
         PageRequest pageable = PageRequest.of(0, 5);
         query.with(pageable);
-        return mongoTemplate.findDistinct(query,"courseLogId.courseId" ,CourseLog.class, String.class);
+        return mongoTemplate.findDistinct(query,"courseLog.courseId" ,CourseLog.class, String.class);
     }
 
     @Override
@@ -57,10 +57,10 @@ public class CourseLogServiceImpl implements CourseLogService{
         Criteria criteria = new Criteria();
 
         // Sort by the "time" in descending order to get the most recent documents
-        criteria.and("courseLogId.time").exists(true); // Ensure "time" field exists
-        criteria.and("courseLogId.action").is(CommonEnum.Action.VIEW);
-        criteria.and("courseLogId.accountId").is(accountId);
-        Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("time")));
+        criteria.and("courseLog.createdDate").exists(true); // Ensure "time" field exists
+        criteria.and("courseLog.action").is(CommonEnum.Action.VIEW);
+        criteria.and("courseLog.createdBy").is(accountId);
+        Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("createdDate")));
 
         // Use a Pageable to limit the result set to 5 documents
         PageRequest pageable = PageRequest.of(0, 5);
