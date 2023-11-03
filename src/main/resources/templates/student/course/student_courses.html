@@ -113,7 +113,7 @@
                                         <ul class="pagination home-courses__pagination-distance">
                                             <li class="pagination-item"
                                                 th:classappend=" ${currentPage == 1} ? 'disabled' : ''">
-                                                <a class="pagination-item__link previous-page-stu-course-number">
+                                                <a class="pagination-item__link previous-page-stu-course-number" style="cursor: pointer">
                                                     <i class="pagination-item__icon fas fa-angle-left"></i>
                                                 </a>
                                             </li>
@@ -125,12 +125,12 @@
                                                 </th:block>
                                                 <th:block th:if="${pageIndex != -1}">
                                                     <a th:text="${pageIndex}" th:value="${pageIndex}"
-                                                       class="pagination-item__link page-stu-course-number"></a>
+                                                       class="pagination-item__link page-stu-course-number" style="cursor: pointer"></a>
                                                 </th:block>
                                             </li>
                                             <li  class="pagination-item"
-                                                    th:class="${currentPage == totalPage} ? 'disabled' : ''">
-                                                <a class="pagination-item__link next-page-stu-course-number">
+                                                    th:classappend="${currentPage == totalPage} ? 'disabled' : ''">
+                                                <a class="pagination-item__link next-page-stu-course-number" style="cursor: pointer">
                                                     <i class="pagination-item__icon fas fa-angle-right"></i>
                                                 </a>
                                             </li>

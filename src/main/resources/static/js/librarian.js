@@ -35,7 +35,7 @@ function addIndexToTable(){
         const search = $("#search-text").val();
         let pageIndex = $(this).html();
 
-        window.location = "/librarian/accounts/list/" + pageIndex + "?search=" + search;
+        window.location = "/admin/accounts/list/" + pageIndex + "?search=" + search;
     });
 
     $(".previous-page-account").click(function () {
@@ -43,7 +43,7 @@ function addIndexToTable(){
         const pageIndex = $(".active .page-account-number").text();
         const currentPage = parseInt(pageIndex);
         if (currentPage > 1) {
-            window.location.href = "/librarian/accounts/list/" + (currentPage - 1) + "?search=" + search;
+            window.location.href = "/admin/accounts/list/" + (currentPage - 1) + "?search=" + search;
         }
     });
 
@@ -51,7 +51,7 @@ function addIndexToTable(){
         const search = $("#search-text").val();
         const pageIndex = $(".active .page-account-number").text();
         const currentPage = parseInt(pageIndex);
-        window.location.href = "/librarian/accounts/list/" + (currentPage + 1) + "?search=" + search;
+        window.location.href = "/admin/accounts/list/" + (currentPage + 1) + "?search=" + search;
     });
 
     // Course pagination
