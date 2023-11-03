@@ -1,9 +1,7 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import fpt.edu.eresourcessystem.dto.AccountDTO;
 import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
-import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document("student_notes")
-public class StudentNote {
+public class DocumentNote {
     @Id
     private String id;
     @NotNull
@@ -42,7 +40,7 @@ public class StudentNote {
     private String lastModifiedDate;
 
     // Constructor DTO
-    public StudentNote(StudentNoteDTO studentNoteDTO) {
+    public DocumentNote(StudentNoteDTO studentNoteDTO) {
         this.id = studentNoteDTO.getId();
         this.studentId = studentNoteDTO.getStudentId();
         this.content = studentNoteDTO.getContent();

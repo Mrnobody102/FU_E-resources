@@ -31,14 +31,14 @@ public class StudentController {
     private final TopicService topicService;
     private final CourseLogService courseLogService;
     private final DocumentService documentService;
-    private final StudentNoteService studentNoteService;
-    public StudentController(CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService, StudentNoteService studentNoteService) {
+    private final DocumentNoteService documentNoteService;
+    public StudentController(CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService, DocumentNoteService documentNoteService) {
         this.courseService = courseService;
         this.studentService = studentService;
         this.topicService = topicService;
         this.courseLogService = courseLogService;
         this.documentService = documentService;
-        this.studentNoteService = studentNoteService;
+        this.documentNoteService = documentNoteService;
     }
 
     public Student getLoggedInStudent() {
@@ -216,7 +216,7 @@ public class StudentController {
 //        if (studentService.checkDocSaved(student.getId(), docId)) {
 //            model.addAttribute("saved", true);
 //        } else model.addAttribute("saved", false);
-//        StudentNote studentNote = studentNoteService.findByDocIdAndStudentId(docId,student.getId());
+//        DocumentNote studentNote = documentNoteService.findByDocIdAndStudentId(docId,student.getId());
 //        model.addAttribute("note", studentNote);
         return "student/course/student_document-detail";
     }

@@ -1,0 +1,60 @@
+package fpt.edu.eresourcessystem.controller.restcontrollers;
+
+import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
+import fpt.edu.eresourcessystem.model.DocumentNote;
+import fpt.edu.eresourcessystem.model.Student;
+import fpt.edu.eresourcessystem.service.DocumentNoteService;
+import fpt.edu.eresourcessystem.service.StudentService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/student/notes")
+public class DocumentNoteRestController {
+    private final DocumentNoteService documentNoteService;
+    private final StudentService studentService;
+
+    public DocumentNoteRestController(DocumentNoteService documentNoteService, StudentService studentService) {
+        this.documentNoteService = documentNoteService;
+        this.studentService = studentService;
+    }
+    public Student getLoggedInStudent() {
+        return studentService.findAll().get(0);
+    }
+
+
+    @PostMapping("/add/{docId}")
+    public ResponseEntity<DocumentNote> addStudentNote(@RequestParam String content) {
+        // get current account
+        Student student = getLoggedInStudent();
+        StudentNoteDTO studentNoteDTO = new StudentNoteDTO();
+        studentNoteDTO.setContent(content);
+        DocumentNote result = documentNoteService.addStudentNote(new DocumentNote(studentNoteDTO));
+        return ResponseEntity.ok(result);
+    }
+
+    @PutMapping("/{noteId}/update")
+    public ResponseEntity<DocumentNote> updateStudentNote(@PathVariable(name = "noteId", required = false) String noteId, @RequestBody DocumentNote documentNote){
+        DocumentNote result = documentNoteService.updateStudentNote(documentNote);
+        return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping("/{noteId}/delete")
+    public ResponseEntity<DocumentNote> delete(@PathVariable(name = "noteId", required = false) String noteId) {
+        if(null!= noteId){
+            DocumentNote documentNote = documentNoteService.findById(noteId);
+            boolean delete = documentNoteService.deleteStudentNote(documentNote);
+            if(delete){
+                return ResponseEntity.ok(documentNote);
+            }
+            return null;
+        }
+        return null;
+
+    }
+    @GetMapping("/{noteId}")
+    public DocumentNote getNoteDetail(@PathVariable(name = "noteId", required = false) String noteId) {
+        DocumentNote documentNote = documentNoteService.findById(noteId);
+        return documentNote;
+    }
+}
