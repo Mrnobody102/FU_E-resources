@@ -82,15 +82,15 @@
                                     Recent
                                 </h2>
                             </div>
-                            <div class="stu__courses-list-recent">
+                            <div class="stu__courses-list-recent home-courses">
                                 <div class="stu__view-recent-courses">
                                     <div class="stu__view-list-course-content">
                                         <div class="view-inline-list">
                                             <ul class="home__course-list  d-flex">
                                                 <li class="home__course-item grid__column-2"  th:each="course : ${recentCourses}">
-                                                    <div class="home__course-wrapper">
+                                                    <div class="home__course-wrapper-inline">
                                                         <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
-                                                        <a class="home__course-name" th:text="${course.courseName}"
+                                                        <a class="home__course-name-inline" th:text="${course.courseName}"
                                                            th:href="@{'/student/courses/' + ${course.id}}"></a>
                                                         <p class="home__course-description" th:text="${course.description}"></p>
                                                         <ul class="home__course-lecturer-list">

@@ -25,6 +25,7 @@
     --link-color: #0b74ec;
     --checked-background-color:#0a58ca;
     --danger-color: #DC3545;
+    --disable-link-text-color: #bbb8b8;
 
     /* Font */
     --body-font: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
@@ -489,4 +490,12 @@ li {
 .btn-save:hover {
     background-color: var(--primary-btn-color);
     color: var(--hover-color-2);
+}
+
+.disabled {
+    color: var(--disable-link-text-color);
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+    pointer-events: none;
 }

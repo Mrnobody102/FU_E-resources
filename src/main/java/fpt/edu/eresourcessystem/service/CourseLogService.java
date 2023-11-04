@@ -8,5 +8,5 @@ public interface CourseLogService {
     CourseLog addCourseLog(CourseLog courseLog);
     List<String> findStudentRecentView(String accountId);
 
-    List<CourseLog> findLecturerRecentView(String accountId);
+    List<String> findLecturerRecentView(String accountId);
 }

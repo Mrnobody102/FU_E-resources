@@ -1,11 +1,10 @@
 package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.model.StudentNote;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface StudentNoteService {
-    StudentNote findById(String studentNoteId);
-    StudentNote findByDocIdAndStudentId(String docId, String studentId);
-    StudentNote addStudentNote(StudentNote studentNote);
-    StudentNote updateStudentNote(StudentNote studentNote);
-    boolean deleteStudentNote(StudentNote studentNote);
+    Page<StudentNote> getNoteByStudent(String studentId, int pageIndex, int pageSize);
 }

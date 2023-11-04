@@ -2,65 +2,42 @@ package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Course;
+import fpt.edu.eresourcessystem.model.CourseLog;
 import fpt.edu.eresourcessystem.model.StudentNote;
 import fpt.edu.eresourcessystem.repository.StudentNoteRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service("studentNoteService")
-public class StudentNoteServiceImpl implements  StudentNoteService{
+public class StudentNoteServiceImpl implements StudentNoteService{
+
     private final StudentNoteRepository studentNoteRepository;
+    private final MongoTemplate mongoTemplate;
 
-    public StudentNoteServiceImpl(StudentNoteRepository studentNoteRepository) {
+    public StudentNoteServiceImpl(StudentNoteRepository studentNoteRepository, MongoTemplate mongoTemplate) {
         this.studentNoteRepository = studentNoteRepository;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @Override
-    public StudentNote findById(String studentNoteId) {
-        Optional<StudentNote> studentNote = studentNoteRepository.findById(studentNoteId);
-        return  studentNote.orElse(null);
-    }
-
-    @Override
-    public StudentNote findByDocIdAndStudentId(String docId, String studentId) {
-        StudentNote studentNote = studentNoteRepository.findByDocIdAndStudentId(docId,studentId);
-        return studentNote;
-    }
-
-    @Override
-    public StudentNote addStudentNote(StudentNote studentNote) {
-        if(null!=studentNote && null==studentNote.getId()){
-            if(null!=studentNoteRepository.findByDocIdAndStudentId(studentNote.getDocId(),studentNote.getStudentId())){
-                return null;
-            }else {
-                studentNote.setDeleteFlg(CommonEnum.DeleteFlg.PRESERVED);
-                StudentNote result = studentNoteRepository.save(studentNote);
-                return result;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public StudentNote updateStudentNote(StudentNote studentNote) {
-        Optional<StudentNote> savedStudentNote = studentNoteRepository.findById(studentNote.getId());
-        if(savedStudentNote.isPresent()){
-            StudentNote result =  studentNoteRepository.save(studentNote);
-            return result;
-        }
-        return null;
-    }
-
-    @Override
-    public boolean deleteStudentNote(StudentNote studentNote) {
-        Optional<StudentNote> check = studentNoteRepository.findById(studentNote.getId());
-        if(check.isPresent()){
-            // SOFT DELETE
-            studentNote.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
-            studentNoteRepository.save(studentNote);
-            return true;
-        }
-        return false;
+    public Page<StudentNote> getNoteByStudent(String studentId, int pageIndex, int pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+        Criteria criteria = new Criteria();
+        criteria.and("createdDate").exists(true);
+        criteria.and("createdBy").is(studentId);
+        Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("createdDate"))).with(pageable);
+        List<StudentNote> results = mongoTemplate.find(query, StudentNote.class);
+        Page<StudentNote> page =  PageableExecutionUtils.getPage(results, pageable,
+                () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), StudentNote.class));
+        return page;
     }
 }

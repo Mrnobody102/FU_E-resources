@@ -1,23 +1,29 @@
 package fpt.edu.eresourcessystem.dto;
 
-
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.*;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentNoteDTO {
-    @Id
+@ToString
+public class CourseLogDTO {
     private String id;
-    private String studentId;
-    private String content;
 
-    // Only use when response, no need in requests
+    private String courseId;
+
+    private CommonEnum.Action action;
+    // Delete flag
+    private CommonEnum.DeleteFlg deleteFlg;
+
     private String createdBy;
+
     private String createdDate;
+
     private String lastModifiedBy;
+
     private String lastModifiedDate;
 }

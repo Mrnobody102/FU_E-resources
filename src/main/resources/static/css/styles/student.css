@@ -471,8 +471,9 @@
 }
 .stu__div-content-recent-title{
     margin-top: 3rem;
+    margin-left: 2rem;
 }
-.list-course-content-not-found {
+.list-course-content-not-found, .list-content-not-found {
     margin: 2rem;
 }
 .stu__navbar-favourite-list,
@@ -480,7 +481,7 @@
     /*display: inline;*/
     margin: 2rem;
     width: 90%;
-    padding: 1rem;
+    padding: 1rem 1rem 1rem 0;
 }
 .stu__navbar-favourite-item,
 .stu__navbar-view-doc-item{
@@ -555,4 +556,8 @@ stu__navbar-view-doc-item:hover{
 
 .stu__answer-in-doc-content{
     margin-left: 3rem;
+}
+.stu__add-note{
+    text-align: right;
+    margin-right: 10%;
 }

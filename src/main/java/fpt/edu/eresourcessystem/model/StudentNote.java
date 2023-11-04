@@ -1,9 +1,8 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import fpt.edu.eresourcessystem.dto.AccountDTO;
+import fpt.edu.eresourcessystem.dto.DocumentNoteDTO;
 import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
-import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -22,12 +21,10 @@ public class StudentNote {
     private String id;
     @NotNull
     private String studentId;
-
-    @NotEmpty(message = "studentNote.validation.content.required")
+    private String title;
+    private String description;
+    @NotEmpty(message = "note.validation.note.required")
     private String content;
-
-    @NotNull
-    private String docId;
 
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
@@ -42,11 +39,17 @@ public class StudentNote {
     private String lastModifiedDate;
 
     // Constructor DTO
+
+    public StudentNote(String id, @NotNull String studentId, String content) {
+        this.id = id;
+        this.studentId = studentId;
+        this.content = content;
+    }
+
     public StudentNote(StudentNoteDTO studentNoteDTO) {
         this.id = studentNoteDTO.getId();
         this.studentId = studentNoteDTO.getStudentId();
         this.content = studentNoteDTO.getContent();
-        this.docId = studentNoteDTO.getDocId();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
 }

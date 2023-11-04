@@ -15,11 +15,11 @@ $(document).ready(
     $("body").on("click", ".add-note", function() {
         var contextPath = $(this).attr("contextPath");
         var id = $(this).attr("docId");
-        alert(contextPath + "/student/note/add");
+        alert(contextPath + "/student/document/note/add");
 
         $.get({
             dataType: 'JSON',
-            url: contextPath + "/student/note/add/" + id,
+            url: contextPath + "/student/document/note/add/" + id,
             success: function(responseData) {
                 /*$(".stu__note-content").html(responseData.content);*/
                 alert(responseData.message);

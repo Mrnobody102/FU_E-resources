@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.controller;
 import fpt.edu.eresourcessystem.dto.CourseDTO;
 import fpt.edu.eresourcessystem.dto.DocumentDTO;
 import fpt.edu.eresourcessystem.dto.ResourceTypeDTO;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -130,6 +131,8 @@ public class LecturerController {
         }
 
         // add course log
+        CourseLog courseLog = new CourseLog(courseId, CommonEnum.Action.VIEW);
+        courseLogService.addCourseLog(courseLog);
 //        CourseLog courseLog = new CourseLog(new CourseLogId(lecturer.getAccount().getId(), courseId, CommonEnum.Action.VIEW, LocalDateTime.now()));
 //        courseLogService.addCourseLog(courseLog);
 

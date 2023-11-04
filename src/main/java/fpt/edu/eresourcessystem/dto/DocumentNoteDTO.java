@@ -9,13 +9,13 @@ import org.springframework.data.annotation.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NoteDTO {
+public class DocumentNoteDTO {
     @Id
     private String id;
     private String studentId;
-    private String documentId;
 
-    private String note;
+    private String content;
+    private String docId;
 
     // Only use when response, no need in requests
     private String createdBy;
