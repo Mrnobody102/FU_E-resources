@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
- lang="en">
+      lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -51,12 +51,12 @@
                                 </button>
                                 <a class="btn lib_show-all-btn" th:href="@{/admin/accounts/list/1}">Show AlL</a>
                             </div>
-<!--                            <div>-->
-<!--                                <a class="btn lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">-->
-<!--                                    <i class="fa-solid fa-plus"></i>-->
-<!--                                    <span>New</span>-->
-<!--                                </a>-->
-<!--                            </div>-->
+                            <!--                            <div>-->
+                            <!--                                <a class="btn lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">-->
+                            <!--                                    <i class="fa-solid fa-plus"></i>-->
+                            <!--                                    <span>New</span>-->
+                            <!--                                </a>-->
+                            <!--                            </div>-->
 
                             <div class="d-flex">
                                 <select class="lib_filter" th:name="role" th:id="role" onchange="this.form.submit()">
@@ -70,39 +70,38 @@
                                 </select>
                             </div>
                         </form>
-                            <div>
-                                <a class="lib_btn-add" type="button" th:href="@{/admin/accounts/add}">
-                                    <i class="fa-solid fa-plus"></i>
-                                    <span>New</span>
-                                </a>
-                            </div>
+                        <div>
+                            <a class="lib_btn-add" type="button" th:href="@{/admin/accounts/add}">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>New</span>
+                            </a>
+                        </div>
 
                     </div>
 
                     <div class="table-responsive" th:if="${accounts ne null}">
                         <table class="table table-striped table-sm">
                             <tr class="n8">
-                                <th>No.</th>
+                                <th>STT</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Role</th>
                                 <th>Campus</th>
-<!--                                <th></th>-->
+                                <!--                                <th></th>-->
                             </tr>
                             <th:block th:each="account, iterStart : ${accounts}">
                                 <tr>
                                     <td th:text="${iterStart.index +1}"></td>
                                     <td><a th:href="@{'/admin/accounts/' + ${account.getId} + '/update'}"
                                            th:text="${account.name}"></a></td>
-<!--                                    <td th:text="${account.name}"></td>-->
                                     <td th:text="${account.email}"></td>
                                     <td th:text="${account.role}"></td>
                                     <td th:text="${account.campus}"></td>
-<!--                                    <td colspan="2">-->
-<!--                                        <a class="update-account"-->
-<!--                                           th:href="@{'/admin/accounts/'+${account.accountId} + '/update'}">Update</a>-->
-<!--                                        <a class="delete-account" th:id="${account.accountId}">Delete</a>-->
-<!--                                    </td>-->
+                                    <!--                                    <td colspan="2">-->
+                                    <!--                                        <a class="update-account"-->
+                                    <!--                                           th:href="@{'/admin/accounts/'+${account.accountId} + '/update'}">Update</a>-->
+                                    <!--                                        <a class="delete-account" th:id="${account.accountId}">Delete</a>-->
+                                    <!--                                    </td>-->
                                 </tr>
                             </th:block>
                         </table>

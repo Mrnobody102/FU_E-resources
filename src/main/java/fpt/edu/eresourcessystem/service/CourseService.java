@@ -1,9 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.model.Account;
-import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Lecturer;
-import fpt.edu.eresourcessystem.model.Topic;
+import fpt.edu.eresourcessystem.model.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -21,6 +18,7 @@ public interface CourseService {
      */
     Course findByCourseId(String courseId);
     List<Course> findAll();
+    List<Course> findCourseByLibrarian(String email);
     Page<Course> findAll(int pageIndex, int pageSize, String search);
 
     Course findByCourseCode(String courseCode);
@@ -34,6 +32,8 @@ public interface CourseService {
     Page<Course> findAllLecturerCourses(int pageIndex, int pageSize, String search);
 
     Page<Course> findAllLecturerCourses(int pageIndex, int pageSize);
+
+    List<Course> findCoursesByLibrarian(Librarian librarian);
 
     boolean addTopic(Topic topic);
 

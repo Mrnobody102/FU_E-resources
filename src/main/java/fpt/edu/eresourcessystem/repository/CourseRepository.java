@@ -21,6 +21,14 @@ public interface CourseRepository extends
     @Query("{ 'courseCode' : ?0, 'deleteFlg' : 'PRESERVED' }")
     Course findByCourseCode(String courseCode);
 
+    @Query("SELECT c FROM Courses c WHERE c.id in ?1")
+    List<Course> findByListId(List<String> id);
+
+    @Query("{ 'createdBy' : ?0, 'deleteFlg' : 'PRESERVED' }")
+    List<Course> findCourseByLibrarianEmail(String email);
+
+    @Query("{'_id': { $in: ?0 }}")
+    List<Course> findCoursesByLibrarianCreatedCourses(List<String> courseIds);
     @Query(("{$and:[{ 'deleteFlg' : 'PRESERVED' },"
             + "{$or: ["
             + "    {courseCode: {$regex: ?0}},"

@@ -7,9 +7,9 @@ import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,8 +72,38 @@ public class AdminController {
         return "admin/account/admin_accounts";
     }
 
-    @GetMapping({"/courseCreator"})
-    public String manageCourseCreators() {
+//    @GetMapping({"/courseCreator"})
+//    public String manageCourseCreators() {
+//        return "admin/account/admin_course_creators";
+//    }
+
+    @GetMapping("/course/{courseId}")
+    String getCourseByLibrarian(@PathVariable String courseId, final Model model){
+        return "admin/account/admin_course_detail";
+    }
+
+    /*
+    This function to display librarians and created course by that librarians
+     */
+    @GetMapping("/courseCreator")
+    String findCourseByLibrarian(final Model model) {
+
+        List<Account> librarianList = accountService.findAllLibrarian();
+        for (int i = 0; i < librarianList.size(); i++) {
+            String librarianId = librarianList.get(i).getId();
+
+            Librarian librarian = librarianService.findByAccountId(librarianId);
+            if (null == librarian) {
+                return "exception/404";
+            }
+            List<Course> courses = librarian.getCreatedCourses();
+
+            System.out.println(courses.size());
+            model.addAttribute("librarianList", librarianList);
+            model.addAttribute("librarians", librarian);
+            model.addAttribute("courses", courses);
+        }
+
         return "admin/account/admin_course_creators";
     }
 

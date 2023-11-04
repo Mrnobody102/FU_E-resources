@@ -33,6 +33,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public List<Account> findAllLibrarian() {
+        return accountRepository.findAllLibrarian();
+    }
+
+
+    @Override
     public List<Account> searchLecturer(String search) {
         return accountRepository.searchLecturer(search);
     }

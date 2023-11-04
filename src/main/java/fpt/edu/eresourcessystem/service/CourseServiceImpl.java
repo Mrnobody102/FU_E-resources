@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("courseService")
 public class CourseServiceImpl implements CourseService{
@@ -126,6 +127,16 @@ public class CourseServiceImpl implements CourseService{
         return courseRepository.findAll();
     }
 
+    public List<Course> findCoursesByLibrarian(Librarian librarian) {
+        List<String> courseIds = librarian.getCreatedCourses()
+                .stream()
+                .map(Course::getId)
+                .collect(Collectors.toList());
+
+        return courseRepository.findCoursesByLibrarianCreatedCourses(courseIds);
+    }
+
+
     @Override
     public Page<Course> findAllLecturerCourses(int pageIndex, int pageSize, String search) {
         return null;
@@ -199,6 +210,10 @@ public class CourseServiceImpl implements CourseService{
         return courses;
     }
 
+    @Override
+    public List<Course> findCourseByLibrarian(String email) {
+        return courseRepository.findCourseByLibrarianEmail(email);
+    }
     @Override
     public Page<Course> findByCodeOrNameOrDescription(String code, String name, String description, int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
