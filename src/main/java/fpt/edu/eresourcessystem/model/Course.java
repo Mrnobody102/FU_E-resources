@@ -42,6 +42,8 @@ public class Course {
 
     @DocumentReference(lazy = true)
     private List<Topic> topics;
+    @DocumentReference(lazy = true)
+    private List<ResourceType> resourceTypes;
     private List<String> students;
 
     @NotNull

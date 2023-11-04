@@ -36,6 +36,7 @@
     /* Navbar */
     --header-height: 3.5rem;
     --nav-width: 219px;
+    --sidebar-width: 25rem;
 }
 
 * {

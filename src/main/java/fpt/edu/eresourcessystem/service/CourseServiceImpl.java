@@ -4,6 +4,7 @@ import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
+import fpt.edu.eresourcessystem.model.Librarian;
 import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -221,6 +222,15 @@ public class CourseServiceImpl implements CourseService{
                 pageable);
         return page;
     }
+
+    @Override
+    public Page<Course> findByStatus(String status, int pageIndex, int pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+        Page<Course> page = courseRepository.findByStatus(status,
+                pageable);
+        return page;
+    }
+
 
     @Override
     public Page<Course> findByCourseNameOrCourseCode(String courseName, String courseCode, Integer pageIndex, Integer pageSize) {

@@ -23,7 +23,7 @@
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
-        <div class="container-content row">
+        <div class="container-content">
             <div class="main-content stu_course-saved">
                 <div class="stu_course-saved-content d-flex">
                     <div class="stu_sidebar">
@@ -33,7 +33,7 @@
                     <div class="stu_courses-content m-3" id="main-lecturer">
                         <div class="course-details-head">
                             <a th:href="@{/lecturer}">Home</a>
-                            <span> &gt; <a th:href="@{/lecturer/courses/list}"> Courses management</a> </span>
+                            <span> &gt; <a th:href="@{/lecturer/courses/list/all/1}"> Courses management</a> </span>
                             <span> &gt; <a th:href="@{'/lecturer/courses/' + ${course.id}}"
                                            th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
                         </div>
@@ -71,7 +71,7 @@
 <!--    &lt;!&ndash; Content &ndash;&gt;-->
 <!--    <main class="main_content">-->
 <!--        <div class="course-details-head">-->
-<!--            <a th:href="@{/lecturer/courses/list}">Back</a>-->
+<!--            <a th:href="@{/lecturer/courses/list/all/1}">Back</a>-->
 <!--            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${course.courseId}}"-->
 <!--                           th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>-->
 <!--        </div>-->

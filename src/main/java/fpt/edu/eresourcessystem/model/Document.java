@@ -23,7 +23,7 @@ public class Document {
 
     @NotEmpty(message = "course.validation.resourceType.required")
     @DocumentReference
-    private Topic topics;
+    private Topic topic;
     @DocumentReference
     private ResourceType resourceType;
 
@@ -41,6 +41,7 @@ public class Document {
 
     private List<String> notes;
     private List<String> questions;
+    private List<String> rates;
 
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
@@ -56,7 +57,7 @@ public class Document {
 
     public Document(DocumentDTO documentDTO) {
         this.id = documentDTO.getId();
-        this.topics = documentDTO.getTopic();
+        this.topic = documentDTO.getTopic();
         this.resourceType = documentDTO.getResourceType();
         this.title = documentDTO.getTitle();
         this.description = documentDTO.getDescription();

@@ -2,6 +2,8 @@ package fpt.edu.eresourcessystem.enums;
 
 public class CourseEnum {
     public enum Status {
+
+        NEW("New"),
         PUBLISH("Publish"),
         DRAFT("Draft"),
         HIDE("Hide");

@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.dto;
 
 
+import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Topic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +17,7 @@ public class ResourceTypeDTO {
     @Id
     private String id;
     private String resourceTypeName;
+    private Course course;
 
     // Only use when response, no need in requests
     private List<String> documents;

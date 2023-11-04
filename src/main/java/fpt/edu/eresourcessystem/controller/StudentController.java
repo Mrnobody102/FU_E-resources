@@ -100,7 +100,6 @@ public class StudentController {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);
         return "student/course/student_course-detail";
-//        return "student/course/courseDetailFrontEnd";
     }
 
     @GetMapping("/courses/{courseId}/save_course")
@@ -225,20 +224,7 @@ public class StudentController {
         } else model.addAttribute("saved", false);
         return "student/topic/student_topic-detail";
     }
-    @GetMapping({"/document/{docId}","/documentDetail"})
-    public String viewDocumentDetail(@PathVariable(required = false) String docId, final Model model) {
-//        //auth
-//        Student student = getLoggedInStudent();
-//        //
-//        Document document = documentService.findAll().get(0);
-//        docId = document.getId();
-//        if (studentService.checkDocSaved(student.getId(), docId)) {
-//            model.addAttribute("saved", true);
-//        } else model.addAttribute("saved", false);
-//        DocumentNote studentNote = documentNoteService.findByDocIdAndStudentId(docId,student.getId());
-//        model.addAttribute("note", studentNote);
-        return "student/course/student_document-detail";
-    }
+
     @GetMapping({"/search_course/{pageIndex}"})
     public String viewSearchCourse(@PathVariable Integer pageIndex,
                                      @RequestParam(required = false, defaultValue = "") String search,
@@ -287,6 +273,4 @@ public class StudentController {
         }
         return "student/library/student_my-notes";
     }
-
-
 }

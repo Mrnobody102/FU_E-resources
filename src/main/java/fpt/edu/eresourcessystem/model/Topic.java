@@ -21,7 +21,7 @@ public class Topic {
     @Id
     private String id;
     @NotNull
-    @DocumentReference(lazy = true)
+    @DocumentReference
     private Course course;
     @DocumentReference(lazy = true)
     private List<fpt.edu.eresourcessystem.model.Document> documents; // NEW

@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.Doc;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,18 +68,20 @@ public class LecturerController {
      * @param model
      * @return
      */
-    @GetMapping({"/courses/list/{pageIndex}", "/courses/list"})
-    public String viewCourseManaged(@PathVariable(required = false) Integer pageIndex, final Model model) {
+    @GetMapping({"/courses/list/{status}/{pageIndex}"})
+    public String viewCourseManaged(@PathVariable(required = false) Integer pageIndex, final Model model, @PathVariable String status) {
         // get account authorized
         Lecturer lecturer = getLoggedInLecturer();
-        if (null == lecturer) {
+        if (null == lecturer || "".equalsIgnoreCase(status)) {
             return "common/login";
         }
-        Page<Course> page = lecturerService.findListManagingCourse(lecturer, pageIndex, pageSize);
+        Page<Course> page = lecturerService.findListManagingCourse(lecturer, status, pageIndex, pageSize);
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
+        model.addAttribute("status", status);
+
         return "lecturer/course/lecturer_courses";
     }
 
@@ -211,7 +214,7 @@ public class LecturerController {
         Topic topic = topicService.findById(topicId);
         if (null != topic) {
             courseService.removeTopic(topic);
-            topicService.delete(topicId);
+            topicService.softDelete(topic);
         }
         return "redirect:/lecturer/" + topic.getCourse().getId();
     }
@@ -259,11 +262,17 @@ public class LecturerController {
     }
 
     @GetMapping({"/documents/{documentId}"})
-    public String showDocumentDetail(@PathVariable String documentId, final Model model) {
+    public String viewDocument(@PathVariable(required = false) String documentId, final Model model) {
         Document document = documentService.findById(documentId);
-        model.addAttribute("document", document);
-        return "lecturer/document/lecturer_document-detail";
+        if (null == document) {
+            model.addAttribute("errorMessage", "Could not found document.");
+            return "exception/404";
+        } else {
+            model.addAttribute("document", document);
+            return "lecturer/document/lecturer_document-detail";
+        }
     }
+
 
     @GetMapping({"topics/{topicId}/documents/add"})
     public String addDocumentInTopic(@PathVariable String topicId, final Model model) {
@@ -280,7 +289,7 @@ public class LecturerController {
     public String addDocumentProcess(@ModelAttribute DocumentDTO documentDTO,
                                      @RequestParam(value = "topicId") String topicId,
                                      @RequestParam(value = "respondResourceType") String respondResourceType,
-                                     @RequestParam("file") MultipartFile file) throws IOException {
+                                     @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         // Thêm resource type
         ResourceType resourceType = resourceTypeService.addResourceType(respondResourceType);
         // set resource type vào document
@@ -291,27 +300,34 @@ public class LecturerController {
 
         // Xử lý file
         // thêm check file trước khi add
-        String id = documentService.addFile(file);
-
+        String id = "fileNotFound";
+        if(file != null && !file.isEmpty()) {
+            id = documentService.addFile(file);
+        }
         Document document = documentService.addDocument(documentDTO, id);
         // Xử lý sau khi add document
-        List<Document> documents = resourceType.getDocuments();
-        if (documents == null) {
-            documents = new ArrayList<>();
+        List<Document> resourceTypeDocuments = resourceType.getDocuments();
+        if (resourceTypeDocuments == null) {
+            resourceTypeDocuments = new ArrayList<>();
         }
-        documents.add(document);
+        resourceTypeDocuments.add(document);
         // Thêm document vào resource type
-        resourceType.setDocuments(documents);
+        resourceType.setDocuments(resourceTypeDocuments);
         resourceTypeService.updateResourceType(resourceType);
 
         // Thêm document vào topic
-        topic.setDocuments(documents);
+        List<Document> topicDocuments = topic.getDocuments();
+        if (topicDocuments == null) {
+            topicDocuments = new ArrayList<>();
+        }
+        topicDocuments.add(document);
+        topic.setDocuments(topicDocuments);
         topicService.updateTopic(topic);
 
         return "redirect:/lecturer/topics/" + topicId;
     }
 
-    @GetMapping({"/documents/update/{documentId}"})
+    @GetMapping({"/documents/{documentId}/update"})
     public String updateDocumentProcess(@PathVariable(required = false) String documentId, final Model model) {
         if (null == documentId) {
             documentId = "";
@@ -325,4 +341,37 @@ public class LecturerController {
             return "lecturer/document/";
         }
     }
+
+    @PostMapping("/courses/update")
+    @Transactional
+    public String updateCourse(@ModelAttribute Course course, final Model model) {
+        Course checkExist = courseService.findByCourseId(course.getId());
+
+        if (null == checkExist) {
+            return "redirect:/librarian/courses/" + course.getId()+ "/update?error";
+        } else {
+            Course checkCodeDuplicate = courseService.findByCourseCode(course.getCourseCode());
+            if (checkCodeDuplicate != null &&
+                    !checkExist.getCourseCode().equalsIgnoreCase(course.getCourseCode())) {
+                return "redirect:/librarian/courses/" + course.getId()+ "/update?error";
+            }
+            checkExist.setCourseCode(course.getCourseCode());
+            checkExist.setCourseName(course.getCourseName());
+            checkExist.setDescription(course.getDescription());
+            courseService.updateCourse(checkExist);
+            return "redirect:/librarian/courses/" + course.getId()+ "/update?success";
+        }
+    }
+
+    @GetMapping("/documents/{documentId}/delete")
+    public String deleteDocument(@PathVariable String documentId) {
+        Document document = documentService.findById(documentId);
+        if (null != document) {
+            topicService.removeDocuments(document);
+            documentService.softDelete(document);
+            return "redirect:/librarian/courses/list/1?success";
+        }
+        return "redirect:/librarian/courses/list/1?error";
+    }
+
 }

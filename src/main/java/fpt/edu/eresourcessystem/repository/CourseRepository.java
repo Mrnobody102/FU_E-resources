@@ -60,7 +60,8 @@ public interface CourseRepository extends
     @Query("{ 'deleteFlg' : 'PRESERVED' }")
     Page<Course> findByCourseNameLikeIgnoreCase(String courseName, Pageable pageable);
 
-    @Query("{ 'deleteFlg' : 'PRESERVED' }")
-    Page<Course> findByCourseCodeLikeIgnoreCase(String courseCode, Pageable pageable);
+    @Query("{ 'deleteFlg' : 'PRESERVED', 'status' :  ?0 }")
+    Page<Course> findByCourseCodeLikeIgnoreCase(String status, Pageable pageable);
 
+    Page<Course> findByStatus(String status, Pageable pageable);
 }

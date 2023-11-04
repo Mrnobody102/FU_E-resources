@@ -89,19 +89,23 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document addDocument(DocumentDTO documentDTO, String id) throws IOException {
         //search file
-        GridFSFile file = template.findOne(new Query(Criteria.where("_id").is(id)));
         if (null == documentDTO.getId()) {
-            documentDTO.setContent(IOUtils.toByteArray(operations.getResource(file).getInputStream()));
-            String filename = StringUtils.cleanPath(file.getFilename());
-            String fileExtension = StringUtils.getFilenameExtension(filename);
-            documentDTO.setSuffix(fileExtension);
-
-            Document result = documentRepository.save(new Document(documentDTO));
-            return result;
+            if (!id.equalsIgnoreCase("fileNotFound")){
+                GridFSFile file = template.findOne(new Query(Criteria.where("_id").is(id)));
+                documentDTO.setContent(IOUtils.toByteArray(operations.getResource(file).getInputStream()));
+                String filename = StringUtils.cleanPath(file.getFilename());
+                String fileExtension = StringUtils.getFilenameExtension(filename);
+                documentDTO.setSuffix(fileExtension);
+                Document result = documentRepository.save(new Document(documentDTO));
+                return result;
+            } else {
+                documentDTO.setSuffix("unknown");
+                Document result = documentRepository.save(new Document(documentDTO));
+                return result;
+            }
         } else {
             Optional<Document> checkExist = documentRepository.findById(documentDTO.getId());
             if (!checkExist.isPresent()) {
-                documentDTO.setContent(IOUtils.toByteArray(operations.getResource(file).getInputStream()));
                 Document result = documentRepository.save(new Document(documentDTO));
                 return result;
             }

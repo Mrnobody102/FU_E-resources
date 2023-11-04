@@ -1,7 +1,5 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.dto.DocumentDTO;
-import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Topic;
 
@@ -15,6 +13,8 @@ public interface TopicService {
     Topic findById(String topicId);
 
     Topic updateTopic(Topic topic);
+
+    Topic removeDocuments(Document document);
 
     boolean softDelete(Topic topic);
 

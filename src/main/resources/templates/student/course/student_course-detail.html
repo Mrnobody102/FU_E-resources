@@ -68,45 +68,22 @@
                             </div>
                             <div class="doc-content-list">
                                 <div class="topic-list-content">
-                                    <div class="topic-view-list">
+                                    <div class="topic-view-list" th:each="topic : ${course.topics}">
                                         <!--Topic view-->
                                         <div class="topic-item">
                                             <div class="topic-title">
                                                 <h3 class="topic-info-title">
-                                                    <span>Topic 1</span>
+                                                    <span th:text="${topic.topicTitle}"></span>
                                                 </h3>
                                             </div>
                                             <!--Document view list-->
-                                            <div class="d-flex document-view-info border-bottom">
+                                            <div class="d-flex document-view-info border-bottom" th:each="document : ${topic.getDocuments()}">
                                                 <div class="doc-info-head grid__column-7">
-                                                    <p class="doc-info-title"><a th:href="@{/student/documentDetail}">
-                                                        <span>Tai lieu tham khao C</span></a>
+                                                    <p class="doc-info-title"><a th:href="@{'/student/documents/' + ${document.id}}">
+                                                        <span th:text="${document.title}"></span></a>
                                                     </p>
                                                     <p class="doc-info-description">
-                                                        <span>Tai lieu tham khao C - description</span>
-                                                    </p>
-                                                </div>
-                                                <div class="doc-info-date grid__column-2">
-                                                    <p><span>mm/dd/yyyy</span> <span>| Rating: 5</span><i class="fa-solid fa-star"></i></p>
-                                                </div>
-                                                <div class="grid__column-1">
-                                                    <form action="" method="">
-                                                        <input type="text" value="docId" hidden>
-                                                        <button class="stu__btn_save-doc" type="submit">
-                                                            <i class="fa-regular fa-bookmark"></i></button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <!--End Document view-->
-
-                                            <!--Document view list-->
-                                            <div class="d-flex document-view-info border-bottom">
-                                                <div class="doc-info-head grid__column-7">
-                                                    <p class="doc-info-title"><a th:href="@{/student/documentDetail}">
-                                                        <span>Tai lieu tham khao C</span></a>
-                                                    </p>
-                                                    <p class="doc-info-description">
-                                                        <span>Tai lieu tham khao C - description</span>
+                                                        <span th:text="${document.description}"></span>
                                                     </p>
                                                 </div>
                                                 <div class="doc-info-date grid__column-2">
@@ -123,62 +100,6 @@
                                             <!--End Document view-->
                                         </div>
                                         <!--End Topic view-->
-
-                                        <!--Topic view-->
-                                        <div class="topic-item">
-                                            <div class="topic-title">
-                                                <h3 class="topic-info-title">
-                                                    <span>Topic 1</span>
-                                                </h3>
-                                            </div>
-                                            <!--Document view list-->
-                                            <div class="d-flex document-view-info border-bottom">
-                                                <div class="doc-info-head grid__column-7">
-                                                    <p class="doc-info-title"><a th:href="@{/student/documentDetail}">
-                                                        <span>Tai lieu tham khao C</span></a>
-                                                    </p>
-                                                    <p class="doc-info-description">
-                                                        <span>Tai lieu tham khao C - description</span>
-                                                    </p>
-                                                </div>
-                                                <div class="doc-info-date grid__column-2">
-                                                    <p><span>mm/dd/yyyy</span> <span>| Rating: 5</span><i class="fa-solid fa-star"></i></p>
-                                                </div>
-                                                <div class="grid__column-1">
-                                                    <form action="" method="">
-                                                        <input type="text" value="docId" hidden>
-                                                        <button class="stu__btn_save-doc" type="submit">
-                                                            <i class="fa-regular fa-bookmark"></i></button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <!--End Document view-->
-
-                                            <!--Document view list-->
-                                            <div class="d-flex document-view-info border-bottom">
-                                                <div class="doc-info-head grid__column-7">
-                                                    <p class="doc-info-title link"><a th:href="@{/student/documentDetail}">
-                                                        <span>Tai lieu tham khao C</span></a>
-                                                    </p>
-                                                    <p class="doc-info-description">
-                                                        <span>Tai lieu tham khao C - description</span>
-                                                    </p>
-                                                </div>
-                                                <div class="doc-info-date grid__column-2">
-                                                    <p><span>mm/dd/yyyy</span> <span>| Rating: 5</span><i class="fa-solid fa-star"></i></p>
-                                                </div>
-                                                <div class="grid__column-1">
-                                                    <form action="" method="">
-                                                        <input type="text" value="docId" hidden>
-                                                        <button class="stu__btn_save-doc" type="submit">
-                                                            <i class="fa-regular fa-bookmark"></i></button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <!--End Document view-->
-                                        </div>
-                                        <!--End Topic view-->
-
 
                                     </div>
                                 </div>

@@ -56,7 +56,7 @@
                                 <tr>
                                     <td class="lib_input-label"><label th:for="documentTitle">Document Code</label></td>
                                     <td><input type="text" th:id="documentTitle" class="lib_input form-control"
-                                               th:field="*{title}" placeholder="Enter document code" required>
+                                               th:field="*{title}" placeholder="Enter document name" required>
                                         <p class="text-danger" th:errors="*{title}"
                                            th:if="${#fields.hasErrors('title')}"></p>
                                     </td>
@@ -140,8 +140,7 @@
                                     <td class="lib_input-label"><label th:for="file">File Upload</label></td>
                                     <td>
                                         <input type="file" th:name="file" id="fileUploadInput"
-                                               class="file-input form-control" style="font-size: 1.3rem"
-                                               required>
+                                               class="file-input form-control" style="font-size: 1.3rem">
                                     </td>
                                 </tr>
                                 <tr>

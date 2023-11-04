@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.LecturerCourse;
@@ -134,12 +135,15 @@ public class LecturerServiceImpl implements LecturerService {
         return false;
     }
     @Override
-    public Page<Course> findListManagingCourse(Lecturer lecturer, int pageIndex, int pageSize) {
+    public Page<Course> findListManagingCourse(Lecturer lecturer, String status, int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         Criteria criteria = new Criteria();
-
         // Sort by the "time" in descending order to get the most recent documents
-        criteria.and("lecturer.id").is(lecturer.getId());
+        criteria.andOperator(
+            criteria.where("lecturer.id").is(lecturer.getId()),
+            status.equalsIgnoreCase("ALL") ? new Criteria() : criteria.where("status").is(status.toUpperCase()),
+            criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+        );
         Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("lecturerCourseIds.createdDate")));
 
         // Use a Pageable to limit the result set to 5 documents

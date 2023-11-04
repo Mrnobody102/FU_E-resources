@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Lecturer | Details Course</title>
+    <title>Lecturer | Course details</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -22,27 +22,44 @@
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
-        <div class="container-content row">
-            <div class="main-content stu_course-saved">
-                <div class="stu_course-saved-content d-flex">
-                    <div class="stu_sidebar">
+        <div class="container-content">
+            <div class="main-content lec__course">
+                <div class="lec__course-content d-flex">
+                    <div class="lec__sidebar">
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar}"></div>
                     </div>
 
-                    <div class="stu_courses-content m-3" id="main-lecturer">
+                    <div class="lec__courses-content main" id="main-lecturer">
                         <div class="course-details-head">
                             <a th:href="@{/lecturer}">Home</a>
-                            <span> &gt; <a th:href="@{/lecturer/courses/list}"> Courses management</a> </span>
-                            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${course.id}}"
-                                           th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
+                            <span> &gt; <a th:href="@{/lecturer/courses/list/all/1}"> Courses management</a> </span>
+                            <span> &gt; <a th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
                         </div>
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <div style="flex:3 ;">
                                 <h1 class="h2" th:text="${course.courseCode} + ' - ' + ${course.courseName}"></h1>
-                                <p style="text-align: justify" th:text="${course.description}"></p>
+                                <p id="content" class="doc-info-description" style="text-align: justify; margin-bottom: 0" th:text="${course.description}"></p>
+                                <span id="readMoreBtn" class="read-more" onclick="toggleContent()">Xem thêm</span>
+
+                                <p class="mt-2">Course status:
+                                    <th:block th:if="${course.status.toString().equals('PUBLISH')}">
+                                        <span class="text-success fw-bold" th:text="${course.status.getDisplayValue()}"></span>
+                                    </th:block>
+                                    <th:block th:if="${course.status.toString().equals('DRAFT')}">
+                                        <span class="text-warning fw-bold" th:text="${course.status.getDisplayValue()}"></span>
+                                    </th:block>
+                                    <th:block th:if="${course.status.toString().equals('HIDE')}">
+                                        <span class="text-secondary fw-bold" th:text="${course.status.getDisplayValue()}"></span>
+                                    </th:block>
+
+
+                                    <button type="button" class="border-0 ms-3">Change</button>
+                                </p>
+
                             </div>
                             <div style="flex: 1; display: flex; justify-content: center; padding: 8px">
-                                <a class="btn btn--hover" th:href="@{'/lecturer/courses/' + ${course.id} + '/add_topic'}">
+                                <a class="btn btn--hover"
+                                   th:href="@{'/lecturer/courses/' + ${course.id} + '/add_topic'}">
                                     + Add topic
                                 </a>
                             </div>
@@ -54,27 +71,36 @@
                                         <!--Topic view-->
                                         <div class="topic-item" th:each="topic : ${course.topics}">
                                             <div class="topic-title">
-                                                <h3 class="topic-info-title">
+                                                <h3 class="topic-info-title d-flex justify-content-between">
                                                     <a th:href="@{'/lecturer/topics/' + ${topic.id}}"
-                                                       th:text="${topic.topicTitle}"></a>
-                                                    <a class="lec__edit-topic-icon" th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}"> <i class="fa-regular fa-edit"></i> </a>
-                                                    <a class="lec__add-doc-icon" th:href="@{'/lecturer/documents/add'}"> + Add document </a>
+                                                       th:text="${topic.topicTitle}" style="flex: 3"></a>
+                                                    <div style="flex: 1; display: flex; justify-content: center">
+                                                        <div>
+                                                            <a class="lec__edit-topic-icon"
+                                                               th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}">
+                                                                <i class="fa-regular fa-edit"></i><span> Update topic</span> </a>
+                                                            <a class="lec__add-doc-icon"
+                                                               th:href="@{'/lecturer/topics/' + ${topic.id} +'/documents/add'}"> + <span>Add
+                                                                document </span></a>
+                                                        </div>
+                                                    </div>
                                                 </h3>
                                             </div>
                                             <!--Document view list-->
-                                            <div class="d-flex justify-content-between document-view-info border-bottom"
-                                                th:each="document : ${topic.getDocuments()}">
-                                                <div class="doc-info-head grid__column-7">
-                                                    <p class="doc-info-title"><a th:href="@{/student/documentDetail}">
+                                            <div class="d-flex align-items-center document-view-info border-bottom"
+                                                 th:each="document : ${topic.getDocuments()}">
+                                                <div class="doc-info-head" style="max-width: 75%">
+                                                    <p class="doc-info-title"><a th:href="@{/lecturer/course}">
                                                         <span th:text="${document.title}"></span></a>
                                                     </p>
                                                     <p class="doc-info-description">
                                                         <span th:text="${document.description}"></span>
                                                     </p>
                                                 </div>
-                                                <div class="grid__column-1">
-                                                    <button class="stu__btn_save-doc" type="submit">
-                                                        <i class="fa-regular fa-edit"></i></button>
+                                                <div style="margin-left: 5%">
+                                                    <a class="lec__edit-topic-icon"
+                                                       th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}"> <i
+                                                            class="fa-regular fa-edit"></i> </a>
                                                 </div>
                                             </div>
                                             <!--End Document view-->
@@ -99,7 +125,7 @@
 <!--    &lt;!&ndash; Content &ndash;&gt;-->
 <!--    <main class="main_content">-->
 <!--        <div class="course-details-head">-->
-<!--            <a th:href="@{/lecturer/courses/list}">Back</a>-->
+<!--            <a th:href="@{/lecturer/courses/list/all/1}">Back</a>-->
 <!--            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${course.courseId}}"-->
 <!--                           th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>-->
 <!--        </div>-->
@@ -168,8 +194,19 @@
         crossorigin="anonymous"></script>
 <script src="/js/lecturer.js"></script>
 <script>
-    function myFunction() {
-        confirm("Do you want to delete?");
+    function toggleContent() {
+        var content = document.getElementById("content");
+        var button = document.getElementById("readMoreBtn");
+
+        if (content.classList.contains("doc-info-description")) {
+            content.classList.remove("doc-info-description");
+            content.classList.add("full-content");
+            button.textContent = "Read less";
+        } else {
+            content.classList.remove("full-content");
+            content.classList.add("doc-info-description");
+            button.textContent = "Read more";
+        }
     }
 </script>
 </body>

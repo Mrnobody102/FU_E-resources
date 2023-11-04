@@ -23,14 +23,14 @@
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
-        <div class="container-content row">
+        <div class="container-content">
             <div class="main-content stu_course-saved">
                 <div class="stu_course-saved-content d-flex">
                     <div class="stu_sidebar">
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar}"></div>
                     </div>
 
-                    <div class="stu_courses-content m-3" id="main-lecturer">
+                    <div class="stu_courses-content main" id="main-lecturer">
                         <div class="course-details-head">
                             <a th:href="@{/lecturer}">Home > </a>
                             <a th:href="@{'/lecturer/courses/' + ${course.getId}}"
@@ -40,7 +40,8 @@
                         <section>
                             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                 <div>
-                                    <h1 class="h2" th:text="${course.courseCode} + ' - ' + ${course.courseName}"></h1>
+                                    <h2>Add topic</h2>
+                                    <b th:text="${course.courseCode} + ' - ' + ${course.courseName}"></b>
                                 </div>
                             </div>
                             <div class="add-content">
@@ -48,8 +49,7 @@
                                     <div class="add-form-content">
                                         <form method="post" role="form" th:action="@{/lecturer/topics/add_topic}"
                                               th:object="${topic}" th:id="add-form">
-                                            <h3>Add topic</h3>
-                                            <table class="table-form add-table" style="width: 70%">
+                                            <table class="table-form add-table" style="width: 60%">
                                                 <tr class="d-none">
                                                     <td><label th:for="courseId">Course ID</label></td>
                                                     <td><input type="text"

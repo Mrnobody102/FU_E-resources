@@ -23,39 +23,56 @@
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
-        <div class="container-content row">
+        <div class="container-content">
             <div class="main-content stu_course-saved">
                 <div class="stu_course-saved-content d-flex">
                     <div class="stu_sidebar">
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar}"></div>
                     </div>
 
-                    <div class="stu_courses-content m-3" id="main-lecturer">
-                        <div class="course-details-head">
-                            <a th:href="@{/lecturer}">Home</a>
-                            <span> &gt; <a th:href="@{/lecturer/courses/list}"> Courses management</a> </span>
-                            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${course.id}}"
-                                           th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
-                        </div>
-                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <div>
-                                <h1 class="h2" th:text="${course.courseCode} + ' - ' + ${course.courseName}"></h1>
-                                <p th:text="${course.description}"></p>
+                    <div class="stu_course-content main" id="main">
+                        <div style="width: 100%">
+                            <div class="document-details-info border-bottom">
+                                <div style="flex: 3">
+                                    <div class="doc-info-name h2" style="margin-bottom: 4px">
+                                        <i class="fa-solid fa-file"></i>
+                                        <a class="doc-info-name" th:text="${document.getTitle()}"></a></div>
+                                    <div style="display: flex; width: 100%">
+                                        <span style="flex: 1">Type: <span class="lecturer-name"
+                                                                          th:text="${document.resourceType.resourceTypeName}"></span></span>
+                                    </div>
+                                    <div><p id="content" class="doc-info-description"
+                                            style="text-align: justify; margin-bottom: 0; margin-top: 1rem" th:text="${document.description}"></p>
+                                        <span id="readMoreBtn" style="display: none;" class="read-more" onclick="toggleContent()">Read more</span></div>
+                                </div>
+
+                                <div class="stu_save-course-link" style="flex: 1;">
+
+                                </div>
                             </div>
-                            <div>
-                                <a th:href="@{'/lecturer/courses/' + ${course.id} + '/add_topic'}">
-                                    Add topic
-                                </a>
+                            <div class="student__course-document-view">
+
+
+                                <div style="display: flex">
+                                    <div class="doc-content-view" th:utext="${document.editorContent}"
+                                         style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
+                                    </div>
+
+                                </div>
+
+
+                                <div class="stu__navbar-view-doc">
+                                    <ul class="stu__navbar-view-doc-list border-bottom">
+                                        <li class="stu__navbar-view-doc-item stu__navbar-active">
+                                            <a th:href="@{/student/my_library/saved_courses}">
+                                                Question & Answer
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <ul class="list-group" th:each="topic : ${topics}">
-                                <li class="list-group-item">
-                                    <a th:href="@{'/lecturer/topics/' + ${topic.getId()}}" th:text="${topic.topicTitle}">
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -64,68 +81,6 @@
 </div>
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
-
-<!--<div class="app_container">-->
-
-
-<!--    &lt;!&ndash; Content &ndash;&gt;-->
-<!--    <main class="main_content">-->
-<!--        <div class="course-details-head">-->
-<!--            <a th:href="@{/lecturer/courses/list}">Back</a>-->
-<!--            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${course.courseId}}"-->
-<!--                           th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <h1>Detail Subject</h1>-->
-<!--            <div>-->
-<!--                <table th:if="course ne null">-->
-<!--                    <tr>-->
-<!--                        <th>Course Code</th>-->
-<!--                        <td th:text="${course.courseCode}"></td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <th>Course Name</th>-->
-<!--                        <td th:text="${course.courseName}"></td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <th>Description</th>-->
-<!--                        <td th:text="${course.description}"> </td>-->
-<!--                    <tr>-->
-<!--                        <th>Topics-->
-<!--                        </th>-->
-<!--                        <td th:if="topics ne null">-->
-<!--                            <th:block th:each="topic : ${topics}">-->
-<!--                                <a th:href="@{'/lecturer/topics/detail/' + ${topic.topicId}}" th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></a>-->
-<!--                            </th:block>-->
-<!--                        </td>-->
-
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <th>Lecturers-->
-<!--                        </th>-->
-<!--                        <td th:if="lecturers ne null">-->
-<!--                            <th:block th:each="lecturer : ${lecturers}">-->
-<!--                                <p th:text="|${lecturer.username} ( ${lecturer.name} )|"></p>-->
-<!--                            </th:block>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <th></th>-->
-<!--                        <td>-->
-<!--                            <a class="update-course" th:href="@{'/lecturer/courses/update/'+${course.courseId}}">Edit course information</a>-->
-<!--                            | <a class="delete-course" th:id="${course.courseId}">Delete</a>-->
-<!--                            | <a class="update-topics" th:href="@{'/lecturer/courses/topics/'+${course.courseId}}">Edit topics</a>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                </table>-->
-
-<!--            </div>-->
-<!--        </div>-->
-<!--    </main>-->
-
-
-<!--</div>-->
-
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -140,8 +95,26 @@
         crossorigin="anonymous"></script>
 <script src="/js/lecturer.js"></script>
 <script>
-    function myFunction() {
-        confirm("Do you want to delete?");
+    var content = document.getElementById("content");
+    var button = document.getElementById("readMoreBtn");
+    window.addEventListener('DOMContentLoaded', () => {
+        var lineHeight = parseInt(content.css('line-height'));
+
+        if (content.height() > maxHeight) {
+            button.show();
+        }
+    });
+    function toggleContent() {
+
+        if (content.classList.contains("doc-info-description")) {
+            content.classList.remove("doc-info-description");
+            content.classList.add("full-content");
+            button.textContent = "Read less";
+        } else {
+            content.classList.remove("full-content");
+            content.classList.add("doc-info-description");
+            button.textContent = "Read more";
+        }
     }
 </script>
 </body>

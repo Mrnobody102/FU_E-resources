@@ -23,6 +23,8 @@ public class ResourceType {
     private String id;
     @NotEmpty
     private String resourceTypeName;
+    @DocumentReference(lazy = true)
+    private Course course;
 
     @DocumentReference(lazy = true)
     private List<fpt.edu.eresourcessystem.model.Document> documents;

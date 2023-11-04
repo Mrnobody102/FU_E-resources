@@ -135,7 +135,7 @@ public class StudentServiceImpl implements StudentService {
         }
         savedDocuments.add(docId);
         student.get().setSavedDocuments(savedDocuments);
-        updateStudentSavedCourse(student.get());
+        updateStudent(student.get());
         return true;
     }
 
@@ -155,7 +155,7 @@ public class StudentServiceImpl implements StudentService {
             if (documentId.equals(dId)) {
                 savedDocuments.remove(dId);
                 student.get().setSavedDocuments(savedDocuments);
-                updateStudentSavedCourse(student.get());
+                updateStudent(student.get());
                 return true;
             }
         }

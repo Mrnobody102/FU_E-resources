@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Librarian | Course | Add topic</title>
+    <title th:text="${document.getTitle()}"></title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -52,12 +52,13 @@
                                         <a href="" class="lecturer-name" th:text="${account.name}">
                                         </a></span>
                                         <span style="flex: 1">Type: <span class="lecturer-name"
-                                                                          th:text="${document.resourceType}"></span></span>
+                                                                          th:text="${document.resourceType.resourceTypeName}"></span></span>
                                     </div>
                                     <div><p>Description: <span th:text="${document.description}"></span></p></div>
                                 </div>
 
-                                <div class="stu_save-course-link" style="flex: 1;">
+
+                                <div class="stu_save-course-link">
                                     <p><a class="unsaved-course">
                                         <i class="fa-regular fa-bookmark"></i>
                                         Bookmark</a>
@@ -119,17 +120,127 @@
 
                                 <div class="stu__navbar-view-doc">
                                     <ul class="stu__navbar-view-doc-list border-bottom">
-                                        <li class="stu__navbar-view-doc-item stu__navbar-active">
-                                            <a th:href="@{/student/my_library/saved_courses}">
+                                        <li class="stu__navbar-view-doc-item" id="link-view-questions">
+                                            <a href="#question" onclick="viewQuestion()">
                                                 Question & Answer
                                             </a>
                                         </li>
-                                        <li class="stu__navbar-view-doc-item">
-                                            <a th:href="@{/student/my_library/saved_documents}">
+                                        <li class="stu__navbar-view-doc-item stu__navbar-active" id="link-view-notes">
+                                            <a href="#note" onclick="viewNote()">
                                                 Notes
                                             </a>
                                         </li>
                                     </ul>
+                                </div>
+                                <!--Note section-->
+                                <div id="note">
+                                    <div class="stu__note-in-doc-view">
+                                        <h3 class="stu__note-in-doc-head">Note</h3>
+                                        <div class="stu__note-in-doc-content" th:if="${note ne null}">
+                                            <div class="stu__note-content">
+                                                <div th:text="${note.content}"></div>
+                                            </div>
+                                            <div class="view-note-link">
+                                                <div class="justify-content-end">
+                                                    <a id="editNote">Edit</a> <a id="deleteNote">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="stu__note-in-doc-textarea" th:if="${note == null}">
+                                            <form action="">
+                                        <textarea class="stu__note-in-doc-edit-space">
+
+                                        </textarea>
+                                                <div class="stu__save-note">
+                                                    <button type="" id="add-note" docId="${doc.id}">Save</button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+
+                                        <!--Front end demo-->
+                                        <div class="stu__note-in-doc-content">
+                                            <h3 class="stu__note-in-doc-head">Note</h3>
+                                            <div class="stu__note-content" style="white-space: pre">
+                                                The Bishop of Guildford’s Communities Fund (BGCF) exists to reach out to
+                                                disadvantaged
+                                                and vulnerable people across the Diocese of Guildford in the name of Christ.
+
+                                                Grants are offered to projects initiated by Church of England churches
+                                                (and those in active partnership with them) to assist in fulfilling any
+                                                aspect of the Diocesan vision, Transforming Church, Transforming Lives.
+
+                                                The BGCF gives grants to a range of community projects including those
+                                                which:
+
+                                                - Support people with disabilities and mental ill-health
+                                                - Provide facilities and services for older citizens, children and young
+                                                people
+                                                - Support families and disadvantaged communities
+                                                - Provide practical help for the financially challenged
+                                                - Offer training and skills programmes
+                                            </div>
+                                            <div class="view-note-link">
+                                                <div class="justify-content-end">
+                                                    <span class="stu__note-date">2-11-2023</span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--End front end note demo -->
+                                    </div>
+                                </div>
+                                <!--End note section-->
+                                <div id="question" style="display: none">
+                                    <!--Front end demo-->
+                                    <div class="stu__question-in-doc-content">
+                                        <h3 class="stu__question-in-doc-head">My question</h3>
+                                        <div class="stu__question-content" style="white-space: pre">
+                                            The Bishop of Guildford’s Communities Fund (BGCF) exists to reach out to
+                                            disadvantaged
+                                            and vulnerable people across the Diocese of Guildford in the name of Christ.
+
+                                            Grants are offered to projects initiated by Church of England churches
+                                            (and those in active partnership with them) to assist in fulfilling any
+                                            aspect of the Diocesan vision, Transforming Church, Transforming Lives.
+
+                                            The BGCF gives grants to a range of community projects including those
+                                            which:
+
+                                            - Support people with disabilities and mental ill-health
+                                            - Provide facilities and services for older citizens, children and young
+                                            people
+                                            - Support families and disadvantaged communities
+                                            - Provide practical help for the financially challenged
+                                            - Offer training and skills programmes
+                                        </div>
+                                        <div class="view-note-link">
+                                            <div class="justify-content-end">
+                                                <span class="stu__note-date">2-11-2023</span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="stu__answer-in-doc-content">
+                                        <h3 class="stu__question-in-doc-head lecturer-name">Reply</h3>
+                                        <div class="stu__question-content" style="white-space: pre">
+                                            The BGCF gives grants to a range of community projects including those
+                                            which:
+
+                                            - Support people with disabilities and mental ill-health
+                                            - Provide facilities and services for older citizens, children and young
+                                            people
+                                            - Support families and disadvantaged communities
+                                            - Provide practical help for the financially challenged
+                                            - Offer training and skills programmes
+                                        </div>
+                                        <div class="view-question-link">
+                                            <div class="justify-content-end">
+                                                <span class="stu__answer-date">2-11-2023</span>   <span class="stu__answer-lecturer">Lecturer: Pham Quang Huy</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End front end note demo -->
                                 </div>
 
                                 <div class="list-view-inline bot-doctype-list">

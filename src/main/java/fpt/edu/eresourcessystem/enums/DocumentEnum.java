@@ -58,7 +58,8 @@ public class DocumentEnum {
         XLSX,
         MD,
         HTML,
-        TXT;
+        TXT,
+        UNKNOWN;
 
         public static DocumentFormat getDocType(String suffixName) {
             return switch (suffixName) {
@@ -72,7 +73,7 @@ public class DocumentEnum {
                 case "md" -> DocumentFormat.MD;
                 case "html" -> DocumentFormat.HTML;
                 case "txt" -> DocumentFormat.TXT;
-                default -> throw new IllegalStateException("Unexpected document suffix name: " + suffixName);
+                default -> DocumentFormat.UNKNOWN;
             };
         }
     }

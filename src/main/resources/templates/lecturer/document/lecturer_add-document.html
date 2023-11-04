@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Lecturer | Details Course</title>
+    <title>Lecturer | Add document</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -25,19 +25,21 @@
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
-        <div class="container-content row">
+        <div class="container-content">
             <div class="main-content stu_course-saved">
                 <div class="stu_course-saved-content d-flex">
                     <div class="stu_sidebar">
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar}"></div>
                     </div>
 
-                    <div class="stu_courses-content m-3" id="main-lecturer">
+                    <div class="stu_courses-content main" id="main-lecturer">
                         <div class="document-details-head">
                             <a th:href="@{/lecturer}">Home</a>
-                            <span> &gt; <a th:href="@{/lecturer/courses/list/1}">Courses management</a></span>
-                            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${topic.course.id}}" th:text="${topic.course.courseName}"></a></span>
-                            <span> &gt; <a th:href="@{'/lecturer/topics/' + ${topic.id}}" th:text="${topic.topicTitle}"></a></span>
+                            <span> &gt; <a th:href="@{/lecturer/courses/list/all/1}">Courses management</a></span>
+                            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${topic.course.id}}"
+                                           th:text="${topic.course.courseName}"></a></span>
+                            <span> &gt; <a th:href="@{'/lecturer/topics/' + ${topic.id}}"
+                                           th:text="${topic.topicTitle}"></a></span>
 
                             <span> &gt; Add new document</span>
                         </div>
@@ -48,21 +50,24 @@
                             </div>
                         </div>
                         <div>
-                            <form style="width: 75%; margin-left: 10%" method="post" role="form" th:action="@{'/lecturer/documents/add?topicId=' + ${topic.id}}"
+                            <form style="width: 75%; margin-left: 10%" method="post" role="form"
+                                  th:action="@{'/lecturer/documents/add?topicId=' + ${topic.id}}"
                                   th:object="${document}"
                                   th:id="add-form" enctype="multipart/form-data">
                                 <!--Title-->
                                 <label class="lecturer_input-label-doc" th:for="documentTitle">Title:</label>
-                                <input type="text" th:id="documentTitle" class="lecturer_input form-control lecturer__input-doc"
+                                <input type="text" th:id="documentTitle"
+                                       class="lecturer_input form-control lecturer__input-doc"
                                        th:field="*{title}" placeholder="Enter document code" required>
                                 <p class="text-danger" th:errors="*{title}"
                                    th:if="${#fields.hasErrors('title')}"></p>
                                 <!--Description-->
-                                <label class="lecturer_input-label-doc" th:for="description" >Description:</label>
-                                <textarea type="text" th:id="description" class="lecturer_textarea form-control lecturer__input-doc"
+                                <label class="lecturer_input-label-doc" th:for="description">Description:</label>
+                                <textarea type="text" th:id="description"
+                                          class="lecturer_textarea form-control lecturer__input-doc"
                                           th:field="*{description}" placeholder="Enter description"></textarea>
 
-                                <label for="resourceType" class="lecturer_input-label-doc" >Type:</label>
+                                <label for="resourceType" class="lecturer_input-label-doc">Type:</label>
                                 <div class="d-flex lecturer__input-doc">
                                     <select class="form-select " name="respondResourceType"
                                             style="font-size: 1.3rem"
@@ -72,7 +77,8 @@
                                                 th:value="${resourceType.getDisplayValue()}">
                                         </option>
                                     </select>
-                                    <button type="button" id="defineResourceType" class="lecturer_search-btn ms-2 border-0 ps-4 pe-4"><i
+                                    <button type="button" id="defineResourceType"
+                                            class="lecturer_search-btn ms-2 border-0 ps-4 pe-4"><i
                                             class="fa-solid fa-plus"></i></button>
                                 </div>
 
@@ -82,22 +88,46 @@
                                         <input type="text" class="lecturer_input form-control" id="inputResource"
                                                placeholder="Define your resource type...">
                                         <button type="button" class="lecturer_search-btn ms-2 border-0"
-                                                id="defineButton">
+                                                id="defineButton" style="border-radius: 2px">
                                             Define
                                         </button>
                                     </div>
                                 </div>
 
-                                <label for="editor" class="lecturer_input-label-doc">Content:</label>
+                                <div id="editorWrapper">
+                                <div class="d-flex justify-content-between">
+                                    <label for="editor" class="lecturer_input-label-doc">Content:</label>
+
+                                    <div id="uploadFile">
+                                        <button type="button" class="border-0" style="padding: 4px 6px; border-radius: 2px">
+                                            Upload available file
+                                        </button>
+                                    </div>
+                                </div>
+
                                 <textarea id="editor"
                                           th:field="*{editorContent}"></textarea>
+                                </div>
 
-                                <label th:for="file" class="lecturer_input-label-doc" >File Upload:</label>
-                                <input type="file" th:name="file" id="fileUploadInput"
-                                       class="file-input form-control" style="font-size: 1.3rem"
-                                       required>
 
-                                <button type="submit" class="btn btn-outline-secondary lecturer_btn-save" id="submitAllData">Save
+
+                                <div id="uploadFileInput" style="display: none" class="mt-2">
+                                    <div class="d-flex justify-content-between lecturer__input-doc">
+                                        <label th:for="file" class="lecturer_input-label-doc">File Upload:</label>
+
+                                        <div id="editContent" class="d-flex align-items-center">
+                                            <button type="button" class="border-0" style="padding: 4px 6px; border-radius: 2px">
+                                                Create new content
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <input type="file" th:name="file" id="fileUploadInput"
+                                           class="file-input form-control lecturer__input-doc" style="font-size: 1.3rem"
+                                           >
+                                </div>
+
+                                <button type="submit" class="btn btn-save lecturer_btn-save"
+                                        id="submitAllData">Save
                                 </button>
                             </form>
                         </div>
@@ -129,6 +159,16 @@
     // Resource Type
     $('#defineResourceType').click(function () {
         $('#inputResourceWrapper').fadeIn();
+    });
+
+    $('#uploadFile').click(function () {
+        $('#editorWrapper').fadeOut();
+        $('#uploadFileInput').fadeIn();
+    });
+
+    $('#editContent').click(function () {
+        $('#editorWrapper').fadeIn();
+        $('#uploadFileInput').fadeOut();
     });
 
     $('#defineButton').click(function () {

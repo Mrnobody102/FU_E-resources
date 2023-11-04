@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Lecturer | Course </title>
+    <title>Lecturer | Courses </title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-    <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
 
 </head>
 <body class="app_container">
@@ -20,14 +20,14 @@
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
-        <div class="container-content row">
-            <div class="main-content stu_course">
-                <div class="stu_course-content d-flex">
-                    <div class="stu_sidebar">
+        <div class="container-content">
+            <div class="main-content lec__course">
+                <div class="lec__course-content d-flex">
+                    <div class="lec__sidebar">
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar}"></div>
                     </div>
 
-                    <div class="stu_courses-content main" id="main-lecturer">
+                    <div class="lec__courses-content main" id="main-lecturer">
 
                         <div class="header__search">
                             <!--Label-->
@@ -72,24 +72,39 @@
                                 <i class="header__search-btn-icon fas fa-search"></i>
                             </button>
                         </div>
-                        <div class="stu__navbar-favourite">
-                            <ul class="stu__navbar-favourite-list border-bottom">
-                                <li class="stu__navbar-favourite-item stu__navbar-active">
-                                    <a href="/student/my_library/saved_courses">
-                                        Courses
+                        <div class="lec__navbar-favourite">
+                            <ul class="lec__navbar-favourite-list border-bottom">
+                                <li class="lec__navbar-favourite-item" th:classappend="${status == 'all' ? 'lec__navbar-active' : ''}">
+                                    <a href="/lecturer/courses/list/all/1" >
+                                        All courses
                                     </a>
                                 </li>
-                                <li class="stu__navbar-favourite-item">
-                                    <a href="/student/my_library/saved_documents">
-                                        Documents
+                                <li class="lec__navbar-favourite-item" th:classappend="${status == 'new' ? 'lec__navbar-active' : ''}">
+                                    <a href="/lecturer/courses/list/new/1">
+                                        New courses
+                                    </a>
+                                </li>
+                                <li class="lec__navbar-favourite-item" th:classappend="${status == 'publish' ? 'lec__navbar-active' : ''}">
+                                    <a href="/lecturer/courses/list/publish/1">
+                                        Public courses
+                                    </a>
+                                </li>
+                                <li class="lec__navbar-favourite-item" th:classappend="${status == 'draft' ? 'lec__navbar-active' : ''}">
+                                    <a href="/lecturer/courses/list/draft/1">
+                                        Editing courses
+                                    </a>
+                                </li>
+                                <li class="lec__navbar-favourite-item" th:classappend="${status == 'hide' ? 'lec__navbar-active' : ''}">
+                                    <a href="/lecturer/courses/list/hide/1">
+                                        Hided courses
                                     </a>
                                 </li>
                             </ul>
                         </div>
 
-                        <div class="stu__courses-list-view">
-                            <div class="stu__view-saved-courses">
-                                <div class="stu__view-list-course-content">
+                        <div class="lec__courses-list-view">
+                            <div class="lec__view-saved-courses">
+                                <div class="lec__view-list-course-content">
                                     <div class="view-block-list">
                                         <ul class="home__course-list">
                                             <li class="home__course-item">
@@ -99,10 +114,10 @@
                                                        th:href="@{'/lecturer/courses/' + ${course.id}}"></a>
                                                     <p class="home__course-description" th:text="${course.description}"></p>
                                                     <ul class="home__course-lecturer-list">
-                                                        <li class="home__course-lecturer-item" th:if="${course.lecturer ne null}">
+                                                        <li class="home__course-lecturer-item" th:if="${course.librarian ne null}">
+                                                            Created by:
                                                             <a class="home__course-lecturer-link"
-                                                               href="" th:text="${course.lecturer.account.name}">
-
+                                                               href="" th:text="${course.librarian.account.name}">
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -146,12 +161,6 @@
         crossorigin="anonymous"></script>
 <!--Custom script-->
 <script th:src="@{/js/lecturer.js}"></script>
-<!--    <script>-->
-
-<!--      $('form select').on('change', function(){-->
-<!--        $(this).closest('form').submit();-->
-<!--      });-->
-<!--    </script>-->
 </body>
 </html>
 

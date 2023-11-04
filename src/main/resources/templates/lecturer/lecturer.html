@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-    <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
@@ -21,14 +21,14 @@
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
-        <div class="container-content row">
-            <div class="main-content stu_course-saved">
-                <div class="stu_course-saved-content d-flex">
-                    <div class="stu_sidebar">
+        <div class="container-content">
+            <div class="main-content lec__course-saved">
+                <div class="lec__course-saved-content d-flex">
+                    <div class="lec__sidebar">
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar}"></div>
                     </div>
 
-                    <div class="stu_courses-content main" id="main-lecturer">
+                    <div class="lec__courses-content main" id="main-lecturer">
                         <div class="header__search">
                             <!-- Input  -->
                             <div class="header__search-input-wrap">
@@ -67,9 +67,9 @@
                             </button>
                         </div>
 
-<!--                        <div class="stu__courses-list-view">-->
-<!--                            <div class="stu__view-saved-courses">-->
-<!--                                <div class="stu__view-list-course-content">-->
+<!--                        <div class="lec___courses-list-view">-->
+<!--                            <div class="lec___view-saved-courses">-->
+<!--                                <div class="lec___view-list-course-content">-->
 <!--                                    <div class="view-block-list">-->
 <!--                                        <ul class="home__course-list">-->
 <!--                                            <li class="home__course-item">-->
@@ -123,7 +123,7 @@
 
 
 
-                    <!--                    <div class="stu_course-saved-content main" id="main">-->
+                    <!--                    <div class="lec__course-saved-content main" id="main">-->
                     <!--                        <ul>-->
                     <!--                            <li th:each="courseSaved : ${coursesSaved}">-->
                     <!--                                <a th:text="${courseSaved.getCourseName()}"-->

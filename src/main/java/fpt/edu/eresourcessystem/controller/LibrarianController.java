@@ -98,6 +98,9 @@ public class LibrarianController {
                                    @RequestParam(value = "lecturer") String lecturer) {
         Course course = new Course(courseDTO, CourseEnum.Status.HIDE);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return "exception/404";
+        }
         String currentPrincipalName = authentication.getName();
         Librarian librarian = librarianService.findByAccountId(accountService.findByEmail(currentPrincipalName).getId());
         course.setLibrarian(librarian);
@@ -421,8 +424,8 @@ public class LibrarianController {
     }
 
     /**
-     * @param courseId
-     * @param model
+     * @param courseId course id
+     * @param model model attribute
      * @return
      */
     @PostMapping({"/courses/{courseId}/add-lecture"})
