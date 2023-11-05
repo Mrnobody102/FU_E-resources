@@ -54,7 +54,7 @@ public class Course {
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
     private LocalDate deletedDate;
-    private Account deletedBy;
+    private String deletedBy;
 
     //Audit Log
     @CreatedBy
