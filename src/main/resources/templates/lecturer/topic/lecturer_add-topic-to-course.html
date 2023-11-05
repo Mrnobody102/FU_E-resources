@@ -15,6 +15,10 @@
     <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!-- SweetAlert từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 </head>
 
 <body class="app_container">
@@ -110,6 +114,28 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 <script src="/js/lecturer.js"></script>
+
+<script th:inline="javascript">
+    validate_addAccount();
+
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Save account successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check account information again!',
+            'error'
+        );
+    }
+</script>
 </body>
 
 </html>

@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.print.Doc;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -182,6 +183,7 @@ public class LecturerController {
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         model.addAttribute("topic", modelTopic);
+        model.addAttribute("success", "success");
         return "lecturer/topic/lecturer_add-topic-to-course";
     }
 
@@ -268,6 +270,10 @@ public class LecturerController {
             model.addAttribute("errorMessage", "Could not found document.");
             return "exception/404";
         } else {
+            if(!document.getDocType().toString().equalsIgnoreCase("UNKNOWN")){
+                String base64EncodedData = Base64.getEncoder().encodeToString(document.getContent());
+                model.addAttribute("data", base64EncodedData);
+            }
             model.addAttribute("document", document);
             return "lecturer/document/lecturer_document-detail";
         }
@@ -324,7 +330,7 @@ public class LecturerController {
         topic.setDocuments(topicDocuments);
         topicService.updateTopic(topic);
 
-        return "redirect:/lecturer/topics/" + topicId;
+        return "redirect:/lecturer/topics/" + topicId + "/documents/add?success";
     }
 
     @GetMapping({"/documents/{documentId}/update"})

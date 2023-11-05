@@ -858,7 +858,7 @@
 }
 
 .home__course-list,.home__note-list {
-    margin: 2rem 2rem 2rem 0;
+    margin: 2rem 0 2rem 0;
     min-width: 96%;
 }
 .home__course-wrapper,.home__note-wrapper {

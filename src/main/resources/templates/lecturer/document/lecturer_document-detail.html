@@ -15,6 +15,7 @@
     <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.min.js" integrity="sha512-RV+l/3iMDTmIt64ztJmriqLRZl2IwGHcG+655gFxUa20Uq9GljEsY3wibq5BZkGzRlMbYFHUPelVQvWvZxP38w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body class="app_container">
@@ -54,10 +55,17 @@
 
 
                                 <div style="display: flex">
-                                    <div class="doc-content-view" th:utext="${document.editorContent}"
-                                         style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
-                                    </div>
-
+                                    <th:block th:if="${document.docType.toString().equals('UNKNOWN')}">
+                                        <div class="doc-content-view" th:utext="${document.editorContent}"
+                                             style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
+                                        </div>
+                                    </th:block>
+<!--                                    <th:block th:if="${document.docType.toString().equals('TXT')}">-->
+<!--                                        <embed th:attr="src=@{'data:text/plain;base64,' + ${data}}" type="text/plain" width="100%" height="600px">-->
+<!--                                    </th:block>-->
+                                    <th:block th:if="${document.docType.toString().equals('PDF')}">
+                                        <embed class="doc-content-view" th:attr="src='data:application/pdf;base64,' + ${data}" type="application/pdf" width="100%" height="600px">
+                                    </th:block>
                                 </div>
 
 
@@ -97,13 +105,7 @@
 <script>
     var content = document.getElementById("content");
     var button = document.getElementById("readMoreBtn");
-    window.addEventListener('DOMContentLoaded', () => {
-        var lineHeight = parseInt(content.css('line-height'));
 
-        if (content.height() > maxHeight) {
-            button.show();
-        }
-    });
     function toggleContent() {
 
         if (content.classList.contains("doc-info-description")) {

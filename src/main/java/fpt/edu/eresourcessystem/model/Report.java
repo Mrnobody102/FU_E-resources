@@ -1,8 +1,6 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import fpt.edu.eresourcessystem.dto.DocumentNoteDTO;
-import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -15,15 +13,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("student_notes")
-public class StudentNote {
+@Document("reports")
+public class Report {
     @Id
     private String id;
     @NotNull
     private String studentId;
-    private String title;
-    @NotEmpty(message = "note.validation.note.required")
-    private String content;
+    @NotNull
+    private String documentId;
+
+    @NotEmpty
+    private String report;
 
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
@@ -39,16 +39,10 @@ public class StudentNote {
 
     // Constructor DTO
 
-    public StudentNote(String id, @NotNull String studentId, String content) {
+    public Report(String id, @NotNull String studentId, @NotNull String documentId, String report) {
         this.id = id;
         this.studentId = studentId;
-        this.content = content;
-    }
-
-    public StudentNote(StudentNoteDTO studentNoteDTO) {
-        this.id = studentNoteDTO.getId();
-        this.studentId = studentNoteDTO.getStudentId();
-        this.content = studentNoteDTO.getContent();
-        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+        this.documentId = documentId;
+        this.report = report;
     }
 }

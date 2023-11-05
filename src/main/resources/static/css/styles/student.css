@@ -155,7 +155,7 @@
 }
 .stu__view-saved-courses{
     margin-left: 2rem;
-    width: 100%;
+    width: 85%; /*change*/
 }
 .view-block-list{
     width: 100%;

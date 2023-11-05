@@ -11,6 +11,7 @@ import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -31,6 +32,9 @@ public class Topic {
 
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
+    private LocalDate deletedDate;
+    private Account deletedBy;
+
     //Audit Log
     @CreatedBy
     private String createdBy;

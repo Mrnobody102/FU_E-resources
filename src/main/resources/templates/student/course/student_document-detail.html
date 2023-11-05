@@ -33,7 +33,7 @@
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
-        <div class="container-content row">
+        <div class="container-content">
             <div class="main-content stu_course-saved">
                 <div class="stu_course-saved-content d-flex">
                     <div class="stu_sidebar">
@@ -78,8 +78,18 @@
 
 
                                 <div style="display: flex">
-                                    <div class="doc-content-view" th:utext="${document.editorContent}"
-                                         style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
+                                    <div style="display: flex">
+                                        <th:block th:if="${document.docType.toString().equals('UNKNOWN')}">
+                                            <div class="doc-content-view" th:utext="${document.editorContent}"
+                                                 style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
+                                            </div>
+                                        </th:block>
+                                        <!--                                    <th:block th:if="${document.docType.toString().equals('TXT')}">-->
+                                        <!--                                        <embed th:attr="src=@{'data:text/plain;base64,' + ${data}}" type="text/plain" width="100%" height="600px">-->
+                                        <!--                                    </th:block>-->
+                                        <th:block th:if="${document.docType.toString().equals('PDF')}">
+                                            <embed class="doc-content-view" th:attr="src='data:application/pdf;base64,' + ${data}" type="application/pdf" width="100%" height="600px">
+                                        </th:block>
                                     </div>
                                     <div class="student__course-document-list" style="flex: 1">
 
