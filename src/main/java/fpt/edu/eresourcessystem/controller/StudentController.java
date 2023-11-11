@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.controller;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
+import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
@@ -128,11 +129,24 @@ public class StudentController {
     */
     @GetMapping({"/documents/{docId}"})
     public String viewDocumentDetail(@PathVariable String docId, final Model model) {
+        // auth
+        Student student = getLoggedInStudent();
         Document document = documentService.findById(docId);
+        System.out.println(document.getDocStatus());
+        if(null == student){
+            return "common/login";
+        }else if(null == document){
+            return "exception/404";
+        }else if(DocumentEnum.DocumentStatusEnum.HIDE == document.getDocStatus()){
+            return "exception/404";
+        }
+
         Account account = accountService.findByEmail(document.getCreatedBy());
         model.addAttribute("document", document);
         model.addAttribute("account", account);
-
+        if (studentService.checkDocSaved(student.getId(), docId)) {
+            model.addAttribute("saved", true);
+        } else model.addAttribute("saved", false);
         return "student/course/student_document-detail";
     }
 
@@ -146,6 +160,7 @@ public class StudentController {
             studentService.saveADoc(student.getId(), documentId);
             // Get the last URL from the session
             String lastURL = (String) session.getAttribute("lastURL");
+            System.out.println(lastURL);
             if (lastURL != null) {
                 // Redirect to the last URL
                 return "redirect:" + lastURL;
@@ -166,9 +181,10 @@ public class StudentController {
         Student student = getLoggedInStudent();
 
         if (null != documentService.findById(documentId)) {
-            studentService.unsavedACourse(student.getId(), documentId);
+            studentService.unsavedADoc(student.getId(), documentId);
             // Get the last URL from the session
             String lastURL = (String) session.getAttribute("lastURL");
+            System.out.println(lastURL);
             if (lastURL != null) {
                 // Redirect to the last URL
                 return "redirect:" + lastURL;

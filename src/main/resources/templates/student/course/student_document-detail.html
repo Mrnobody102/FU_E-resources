@@ -13,7 +13,7 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 
     <style>
         label.error {
@@ -37,9 +37,9 @@
             <div class="main-content stu_course-saved">
                 <div class="stu_course-saved-content d-flex">
                     <div class="stu_sidebar">
-                        <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
+                        <div th:replace="~{fragments/sidebar:: studentSidebar('courses')}"></div>
                     </div>
-                    <div class="stu_course-content main" id="main">
+                    <div class="stu_course-content border-start main" id="main">
                         <div style="width: 100%">
                             <div class="document-details-info border-bottom">
                                 <div style="flex: 3">
@@ -58,18 +58,14 @@
                                 </div>
 
 
-                                <div class="stu_save-course-link">
-                                    <p><a class="unsaved-course">
-                                        <i class="fa-regular fa-bookmark"></i>
-                                        Bookmark</a>
-                                    </p>
-                                    <p><a class="unsaved-course" th:if="${saved ne null} AND ${saved} == false"
-                                          th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">
+                                <div class="stu_save-course-link stu_save-doc-link">
+                                    <p><a class="unsaved-doc" th:if="${saved ne null} AND ${saved} == true"
+                                        th:attr="docId=${document.getId}">
                                         <i class="fa-solid fa-bookmark"></i>
                                         Unbookmark</a>
                                     </p>
-                                    <p><a class="saved-course" th:if="${saved ne null} AND ${saved} == true"
-                                          th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">
+                                    <p><a class="save-doc" th:if="${saved ne null} AND ${saved} == false"
+                                          th:attr="docId=${document.getId}">
                                         <i class="fa-regular fa-bookmark"></i>
                                         Bookmark</a></p>
                                 </div>

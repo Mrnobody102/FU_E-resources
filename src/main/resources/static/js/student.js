@@ -105,4 +105,63 @@ $(document).ready(function () {
         const currentPage = parseInt(pageIndex);
         window.location.href = "/student/my_library/my_notes/" + (currentPage + 1) + "?search=" + search+ "&filter=" + filter;
     });
+
+
+    $("body").on("click", ".save-doc", function() {
+        var docId = $(this).attr("docId");
+        var loading = "<p><a th:attr=\"docId=${docId}\">\n" +
+            "                                        <i class=\"fas fa-spinner fa-spin\"></i>\n" +
+            "                                        Bookmarking</a></p>"
+        $(".stu_save-doc-link").html(loading);
+        $.get({
+            url: '/api/student/documents/'+ docId + '/save_document',
+            success: function(responseData) {
+                console.log(responseData);
+                var saved = "<p><a class=\"unsaved-doc\" docId=" + docId + ">" +
+                    "                                        <i class=\"fa-solid fa-bookmark\"></i>\n" +
+                    "                                        Unbookmark</a>\n" +
+                    "                                    </p>";
+                var unsaved = "<p><a class=\"save-doc\" docId=" + docId + ">" +
+                    "                                        <i class=\"fa-regular fa-bookmark\"></i>\n" +
+                    "                                        Bookmark</a></p>";
+                if('saved'== responseData){
+                    $(".stu_save-doc-link").html(saved);
+                }else if(unsaved){
+                    $(".stu_save-doc-link").html(unsaved);
+                }
+            },
+            error: function(errorData) {
+            }
+        })
+    });
+    $("body").on("click", ".unsaved-doc", function() {
+        var docId = $(this).attr("docId");
+        var loading = "<p><a th:attr=\"docId=${docId}\">\n" +
+            "                                        <i class=\"fas fa-spinner fa-spin\"></i>\n" +
+            "                                        UnBookmarking</a></p>"
+        $(".stu_save-doc-link").html(loading);
+        $.get({
+            url: '/api/student/documents/'+ docId + '/unsaved_document',
+            success: function(responseData) {
+                console.log(responseData);
+                var saved = "<p><a class=\"unsaved-doc\" docId=" + docId + ">" +
+                    "                                        <i class=\"fa-solid fa-bookmark\"></i>\n" +
+                    "                                        Unbookmark</a>\n" +
+                    "                                    </p>";
+                var unsaved = "<p><a class=\"save-doc\" docId=" + docId + ">" +
+                    "                                        <i class=\"fa-regular fa-bookmark\"></i>\n" +
+                    "                                        Bookmark</a></p>";
+
+
+                if('saved'== responseData){
+                    $(".stu_save-doc-link").html(saved);
+                }else if(unsaved){
+                    $(".stu_save-doc-link").html(unsaved);
+                }
+            },
+            error: function(errorData) {
+            }
+        })
+    });
+
 });

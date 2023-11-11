@@ -500,3 +500,6 @@ li {
     text-decoration: none;
     pointer-events: none;
 }
+.doc-info-date{
+    color: #888888;
+}

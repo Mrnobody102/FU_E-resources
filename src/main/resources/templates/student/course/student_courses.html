@@ -24,7 +24,7 @@
             <div class="main-content stu_course">
                 <div class="stu_course-content d-flex">
                     <div class="stu_sidebar">
-                        <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
+                        <div th:replace="~{fragments/sidebar:: studentSidebar('courses')}"></div>
                     </div>
                     <div class="stu_courses-content main" id="main">
                         <form th:action="@{/student/search_course/1}">

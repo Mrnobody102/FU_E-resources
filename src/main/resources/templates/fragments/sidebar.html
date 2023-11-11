@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
 >
-<body th:fragment="lecturerSidebar">
+<body th:fragment="lecturerSidebar(activeLink)">
 <!-- Student Library Sidebar  -->
 <div class="sidebar" id="sidebar-lecturer">
     <nav class="sidebar__container">
@@ -16,7 +16,8 @@
         <div class="sidebar__content">
 
             <div class="sidebar__list border-bottom">
-                <a href="#" class="sidebar__link">
+                <a th:href="@{/lecturer}" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'home')} ? 'active-link' : ''">
                     <i class="fa-solid fa-house"></i>
                     <span class="sidebar__link-name">Home</span>
                     <span class="sidebar__link-floating">Home</span>
@@ -27,25 +28,29 @@
             </h3>
 
             <div class="sidebar__list border-bottom">
-                <a th:href="@{/lecturer/courses/list/all/1}" class="sidebar__link active-link">
+                <a th:href="@{/lecturer/courses/list/all/1}" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'my-courses-management')} ? 'active-link' : ''">
                     <i class="fa-solid fa-book"></i>
                     <span class="sidebar__link-name">My courses management</span>
                     <span class="sidebar__link-floating">My courses management</span>
                 </a>
 
-                <a href="#" class="sidebar__link">
+                <a href="#" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'my-document')} ? 'active-link' : ''">
                     <i class="fa-solid fa-file"></i>
                     <span class="sidebar__link-name">My documents</span>
                     <span class="sidebar__link-floating">My documents</span>
                 </a>
 
-                <a href="#" class="sidebar__link">
+                <a href="#" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'my-history')} ? 'active-link' : ''">
                     <i class="fa-solid fa-note-sticky"></i>
                     <span class="sidebar__link-name">My history</span>
                     <span class="sidebar__link-floating">My history</span>
                 </a>
 
-                <a href="#" class="sidebar__link">
+                <a href="#" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'question-answer')} ? 'active-link' : ''">
                     <i class="fa-solid fa-question"></i>
                     <span class="sidebar__link-name">Question & Answer</span>
                     <span class="sidebar__link-floating">Question & Answer</span>
@@ -55,12 +60,14 @@
                 <span>Other</span>
             </h3>
             <div class="sidebar__list">
-                <a th:href="@{/student}" class="sidebar__link">
+                <a th:href="@{/student}" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'log-as-student')} ? 'active-link' : ''">
                     <i class="p-2 fas fa-chalkboard-teacher"></i>
                     <span class="sidebar__link-name">Login as student</span>
                     <span class="sidebar__link-floating">Login as student</span>
                 </a>
-                <a href="#" class="sidebar__link">
+                <a href="#" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'feedback')} ? 'active-link' : ''">
                     <i class="fa-solid fa-comment"></i>
                     <span class="sidebar__link-name">Feedback</span>
                     <span class="sidebar__link-floating">Feedback</span>
@@ -72,7 +79,7 @@
 </body>
 
 
-<body th:fragment="studentSidebar">
+<body th:fragment="studentSidebar(activeLink)">
 <!-- Lecturer Sidebar  -->
 <div class="sidebar" id="sidebar">
     <nav class="sidebar__container">
@@ -86,12 +93,14 @@
         <div class="sidebar__content">
 
             <div class="sidebar__list border-bottom">
-                <a th:href="@{/student}" class="sidebar__link">
+                <a th:href="@{/student}" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'home')} ? 'active-link' : ''">
                     <i class="fa-solid fa-house"></i>
                     <span class="sidebar__link-name">Home</span>
                     <span class="sidebar__link-floating">Home</span>
                 </a>
-                <a th:href="@{/student/courses}" class="sidebar__link">
+                <a th:href="@{/student/courses}" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'courses')} ? 'active-link' : ''">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <span class="sidebar__link-name">Courses</span>
                     <span class="sidebar__link-floating">Courses</span>
@@ -102,16 +111,18 @@
             </h3>
 
             <div class="sidebar__list border-bottom">
-                <a th:href="@{/student/my_library}" class="sidebar__link active-link">
+                <a th:href="@{/student/my_library}" class="sidebar__link"
+                th:classappend="${#strings.equals(activeLink, 'my-favourite')} ? 'active-link' : ''">
                     <i class="fa-solid fa-book"></i>
                     <span class="sidebar__link-name">My favourites</span>
                     <span class="sidebar__link-floating">My favourites</span>
                 </a>
 
-                <a th:href="@{/student/my_library/my_notes/1}" class="sidebar__link">
+                <a th:href="@{/student/my_library/my_notes/1}" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'my-note')} ? 'active-link' : ''">
                     <i class="fa-solid fa-file"></i>
-                    <span class="sidebar__link-name">My documents</span>
-                    <span class="sidebar__link-floating">My documents</span>
+                    <span class="sidebar__link-name">My notes</span>
+                    <span class="sidebar__link-floating">My notes</span>
                 </a>
 
 <!--                <a href="#" class="sidebar__link">-->
@@ -120,13 +131,15 @@
 <!--                    <span class="sidebar__link-floating">My notes</span>-->
 <!--                </a>-->
 
-                <a href="#" class="sidebar__link">
+                <a href="#" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'my-question')} ? 'active-link' : ''">
                     <i class="fa-solid fa-question"></i>
                     <span class="sidebar__link-name">My questions</span>
                     <span class="sidebar__link-floating">My questions</span>
                 </a>
 
-                <a href="#" class="sidebar__link">
+                <a href="#" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'my-request')} ? 'active-link' : ''">
                     <i class="fa-solid fa-paper-plane"></i>
                     <span class="sidebar__link-name">My requests</span>
                     <span class="sidebar__link-floating">My requests</span>
@@ -141,7 +154,8 @@
                 <!--                    <span class="sidebar__link-name">Request documents</span>-->
                 <!--                    <span class="sidebar__link-floating">Request documents</span>-->
                 <!--                </a>-->
-                <a href="#" class="sidebar__link">
+                <a href="#" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'feedback')} ? 'active-link' : ''">
                     <i class="fa-solid fa-comment"></i>
                     <span class="sidebar__link-name">Feedback</span>
                     <span class="sidebar__link-floating">Feedback</span>
