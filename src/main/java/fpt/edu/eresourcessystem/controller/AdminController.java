@@ -70,14 +70,23 @@ public class AdminController {
         return "admin/account/admin_accounts";
     }
 
-//    @GetMapping({"/courseCreator"})
-//    public String manageCourseCreators() {
-//        return "admin/account/admin_course_creators";
-//    }
 
+    @GetMapping("/systemLog")
+    String manageSystemLog(final Model model){
+        return "admin/system_log/admin_system_logs";
+    }
+
+
+    @GetMapping("/trainingTypeManagement")
+    String manageTrainingType(final Model model){
+        return "admin/training_type_management/admin_training_type_management";
+    }
+    /*
+    This function to display detail of courses for admin
+     */
     @GetMapping("/course/{courseId}")
     String getCourseByLibrarian(@PathVariable String courseId, final Model model){
-        return "admin/account/admin_course_detail";
+        return "admin/course_creator/admin_course_detail";
     }
 
     /*
@@ -102,7 +111,7 @@ public class AdminController {
             model.addAttribute("courses", courses);
         }
 
-        return "admin/account/admin_course_creators";
+        return "admin/course_creator/admin_course_creators";
     }
 
     @GetMapping("/accounts/list/{pageIndex}")
