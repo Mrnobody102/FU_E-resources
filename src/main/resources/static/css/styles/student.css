@@ -1,4 +1,4 @@
-.stu__courses-list-view{
+.stu__courses-list-view, .stu__view-list-note-content{
     justify-content: center;
 }
 .list-course-content{
@@ -213,7 +213,7 @@ stu__navbar-view-doc-item:hover a{
 }
 .stu__save-note{
     text-align: right;
-    margin-right: 7%;
+    margin-right: 0;
     margin-top: 1rem;
 }
 .stu__save-note button{
@@ -258,4 +258,27 @@ stu__navbar-view-doc-item:hover a{
 .stu__add-note{
     text-align: right;
     margin-right: 10%;
+}
+.view-note-list{
+    width: 90%;
+}
+.home__note-item{
+    margin-left: 2rem;
+}
+.stu__note-in-doc-view{
+    width: 90%;
+    justify-content: center;
+    margin: 2rem;
+    padding-bottom: 2rem;
+}
+.stu_doc-view-question-content{
+    margin-left: 2rem;
+    width: 90%;
+    justify-content: center;
+}
+.link-view-question{
+    cursor: pointer;
+}
+.stu__question-content{
+    padding-left: 1.5rem;
 }

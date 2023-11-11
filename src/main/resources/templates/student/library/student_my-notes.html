@@ -75,7 +75,7 @@
             <div class="stu__navbar-favourite">
               <ul class="stu__navbar-favourite-list border-bottom">
                 <li class="stu__navbar-favourite-item stu__navbar-active">
-                  <a th:href="@{/student/my_library/saved_documents}">
+                  <a th:href="@{/student/my_library/my_notes/1}">
                     My Notes
                   </a>
                 </li>
@@ -98,20 +98,20 @@
                   <p class="h3">No note found.</p>
                 </div>
                 <div class="stu__add-note">
-                  <a class="btn btn--hover" th:href="@{/student/my_library/my_note/add}">
+                  <a class="btn btn--hover" th:href="@{/student/my_note/student_notes/add}">
                     + Add note
                   </a>
                 </div>
-                <div class="stu__view-list-course-content"
+                <div class="stu__view-list-note-content"
                      th:if="${studentNotes ne null} AND ${studentNotes.size()} > 0">
-                  <div class="view-block-list">
+                  <div class="view-note-list">
                     <ul class="home__note-list">
                       <li class="home__note-item">
                         <div class="home__note-wrapper" th:each="studentNote : ${studentNotes}">
 <!--                          <h2 class="home__note-title" th:text="${studentNote.title}"-->
 <!--                              href=""></h2>-->
                           <a class="home__note-title" th:text="${studentNote.title}"
-                             th:href="@{'/student/courses/' + ${studentNote.id}}"></a>
+                             th:href="@{'/student/my_note/student_note' + ${studentNote.id}}"></a>
                           <p class="home__note-description"
                              th:text="${studentNote.description}"></p>
                           <p class="home__note-date">

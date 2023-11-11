@@ -14,16 +14,9 @@
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
-
-    <style>
-        label.error {
-            margin-top: 5px;
-            margin-left: 5px;
-            display: block;
-            color: red;
-            /*font-size: smaller;*/
-        }
-    </style>
+    <!-- CK Editor-->
+    <script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
+    <script th:src="@{/ckfinder/static/ckfinder.js}"></script>
 
 </head>
 <body class="app_container">
@@ -141,10 +134,9 @@
                                 <!--Note section-->
                                 <div id="note">
                                     <div class="stu__note-in-doc-view">
-                                        <h3 class="stu__note-in-doc-head">Note</h3>
                                         <div class="stu__note-in-doc-content" th:if="${note ne null}">
                                             <div class="stu__note-content">
-                                                <div th:text="${note.content}"></div>
+                                                <div th:utext="${note.content}"></div>
                                             </div>
                                             <div class="view-note-link">
                                                 <div class="justify-content-end">
@@ -153,29 +145,51 @@
                                             </div>
                                         </div>
                                         <div class="stu__note-in-doc-textarea" th:if="${note == null}">
-                                            <form action="">
-                                        <textarea class="stu__note-in-doc-edit-space">
-
-                                        </textarea>
-                                                <div class="stu__save-note">
-                                                    <button type="" id="add-note" docId="${doc.id}">Save</button>
+                                            <div class="stu__save-note">
+                                                <button type="" id="add-doc-note">Save Note</button>
+                                            </div>
+                                            <form class="form-student-add-doc-notes" method="post" role="form"
+                                                  th:action="@{/document_notes/add}"
+                                                  th:object="${documentNote}"
+                                                  th:id="add-form" enctype="multipart/form-data">
+                                                <input type="text" th:field="*{docId}" th:value="${document.getId}" readonly hidden>
+                                                <div id="editorWrapper">
+                                                    <div class="d-flex justify-content-between">
+                                                        <label for="editor" class="lecturer_input-label-doc">Content:</label>
+                                                    </div>
+                                                    <textarea id="editor"
+                                                              th:field="*{content}"></textarea>
                                                 </div>
+
                                             </form>
                                         </div>
+                                    </div>
+                                </div>
+                                <!--End note section-->
+                                <div id="question" style="display: none" class="stu_doc-view-question-content">
+                                    <div class="stu__question-in-doc-content" th:if="${myQuestions ne null}">
+                                        <h5 class="my-question-header">My questions</h5>
+                                        <div class="stu__question-content" th:each="myQuestion : ${myQuestions}">
+                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i><span th:text="${myQuestions.student.account.name}"></span></h6>
+                                            <p class="stu__question-content" th:utext="${myQuestions.content}"></p>
+                                            <div class="justify-content-end link-view-question stu__question-content" th:if="${myQuestions.lastModifiedDate}">
+                                                <span class="stu__note-date" th:text="${myQuestions.lastModifiedDate}"></span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a>
+                                            </div>
+                                            <p class="view-question-reply stu__question-content">view <span th:text="${question.answers.size()}"></span> reply</p>
+                                        </div>
+                                    </div>
 
-
-                                        <!--Front end demo-->
-                                        <div class="stu__note-in-doc-content">
-                                            <h3 class="stu__note-in-doc-head">Note</h3>
-                                            <div class="stu__note-content" style="white-space: pre">
-                                                The Bishop of Guildford’s Communities Fund (BGCF) exists to reach out to
-                                                disadvantaged
-                                                and vulnerable people across the Diocese of Guildford in the name of Christ.
-
-                                                Grants are offered to projects initiated by Church of England churches
-                                                (and those in active partnership with them) to assist in fulfilling any
-                                                aspect of the Diocesan vision, Transforming Church, Transforming Lives.
-
+                                    <div class="stu__question-in-doc-content" th:if="${questions ne null}">
+                                        <h5 class="others-question-header">Others' questions</h5>
+                                        <div class="stu__question-content" th:each="question : ${questions}">
+                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i><span th:text="${question.student.account.name}"></span></h6>
+                                            <p class="stu__question-content" th:utext="${question.content}"></p>
+                                            <p class="stu__answer-date stu__question-content">2-11-2023<span class="stu__answer-lecturer">Lecturer: Pham Quang Huy</span></p>
+                                            <p class="view-question-reply stu__question-content">view <span th:text="${question.answers.size()}"></span> reply</p>
+                                        </div>
+                                        <div class="stu__question-content">
+                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> Thuongdt</h6>
+                                            <p class="stu__question-content">
                                                 The BGCF gives grants to a range of community projects including those
                                                 which:
 
@@ -185,68 +199,13 @@
                                                 - Support families and disadvantaged communities
                                                 - Provide practical help for the financially challenged
                                                 - Offer training and skills programmes
-                                            </div>
-                                            <div class="view-note-link">
-                                                <div class="justify-content-end">
-                                                    <span class="stu__note-date">2-11-2023</span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a>
-                                                </div>
-                                            </div>
+                                            </p>
+
+                                            <p class="stu__answer-date stu__question-content">2-11-2023 | <span class="stu__answer-lecturer">Lecturer: Pham Quang Huy</span></p>
+                                            <p class="view-question-reply stu__question-content">view 2 reply</p>
                                         </div>
-                                        <!--End front end note demo -->
+
                                     </div>
-                                </div>
-                                <!--End note section-->
-                                <div id="question" style="display: none">
-                                    <!--Front end demo-->
-                                    <div class="stu__question-in-doc-content">
-                                        <h3 class="stu__question-in-doc-head">My question</h3>
-                                        <div class="stu__question-content" style="white-space: pre">
-                                            The Bishop of Guildford’s Communities Fund (BGCF) exists to reach out to
-                                            disadvantaged
-                                            and vulnerable people across the Diocese of Guildford in the name of Christ.
-
-                                            Grants are offered to projects initiated by Church of England churches
-                                            (and those in active partnership with them) to assist in fulfilling any
-                                            aspect of the Diocesan vision, Transforming Church, Transforming Lives.
-
-                                            The BGCF gives grants to a range of community projects including those
-                                            which:
-
-                                            - Support people with disabilities and mental ill-health
-                                            - Provide facilities and services for older citizens, children and young
-                                            people
-                                            - Support families and disadvantaged communities
-                                            - Provide practical help for the financially challenged
-                                            - Offer training and skills programmes
-                                        </div>
-                                        <div class="view-note-link">
-                                            <div class="justify-content-end">
-                                                <span class="stu__note-date">2-11-2023</span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="stu__answer-in-doc-content">
-                                        <h3 class="stu__question-in-doc-head lecturer-name">Reply</h3>
-                                        <div class="stu__question-content" style="white-space: pre">
-                                            The BGCF gives grants to a range of community projects including those
-                                            which:
-
-                                            - Support people with disabilities and mental ill-health
-                                            - Provide facilities and services for older citizens, children and young
-                                            people
-                                            - Support families and disadvantaged communities
-                                            - Provide practical help for the financially challenged
-                                            - Offer training and skills programmes
-                                        </div>
-                                        <div class="view-question-link">
-                                            <div class="justify-content-end">
-                                                <span class="stu__answer-date">2-11-2023</span>   <span class="stu__answer-lecturer">Lecturer: Pham Quang Huy</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--End front end note demo -->
                                 </div>
 
                                 <div class="list-view-inline bot-doctype-list">
@@ -293,5 +252,42 @@
 <!--Custom script-->
 <script th:src="@{/js/student.js}"></script>
 <script th:src="@{/js/student-doc-detail.js}"></script>
+<script th:inline="javascript">
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Save note successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check note information again!',
+            'error'
+        );
+    }
+
+    // CK editor
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            ckfinder: {
+                uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
+            },
+        })
+        .then(editor => {
+            editor.editing.view.change(writer => {
+                writer.setStyle('height', '200px', editor.editing.view.document.getRoot());
+            });
+            console.log(Array.from(editor.ui.componentFactory.names()));
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+</script>
 </body>
 </html>

@@ -28,7 +28,7 @@ public class DocumentNoteServiceImpl implements DocumentNoteService {
     }
 
     @Override
-    public DocumentNote addStudentNote(DocumentNote documentNote) {
+    public DocumentNote addDocumentNote(DocumentNote documentNote) {
         if(null!= documentNote && null== documentNote.getId()){
             if(null!= documentNoteRepository.findByDocIdAndStudentId(documentNote.getDocId(), documentNote.getStudentId())){
                 return null;
@@ -42,7 +42,7 @@ public class DocumentNoteServiceImpl implements DocumentNoteService {
     }
 
     @Override
-    public DocumentNote updateStudentNote(DocumentNote documentNote) {
+    public DocumentNote updateDocumentNote(DocumentNote documentNote) {
         Optional<DocumentNote> savedStudentNote = documentNoteRepository.findById(documentNote.getId());
         if(savedStudentNote.isPresent()){
             DocumentNote result =  documentNoteRepository.save(documentNote);
@@ -52,7 +52,7 @@ public class DocumentNoteServiceImpl implements DocumentNoteService {
     }
 
     @Override
-    public boolean deleteStudentNote(DocumentNote documentNote) {
+    public boolean deleteDocumentNote(DocumentNote documentNote) {
         Optional<DocumentNote> check = documentNoteRepository.findById(documentNote.getId());
         if(check.isPresent()){
             // SOFT DELETE

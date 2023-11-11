@@ -489,7 +489,7 @@ li {
 }
 
 .btn-save:hover {
-    background-color: var(--primary-btn-color);
+    background-color: var(--background-btn-color);
     color: var(--hover-color-2);
 }
 
@@ -502,4 +502,12 @@ li {
 }
 .doc-info-date{
     color: #888888;
+}
+.require-input{
+    color: var(--danger-color);
+    align-items: start;
+}
+.view-question-reply{
+    cursor: pointer;
+    font-weight: var(--font-medium);
 }

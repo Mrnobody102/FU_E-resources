@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
@@ -12,11 +13,14 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -36,7 +40,11 @@ public class StudentController {
     private final DocumentService documentService;
     private final StudentNoteService studentNoteService;
 
-    public StudentController(AccountService accountService, CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService, StudentNoteService studentNoteService) {
+    private final DocumentNoteService documentNoteService;
+
+    private final QuestionService questionService;
+
+    public StudentController(AccountService accountService, CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService, StudentNoteService studentNoteService, DocumentNoteService documentNoteService, QuestionService questionService) {
         this.accountService = accountService;
         this.courseService = courseService;
         this.studentService = studentService;
@@ -44,6 +52,8 @@ public class StudentController {
         this.courseLogService = courseLogService;
         this.documentService = documentService;
         this.studentNoteService = studentNoteService;
+        this.documentNoteService = documentNoteService;
+        this.questionService = questionService;
     }
 
     public Student getLoggedInStudent() {
@@ -142,6 +152,22 @@ public class StudentController {
         }
 
         Account account = accountService.findByEmail(document.getCreatedBy());
+        DocumentNote documentNote = documentNoteService.findByDocIdAndStudentId(docId,student.getId());
+        if(null!= documentNote){
+            model.addAttribute("documentNote", documentNote);
+        }else {
+            model.addAttribute("documentNote", new DocumentNote());
+        }
+
+        List<Question> myQuestions = questionService.findByDocIdAndStudentId(docId, student.getId());
+        if(null!= myQuestions){
+            model.addAttribute("myQuestions", myQuestions);
+        }
+        List<Question> questions = questionService.findByDocIdAndStudentId(docId,student.getId());
+        if(null!= questions){
+            model.addAttribute("questions", questions);
+        }
+
         model.addAttribute("document", document);
         model.addAttribute("account", account);
         if (studentService.checkDocSaved(student.getId(), docId)) {
@@ -289,4 +315,36 @@ public class StudentController {
         }
         return "student/library/student_my-notes";
     }
+
+
+    @GetMapping("/my_note/student_notes/add")
+    public String addMyNoteProcess(final Model model){
+        model.addAttribute("studentNote", new StudentNote());
+        return "student/library/student_add-student-note";
+    }
+    @PostMapping("/my_note/student_notes/add")
+    @Transactional
+    public String addMyNote(@ModelAttribute StudentNoteDTO studentNoteDTO, BindingResult result,
+                            @RequestParam(value = "file", required = false) MultipartFile file) throws IOException{
+        Student student = getLoggedInStudent();
+        if(null == student){
+            return "common/login";
+        }else if(null==studentNoteDTO || result.hasErrors()){
+            return "redirect:/student/my_library/my_note/add?error";
+        }
+        // Xử lý file
+        // thêm check file trước khi add
+        String id = "fileNotFound";
+        if(file != null && !file.isEmpty()) {
+            id = documentService.addFile(file);
+        }
+        studentNoteDTO.setStudentId(student.getId());
+        StudentNote studentNote = studentNoteService.addStudentNote(studentNoteDTO, id);
+        if(null!= studentNote){
+            return "redirect:/student/my_library/my_note/add?success";
+        }else {
+            return "redirect:/student/my_library/my_note/add?error";
+        }
+    }
+
 }

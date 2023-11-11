@@ -1,13 +1,12 @@
 package fpt.edu.eresourcessystem.model;
 
-
-import fpt.edu.eresourcessystem.dto.CourseLogDTO;
+import fpt.edu.eresourcessystem.dto.AnswerDto;
 import fpt.edu.eresourcessystem.dto.QuestionDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,13 +17,13 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("questions")
-public class Question {
+@Document("answers")
+public class Answer {
     @Id
     private String id;
 
     @NotEmpty(message = "question.validation.question.required")
-    private String content;
+    private String answer;
 
     @NotNull
     @DocumentReference(lazy = true)
@@ -34,8 +33,9 @@ public class Question {
     @DocumentReference(lazy = true)
     private fpt.edu.eresourcessystem.model.Document documentId;
 
+    @NotNull
     @DocumentReference(lazy = true)
-    private List<Answer> answers;
+    private Question questionId;
 
     @DocumentReference(lazy = true)
     private Lecturer lecturer;
@@ -51,15 +51,13 @@ public class Question {
     private String lastModifiedBy;
     @LastModifiedDate
     private String lastModifiedDate;
-
-    // Constructor DTO
-    public Question(QuestionDto questionDto) {
-        this.id = questionDto.getId();
-        this.content = questionDto.getContent();
-        this.student = questionDto.getStudent();
-        this.documentId = questionDto.getDocumentId();
-        this.answers = questionDto.getAnswers();
-        this.lecturer = questionDto.getLecturer();
+    public Answer(AnswerDto answerDto) {
+        this.id = answerDto.getId();
+        this.answer = answerDto.getAnswer();
+        this.student = answerDto.getStudent();
+        this.documentId = answerDto.getDocumentId();
+        this.questionId = answerDto.getQuestionId();
+        this.lecturer = answerDto.getLecturer();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
 }
