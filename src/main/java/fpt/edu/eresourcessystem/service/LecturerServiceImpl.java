@@ -114,24 +114,18 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public boolean removeCourse(String lectureId, Course course) {
-        Optional<Lecturer> optionalLecture = lecturerRepository.findById(lectureId);
-
-        if (optionalLecture.isPresent()) {
-            Lecturer lecture = optionalLecture.get();
-
-            // Check if the course is associated with the lecture
-            if (lecture.getCourses().contains(course)) {
-                lecture.getCourses().remove(course);
-                lecturerRepository.save(lecture);
-
-                // Optionally, update the course to remove the lecture's association
-//                course.setLecturer(null);
-//                courseService.updateCourse(course);
-
-                return true;
-            }
+    public boolean removeCourse(Lecturer lecturer, Course course) {
+        if (lecturer == null || course == null) {
+            return false;
         }
+
+        if (lecturer.getCourses().contains(course)) {
+            lecturer.getCourses().remove(course);
+            lecturerRepository.save(lecturer);
+
+            return true; // Indicate that the course was successfully removed
+        }
+
         return false;
     }
     @Override

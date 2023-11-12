@@ -27,7 +27,7 @@ public interface LecturerService {
 
     Lecturer findLecturerByEmail(String email);
 
-    boolean removeCourse(String lectureId, Course course);
+    boolean removeCourse(Lecturer lecturer, Course course);
 
     Page<Course> findListManagingCourse(Lecturer lecturer, String status, int pageIndex, int pageSize);
 }

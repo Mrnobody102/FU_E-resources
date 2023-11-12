@@ -45,61 +45,42 @@
                         </div>
                     </form>
                     <div>
-                        <a class="lib_btn-add" type="button" th:href="@{/librarian/lectures/add}">
+                        <a class="lib_btn-add" type="button" th:href="@{/librarian/lectures/create-lecture}">
                             <i class="fa-solid fa-plus"></i>
-                            <span>New</span>
+                            <span >Create Lecturer</span>
                         </a>
                     </div>
                 </div>
             </div>
             <div class="table-view" th:if="${lecturers ne null}">
-                <table class="table table-striped table-sm">
+                <table class="table table-striped table-sm table-bordered" >
                     <tr class="table-head">
                         <th>STT</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Status</th>
                         <th>Course List</th>
+
                     </tr>
                     <th:block th:each="lecture, iterStat : ${lecturers}">
                         <tr>
-                            <td th:text="${iterStat.index +1}"> 1</td>
+                            <td th:text="${iterStat.index+1}">1</td>
                             <td><a th:href="@{'/librarian/lectures/' + ${lecture.getId()}}"
                                    th:text="${lecture.getAccount().getName()}"></a></td>
                             <td><span class="description" th:text="${lecture.getAccount().getEmail()}"></span></td>
+                            <td th:text="${lecture.getDeleteFlg()}"></td>
                             <td>
                                 <th:block th:each="course : ${lecture.getCourses()}">
                                     <a th:href="@{'/librarian/courses/' + ${course.getId()}}">
-                                        <button class="button" th:text="${course.getCourseCode()}">Course</button>
+                                        <button class="button-a-background" th:text="${course.getCourseCode()}"></button>
                                     </a>
                                 </th:block>
                             </td>
+
                         </tr>
                     </th:block>
                 </table>
-                <nav th:if="${totalPage} > 1" aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
-                            <a class="page-link previous-page-lecture" style="cursor: pointer">
-                                &laquo;
-                            </a>
-                        </li>
-                        <li th:each="pageIndex: ${pages}" class="page-item"
-                            th:classappend=" (${currentPage == pageIndex}) ? 'active' : '' ">
-                            <th:block th:if="${pageIndex == -1}">
-                                <span class="page-link">...</span>
-                            </th:block>
-                            <th:block th:if="${pageIndex != -1}">
-                                <a th:text="${pageIndex}" th:value="${pageIndex}" class="page-link page-lecture-number"
-                                   style="cursor: pointer"></a>
-                            </th:block>
-                        </li>
-                        <li th:class="${currentPage == totalPage} ? 'page-item disabled' : 'page-item'">
-                            <a class="page-link next-page-lecture" style="cursor: pointer">
-                                &raquo;
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+
             </div>
         </div>
     </div>

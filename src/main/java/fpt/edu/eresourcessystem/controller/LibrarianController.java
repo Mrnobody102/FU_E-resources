@@ -415,12 +415,11 @@ public class LibrarianController {
     @GetMapping({"/courses/{courseId}/remove-lecture"})
     public String removeLecture(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
-        boolean removed = lecturerService.removeCourse(course.getLecturer().getId(), course);
+        boolean removed = lecturerService.removeCourse(course.getLecturer(), course);
         boolean removed1 = courseService.removeLecture(courseId);
         if (true == removed && removed1 == true) {
             return "redirect:/librarian/courses/{courseId}/add-lecture?success";
         } else return "redirect:/librarian/courses/{courseId}/add-lecture?error";
-
     }
 
     /**
@@ -430,7 +429,7 @@ public class LibrarianController {
      */
     @PostMapping({"/courses/{courseId}/add-lecture"})
     public String addLecturer(@PathVariable String courseId, @RequestParam String lecturerEmail, final Model model) {
-        Account account = accountService.findByUsername(lecturerEmail);
+        Account account = accountService.findByEmail(lecturerEmail);
         Lecturer lecturer = lecturerService.findByAccountId(account.getId());
         Course course = courseService.updateLectureId(courseId, lecturer);
 
@@ -506,5 +505,27 @@ public class LibrarianController {
 //        model.addAttribute("course", course);
 //        model.addAttribute("topics", topics);
         return "librarian/lecture/librarian_lecture-detail";
+    }
+
+    @GetMapping("/lectures/create-lecture")
+    public String showAddLectureForm(Model model) {
+        List<Course> allCourses = courseService.findAll(); // Retrieve all available courses
+        model.addAttribute("allCourses", allCourses);
+        model.addAttribute("lecture",new Lecturer());
+        return "librarian/lecture/librarian_add-lecture";
+    }
+
+
+    @PostMapping("/lectures/create-lecture")
+    public String addLectureCourse(@ModelAttribute Lecturer lecturer, @RequestParam String email) {
+        Account lecture = accountService.findByEmail(email);
+        lecturer.setAccount(lecture);
+        lecturerService.addLecturer(lecturer);
+//        lecturer.getAccount().setRole();
+        for (int i = 0; i < lecturer.getCourses().size(); i++) {
+            courseService.updateLectureId(String.valueOf(lecturer.getCourses().get(i)), lecturer);
+        }
+        return "librarian/lecture/librarian_lectures";
+
     }
 }
