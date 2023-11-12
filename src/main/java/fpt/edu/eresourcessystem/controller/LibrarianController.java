@@ -207,18 +207,18 @@ public class LibrarianController {
         Course checkExist = courseService.findByCourseId(course.getId());
 
         if (null == checkExist) {
-            return "redirect:/librarian/courses/" + course.getId()+ "/update?error";
+            return "redirect:/librarian/courses/" + course.getId() + "/update?error";
         } else {
             Course checkCodeDuplicate = courseService.findByCourseCode(course.getCourseCode());
             if (checkCodeDuplicate != null &&
                     !checkExist.getCourseCode().equalsIgnoreCase(course.getCourseCode())) {
-                return "redirect:/librarian/courses/" + course.getId()+ "/update?error";
+                return "redirect:/librarian/courses/" + course.getId() + "/update?error";
             }
             checkExist.setCourseCode(course.getCourseCode());
             checkExist.setCourseName(course.getCourseName());
             checkExist.setDescription(course.getDescription());
             courseService.updateCourse(checkExist);
-            return "redirect:/librarian/courses/" + course.getId()+ "/update?success";
+            return "redirect:/librarian/courses/" + course.getId() + "/update?success";
         }
     }
 
@@ -424,7 +424,7 @@ public class LibrarianController {
 
     /**
      * @param courseId course id
-     * @param model model attribute
+     * @param model    model attribute
      * @return
      */
     @PostMapping({"/courses/{courseId}/add-lecture"})
@@ -511,7 +511,7 @@ public class LibrarianController {
     public String showAddLectureForm(Model model) {
         List<Course> allCourses = courseService.findAll(); // Retrieve all available courses
         model.addAttribute("allCourses", allCourses);
-        model.addAttribute("lecture",new Lecturer());
+        model.addAttribute("lecture", new Lecturer());
         return "librarian/lecture/librarian_add-lecture";
     }
 
@@ -520,12 +520,15 @@ public class LibrarianController {
     public String addLectureCourse(@ModelAttribute Lecturer lecturer, @RequestParam String email) {
         Account lecture = accountService.findByEmail(email);
         lecturer.setAccount(lecture);
-        lecturerService.addLecturer(lecturer);
+
+        if (lecturerService.findLecturerByAccount(lecture) == null) {
+            lecturerService.addLecturer(lecturer);
 //        lecturer.getAccount().setRole();
-        for (int i = 0; i < lecturer.getCourses().size(); i++) {
-            courseService.updateLectureId(String.valueOf(lecturer.getCourses().get(i)), lecturer);
+            for (int i = 0; i < lecturer.getCourses().size(); i++) {
+                courseService.updateLectureId(String.valueOf(lecturer.getCourses().get(i)), lecturer);
+            }
         }
-        return "librarian/lecture/librarian_lectures";
+        return "redirect:/librarian/lectures";
 
     }
 }

@@ -2,6 +2,7 @@ package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
+import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.LecturerCourse;
@@ -47,8 +48,8 @@ public class LecturerServiceImpl implements LecturerService {
     @Override
     public Lecturer updateLecturer(Lecturer lecturer) {
         Optional<Lecturer> foundLecturer = lecturerRepository.findById(lecturer.getId());
-        if(foundLecturer.isPresent()){
-            Lecturer result =  lecturerRepository.save(lecturer);
+        if (foundLecturer.isPresent()) {
+            Lecturer result = lecturerRepository.save(lecturer);
             return result;
         }
         return null;
@@ -96,7 +97,6 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
 
-
 //    @Override
 //    public Lecturer addLectureWithCourse(Lecturer lecturer) {
 //        Optional<Lecturer> foundLecturer = lecturerRepository.findById(lecturer.getId());
@@ -108,10 +108,6 @@ public class LecturerServiceImpl implements LecturerService {
 //        return null;
 //    }
 
-    @Override
-    public Lecturer findLecturerByEmail(String email) {
-        return lecturerRepository.findByAccount_Email(email);
-    }
 
     @Override
     public boolean removeCourse(Lecturer lecturer, Course course) {
@@ -128,15 +124,16 @@ public class LecturerServiceImpl implements LecturerService {
 
         return false;
     }
+
     @Override
     public Page<Course> findListManagingCourse(Lecturer lecturer, String status, int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         Criteria criteria = new Criteria();
         // Sort by the "time" in descending order to get the most recent documents
         criteria.andOperator(
-            criteria.where("lecturer.id").is(lecturer.getId()),
-            status.equalsIgnoreCase("ALL") ? new Criteria() : criteria.where("status").is(status.toUpperCase()),
-            criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+                criteria.where("lecturer.id").is(lecturer.getId()),
+                status.equalsIgnoreCase("ALL") ? new Criteria() : criteria.where("status").is(status.toUpperCase()),
+                criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
         );
         Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("lecturerCourseIds.createdDate")));
 
@@ -147,4 +144,8 @@ public class LecturerServiceImpl implements LecturerService {
                 () -> mongoTemplate.count(query, Course.class));
     }
 
+
+    public Lecturer findLecturerByAccount(Account account) {
+        return lecturerRepository.findLecturerByAccount(account);
+    }
 }

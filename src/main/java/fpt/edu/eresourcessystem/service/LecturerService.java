@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import org.springframework.data.domain.Page;
@@ -25,9 +26,12 @@ public interface LecturerService {
 
     Page<Lecturer> findLecturerByLecturerIdLike(String lectureId, int pageIndex, int pageSize);
 
-    Lecturer findLecturerByEmail(String email);
 
     boolean removeCourse(Lecturer lecturer, Course course);
 
     Page<Course> findListManagingCourse(Lecturer lecturer, String status, int pageIndex, int pageSize);
+
+
+    Lecturer findLecturerByAccount(Account account);
+
 }
