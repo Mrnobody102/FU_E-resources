@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -71,5 +72,17 @@ public class Document {
         this.suffix = documentDTO.getSuffix();
         this.docType = DocumentEnum.DocumentFormat.getDocType(documentDTO.getSuffix());
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Document document)) return false;
+        return Objects.equals(getId(), document.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

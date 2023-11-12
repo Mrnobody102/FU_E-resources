@@ -133,6 +133,9 @@ li {
 .grid__column-9 {
     width: 75%;
 }
+.grid__column-90 {
+    width: 90%;
+}
 
 /* modal  */
 

@@ -49,4 +49,6 @@ public class Lecturer {
         this.account = account;
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
+
+
 }

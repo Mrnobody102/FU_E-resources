@@ -1,6 +1,8 @@
 package fpt.edu.eresourcessystem.repository;
 
 import fpt.edu.eresourcessystem.model.Answer;
+import fpt.edu.eresourcessystem.model.Document;
+import fpt.edu.eresourcessystem.model.Question;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +12,6 @@ import java.util.Optional;
 @Repository("answerRepository")
 public interface AnswerRepository extends MongoRepository<Answer, String> {
     Optional<Answer> findById(String id);
-    List<Answer> findByDocumentId(String documentId);
-    List<Answer> findByDocumentIdAndQuestionId(String documentId, String questionId);
+    List<Answer> findByDocumentId(Document document);
+    List<Answer> findByDocumentIdAndQuestionId(Document document, Question question);
 }

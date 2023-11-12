@@ -14,6 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -30,12 +32,11 @@ public class Question {
     @DocumentReference(lazy = true)
     private Student student;
 
-    @NotNull
     @DocumentReference(lazy = true)
     private fpt.edu.eresourcessystem.model.Document documentId;
 
     @DocumentReference(lazy = true)
-    private List<Answer> answers;
+    private Set<Answer> answers;
 
     @DocumentReference(lazy = true)
     private Lecturer lecturer;
@@ -61,5 +62,17 @@ public class Question {
         this.answers = questionDto.getAnswers();
         this.lecturer = questionDto.getLecturer();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Question question)) return false;
+        return Objects.equals(getId(), question.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

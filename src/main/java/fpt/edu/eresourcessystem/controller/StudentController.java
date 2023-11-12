@@ -1,11 +1,13 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.dto.QuestionDto;
 import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
+import fpt.edu.eresourcessystem.responseDto.QuestionResponseDto;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -159,17 +162,22 @@ public class StudentController {
             model.addAttribute("documentNote", new DocumentNote());
         }
 
-        List<Question> myQuestions = questionService.findByDocIdAndStudentId(docId, student.getId());
-        if(null!= myQuestions){
-            model.addAttribute("myQuestions", myQuestions);
+        // get list questions
+        List<Question> questions = questionService.findByDocId(document);
+        List<QuestionResponseDto> questionResponseDtos = new ArrayList<>();
+        List<QuestionResponseDto> myQuestionResponseDtos = new ArrayList<>();
+        for (Question q: questions) {
+            if(!q.getStudent().getId().equals(student.getId())){
+                questionResponseDtos.add(new QuestionResponseDto(q));
+            }else {
+                myQuestionResponseDtos.add(new QuestionResponseDto(q));
+            }
         }
-        List<Question> questions = questionService.findByDocIdAndStudentId(docId,student.getId());
-        if(null!= questions){
-            model.addAttribute("questions", questions);
-        }
-
+        model.addAttribute("questions", questionResponseDtos);
+        model.addAttribute("myQuestions", myQuestionResponseDtos);
         model.addAttribute("document", document);
         model.addAttribute("account", account);
+        model.addAttribute("newQuestion", new Question());
         if (studentService.checkDocSaved(student.getId(), docId)) {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);

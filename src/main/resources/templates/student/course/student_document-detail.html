@@ -167,44 +167,48 @@
                                 </div>
                                 <!--End note section-->
                                 <div id="question" style="display: none" class="stu_doc-view-question-content">
-                                    <div class="stu__question-in-doc-content" th:if="${myQuestions ne null}">
-                                        <h5 class="my-question-header">My questions</h5>
-                                        <div class="stu__question-content" th:each="myQuestion : ${myQuestions}">
-                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i><span th:text="${myQuestions.student.account.name}"></span></h6>
-                                            <p class="stu__question-content" th:utext="${myQuestions.content}"></p>
-                                            <div class="justify-content-end link-view-question stu__question-content" th:if="${myQuestions.lastModifiedDate}">
-                                                <span class="stu__note-date" th:text="${myQuestions.lastModifiedDate}"></span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a>
+                                    <div class="stu__save-question">
+                                        <button class="btn btn--hover add-doc-question" id="add-doc-question">New Question</button>
+                                    </div>
+                                    <form class="form-student-add-doc-new-question justify-content-between" method="post" role="form"
+                                          th:object="${newQuestion}"
+                                            id="form-add-new-question">
+                                        <div class="">
+                                            <input type="text" name="docId" th:value="${document.getId()}" readonly hidden>
+                                            <div class="form-content">
+                                                <label for="new-question-content" class="student_input-label-question">Enter Question:</label>
+                                                <textarea id="new-question-content" class="input-question-content"
+                                                          th:field="*{content}"></textarea>
                                             </div>
-                                            <p class="view-question-reply stu__question-content">view <span th:text="${question.answers.size()}"></span> reply</p>
                                         </div>
+                                        <div class="submit-question-button">
+                                            <button type="button" title="Send" onclick="submitFormAddQuestion()"><i class="fa-solid fa-paper-plane"></i></button>
+                                        </div>
+                                    </form>
+
+                                    <div class="stu__question-in-doc-content" th:if="${myQuestions ne null} AND ${myQuestions.size} > 0">
+                                        <h5 class="my-question-header">My questions</h5>
+                                        <div class="stu__my-question-content" id="my-questions">
+                                            <div class="stu__question-content" th:each="myQuestion : ${myQuestions}">
+                                                <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${myQuestion.studentName}"></span></h6>
+                                                <p class="stu__question-content" th:text="${myQuestion.questionContent}"></p>
+                                                <div class="justify-content-end link-view-question stu__question-content" th:if="${myQuestion.lastModifiedDate}">
+                                                    <span class="stu__note-date" th:text="${myQuestion.lastModifiedDate}"></span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a>
+                                                </div>
+                                                <p  th:if="${myQuestion.totalAnswers} > 0"  class="view-question-reply stu__question-content">View <span th:text="${myQuestion.totalAnswers}"></span> reply</p>
+                                            </div>
+                                        </div>
+
                                     </div>
 
-                                    <div class="stu__question-in-doc-content" th:if="${questions ne null}">
+                                    <div class="stu__question-in-doc-content" th:if="${questions ne null } AND ${questions.size} > 0">
                                         <h5 class="others-question-header">Others' questions</h5>
                                         <div class="stu__question-content" th:each="question : ${questions}">
-                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i><span th:text="${question.student.account.name}"></span></h6>
-                                            <p class="stu__question-content" th:utext="${question.content}"></p>
-                                            <p class="stu__answer-date stu__question-content">2-11-2023<span class="stu__answer-lecturer">Lecturer: Pham Quang Huy</span></p>
-                                            <p class="view-question-reply stu__question-content">view <span th:text="${question.answers.size()}"></span> reply</p>
+                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${question.studentName}"></span></h6>
+                                            <p class="stu__question-content" th:utext="${question.questionContent}"></p>
+                                            <p class="stu__answer-date stu__question-content" th:text="${question.lastModifiedDate}">Lecturer: <span class="stu__answer-lecturer" th:if="${question.lecturerName ne null}" th:text="${question.lecturerName}"></span></p>
+                                            <p  th:if="${question.totalAnswers} > 0"  class="view-question-reply stu__question-content">view <span th:text="${question.totalAnswers}"></span> reply</p>
                                         </div>
-                                        <div class="stu__question-content">
-                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> Thuongdt</h6>
-                                            <p class="stu__question-content">
-                                                The BGCF gives grants to a range of community projects including those
-                                                which:
-
-                                                - Support people with disabilities and mental ill-health
-                                                - Provide facilities and services for older citizens, children and young
-                                                people
-                                                - Support families and disadvantaged communities
-                                                - Provide practical help for the financially challenged
-                                                - Offer training and skills programmes
-                                            </p>
-
-                                            <p class="stu__answer-date stu__question-content">2-11-2023 | <span class="stu__answer-lecturer">Lecturer: Pham Quang Huy</span></p>
-                                            <p class="view-question-reply stu__question-content">view 2 reply</p>
-                                        </div>
-
                                     </div>
                                 </div>
 

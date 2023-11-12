@@ -3,13 +3,11 @@ package fpt.edu.eresourcessystem.service;
 import fpt.edu.eresourcessystem.dto.AnswerDto;
 import fpt.edu.eresourcessystem.dto.QuestionDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
-import fpt.edu.eresourcessystem.model.Admin;
-import fpt.edu.eresourcessystem.model.Answer;
-import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Question;
+import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.repository.AnswerRepository;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,34 +21,31 @@ public class AnswerServiceImpl implements AnswerService{
 
 
     @Override
-    public List<Answer> findByDocId(String docId) {
-        List<Answer> answers = answerRepository.findByDocumentId(docId);
+    public List<Answer> findByDocId(Document document) {
+        List<Answer> answers = answerRepository.findByDocumentId(document);
         return answers;
     }
 
     @Override
-    public List<Answer> findByDocIdAndQuestionId(String docId, String questionId) {
-        List<Answer> answers = answerRepository.findByDocumentIdAndQuestionId(docId, questionId);
+    public List<Answer> findByDocIdAndQuestionId(Document document, Question question) {
+        List<Answer> answers = answerRepository.findByDocumentIdAndQuestionId(document, question);
         return answers;
     }
 
     @Override
-    public Answer addAnswer(AnswerDto answerDto) {
-        Answer answer = new Answer(answerDto);
-        if(null!=answer && null==answer.getId()){
-            if(null!=answerRepository.findById(answer.getId())){
-                return null;
-            }else {
-                Answer result = answerRepository.save(answer);
-                return result;
-            }
+    public Answer addAnswer(Answer answer) {
+        if (null == answer.getId()) {
+            Answer result = answerRepository.save(answer);
+            return result;
+        } else if (!answerRepository.findById(answer.getId().trim()).isPresent()) {
+            Answer result = answerRepository.save(answer);
+            return result;
         }
         return null;
     }
 
     @Override
-    public Answer updateAnswer(AnswerDto answerDto) {
-        Answer answer = new Answer(answerDto);
+    public Answer updateAnswer(Answer answer) {
         Optional<Answer> savedAnswer = answerRepository.findById(answer.getId());
         if(savedAnswer.isPresent()){
             Answer result =  answerRepository.save(answer);

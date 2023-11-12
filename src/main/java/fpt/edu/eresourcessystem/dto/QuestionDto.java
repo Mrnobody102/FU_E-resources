@@ -13,6 +13,7 @@ import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -26,7 +27,7 @@ public class QuestionDto {
 
     private fpt.edu.eresourcessystem.model.Document documentId;
 
-    private List<Answer> answers;
+    private Set<Answer> answers;
 
     private Lecturer lecturer;
 

@@ -35,7 +35,7 @@ public class Answer {
 
     @NotNull
     @DocumentReference(lazy = true)
-    private Question questionId;
+    private Question question;
 
     @DocumentReference(lazy = true)
     private Lecturer lecturer;
@@ -56,7 +56,7 @@ public class Answer {
         this.answer = answerDto.getAnswer();
         this.student = answerDto.getStudent();
         this.documentId = answerDto.getDocumentId();
-        this.questionId = answerDto.getQuestionId();
+        this.question = answerDto.getQuestionId();
         this.lecturer = answerDto.getLecturer();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }

@@ -1,15 +1,18 @@
 package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 
+import fpt.edu.eresourcessystem.dto.AnswerDto;
 import fpt.edu.eresourcessystem.dto.DocumentNoteDTO;
-import fpt.edu.eresourcessystem.model.DocumentNote;
-import fpt.edu.eresourcessystem.model.Student;
-import fpt.edu.eresourcessystem.service.DocumentNoteService;
-import fpt.edu.eresourcessystem.service.DocumentService;
-import fpt.edu.eresourcessystem.service.StudentService;
+import fpt.edu.eresourcessystem.dto.QuestionDto;
+import fpt.edu.eresourcessystem.model.*;
+import fpt.edu.eresourcessystem.responseDto.QuestionResponseDto;
+import fpt.edu.eresourcessystem.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,10 +21,15 @@ public class StudentRestController {
     private final StudentService studentService;
     private final DocumentService documentService;
     private final DocumentNoteService documentNoteService;
-    public StudentRestController(StudentService studentService, DocumentService documentService, DocumentNoteService documentNoteService) {
+
+    private final QuestionService questionService;
+    private final AnswerService answerService;
+    public StudentRestController(StudentService studentService, DocumentService documentService, DocumentNoteService documentNoteService, QuestionService questionService, AnswerService answerService) {
         this.studentService = studentService;
         this.documentService = documentService;
         this.documentNoteService = documentNoteService;
+        this.questionService = questionService;
+        this.answerService = answerService;
     }
 
     public Student getLoggedInStudent() {
@@ -77,4 +85,45 @@ public class StudentRestController {
             return null;
         }
     }
+
+
+    @PostMapping(value = "/question/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    @Transactional
+    public ResponseEntity<QuestionResponseDto> addQuestion(@ModelAttribute QuestionDto questionDto, @RequestParam String docId){
+        Student student = getLoggedInStudent();
+        Document document = documentService.findById(docId);
+        if(null == student || null==questionDto || null==document){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        questionDto.setStudent(student);
+        questionDto.setDocumentId(document);
+        Question question = questionService.addQuestion(new Question(questionDto));
+        if(null!= question){
+//            System.out.println(question);
+            QuestionResponseDto questionResponseDto = new QuestionResponseDto(question);
+            ResponseEntity<QuestionResponseDto> responseEntity = new ResponseEntity<>(questionResponseDto, HttpStatus.OK);
+            return responseEntity;
+        }else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/answer/add")
+    @Transactional
+    public Answer addAnswer(@ModelAttribute AnswerDto answerDto){
+        Student student = getLoggedInStudent();
+        if(null == student){
+            return null;
+        }else if(null==answerDto){
+            return null;
+        }
+        answerDto.setStudent(student);
+        Answer answer = answerService.addAnswer(new Answer(answerDto));
+        if(null!= answer){
+            return answer;
+        }else {
+            return null;
+        }
+    }
+
 }

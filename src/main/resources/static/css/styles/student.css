@@ -237,9 +237,12 @@ stu__navbar-view-doc-item:hover a{
 .stu__answer-lecturer
 {
     font-size: var(--normal-font-size);
+    padding: 0.2rem;
+    margin: 0;
 }
 .view-note-link-item,
 .view-question-link-item{
+    cursor: pointer;
     font-size: var(--medium-font-size);
     font-weight: var(--font-medium);
 }
@@ -258,6 +261,9 @@ stu__navbar-view-doc-item:hover a{
 .stu__add-note{
     text-align: right;
     margin-right: 10%;
+}
+.stu__save-question{
+    text-align: right;
 }
 .view-note-list{
     width: 90%;
@@ -280,5 +286,38 @@ stu__navbar-view-doc-item:hover a{
     cursor: pointer;
 }
 .stu__question-content{
-    padding-left: 1.5rem;
+    padding: 0.2rem 0.2rem 0.2rem 1.5rem;
+    margin: 0;
+}
+.form-student-add-doc-new-question{
+    margin-top: 1rem;
+    border-radius: 2rem;
+    border: 1px solid #888888;
+    display: none;
+    padding: 1rem;
+}
+.input-question-content{
+    width: 100%;
+    height: 10rem;
+    overflow-y: auto;
+    border: none;
+    display: inline;
+    resize: none;
+}
+.input-question-content:focus{
+    outline: none;
+}
+.submit-question-button{
+    text-align: right;
+}
+.submit-question-button button{
+    border: none;
+    display: inline;
+    background: white;
+}
+.submit-question-button button i{
+    color: #888888;
+}
+.submit-question-button button i:hover{
+    color: black;
 }
