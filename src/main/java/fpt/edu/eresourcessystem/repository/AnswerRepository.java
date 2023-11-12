@@ -14,4 +14,6 @@ public interface AnswerRepository extends MongoRepository<Answer, String> {
     Optional<Answer> findById(String id);
     List<Answer> findByDocumentId(Document document);
     List<Answer> findByDocumentIdAndQuestionId(Document document, Question question);
+
+    List<Answer> findByQuestion(Question question);
 }

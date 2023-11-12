@@ -72,11 +72,49 @@
                                 <div class="stu__navbar-view-doc">
                                     <ul class="stu__navbar-view-doc-list border-bottom">
                                         <li class="stu__navbar-view-doc-item stu__navbar-active">
-                                            <a th:href="@{/student/my_library/saved_courses}">
+                                            <a href="#">
                                                 Question & Answer
                                             </a>
                                         </li>
                                     </ul>
+                                    <div class="lec__question-in-doc-content" th:if="${questions ne null } AND ${questions.size} > 0">
+                                        <div class="lec__question-content" th:each="question : ${questions}">
+                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${question.student.account.name}"></span></h6>
+                                            <p class="lec__question-content" th:utext="${question.content}"></p>
+                                            <p class="lec__question-content" ><span class="lec__answer-date" th:text="${question.lastModifiedDate}"></span> <a class="lec__add-reply view-question-link-item" th:question-id="${question.id}" onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>
+
+                                            </p>
+                                            <p  th:if="${question.answers.size()} > 0" th:id="'view-more-reply-'+${question.getId()}" th:question-id="${question.id}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply lec__question-content">View more <span th:text="${question.answers.size()}"></span> reply</p>
+                                            <p style="display:none;"  th:if="${question.answers.size()} > 0" th:id="'see-less-reply-'+${question.getId()}" th:question-id="${question.id}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply lec__question-content">See less</p>
+                                            <p style="display:none;"  th:id="'loading-reply-'+${question.getId()}" th:question-id="${question.id}" class="view-question-reply lec__question-content"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
+                                            <div class="reply-content" th:id="'list-reply-content-'+${question.getId()}">
+<!--                                                <div class="reply-content" th:if="${answers ne null}" th:each="answer : ${answers}">-->
+<!--                                                    <h6 class="stu__reply-creater-name"><i class="fa-solid fa-user"></i> <span th:if="${answer.studentName ne null}"  th:text="${answer.studentName}"></span> <span th:if="${answer.lecturerName ne null}"  th:text="${answer.lecturerName}"></span></h6>-->
+<!--                                                    <p class="lec__reply-content" th:utext="${answer.answerContent}"></p>-->
+<!--                                                    <p class="lec__reply-content" ><span class="lec__answer-date" th:text="${answer.lastModifiedDate}"></span> <a class="lec__like-reply view-question-link-item" th:question-id="${question.id}" onclick="likeReply(this.getAttribute('question-id'))"><i class="fa-regular fa-thumbs-up"></i> Like</a>-->
+<!--                                                </div>-->
+                                            </div>
+                                            <div class="lec__reply-form" th:id="'reply-form'+${question.getId()}">
+                                                <form class="form-lecturer-add-doc-new-reply justify-content-between" method="post" role="form"
+                                                      th:object="${newAnswer}"
+                                                      th:id="'reply-content-form'+${question.getId()}">
+                                                    <div class="">
+                                                        <input type="text" name="docId" th:value="${document.getId()}" readonly hidden>
+                                                        <input type="text" name="quesId" th:value="${question.getId()}" readonly hidden>
+                                                        <div class="form-content">
+                                                            <label th:for="'new-reply-content-'+${question.getId()}" class="lec_input-label-reply">Enter answer:</label>
+                                                            <textarea th:id="'new-reply-content-'+${question.getId()}" class="input-reply-content"
+                                                                      th:field="*{answer}"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="submit-reply-button">
+                                                        <button type="button" title="exist" th:question-id="${question.id}" onclick="existFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-xmark"></i></button>
+                                                        <button type="button" title="Send" th:question-id="${question.id}" onclick="submitFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-paper-plane"></i></button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -90,18 +128,14 @@
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script
-        src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+<!--jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <script src="/js/lecturer.js"></script>
+<script src="/js/lecturer-doc-detail.js"></script>
 <script>
     var content = document.getElementById("content");
     var button = document.getElementById("readMoreBtn");

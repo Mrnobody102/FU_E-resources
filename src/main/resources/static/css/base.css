@@ -514,3 +514,13 @@ li {
     cursor: pointer;
     font-weight: var(--font-medium);
 }
+
+.view-question-reply:hover{
+    text-decoration: underline;
+    color:var(--link-color) ;
+}
+
+.reply-content{
+    margin-left: 1rem;
+    padding: 1rem;
+}

@@ -35,6 +35,12 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public Question findById(String quesId) {
+        Optional<Question> question = questionRepository.findById(quesId);
+        return question.orElse(null);
+    }
+
+    @Override
     public Question addQuestion(Question question) {
         if (null != question) {
             if (null == question.getId()) {

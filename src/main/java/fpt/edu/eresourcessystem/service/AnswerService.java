@@ -15,4 +15,6 @@ public interface AnswerService {
 
     Answer updateAnswer(Answer answer);
     boolean deleteAnswer(Answer answer);
+
+    List<Answer> findByQuestion(Question question);
 }

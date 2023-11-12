@@ -14,6 +14,7 @@ function viewNote() {
 
 function submitFormAddQuestion(){
     var formData = $('#form-add-new-question').serialize();
+    // console.log(formData)
     $.ajax({
         type: 'POST',
         url: '/api/student/question/add',

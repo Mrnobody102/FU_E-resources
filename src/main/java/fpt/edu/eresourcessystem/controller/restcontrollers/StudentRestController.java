@@ -5,6 +5,7 @@ import fpt.edu.eresourcessystem.dto.AnswerDto;
 import fpt.edu.eresourcessystem.dto.DocumentNoteDTO;
 import fpt.edu.eresourcessystem.dto.QuestionDto;
 import fpt.edu.eresourcessystem.model.*;
+import fpt.edu.eresourcessystem.responseDto.AnswerResponseDto;
 import fpt.edu.eresourcessystem.responseDto.QuestionResponseDto;
 import fpt.edu.eresourcessystem.service.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -123,6 +124,34 @@ public class StudentRestController {
             return answer;
         }else {
             return null;
+        }
+    }
+
+    @PostMapping(value = "/answer/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    @Transactional
+    public ResponseEntity<AnswerResponseDto> addQuestion(@ModelAttribute AnswerDto answerDto,
+                                                         @RequestParam String docId,
+                                                         @RequestParam String quesId){
+        Student student = getLoggedInStudent();
+        Document document = documentService.findById(docId);
+        Question question = questionService.findById(quesId);
+        if(null == student || null == answerDto || null==document || null == question){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        answerDto.setStudent(student);
+        answerDto.setQuestionId(question);
+        answerDto.setDocumentId(document);
+        Answer answer = answerService.addAnswer(new Answer(answerDto));
+        if(null!= answer){
+//            System.out.println(question);
+            // update list answer of the question
+            question.getAnswers().add(answer);
+            questionService.updateQuestion(question);
+            AnswerResponseDto answerResponseDto = new AnswerResponseDto(answer);
+            ResponseEntity<AnswerResponseDto> responseEntity = new ResponseEntity<>(answerResponseDto, HttpStatus.OK);
+            return responseEntity;
+        }else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
 

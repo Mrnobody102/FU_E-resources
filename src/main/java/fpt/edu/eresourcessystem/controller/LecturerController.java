@@ -2,7 +2,6 @@ package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.CourseDTO;
 import fpt.edu.eresourcessystem.dto.DocumentDTO;
-import fpt.edu.eresourcessystem.dto.ResourceTypeDTO;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
@@ -19,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.print.Doc;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -40,7 +38,9 @@ public class LecturerController {
     private final DocumentService documentService;
     private final CourseLogService courseLogService;
 
-    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, CourseLogService courseLogService) {
+    private final QuestionService questionService;
+
+    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, CourseLogService courseLogService, QuestionService questionService) {
         this.courseService = courseService;
         this.accountService = accountService;
         this.lecturerService = lecturerService;
@@ -48,6 +48,7 @@ public class LecturerController {
         this.resourceTypeService = resourceTypeService;
         this.documentService = documentService;
         this.courseLogService = courseLogService;
+        this.questionService = questionService;
     }
 
 
@@ -270,11 +271,16 @@ public class LecturerController {
             model.addAttribute("errorMessage", "Could not found document.");
             return "exception/404";
         } else {
+            // get list question
+            List<Question> questions =  questionService.findByDocId(document);
+
             if(!document.getDocType().toString().equalsIgnoreCase("UNKNOWN")){
                 String base64EncodedData = Base64.getEncoder().encodeToString(document.getContent());
                 model.addAttribute("data", base64EncodedData);
             }
+            model.addAttribute("newAnswer", new Answer());
             model.addAttribute("document", document);
+            model.addAttribute("questions", questions);
             return "lecturer/document/lecturer_document-detail";
         }
     }

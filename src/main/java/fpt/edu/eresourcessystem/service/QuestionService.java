@@ -11,7 +11,7 @@ import java.util.List;
 public interface QuestionService {
     List<Question> findByDocId(Document document);
     List<Question> findByDocIdAndStudentId(Document document, Student student);
-
+    Question findById(String quesId);
     Question addQuestion(Question question);
 
     Question updateQuestion(Question question);

@@ -65,4 +65,9 @@ public class AnswerServiceImpl implements AnswerService{
         }
         return false;
     }
+    @Override
+    public List<Answer> findByQuestion(Question question) {
+        List<Answer> answers = answerRepository.findByQuestion(question);
+        return answers;
+    }
 }
