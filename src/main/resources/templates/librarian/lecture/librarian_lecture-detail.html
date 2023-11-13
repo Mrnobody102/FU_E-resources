@@ -59,33 +59,30 @@
                     <!--                        </div>-->
                     <!--                    </div>-->
                     <div class="add-form-content">
-                        <form method="post" role="form" th:action="@{/admin/accounts/update}"
-                              th:object="${lecturer}">
                             <table class="table-form lib_table">
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="id">Lecturer ID</label></td>
                                     <td><input type="text"
-                                               class="lib_input form-control" th:field="*{id}"
+                                               class="lib_input form-control" th:value="*{lecturer.getId()}"
                                                placeholder="Enter account ID" readonly>
                                     </td>
                                 </tr>
 
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="username">Username</label></td>
-                                    <td><input type="text"  th:id="username" class="lib_input form-control" th:field="*{account.getName()}"
-                                               placeholder="Enter username" required>
+                                    <td><span id="username" class="lib_input form-control" th:value="${lecturer.getAccount().name}"></span>
 
                                     </td>
                                 </tr>
 
-<!--                                <tr class="lib_input-wrapper">-->
-<!--                                    <td class="lib_input-label"><label th:for="email">Email</label></td>-->
-<!--                                    <td><input type="text" th:id="email"-->
-<!--                                               class="lib_input form-control" th:field="*{email}"-->
-<!--                                               placeholder="Enter email" required>-->
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label th:for="email">Email</label></td>
+                                    <td><input type="text" th:id="email"
+                                               class="lib_input form-control" th:value="*{lecturer.getAccount().getEmail()}"
+                                               placeholder="Enter email" required>
 
-<!--                                    </td>-->
-<!--                                </tr>-->
+                                    </td>
+                                </tr>
 <!--                                <tr class="lib_input-wrapper">-->
 <!--                                    <td class="lib_input-label"><label th:for="name">Full Name</label></td>-->
 <!--                                    <td><input type="text" th:id="name"-->
@@ -110,7 +107,7 @@
 <!--                                </tr>-->
 
                             </table>
-                        </form>
+
                     </div>
                 </div>
             </div>

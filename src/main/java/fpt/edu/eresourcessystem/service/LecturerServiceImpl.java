@@ -151,7 +151,8 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public Lecturer findLecturerById(String lectureId) {
-        return lecturerRepository.findLecturerById(lectureId);
+        Lecturer lecturer = lecturerRepository.findLecturerById(lectureId);
+        return lecturer;
     }
 
 
