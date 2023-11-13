@@ -500,6 +500,8 @@ public class LibrarianController {
 //            model.addAttribute("accountLecturer", accountLecturer);
 //        }
         Lecturer lecturer = lecturerService.findLecturerById(lectureId);
+        List<LecturerCourse> lecturerCourseList = lecturerCourseService.findLecturerCoursesById(lecturer);
+//        lecturer.setLecturerCourses(lecturerCourseList);
         model.addAttribute("lecturer", lecturer);
 
         return "librarian/lecture/librarian_lecture-detail";
@@ -517,16 +519,19 @@ public class LibrarianController {
     @PostMapping("/lectures/create-lecture")
     public String addLectureCourse(@ModelAttribute Lecturer lecturer, @RequestParam String email) {
         Account lecture = accountService.findByEmail(email);
-        lecturer.setAccount(lecture);
-
-        if (lecturerService.findLecturerByAccount(lecture) == null) {
-            lecturerService.addLecturer(lecturer);
+        if (lecture != null) {
+            lecturer.setAccount(lecture);
+            if (lecturerService.findLecturerByAccount(lecture) == null) {
+                lecturerService.addLecturer(lecturer);
 //        lecturer.getAccount().setRole();
-            for (int i = 0; i < lecturer.getCourses().size(); i++) {
-                courseService.updateLectureId(String.valueOf(lecturer.getCourses().get(i)), lecturer);
-            }
-        }
-        return "redirect:/librarian/lectures";
+                for (int i = 0; i < lecturer.getCourses().size(); i++) {
+                    courseService.updateLectureId(String.valueOf(lecturer.getCourses().get(i)), lecturer);
+                }
+                return "redirect:/librarian/lectures/create-lecture?success";
+            } else
+                return "redirect:/librarian/lectures/create-lecture?error";
+        } else
+            return "redirect:/librarian/lectures/create-lecture?error";
 
     }
 }
