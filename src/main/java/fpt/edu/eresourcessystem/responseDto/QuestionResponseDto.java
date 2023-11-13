@@ -1,19 +1,9 @@
 package fpt.edu.eresourcessystem.responseDto;
 
-import fpt.edu.eresourcessystem.enums.CommonEnum;
-import fpt.edu.eresourcessystem.model.Answer;
-import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.Question;
-import fpt.edu.eresourcessystem.model.Student;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.*;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
-
-import java.util.Set;
 
 @Data
 @NoArgsConstructor

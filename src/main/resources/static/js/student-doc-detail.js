@@ -12,20 +12,27 @@ function viewNote() {
     $("#link-view-notes").addClass("stu__navbar-active");
 }
 
-function submitFormAddQuestion(){
-    var formData = $('#form-add-new-question').serialize();
-    // console.log(formData)
-    $.ajax({
-        type: 'POST',
-        url: '/api/student/question/add',
-        data: formData,
-        dataType:'json',
-        success: function(data) {
-            $("#new-question-content").val("");
+function submitFormAddQuestion() {
+
+    var content = $('#editor').val();
+    var trimmedString = $.trim(content);
+
+    if (trimmedString == '') {
+        $('.error-input').css("display", "block");
+    } else {
+        var formData = $('#form-add-new-question').serialize();
+        // console.log(formData)
+        $.ajax({
+            type: 'POST',
+            url: '/api/student/question/add',
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                $("#new-question-content").val("");
                 $(".form-student-add-doc-new-question").css("display", "none");
                 var html = "<div class=\"stu__question-content\">\n" +
-                    "                                                <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span> " + data.studentName  + "</span></h6>\n" +
-                    "                                                <p class=\"stu__question-content\">" + data.questionContent +"</p>\n" +
+                    "                                                <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span> " + data.studentName + "</span></h6>\n" +
+                    "                                                <p class=\"stu__question-content\">" + data.questionContent + "</p>\n" +
                     "                                                    <span class=\"stu__question-date stu__question-content\">" + data.lastModifiedDate + "</span> <a class=\"view-note-link-item \">Edit</a> | <a class=\"view-note-link-item\">Delete</a>\n" +
                     "                                                </div>" +
                     "                                                </div>\n";
@@ -33,11 +40,12 @@ function submitFormAddQuestion(){
 
                 $("#my-questions").prepend(html);
                 console.log(data.studentName)
-        },
-        error: function(xhr) {
-            // Handle errors
-        }
-    });
+            },
+            error: function (xhr) {
+                // Handle errors
+            }
+        });
+    }
 }
 
 $(document).ready(function () {

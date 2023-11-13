@@ -89,7 +89,7 @@
                                             <p style="display:none;"  th:id="'loading-reply-'+${question.getId()}" th:question-id="${question.id}" class="view-question-reply lec__question-content"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
                                             <div class="reply-content" th:id="'list-reply-content-'+${question.getId()}">
 <!--                                                <div class="reply-content" th:if="${answers ne null}" th:each="answer : ${answers}">-->
-<!--                                                    <h6 class="stu__reply-creater-name"><i class="fa-solid fa-user"></i> <span th:if="${answer.studentName ne null}"  th:text="${answer.studentName}"></span> <span th:if="${answer.lecturerName ne null}"  th:text="${answer.lecturerName}"></span></h6>-->
+<!--                                                    <h6 class="stu__reply-creater-name"><i class="fa-solid fa-user"></i> <span th:if="${answer.studentName ne null}"  th:text="${answer.studentName}"></span> <span th:if="${answer.lecturerName ne null}"  th:text="${answer.lecturerName+'(You)'}"></span></h6>-->
 <!--                                                    <p class="lec__reply-content" th:utext="${answer.answerContent}"></p>-->
 <!--                                                    <p class="lec__reply-content" ><span class="lec__answer-date" th:text="${answer.lastModifiedDate}"></span> <a class="lec__like-reply view-question-link-item" th:question-id="${question.id}" onclick="likeReply(this.getAttribute('question-id'))"><i class="fa-regular fa-thumbs-up"></i> Like</a>-->
 <!--                                                </div>-->
@@ -101,10 +101,11 @@
                                                     <div class="">
                                                         <input type="text" name="docId" th:value="${document.getId()}" readonly hidden>
                                                         <input type="text" name="quesId" th:value="${question.getId()}" readonly hidden>
+                                                        <label th:id="'new-reply-content-error-'+${question.getId()}" class=".student_input-label error-input">Content require!</label>
                                                         <div class="form-content">
                                                             <label th:for="'new-reply-content-'+${question.getId()}" class="lec_input-label-reply">Enter answer:</label>
                                                             <textarea th:id="'new-reply-content-'+${question.getId()}" class="input-reply-content"
-                                                                      th:field="*{answer}"></textarea>
+                                                                      th:field="*{answer}" required></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="submit-reply-button">

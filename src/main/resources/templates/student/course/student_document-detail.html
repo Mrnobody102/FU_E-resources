@@ -155,10 +155,11 @@
                                                 <input type="text" th:field="*{docId}" th:value="${document.getId}" readonly hidden>
                                                 <div id="editorWrapper">
                                                     <div class="d-flex justify-content-between">
-                                                        <label for="editor" class="lecturer_input-label-doc">Content:</label>
+                                                        <label for="editor" class=".student_input-label">Content:</label>
+                                                        <label class=".student_input-label error-input">Content require!</label>
                                                     </div>
                                                     <textarea id="editor"
-                                                              th:field="*{content}"></textarea>
+                                                              th:field="*{content}" required></textarea>
                                                 </div>
 
                                             </form>
@@ -186,11 +187,11 @@
                                         </div>
                                     </form>
 
-                                    <div class="stu__question-in-doc-content" th:if="${myQuestions ne null} AND ${myQuestions.size} > 0">
-                                        <h5 class="my-question-header">My questions</h5>
+                                    <div class="stu__question-in-doc-content">
+<!--                                        <h5 class="my-question-header">My questions</h5>-->
                                         <div class="stu__my-question-content" id="my-questions">
-                                            <div class="stu__question-content" th:each="myQuestion : ${myQuestions}">
-                                                <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${myQuestion.studentName}"></span></h6>
+                                            <div class="stu__question-content"  th:if="${myQuestions ne null} AND ${myQuestions.size} > 0" th:each="myQuestion : ${myQuestions}">
+                                                <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${myQuestion.studentName}"></span>(You)</h6>
                                                 <p class="stu__question-content" th:text="${myQuestion.questionContent}"></p>
                                                 <div class="justify-content-end link-view-question stu__question-content" th:if="${myQuestion.lastModifiedDate}">
                                                     <span class="stu__note-date" th:text="${myQuestion.lastModifiedDate}"></span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a>

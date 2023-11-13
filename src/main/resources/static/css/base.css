@@ -506,7 +506,10 @@ li {
 .doc-info-date{
     color: #888888;
 }
-.require-input{
+.error-input{
+    display: none;
+}
+.require-input, .error-input{
     color: var(--danger-color);
     align-items: start;
 }

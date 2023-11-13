@@ -216,7 +216,7 @@
     text-align: right;
 }
 
-.lecturer_input-label-doc {
+.lecturer_input-label-doc,.student_input-label {
     padding-top: 8px;
     padding-bottom: 4px;
 }

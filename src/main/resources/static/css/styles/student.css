@@ -321,3 +321,6 @@ stu__navbar-view-doc-item:hover a{
 .submit-question-button button i:hover{
     color: black;
 }
+.stu__question-in-doc-content{
+    margin-top: 1rem;
+}

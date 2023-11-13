@@ -4,6 +4,7 @@ package fpt.edu.eresourcessystem.model;
 import fpt.edu.eresourcessystem.dto.CourseLogDTO;
 import fpt.edu.eresourcessystem.dto.QuestionDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -41,6 +42,8 @@ public class Question {
     @DocumentReference(lazy = true)
     private Lecturer lecturer;
 
+    private QuestionAnswerEnum.Status status;
+
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
     //Audit Log
@@ -62,6 +65,7 @@ public class Question {
         this.answers = questionDto.getAnswers();
         this.lecturer = questionDto.getLecturer();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+        this.status = QuestionAnswerEnum.Status.CREATED;
     }
 
     @Override
