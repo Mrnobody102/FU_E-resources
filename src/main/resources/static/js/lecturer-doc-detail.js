@@ -5,6 +5,9 @@ function submitFormReplyQuestion(param) {
     if (trimmedString == '') {
         $('#new-reply-content-error-' + param).css("display","block");
     } else {
+        $('#send-reply-button-'+ param).css("display", "none");
+        $('#exist-reply-form-button-'+ param).css("display", "none");
+        $('#sending-reply-'+ param).css("display", "inline");
         $('#new-reply-content-error-' + param).css("display","none");
         var replyForm = 'reply-content-form' + param;
         var formData = $("#" + replyForm).serialize();
@@ -14,8 +17,11 @@ function submitFormReplyQuestion(param) {
             data: formData,
             dataType: 'json',
             success: function (data) {
-                $("#new-reply-content").val("");
-                $(".lec__reply-form").css("display", "none");
+                $('#reply-content-form' + param).trigger('reset');
+                $('#send-reply-button-'+ param).css("display", "inline");
+                $('#exist-reply-form-button-'+ param).css("display", "inline");
+                $('#sending-reply-'+ param).css("display", "none");
+                $('#reply-form' + param).css("display", "none");
                 var html = "";
                 if (data.student == null) {
                     html = "<div class=\"reply-content\">\n" +
@@ -32,7 +38,20 @@ function submitFormReplyQuestion(param) {
                         "                     <a class=\"lec__like-reply view-question-link-item\" reply-id=\"" + data.answerId + "\"onclick=\"likeReply(" + data.answerId + ")\"><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
                         "                     </div>";
                 }
-                $("#list-reply-content-" + param).prepend(html);
+                $("#list-reply-content-" + param).append(html);
+                // change total of answer
+                var totalReply = $('#number-reply-'+param).text();
+                var intValue = parseInt(totalReply);
+
+                if (!isNaN(intValue)) {
+                    // Increment the integer by 1
+                    var newValue = intValue + 1;
+
+                    // Set the new value as the text of the span
+                    $('#number-reply-'+param).text(newValue);
+                } else {
+                    $('#number-reply-'+param).text("");
+                }
             },
             error: function (xhr) {
                 // Handle errors

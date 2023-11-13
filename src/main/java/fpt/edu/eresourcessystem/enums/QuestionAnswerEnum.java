@@ -3,10 +3,10 @@ package fpt.edu.eresourcessystem.enums;
 public class QuestionAnswerEnum {
 
     public enum Status {
-        CREATED("0", "created"),
-        UNREAD("1", "unread"),
-        READ("2", "read"),
-        REPLIED("3", "replied");
+        CREATED("0", "Created"),
+        UNREAD("1", "Unread"),
+        READ("2", "Read"),
+        REPLIED("3", "Replied");
 
         private final String displayValue;
 
@@ -15,6 +15,9 @@ public class QuestionAnswerEnum {
         Status(String displayValue, String toString) {
             this.displayValue = displayValue;
             this.toString = toString;
+        }
+        public String getToString() {
+            return toString;
         }
     }
 }

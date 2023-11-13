@@ -84,7 +84,7 @@
                                             <p class="lec__question-content" ><span class="lec__answer-date" th:text="${question.lastModifiedDate}"></span> <a class="lec__add-reply view-question-link-item" th:question-id="${question.id}" onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>
 
                                             </p>
-                                            <p  th:if="${question.answers.size()} > 0" th:id="'view-more-reply-'+${question.getId()}" th:question-id="${question.id}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply lec__question-content">View more <span th:text="${question.answers.size()}"></span> reply</p>
+                                            <p th:if="${question.answers.size()} > 0" th:id="'view-more-reply-'+${question.getId()}" th:question-id="${question.id}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply lec__question-content">View all <span th:id="'number-reply-'+ ${question.id}"  th:text="${question.answers.size()}"></span> reply</p>
                                             <p style="display:none;"  th:if="${question.answers.size()} > 0" th:id="'see-less-reply-'+${question.getId()}" th:question-id="${question.id}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply lec__question-content">See less</p>
                                             <p style="display:none;"  th:id="'loading-reply-'+${question.getId()}" th:question-id="${question.id}" class="view-question-reply lec__question-content"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
                                             <div class="reply-content" th:id="'list-reply-content-'+${question.getId()}">
@@ -109,8 +109,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="submit-reply-button">
-                                                        <button type="button" title="exist" th:question-id="${question.id}" onclick="existFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-xmark"></i></button>
-                                                        <button type="button" title="Send" th:question-id="${question.id}" onclick="submitFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-paper-plane"></i></button>
+                                                        <button type="button" title="exist" th:id="'exist-reply-form-button-'+${question.getId()}" th:question-id="${question.id}" onclick="existFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-xmark"></i></button>
+                                                        <a type="button" title="Sending" style="display:none;"  th:id="'sending-reply-'+${question.getId()}" th:question-id="${question.id}"><i class="fas fa-spinner fa-spin"></i> Sending...</a>
+                                                        <button type="button" title="Send" th:id="'send-reply-button-'+${question.getId()}" th:question-id="${question.id}" onclick="submitFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-paper-plane"></i></button>
                                                     </div>
                                                 </form>
                                             </div>

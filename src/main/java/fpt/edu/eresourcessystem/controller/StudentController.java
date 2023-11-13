@@ -1,6 +1,5 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.dto.QuestionDto;
 import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
@@ -24,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/student")
@@ -47,7 +48,9 @@ public class StudentController {
 
     private final QuestionService questionService;
 
-    public StudentController(AccountService accountService, CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService, StudentNoteService studentNoteService, DocumentNoteService documentNoteService, QuestionService questionService) {
+    private final AnswerService answerService;
+
+    public StudentController(AccountService accountService, CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService, StudentNoteService studentNoteService, DocumentNoteService documentNoteService, QuestionService questionService, AnswerService answerService) {
         this.accountService = accountService;
         this.courseService = courseService;
         this.studentService = studentService;
@@ -57,6 +60,7 @@ public class StudentController {
         this.studentNoteService = studentNoteService;
         this.documentNoteService = documentNoteService;
         this.questionService = questionService;
+        this.answerService = answerService;
     }
 
     public Student getLoggedInStudent() {
@@ -178,6 +182,7 @@ public class StudentController {
         model.addAttribute("document", document);
         model.addAttribute("account", account);
         model.addAttribute("newQuestion", new Question());
+        model.addAttribute("newAnswer", new Answer());
         if (studentService.checkDocSaved(student.getId(), docId)) {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);
@@ -353,6 +358,17 @@ public class StudentController {
         }else {
             return "redirect:/student/my_library/my_note/add?error";
         }
+    }
+
+    @GetMapping("/my_library/my_questions/history")
+    public String viewMyQuestions(final Model model){
+        Student student = getLoggedInStudent();
+        List<Question> questions = questionService.findByStudent(student);
+        for (Question q: questions) {
+            q.setAnswers(new HashSet<>(answerService.findByStudentAnsQuestion(student,q)));
+        }
+        model.addAttribute("studentQuestions", questions);
+        return "student/library/student_my-questions-and-answers";
     }
 
 }

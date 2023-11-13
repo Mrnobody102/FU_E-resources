@@ -161,7 +161,6 @@
                                                     <textarea id="editor"
                                                               th:field="*{content}" required></textarea>
                                                 </div>
-
                                             </form>
                                         </div>
                                     </div>
@@ -177,13 +176,17 @@
                                         <div class="">
                                             <input type="text" name="docId" th:value="${document.getId()}" readonly hidden>
                                             <div class="form-content">
+                                                <label th:id="error-input-new-question" class="student_input-label-question error-input">Content require!</label>
                                                 <label for="new-question-content" class="student_input-label-question">Enter Question:</label>
                                                 <textarea id="new-question-content" class="input-question-content"
                                                           th:field="*{content}"></textarea>
+
                                             </div>
                                         </div>
                                         <div class="submit-question-button">
-                                            <button type="button" title="Send" onclick="submitFormAddQuestion()"><i class="fa-solid fa-paper-plane"></i></button>
+                                            <button type="button" title="exist" th:id="exist-new-question-form-button" onclick="existFormAddQuestion()"><i class="fa-solid fa-xmark"></i></button>
+                                            <a type="button" title="Sending" style="display:none;"  th:id="sending-new-question"><i class="fas fa-spinner fa-spin"></i> Sending...</a>
+                                            <button type="button" title="Send" th:id="send-new-question-button" onclick="submitFormAddQuestion()"><i class="fa-solid fa-paper-plane"></i></button>
                                         </div>
                                     </form>
 
@@ -194,9 +197,38 @@
                                                 <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${myQuestion.studentName}"></span>(You)</h6>
                                                 <p class="stu__question-content" th:text="${myQuestion.questionContent}"></p>
                                                 <div class="justify-content-end link-view-question stu__question-content" th:if="${myQuestion.lastModifiedDate}">
-                                                    <span class="stu__note-date" th:text="${myQuestion.lastModifiedDate}"></span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a>
+                                                    <span class="stu__note-date" th:text="${myQuestion.lastModifiedDate}"></span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a><a class="lec__add-reply view-question-link-item" th:question-id="${myQuestion.questionId}" onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>
                                                 </div>
-                                                <p  th:if="${myQuestion.totalAnswers} > 0"  class="view-question-reply stu__question-content">View <span th:text="${myQuestion.totalAnswers}"></span> reply</p>
+
+                                                <!-- view reply -->
+                                                <p  th:if="${myQuestion.totalAnswers} > 0" th:id="'view-more-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">View all <span th:id="'number-reply-'+ ${myQuestion.questionId}" th:text="${myQuestion.totalAnswers}"></span> reply</p>
+                                                <p style="display:none;"  th:if="${myQuestion.totalAnswers} > 0" th:id="'see-less-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">See less</p>
+                                                <p style="display:none;"  th:id="'loading-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" class="view-question-reply lec__question-content see-less"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
+                                                <div class="reply-content" th:id="'list-reply-content-'+${myQuestion.questionId}">
+
+                                                </div>
+                                                <!--Reply form-->
+                                                <div class="stu__reply-form" th:id="'reply-form'+${myQuestion.questionId}">
+                                                    <form class="form-student-add-doc-new-reply justify-content-between" method="post" role="form"
+                                                          th:object="${newAnswer}"
+                                                          th:id="'reply-content-form'+${myQuestion.questionId}">
+                                                        <div class="">
+                                                            <input type="text" name="docId" th:value="${document.getId()}" readonly hidden>
+                                                            <input type="text" name="quesId" th:value="${myQuestion.questionId}" readonly hidden>
+                                                            <label th:id="'new-reply-content-error-'+${myQuestion.questionId}" class=".student_input-label error-input">Content require!</label>
+                                                            <div class="form-content">
+                                                                <label th:for="'new-reply-content-'+${myQuestion.questionId}" class="lec_input-label-reply">Enter answer:</label>
+                                                                <textarea th:id="'new-reply-content-'+${myQuestion.questionId}" class="input-reply-content"
+                                                                          th:field="*{answer}" required></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="submit-reply-button">
+                                                            <button type="button" title="exist" th:id="'exist-reply-form-button-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="existFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-xmark"></i></button>
+                                                            <a type="button" title="Sending" style="display:none;"  th:id="'sending-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}"><i class="fas fa-spinner fa-spin"></i> Sending...</a>
+                                                            <button type="button" title="Send" th:id="'send-reply-button-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="submitFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-paper-plane"></i></button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -209,6 +241,12 @@
                                             <p class="stu__question-content" th:utext="${question.questionContent}"></p>
                                             <p class="stu__answer-date stu__question-content" th:text="${question.lastModifiedDate}">Lecturer: <span class="stu__answer-lecturer" th:if="${question.lecturerName ne null}" th:text="${question.lecturerName}"></span></p>
                                             <p  th:if="${question.totalAnswers} > 0"  class="view-question-reply stu__question-content">view <span th:text="${question.totalAnswers}"></span> reply</p>
+                                            <p style="display:none;"  th:if="${question.totalAnswers} > 0" th:id="'see-less-reply-'+${question.questionId}" th:question-id="${question.questionId}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">See less</p>
+                                            <p style="display:none;"  th:id="'loading-reply-'+${question.questionId}" th:question-id="${question.questionId}" class="view-question-reply stu__question-content"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
+                                            <!--                                        View reply-->
+                                            <div class="reply-content" th:id="'list-reply-content-'+${question.questionId}">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

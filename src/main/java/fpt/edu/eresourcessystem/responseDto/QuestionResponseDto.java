@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionResponseDto {
-    private String id;
+    private String questionId;
 
     private String questionContent;
 
@@ -23,7 +23,7 @@ public class QuestionResponseDto {
 
     private String lastModifiedDate;
     public  QuestionResponseDto(Question question){
-        this.id= question.getId();
+        this.questionId= question.getId();
         this.questionContent = question.getContent();
         if(null!=question.getStudent()){
             this.studentName= question.getStudent().getAccount().getName();

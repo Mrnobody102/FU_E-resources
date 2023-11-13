@@ -2,6 +2,7 @@ package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 
 import fpt.edu.eresourcessystem.dto.AnswerDto;
+import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.Answer;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Lecturer;
@@ -57,6 +58,7 @@ public class LecturerRestController {
         if(null!= answer){
             // update list answer of the question
             question.getAnswers().add(answer);
+            question.setStatus(QuestionAnswerEnum.Status.REPLIED);
             questionService.updateQuestion(question);
             AnswerResponseDto answerResponseDto = new AnswerResponseDto(answer);
             ResponseEntity<AnswerResponseDto> responseEntity = new ResponseEntity<>(answerResponseDto, HttpStatus.OK);

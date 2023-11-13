@@ -516,6 +516,7 @@ li {
 .view-question-reply{
     cursor: pointer;
     font-weight: var(--font-medium);
+    margin-left: 1.2rem;
 }
 
 .view-question-reply:hover{
