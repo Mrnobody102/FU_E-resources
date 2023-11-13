@@ -64,7 +64,7 @@
                             <div class="form-group mt-5">
                                 <label for="select-multiple-course">Assign to Courses</label>
 
-                                <select id="select-multiple-course" th:field="*{courses}"  class="form-control selectpicker" multiple data-live-search="true"  >
+                                <select id="select-multiple-course" th:field="*{courses}"  class="form-control selectpicker show-tick"  data-style="btn-white" multiple data-live-search="true"  >
                                     <option selected disabled th:value="0">Choose a course</option>
                                     <option th:each="course : ${allCourses}" th:value="${course.getId()}"
                                             th:text="${course.getCourseName()}"></option>

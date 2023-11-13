@@ -253,7 +253,9 @@ public class LibrarianController {
     @GetMapping({"/courses/{courseId}"})
     public String showCourseDetail(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
+        List<Account> accounts = accountService.findAllLecturer();
         model.addAttribute("course", course);
+        model.addAttribute("accounts", accounts);
         return "librarian/course/librarian_course-detail";
     }
 
@@ -428,8 +430,8 @@ public class LibrarianController {
      * @return
      */
     @PostMapping({"/courses/{courseId}/add-lecture"})
-    public String addLecturer(@PathVariable String courseId, @RequestParam String lecturerEmail, final Model model) {
-        Account account = accountService.findByEmail(lecturerEmail);
+    public String addLecturer(@PathVariable String courseId, @RequestParam String lecturerId, final Model model) {
+        Account account = accountService.findById(lecturerId);
         Lecturer lecturer = lecturerService.findByAccountId(account.getId());
         Course course = courseService.updateLectureId(courseId, lecturer);
 
