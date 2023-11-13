@@ -28,7 +28,7 @@ public interface AccountRepository extends
     @NonNull
     Optional<Account> findById(@NonNull String id);
 
-    @Query("SELECT FROM Accounts a WHERE a.role = 'LECTURER' AND a.deleteFlg = 'PRESERVED'")
+    @Query("{ 'role' : 'LECTURER', 'deleteFlg' : 'PRESERVED' }")
     List<Account> findAllLecturer();
 
 
