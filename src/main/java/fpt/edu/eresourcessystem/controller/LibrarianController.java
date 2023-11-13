@@ -394,13 +394,13 @@ public class LibrarianController {
         }
     }
 
-    @GetMapping({"/lectures/{username}"})
-    public String findLecturerByUsername(@PathVariable String username, final Model model) {
-        Account account = accountService.findByUsername(username);
-        Lecturer lecturer = lecturerService.findByAccountId(account.getId());
-        model.addAttribute("lecturer", lecturer);
-        return "librarian_lecture-detail";
-    }
+//    @GetMapping({"/lectures/{username}"})
+//    public String findLecturerByUsername(@PathVariable String username, final Model model) {
+//        Account account = accountService.findByUsername(username);
+//        Lecturer lecturer = lecturerService.findByAccountId(account.getId());
+//        model.addAttribute("lecturer", lecturer);
+//        return "librarian_lecture-detail";
+//    }
 
 
     @GetMapping({"/courses/{courseId}/add-lecture"})
@@ -494,16 +494,14 @@ public class LibrarianController {
 
     @GetMapping({"/lectures/{lectureId}"})
     public String showLectureDetail(@PathVariable String lectureId, final Model model) {
-//        Course course = courseService.findByCourseId(courseId);
-//        List<Topic> topics = topicService.findByCourseId(courseId);
-//        Lecturer lecturer = lecturerService.findCurrentCourseLecturer(courseId);
-//
+
 //        if (null != lecturer) {
 //            Account accountLecturer = accountService.findById(lecturer.getAccount().getId());
 //            model.addAttribute("accountLecturer", accountLecturer);
 //        }
-//        model.addAttribute("course", course);
-//        model.addAttribute("topics", topics);
+        Lecturer lecturer = lecturerService.findLecturerById(lectureId);
+        model.addAttribute("lecturer", lecturer);
+
         return "librarian/lecture/librarian_lecture-detail";
     }
 

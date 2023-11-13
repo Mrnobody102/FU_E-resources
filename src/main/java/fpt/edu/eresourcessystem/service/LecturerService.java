@@ -34,4 +34,7 @@ public interface LecturerService {
 
     Lecturer findLecturerByAccount(Account account);
 
+
+    Lecturer findLecturerById(String lectureId);
+
 }

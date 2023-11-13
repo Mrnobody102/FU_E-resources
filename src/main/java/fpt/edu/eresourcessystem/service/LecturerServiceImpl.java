@@ -145,7 +145,14 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
 
-    public Lecturer findLecturerByAccount(Account account) {
+    public Lecturer findLecturerByAccount(Account account) { // status
         return lecturerRepository.findLecturerByAccount(account);
     }
+
+    @Override
+    public Lecturer findLecturerById(String lectureId) {
+        return lecturerRepository.findLecturerById(lectureId);
+    }
+
+
 }

@@ -62,6 +62,7 @@
                             <!-- Lecture Courses (Assuming Lecture has a List<Course> courses) -->
                             <div class="form-group mt-5">
                                 <label for="courses">Assign to Courses</label>
+
                                 <select id="courses" th:field="*{courses}" class="form-control" multiple="multiple"
                                         required>
                                     <option th:each="course : ${allCourses}" th:value="${course.getId()}"
