@@ -5,10 +5,11 @@
 <!--LIBRARIAN HEADER-->
 <body th:fragment="headerLibrarianSection">
 <header class="header header-librarian">
-    <div class="grid">
+    <div class="">
         <!-- Header navbar -->
         <nav class="header__navbar grid">
-            <h2 class="header__system-name header__navbar-list grid__column-1">
+            <h2 class="header__system-name header__navbar-list grid__column-2">
+                <i class="fa-solid fa-house"></i>
                 E-Resources
             </h2>
             <a href="/" class="header__logo-link grid__column-2">
@@ -16,7 +17,7 @@
                     <img alt="" th:src="@{/images/fptUniversityLogo.png}">
                 </div>
             </a>
-            <ul class="header__navbar-list grid__column-7">
+            <ul class="header__navbar-list grid__column-9">
                 <li class="header__navbar-item header__notify-appearance">
                     <a href="" class="header__navbar-item-link">
                         <i class="header__navbar-icon fas fa-bell"></i>
@@ -68,18 +69,19 @@
 <!--Copy from Librarian header and change name-->
 <body th:fragment="headerAdminSection">
 <header class="header-librarian">
-    <div class="grid">
+    <div class="">
         <!-- Header navbar -->
-        <nav class="header__navbar">
-            <h2 class="header__system-name header__navbar-list">
+        <nav class="header__navbar grid">
+            <h2 class="header__system-name header__navbar-list  grid__column-2">
+                <i class="fa-solid fa-house"></i>
                 E-Resources
             </h2>
-            <a href="/" class="header__logo-link">
+            <a href="/" class="header__logo-link  grid__column-2">
                 <div class="header__logo">
                     <img alt="" th:src="@{/images/fptUniversityLogo.png}">
                 </div>
             </a>
-            <ul class="header__navbar-list">
+            <ul class="header__navbar-list  grid__column-9">
                 <li class="header__navbar-item header__notify-appearance">
                     <a href="" class="header__navbar-item-link">
                         <i class="header__navbar-icon fas fa-bell"></i>

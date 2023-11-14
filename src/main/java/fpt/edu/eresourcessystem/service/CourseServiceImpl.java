@@ -246,6 +246,7 @@ public class CourseServiceImpl implements CourseService{
         List<Course> results = mongoTemplate.find(query, Course.class);
         Page<Course> page =  PageableExecutionUtils.getPage(results, pageable,
                 () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Course.class));
+        System.out.println(page.getTotalPages());
         return page;
     }
 

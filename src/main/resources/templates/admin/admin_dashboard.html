@@ -13,7 +13,7 @@
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-    <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+    <link th:href="@{/css/styles/admin.css}" rel="stylesheet">
 </head>
 <body class="app_container">
 <header th:replace="~{fragments/header::headerLibrarianSection}"></header>
@@ -60,6 +60,11 @@
                     <a th:href="@{/admin/student}">
                         <i class="p-2 fa fa-graduation-cap" aria-hidden="true"></i>
                         Login as student</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/admin/user_log/tracking}">
+                        <i class="p-2 fa fa-cog" aria-hidden="true"></i>
+                        User Activity Tracking</a>
                 </div>
                 <div class="lib-main_menu-item">
                     <a th:href="@{/admin/settings}">

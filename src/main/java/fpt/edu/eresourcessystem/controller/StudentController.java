@@ -114,7 +114,7 @@ public class StudentController {
             return "exception/404";
         }
         // add course log
-        CourseLog courseLog = new CourseLog(courseId, CommonEnum.Action.VIEW);
+        CourseLog courseLog = new CourseLog(course, CommonEnum.Action.VIEW);
         courseLog = courseLogService.addCourseLog(courseLog);
         System.out.println(courseLog);
         model.addAttribute("course", course);
@@ -307,6 +307,7 @@ public class StudentController {
 //        Student student = getLoggedInStudent();
         Page<Course> page;
         if (null == filter || "all".equals(filter)) {
+            System.out.println(filter);
             page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, pageSize);
         } else if("name".equals(filter)){
             page = courseService.findByCourseNameLike(search, pageIndex, pageSize);

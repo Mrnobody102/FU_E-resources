@@ -9,6 +9,7 @@ import fpt.edu.eresourcessystem.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,10 +34,11 @@ public class AdminController {
     private final CourseService courseService;
     private final TopicService topicService;
     private final DocumentService documentService;
+    private final UserLogService userLogService;
     @Value("${page-size}")
     private Integer pageSize;
 
-    public AdminController(AccountService accountService, AdminService adminService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, DocumentService documentService) {
+    public AdminController(AccountService accountService, AdminService adminService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, DocumentService documentService, UserLogService userLogService) {
         this.accountService = accountService;
         this.adminService = adminService;
         this.librarianService = librarianService;
@@ -44,6 +47,7 @@ public class AdminController {
         this.courseService = courseService;
         this.topicService = topicService;
         this.documentService = documentService;
+        this.userLogService = userLogService;
     }
 
     /*
@@ -358,5 +362,25 @@ public class AdminController {
         return "redirect:/admin/accounts" + accountId + "/update";
     }
 
+    @GetMapping({"/user_log/tracking"})
+    public String userLogManage(@RequestParam(required = false, defaultValue = "") String search,
+                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+                                @RequestParam(required = false, defaultValue = "all") String roleSearch,
+                                final Model model) {
+        List<UserLog> userLogs = userLogService.findAll();
+        model.addAttribute("userLogs", userLogs);
+        model.addAttribute("roles", AccountEnum.Role.values());
+        model.addAttribute("roleSearch", roleSearch);
+        return "admin/system_log/admin_user_logs";
+    }
+    @GetMapping("/course_log/tracking")
+    public String courseLogManage(){
+        return "admin/system_log/admin_course_logs";
+    }
 
+    @GetMapping("/document_log/tracking")
+    public String documentLogManage(){
+        return "admin/system_log/admin_document_logs";
+    }
 }
