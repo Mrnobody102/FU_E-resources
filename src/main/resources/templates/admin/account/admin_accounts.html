@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>Admin | Accounts</title>
 
     <!-- Bootstrap core CSS -->
@@ -13,12 +13,12 @@
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-    <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles/librarian.css}">
 
     <!-- SweetAlert từ CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
 
 </head>
 <body class="app_container">
@@ -34,19 +34,19 @@
                 <h1 class="h2">Users management</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                        <button class="btn btn-sm btn-outline-secondary" type="button">Export</button>
                     </div>
                 </div>
             </div>
             <div class="d-flex justify-content-center">
                 <div class="lib_data-list-wrapper">
                     <div class="lib_search-container">
-                        <form class="d-flex" th:action="@{/admin/accounts/list/1}" method="get" th:id="search-form">
+                        <form class="d-flex" method="get" th:action="@{/admin/accounts/list/1}" th:id="search-form">
                             <div class="d-flex">
 
-                                <input class="lib_search-content" type="text" placeholder="Search user.."
-                                       th:name="search" th:id="search-text" th:value="${search}"/>
-                                <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
+                                <input class="lib_search-content" placeholder="Search user.." th:id="search-text"
+                                       th:name="search" th:value="${search}" type="text"/>
+                                <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
                                     <i class="lib_search-btn-icon fas fa-search"></i>
                                 </button>
                                 <a class="btn lib_show-all-btn" th:href="@{/admin/accounts/list/1}">Show AlL</a>
@@ -59,19 +59,19 @@
                             <!--                            </div>-->
 
                             <div class="d-flex">
-                                <select class="lib_filter" th:name="role" th:id="role" onchange="this.form.submit()">
+                                <select class="lib_filter" onchange="this.form.submit()" th:id="role" th:name="role">
                                     <option value="all">All
                                     </option>
                                     <option th:each="role : ${roles}"
+                                            th:selected="(${roleSearch} == ${role.getDisplayValue()})"
                                             th:text="${role}"
-                                            th:value="${role}"
-                                            th:selected="(${roleSearch} == ${role.getDisplayValue()})">
+                                            th:value="${role}">
                                     </option>
                                 </select>
                             </div>
                         </form>
                         <div>
-                            <a class="lib_btn-add" type="button" th:href="@{/admin/accounts/add}">
+                            <a class="lib_btn-add" th:href="@{/admin/accounts/add}" type="button">
                                 <i class="fa-solid fa-plus"></i>
                                 <span>New</span>
                             </a>
@@ -105,7 +105,7 @@
                                 </tr>
                             </th:block>
                         </table>
-                        <nav th:if="${totalPage} > 1" aria-label="Page navigation example">
+                        <nav aria-label="Page navigation example" th:if="${totalPage} > 1">
                             <ul class="pagination" id="pagination">
                                 <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
                                     <a class="page-link previous-page-account"
@@ -114,15 +114,15 @@
                                     </a>
                                 </li>
 
-                                <li th:each="pageIndex: ${pages}" class="page-item"
-                                    th:classappend=" (${currentPage == pageIndex}) ? 'active' : '' ">
+                                <li class="page-item" th:classappend=" (${currentPage == pageIndex}) ? 'active' : '' "
+                                    th:each="pageIndex: ${pages}">
                                     <th:block th:if="${pageIndex == -1}">
                                         <span class="page-link">...</span>
                                     </th:block>
                                     <th:block th:if="${pageIndex != -1}">
-                                        <a th:text="${pageIndex}" th:value="${pageIndex}"
-                                           class="page-link page-account-number"
-                                           style="cursor: pointer"
+                                        <a class="page-link page-account-number" style="cursor: pointer"
+                                           th:text="${pageIndex}"
+                                           th:value="${pageIndex}"
                                         ></a>
                                     </th:block>
                                 </li>
@@ -145,9 +145,9 @@
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Bootstrap script-->
-<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+<script crossorigin="anonymous"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+        th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>
 <!--Custom script-->
 <script th:src="@{/js/admin.js}"></script>
 <script>
