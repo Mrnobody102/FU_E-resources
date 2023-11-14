@@ -24,8 +24,6 @@ import java.util.Objects;
 @PropertySource("web-setting.properties")
 public class AdminController {
 
-    @Value("${page-size}")
-    private Integer pageSize;
     private final AccountService accountService;
     private final AdminService adminService;
     private final LibrarianService librarianService;
@@ -34,6 +32,8 @@ public class AdminController {
     private final CourseService courseService;
     private final TopicService topicService;
     private final DocumentService documentService;
+    @Value("${page-size}")
+    private Integer pageSize;
 
     public AdminController(AccountService accountService, AdminService adminService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, DocumentService documentService) {
         this.accountService = accountService;
@@ -72,20 +72,35 @@ public class AdminController {
 
 
     @GetMapping("/systemLog")
-    String manageSystemLog(final Model model){
+    String manageSystemLog(final Model model) {
         return "admin/system_log/admin_system_logs";
     }
 
+    @GetMapping("/systemLog/userLog")
+    String viewUserLog(final Model model) {
+        return "admin/system_log/admin_user_logs";
+    }
+
+    @GetMapping("/systemLog/courseLog")
+    String viewCourseLog(final Model model) {
+        return "admin/system_log/admin_course_logs";
+    }
+
+    @GetMapping("/systemLog/documentLog")
+    String viewDocumentLog(final Model model) {
+        return "admin/system_log/admin_document_logs";
+    }
 
     @GetMapping("/trainingTypeManagement")
-    String manageTrainingType(final Model model){
+    String manageTrainingType(final Model model) {
         return "admin/training_type_management/admin_training_type_management";
     }
+
     /*
     This function to display detail of courses for admin
      */
     @GetMapping("/course/{courseId}")
-    String getCourseByLibrarian(@PathVariable String courseId, final Model model){
+    String getCourseByLibrarian(@PathVariable String courseId, final Model model) {
         return "admin/course_creator/admin_course_detail";
     }
 
@@ -113,6 +128,7 @@ public class AdminController {
 
         return "admin/course_creator/admin_course_creators";
     }
+
 
     @GetMapping("/accounts/list/{pageIndex}")
     String findAccountByPage(@PathVariable Integer pageIndex,
@@ -224,7 +240,7 @@ public class AdminController {
      */
     @PostMapping("/accounts/update")
     public String updateAccount(@ModelAttribute AccountDTO accountDTO,
-                                       final Model model) {
+                                final Model model) {
         Account checkExist = accountService.findById(accountDTO.getId());
         if (null == checkExist) {
             model.addAttribute("errorMessage", "account not exist.");
