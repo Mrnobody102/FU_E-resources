@@ -6,6 +6,7 @@ import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
@@ -34,8 +35,13 @@ public class AdminController {
     private final CourseService courseService;
     private final TopicService topicService;
     private final DocumentService documentService;
+    private final FeedbackService feedbackService;
 
-    public AdminController(AccountService accountService, AdminService adminService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, DocumentService documentService) {
+    public AdminController(AccountService accountService, AdminService adminService,
+                           LibrarianService librarianService, LecturerService lecturerService,
+                           StudentService studentService, CourseService courseService,
+                           TopicService topicService, DocumentService documentService,
+                           FeedbackService feedbackService) {
         this.accountService = accountService;
         this.adminService = adminService;
         this.librarianService = librarianService;
@@ -44,6 +50,7 @@ public class AdminController {
         this.courseService = courseService;
         this.topicService = topicService;
         this.documentService = documentService;
+        this.feedbackService = feedbackService;
     }
 
     /*
@@ -331,6 +338,29 @@ public class AdminController {
             return "redirect:/admin/accounts/list/1?success";
         }
         return "redirect:/admin/accounts" + accountId + "/update";
+    }
+
+    @GetMapping("/feedbacks/list/{pageIndex}")
+    String showFeedbacksByPage(@PathVariable Integer pageIndex,
+                             @RequestParam(required = false, defaultValue = "") String search,
+                             final Model model, HttpServletRequest request) {
+        Page<Course> page;
+//        page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
+//        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+//        model.addAttribute("pages", pages);
+//        model.addAttribute("totalPage", page.getTotalPages());
+//        model.addAttribute("courses", page.getContent());
+//        model.addAttribute("search", search);
+//        model.addAttribute("currentPage", pageIndex);
+        return "librarian/course/librarian_courses";
+    }
+
+    @GetMapping({"/feedbacks"})
+    public String showFeedbacks(final Model model) {
+        List<Feedback> feedbacks = feedbackService.findAll();
+        model.addAttribute("feedbacks", feedbacks);
+        return "admin/feedback/admin_feedbacks";
+//        return  "librarian/course/detailCourseTest";
     }
 
 
