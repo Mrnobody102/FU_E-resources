@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
+import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
@@ -25,7 +26,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/student")
@@ -49,8 +49,9 @@ public class StudentController {
     private final QuestionService questionService;
 
     private final AnswerService answerService;
+    private final UserLogService userLogService;
 
-    public StudentController(AccountService accountService, CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService, StudentNoteService studentNoteService, DocumentNoteService documentNoteService, QuestionService questionService, AnswerService answerService) {
+    public StudentController(AccountService accountService, CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService, StudentNoteService studentNoteService, DocumentNoteService documentNoteService, QuestionService questionService, AnswerService answerService, UserLogService userLogService) {
         this.accountService = accountService;
         this.courseService = courseService;
         this.studentService = studentService;
@@ -61,17 +62,20 @@ public class StudentController {
         this.documentNoteService = documentNoteService;
         this.questionService = questionService;
         this.answerService = answerService;
+        this.userLogService = userLogService;
     }
 
-    public Student getLoggedInStudent() {
+    private Student getLoggedInStudent() {
         return studentService.findAll().get(0);
     }
-
-
     /*
         HOME
      */
-
+    private UserLog addUserLog(String url){
+        UserLog userLog = new UserLog(new UserLogDto(url));
+        userLog = userLogService.addUserLog(userLog);
+        return userLog;
+    }
     @GetMapping({"", "/home"})
     public String getStudentHome(@ModelAttribute Account account, final Model model) {
         Student student = getLoggedInStudent();
@@ -99,7 +103,7 @@ public class StudentController {
         return "student/course/student_courses";
     }
 
-    @GetMapping({"/courses/{courseId}","/courseDetail"})
+    @GetMapping({"/courses/{courseId}"})
     public String viewCourseDetail(@PathVariable(required = false) String courseId, final Model model) {
         // auth
         Student student = getLoggedInStudent();
@@ -117,6 +121,8 @@ public class StudentController {
         if (studentService.checkCourseSaved(student.getId(), courseId)) {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);
+        // add log
+        addUserLog("/student/course/"+ courseId);
         return "student/course/student_course-detail";
     }
 
@@ -127,6 +133,8 @@ public class StudentController {
         if (null != courseService.findByCourseId(courseId)) {
             studentService.saveACourse(student.getId(), courseId);
         }
+        // add log
+        addUserLog("/student/course/" + courseId + "/save_course");
         return "redirect:/student/courses/" + courseId + "?success";
     }
 
@@ -138,6 +146,8 @@ public class StudentController {
         if (null != courseService.findByCourseId(courseId)) {
             studentService.unsavedACourse(student.getId(), courseId);
         }
+        // add log
+        addUserLog("/student/course/" + courseId + "/unsaved_course");
         return "redirect:/student/courses/" + courseId + "?success";
     }
 
@@ -186,6 +196,8 @@ public class StudentController {
         if (studentService.checkDocSaved(student.getId(), docId)) {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);
+        // add log
+        addUserLog("/student/documents/" + docId);
         return "student/course/student_document-detail";
     }
 
@@ -208,6 +220,8 @@ public class StudentController {
                 return "redirect:/student/my_library/saved_documents";
             }
         }
+        // add log
+        addUserLog("/student/documents/" + documentId+ "/save_document");
         return "common/login";
 
     }
@@ -232,6 +246,8 @@ public class StudentController {
                 return "redirect:/student/my_library/saved_documents";
             }
         }
+        // add log
+        addUserLog("/student/documents/" + documentId+ "/unsaved_document");
         return "common/login";
     }
 
@@ -263,7 +279,7 @@ public class StudentController {
         return "student/library/student_saved_documents";
     }
 
-    @GetMapping({"/topics/{topicId}","/topicDetail"})
+    @GetMapping({"/topics/{topicId}"})
     public String viewTopicDetail(@PathVariable(required = false) String topicId, final Model model) {
         // get account authorized
         Student student = getLoggedInStudent();
@@ -277,6 +293,8 @@ public class StudentController {
         if (studentService.checkCourseSaved(student.getId(), course.getId())) {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);
+        // add log
+        addUserLog("/student/topics/" + topicId);
         return "student/topic/student_topic-detail";
     }
 
@@ -304,6 +322,8 @@ public class StudentController {
         model.addAttribute("filter", filter);
         model.addAttribute("currentPage", pageIndex);
         model.addAttribute("search", search);
+        // add log
+        addUserLog("/student/search_course/" + pageIndex+ "?search=" + search + "&filter="+ filter);
         return "student/course/student_courses";
     }
 
@@ -354,6 +374,8 @@ public class StudentController {
         studentNoteDTO.setStudentId(student.getId());
         StudentNote studentNote = studentNoteService.addStudentNote(studentNoteDTO, id);
         if(null!= studentNote){
+            // add log
+            addUserLog("/student/my_note/student_notes/add/" +studentNote);
             return "redirect:/student/my_library/my_note/add?success";
         }else {
             return "redirect:/student/my_library/my_note/add?error";
@@ -368,6 +390,8 @@ public class StudentController {
             q.setAnswers(new HashSet<>(answerService.findByStudentAnsQuestion(student,q)));
         }
         model.addAttribute("studentQuestions", questions);
+        // add log
+        addUserLog("/my_library/my_questions/history");
         return "student/library/student_my-questions-and-answers";
     }
 
