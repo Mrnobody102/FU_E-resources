@@ -28,7 +28,7 @@
         <div class="app__container-content">
             <div class="course-details-head">
                 <a th:href="@{/admin}">Home</a>
-                <span> &gt; Users management</span>
+                <span> &gt; Training Type management</span>
             </div>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Training Type management</h1>
@@ -41,7 +41,7 @@
             <div class="d-flex justify-content-center">
                 <div class="lib_data-list-wrapper">
                     <div class="lib_search-container">
-                        <form class="d-flex" th:action="@{/admin/feedbacks/list/1}" method="get" th:id="search-form">
+                        <form class="d-flex" th:action="@{/admin/trainingtypes/list/1}" method="get" th:id="search-form">
                             <div class="d-flex">
 
                                 <input class="lib_search-content" type="text" placeholder="Search user.."
@@ -49,7 +49,7 @@
                                 <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
                                     <i class="lib_search-btn-icon fas fa-search"></i>
                                 </button>
-                                <a class="btn lib_show-all-btn" th:href="@{/admin/feedbacks/list/1}">Show AlL</a>
+                                <a class="btn lib_show-all-btn" th:href="@{/admin/trainingtypes/list/1}">Show AlL</a>
                             </div>
                             <!--                            <div>-->
                             <!--                                <a class="btn lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">-->
@@ -61,7 +61,7 @@
 
                         </form>
                         <div>
-                            <a class="lib_btn-add" type="button" th:href="@{/admin/accounts/add}">
+                            <a class="lib_btn-add" type="button" th:href="@{/admin/trainingtype/add}">
                                 <i class="fa-solid fa-plus"></i>
                                 <span>New</span>
                             </a>
@@ -69,7 +69,7 @@
 
                     </div>
 
-                    <div class="table-responsive" th:if="${accounts ne null}">
+                    <div class="table-responsive" th:if="${trainingtypes ne null}">
                         <table class="table table-striped table-sm">
                             <tr class="n8">
                                 <th>STT </th>
@@ -79,7 +79,7 @@
                                 <th>Status</th>
                                 <!--                                <th></th>-->
                             </tr>
-                            <th:block th:each="feedback, iterStart : ${feedbacks}">
+                            <th:block th:each="feedback, iterStart : ${trainingtypes}">
                                 <tr>
                                     <td th:text="${iterStart.index +1}"></td>
                                     <td><a th:href="@{'/admin/feedbacks/' + ${feedback.getId}}"

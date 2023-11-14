@@ -1,0 +1,209 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Librarian | Add Training Type</title>
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- SweetAlert từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+    <!--    <style>-->
+    <!--        label.error {-->
+    <!--            margin-top: 5px;-->
+    <!--            margin-left: 5px;-->
+    <!--            display: block;-->
+    <!--            color: red;-->
+    <!--            /*font-size: smaller;*/-->
+    <!--        }-->
+    <!--    </style>-->
+</head>
+<body class="app_container">
+
+<header th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<div class="main_content">
+    <div class="grid app__container-content-wrapper">
+        <div class="app__container-content">
+            <div class="course-details-head">
+                <a th:href="@{/admin}">Home</a>
+                <span> &gt; <a th:href="@{/admin/trainingtypes/list}">Training type management</a></span>
+                <span> &gt; Add new training type</span>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Add training type</h1>
+
+            </div>
+            <div class="lib_content">
+                <div class="lib_form">
+
+                    <div class="lib_content-table">
+                        <div class="lib_form-table">
+
+                            <div class="add-form-content">
+                                <form method="post" role="form" th:action="@{/admin/trainingtypes/add}"
+                                      th:object="${trainingtype}" th:id="add-trainingtype">
+                                    <table class="table-form lib_table">
+                                        <!--                                        <tr>-->
+                                        <!--                                            <td><label th:for="accountId">Account ID</label></td>-->
+                                        <!--                                            <td><input type="text"-->
+                                        <!--                                                       class="form-control" th:field="*{accountId}"-->
+                                        <!--                                                       placeholder="Enter account ID" required>-->
+                                        <!--                                            </td>-->
+                                        <!--                                        </tr>-->
+
+                                        <tr class="lib_input-wrapper">
+                                            <td class="lib_input-label"><label th:for="username">Username</label></td>
+                                            <td><input type="text"  th:id="username"
+                                                       class="lib_input form-control" th:field="*{username}"
+                                                       placeholder="Enter username" required>
+
+                                            </td>
+                                        </tr>
+                                        <tr class="lib_input-wrapper">
+                                            <td class="lib_input-label"><label th:for="password">Password</label></td>
+                                            <td><input type="text" th:id="password"
+                                                       class="lib_input form-control" th:field="*{password}"
+                                                       placeholder="Enter password" required>
+
+                                            </td>
+                                        </tr>
+
+                                        <tr class="lib_input-wrapper">
+                                            <td class="lib_input-label"><label th:for="email">Email</label></td>
+                                            <td><input type="text" th:id="email"
+                                                       class="lib_input form-control" th:field="*{email}"
+                                                       placeholder="Enter email" required>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="lib_input-label"><label th:for="name">Full Name</label></td>
+                                            <td ><input type="text" th:id="name"
+                                                        class="lib_input form-control" th:field="*{name}"
+                                                        placeholder="Enter name" required>
+
+                                            </td>
+                                        </tr>
+
+                                        <tr class="lib_input-wrapper">
+                                            <td class="lib_input-label"><label th:for="dateOfBirth">Date of birth</label></td>
+                                            <td><input type="date" th:id="dateOfBirth"
+                                                       class="lib_input form-control" th:field="*{dateOfBirth}"
+
+                                                       required>
+                                            </td>
+                                        </tr>
+                                        <tr class="lib_input-wrapper">
+                                            <td class="lib_input-label"><label th:for="gender">Gender</label></td>
+                                            <td>
+                                                <th:block th:each="gender : ${genders}">
+                                                    <input type="radio" th:name="gender"
+                                                           th:id="${gender.getDisplayValue()}"
+                                                           th:value="${gender}">
+                                                    <label class="me-3" th:for="${gender.getDisplayValue()}"
+                                                           th:text="${gender.getDisplayValue()}"></label>
+                                                </th:block>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="lib_input-label"><label th:for="campus">Campus</label></td>
+                                            <td ><select class="lib_input" th:field="*{campus}" th:id="campus">
+                                                <option th:each="campus : ${campuses}"
+                                                        th:text="${campus.getDisplayValue()}"
+                                                        th:value="${campus}">
+                                                </option>
+                                            </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="lib_input-label"><label for="role">Role</label></td>
+                                            <td>
+                                                <select class="lib_input" name="role" id="role">
+                                                    <option th:each="role : ${roles}"
+                                                            th:text="${role}"
+                                                            th:value="${role}">
+                                                    </option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <!--                                        <tr id="isAdminCheckbox" style="display: none">-->
+                                        <!--                                            <td></td>-->
+                                        <!--                                            <td>-->
+                                        <!--                                                <input type="checkbox" name="isAdmin" id="isAdmin">-->
+                                        <!--                                                <label for="isAdmin">Is Admin</label>-->
+                                        <!--                                            </td>-->
+                                        <!--                                        </tr>-->
+
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <button type="submit" class="btn lib_btn-save">Save</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footerSection}"></div>
+
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+<!--Custom script-->
+<script th:src="@{/js/librarian.js}"></script>
+
+
+<!--Validate-->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script th:src="@{/js/validation.js}"></script>
+
+<script th:inline="javascript">
+    validate_addAccount();
+
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Save account successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check account information again!',
+            'error'
+        );
+    }
+</script>
+</body>
+</html>
