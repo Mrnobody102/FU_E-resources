@@ -38,22 +38,38 @@
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <div style="flex:3 ;">
                                 <h1 class="h2" th:text="${course.courseCode} + ' - ' + ${course.courseName}"></h1>
-                                <p id="content" class="doc-info-description" style="text-align: justify; margin-bottom: 0" th:text="${course.description}"></p>
+                                <p id="content" class="doc-info-description"
+                                   style="text-align: justify; margin-bottom: 0" th:text="${course.description}"></p>
                                 <span id="readMoreBtn" class="read-more" onclick="toggleContent()">Xem thêm</span>
 
                                 <p class="mt-2">Course status:
                                     <th:block th:if="${course.status.toString().equals('PUBLISH')}">
-                                        <span class="text-success fw-bold" th:text="${course.status.getDisplayValue()}"></span>
+                                        <span class="text-success fw-bold"
+                                              th:text="${course.status.getDisplayValue()}"></span>
                                     </th:block>
                                     <th:block th:if="${course.status.toString().equals('DRAFT')}">
-                                        <span class="text-warning fw-bold" th:text="${course.status.getDisplayValue()}"></span>
+                                        <span class="text-warning fw-bold"
+                                              th:text="${course.status.getDisplayValue()}"></span>
                                     </th:block>
                                     <th:block th:if="${course.status.toString().equals('HIDE')}">
-                                        <span class="text-secondary fw-bold" th:text="${course.status.getDisplayValue()}"></span>
+                                        <span class="text-secondary fw-bold"
+                                              th:text="${course.status.getDisplayValue()}"></span>
                                     </th:block>
 
 
-                                    <button type="button" class="border-0 ms-3">Change</button>
+                                    <button type="button" id="changeCourseStatus" class="border-0 ms-3">Change</button>
+                                <form method="post" th:action="@{'/lecturer/courses/' + ${course.id} + '/changeStatus'}" style="display:none;" id="courseStatusSelect">
+                                    <select th:name="status">
+                                        <option
+                                                th:each="status:${courseStatus}"
+                                                th:value="${status}"
+                                                th:text="${status.getDisplayValue()}"></option>
+                                    </select>
+                                    <button type="submit" class="border-0 ms-3">Save</button>
+                                </form>
+
+
+
                                 </p>
 
                             </div>
@@ -78,9 +94,11 @@
                                                         <div>
                                                             <a class="lec__edit-topic-icon"
                                                                th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}">
-                                                                <i class="fa-regular fa-edit"></i><span> Update topic</span> </a>
+                                                                <i class="fa-regular fa-edit"></i><span> Update topic</span>
+                                                            </a>
                                                             <a class="lec__add-doc-icon"
-                                                               th:href="@{'/lecturer/topics/' + ${topic.id} +'/documents/add'}"> + <span>Add
+                                                               th:href="@{'/lecturer/topics/' + ${topic.id} +'/documents/add'}">
+                                                                + <span>Add
                                                                 document </span></a>
                                                         </div>
                                                     </div>
@@ -90,7 +108,8 @@
                                             <div class="d-flex align-items-center document-view-info border-bottom"
                                                  th:each="document : ${topic.getDocuments()}">
                                                 <div class="doc-info-head" style="max-width: 75%">
-                                                    <p class="doc-info-title"><a th:href="@{/lecturer/course}">
+                                                    <p class="doc-info-title"><a
+                                                            th:href="@{'/lecturer/documents/' + ${document.id}}">
                                                         <span th:text="${document.title}"></span></a>
                                                     </p>
                                                     <p class="doc-info-description">
@@ -99,8 +118,9 @@
                                                 </div>
                                                 <div style="margin-left: 5%">
                                                     <a class="lec__edit-topic-icon"
-                                                       th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}"> <i
-                                                            class="fa-regular fa-edit"></i> </a>
+                                                       th:href="@{'/lecturer/documents/' + ${document.id} +'/update'}">
+                                                        <i
+                                                                class="fa-regular fa-edit"></i> </a>
                                                 </div>
                                             </div>
                                             <!--End Document view-->
@@ -118,68 +138,6 @@
 </div>
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
-
-<!--<div class="app_container">-->
-
-
-<!--    &lt;!&ndash; Content &ndash;&gt;-->
-<!--    <main class="main_content">-->
-<!--        <div class="course-details-head">-->
-<!--            <a th:href="@{/lecturer/courses/list/all/1}">Back</a>-->
-<!--            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${course.courseId}}"-->
-<!--                           th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <h1>Detail Subject</h1>-->
-<!--            <div>-->
-<!--                <table th:if="course ne null">-->
-<!--                    <tr>-->
-<!--                        <th>Course Code</th>-->
-<!--                        <td th:text="${course.courseCode}"></td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <th>Course Name</th>-->
-<!--                        <td th:text="${course.courseName}"></td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <th>Description</th>-->
-<!--                        <td th:text="${course.description}"> </td>-->
-<!--                    <tr>-->
-<!--                        <th>Topics-->
-<!--                        </th>-->
-<!--                        <td th:if="topics ne null">-->
-<!--                            <th:block th:each="topic : ${topics}">-->
-<!--                                <a th:href="@{'/lecturer/topics/detail/' + ${topic.topicId}}" th:text="|${topic.topicTitle} : ${topic.topicDescription}|"></a>-->
-<!--                            </th:block>-->
-<!--                        </td>-->
-
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <th>Lecturers-->
-<!--                        </th>-->
-<!--                        <td th:if="lecturers ne null">-->
-<!--                            <th:block th:each="lecturer : ${lecturers}">-->
-<!--                                <p th:text="|${lecturer.username} ( ${lecturer.name} )|"></p>-->
-<!--                            </th:block>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <th></th>-->
-<!--                        <td>-->
-<!--                            <a class="update-course" th:href="@{'/lecturer/courses/update/'+${course.courseId}}">Edit course information</a>-->
-<!--                            | <a class="delete-course" th:id="${course.courseId}">Delete</a>-->
-<!--                            | <a class="update-topics" th:href="@{'/lecturer/courses/topics/'+${course.courseId}}">Edit topics</a>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                </table>-->
-
-<!--            </div>-->
-<!--        </div>-->
-<!--    </main>-->
-
-
-<!--</div>-->
-
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -208,6 +166,17 @@
             button.textContent = "Read more";
         }
     }
+
+    // Get the button and select element
+    const button = document.getElementById('changeCourseStatus');
+    const select = document.getElementById('courseStatusSelect');
+
+    // Add event listener to the button
+    button.addEventListener('click', function () {
+        // Toggle the visibility of the select element
+        select.style.display = select.style.display === 'none' ? 'block' : 'none';
+    });
+
 </script>
 </body>
 

@@ -1,4 +1,4 @@
-package fpt.edu.eresourcessystem.responseDto;
+package fpt.edu.eresourcessystem.dto.Response;
 
 import fpt.edu.eresourcessystem.model.Answer;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnswerResponseDto {
+public class AnswerResponseDTO {
 
     private String answerId;
 
@@ -25,7 +25,7 @@ public class AnswerResponseDto {
     private String lecturerName;
 
     private String lastModifiedDate;
-    public  AnswerResponseDto(Answer answer){
+    public AnswerResponseDTO(Answer answer){
         this.answerId= answer.getId();
         this.answerContent = answer.getAnswer();
         if(null!=answer.getStudent() && null!=answer.getStudent().getAccount()){

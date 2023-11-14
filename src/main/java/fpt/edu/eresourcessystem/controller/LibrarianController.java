@@ -1,8 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.CourseDTO;
-import fpt.edu.eresourcessystem.dto.DocumentDTO;
-import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -20,9 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -303,96 +299,7 @@ public class LibrarianController {
     }
 
 
-
-    /*
-        DOCUMENTS
-     */
-
-    /**
-     * List all documents
-     *
-     * @return list documents
-     */
-    @GetMapping({"/documents/list"})
-    public String showDocuments() {
-        return "librarian/document/librarian_documents";
-    }
-
-    @GetMapping("/documents/list/{pageIndex}")
-    String showDocumentsByPage(@PathVariable Integer pageIndex,
-                               @RequestParam(required = false, defaultValue = "") String search,
-                               @RequestParam(required = false, defaultValue = "all") String course,
-                               @RequestParam(required = false, defaultValue = "all") String topic,
-                               final Model model, HttpServletRequest request) {
-        Page<Document> page = documentService.filterAndSearchDocument(course, topic, search, search, pageIndex, pageSize);
-
-        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-        model.addAttribute("pages", pages);
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("currentPage", pageIndex);
-        model.addAttribute("documents", page.getContent());
-        model.addAttribute("search", search);
-        model.addAttribute("selectedCourse", course);
-        model.addAttribute("courses", courseService.findAll());
-        return "librarian/document/librarian_documents";
-    }
-
-    @GetMapping({"/documents/{documentId}"})
-    public String showDocumentDetail(@PathVariable String documentId, final Model model) {
-        Document document = documentService.findById(documentId);
-        model.addAttribute("document", document);
-        return "librarian/document/librarian_document-detail";
-    }
-
-    @GetMapping({"/documents/add"})
-    public String addDocument(final Model model) {
-        model.addAttribute("document", new Document());
-        model.addAttribute("courses", courseService.findAll());
-        model.addAttribute("resourceTypes", DocumentEnum.DefaultTopicResourceTypes.values());
-        System.out.println(DocumentEnum.DefaultTopicResourceTypes.values());
-        return "librarian/document/librarian_add-document";
-    }
-
-    @PostMapping("/documents/add")
-    public String addDocumentProcess(@ModelAttribute DocumentDTO documentDTO,
-//                                     @RequestParam(value="topicIds") String topicIds,
-//                                     @RequestParam(value="respondResourceType") String respondResourceType,
-                                     @RequestParam("file") MultipartFile file) throws IOException {
-//        List<ResourceType> resourceTypes = new ArrayList<>();
-//        List<String> selectedTopicIds = Arrays.asList(topicIds.split(","));
-//        for(String topic:selectedTopicIds) {
-//            ResourceType resourceType = new ResourceType();
-//            resourceType.setResourceTypeName(respondResourceType);
-//            resourceType.setTopicId(topic);
-//            resourceType.getDocuments().add(document.getDocumentId());
-//            // Add resource type
-//            resourceTypes.add(resourceTypeService.addResourceType(resourceType));
-//        }
-//        List<String> resourceTypeIds = resourceTypes.stream()
-//                .map(ResourceType::getResourceTypeId)
-//                .collect(Collectors.toList());
-//        document.setResourceTypeId(resourceTypeIds);
-
-        // thêm check file trước khi add
-        String id = documentService.addFile(file);
-        documentService.addDocument(documentDTO, id);
-        return "redirect:/librarian/documents/add?success";
-    }
-
-    @GetMapping({"/documents/update/{documentId}"})
-    public String updateDocumentProcess(@PathVariable(required = false) String documentId, final Model model) {
-        if (null == documentId) {
-            documentId = "";
-        }
-        Document document = documentService.findById(documentId);
-        if (null == document) {
-            return "redirect:librarian/documents/update?error";
-        } else {
-            model.addAttribute("document", new Document());
-            model.addAttribute("courses", courseService.findAll());
-            return "librarian/document/librarian_update-document";
-        }
-    }
+//    LECTURER MANAGEMENT
 
     @GetMapping({"/lectures/{username}"})
     public String findLecturerByUsername(@PathVariable String username, final Model model) {

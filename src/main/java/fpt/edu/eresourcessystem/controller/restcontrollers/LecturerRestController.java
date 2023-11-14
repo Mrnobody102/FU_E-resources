@@ -1,12 +1,12 @@
 package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 
-import fpt.edu.eresourcessystem.dto.AnswerDto;
+import fpt.edu.eresourcessystem.dto.AnswerDTO;
 import fpt.edu.eresourcessystem.model.Answer;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.Question;
-import fpt.edu.eresourcessystem.responseDto.AnswerResponseDto;
+import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDTO;
 import fpt.edu.eresourcessystem.service.AnswerService;
 import fpt.edu.eresourcessystem.service.DocumentService;
 import fpt.edu.eresourcessystem.service.LecturerService;
@@ -41,25 +41,25 @@ public class LecturerRestController {
 
     @PostMapping(value = "/answer/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     @Transactional
-    public ResponseEntity<AnswerResponseDto> addQuestion(@ModelAttribute AnswerDto answerDto,
+    public ResponseEntity<AnswerResponseDTO> addQuestion(@ModelAttribute AnswerDTO answerDTO,
                                                          @RequestParam String docId,
                                                          @RequestParam String quesId){
         Lecturer lecturer = getLoggedInLecturer();
         Document document = documentService.findById(docId);
         Question question = questionService.findById(quesId);
-        if(null == lecturer || null == answerDto || null==document || null == question){
+        if(null == lecturer || null == answerDTO || null==document || null == question){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        answerDto.setLecturer(lecturer);
-        answerDto.setQuestionId(question);
-        answerDto.setDocumentId(document);
-        Answer answer = answerService.addAnswer(new Answer(answerDto));
+        answerDTO.setLecturer(lecturer);
+        answerDTO.setQuestionId(question);
+        answerDTO.setDocumentId(document);
+        Answer answer = answerService.addAnswer(new Answer(answerDTO));
         if(null!= answer){
             // update list answer of the question
             question.getAnswers().add(answer);
             questionService.updateQuestion(question);
-            AnswerResponseDto answerResponseDto = new AnswerResponseDto(answer);
-            ResponseEntity<AnswerResponseDto> responseEntity = new ResponseEntity<>(answerResponseDto, HttpStatus.OK);
+            AnswerResponseDTO answerResponseDTO = new AnswerResponseDTO(answer);
+            ResponseEntity<AnswerResponseDTO> responseEntity = new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
             return responseEntity;
         }else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -67,15 +67,15 @@ public class LecturerRestController {
     }
 
     @GetMapping(value = "/answers/get/{questionId}", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
-    public ResponseEntity<List<AnswerResponseDto>> getAnswerOfQuestion(@PathVariable String questionId){
+    public ResponseEntity<List<AnswerResponseDTO>> getAnswerOfQuestion(@PathVariable String questionId){
         Question question = questionService.findById(questionId);
         List<Answer> answers = answerService.findByQuestion(question);
-        List<AnswerResponseDto> answerResponseDtos = new ArrayList<>();
+        List<AnswerResponseDTO> answerResponseDTOs = new ArrayList<>();
         if(null!= answers){
             for (Answer answer: answers) {
-                answerResponseDtos.add(new AnswerResponseDto(answer));
+                answerResponseDTOs.add(new AnswerResponseDTO(answer));
             }
-            ResponseEntity<List<AnswerResponseDto>> responseEntity = new ResponseEntity<>(answerResponseDtos, HttpStatus.OK);
+            ResponseEntity<List<AnswerResponseDTO>> responseEntity = new ResponseEntity<>(answerResponseDTOs, HttpStatus.OK);
             return responseEntity;
         }else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

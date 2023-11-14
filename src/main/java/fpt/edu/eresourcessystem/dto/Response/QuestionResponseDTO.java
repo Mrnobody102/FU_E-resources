@@ -1,24 +1,14 @@
-package fpt.edu.eresourcessystem.responseDto;
+package fpt.edu.eresourcessystem.dto.Response;
 
-import fpt.edu.eresourcessystem.enums.CommonEnum;
-import fpt.edu.eresourcessystem.model.Answer;
-import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.Question;
-import fpt.edu.eresourcessystem.model.Student;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.*;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
-
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionResponseDto {
+public class QuestionResponseDTO {
     private String id;
 
     private String questionContent;
@@ -32,7 +22,7 @@ public class QuestionResponseDto {
     private String lecturerName;
 
     private String lastModifiedDate;
-    public  QuestionResponseDto(Question question){
+    public QuestionResponseDTO(Question question){
         this.id= question.getId();
         this.questionContent = question.getContent();
         if(null!=question.getStudent()){

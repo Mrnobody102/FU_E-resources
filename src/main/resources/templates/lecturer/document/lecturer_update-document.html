@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Lecturer | Details Course</title>
+    <title>Lecturer | Update document</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -13,6 +13,10 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
+
+    <!-- CK Editor-->
+    <script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
+    <script th:src="@{/ckfinder/static/ckfinder.js}"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
@@ -30,116 +34,111 @@
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar('my-courses-management')}"></div>
                     </div>
 
-                    <div class="stu_courses-content m-3" id="main-lecturer">
-                        <div class="course-details-head">
+                    <div class="stu_courses-content main" id="main-lecturer">
+                        <div class="document-details-head">
                             <a th:href="@{/lecturer}">Home</a>
-                            <span> &gt; <a th:href="@{/lecturer/courses/list/all/1}"> Courses management</a> </span>
-                            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${course.id}}"
-                                           th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
+                            <span> &gt; <a th:href="@{/lecturer/courses/list/all/1}">Courses management</a></span>
+                            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${document.topic.course.id}}"
+                                           th:text="${document.topic.course.courseCode}"></a></span>
+                            <span> &gt; <a th:href="@{'/lecturer/topics/' + ${document.topic.id}}"
+                                           th:text="${document.topic.topicTitle}"></a></span>
+                            <span> &gt; <a th:href="@{'/lecturer/documents/' + ${document.id}}"
+                                           th:text="${document.title}"></a></span>
+                            <span> &gt; Update </span>
                         </div>
-                        <form method="post" role="form" th:action="@{/librarian/documents/add}" th:object="${document}"
-                              th:id="add-form" enctype="multipart/form-data">
-                            <table class="table-form lib_table">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <div>
+                                <h1 class="h2">Update document</h1>
+                                <p th:text="|${document.topic.topicTitle} - ${document.topic.course.courseName}|"></p>
+                            </div>
+                        </div>
+                        <div>
+                            <form style="width: 75%; margin-left: 10%" method="post"
+                                  th:action="@{'/lecturer/documents/update'}"
+                                  th:object="${document}"
+                                  th:id="add-form" enctype="multipart/form-data">
+                                <input type="text"
+                                       th:field="*{id}" hidden>
+                                <!--Title-->
+                                <label class="lecturer_input-label-doc" th:for="documentTitle">Title:</label>
+                                <input type="text" th:id="documentTitle"
+                                       class="lecturer_input form-control lecturer__input-doc"
+                                       th:field="*{title}"
+                                       placeholder="Enter document code" required>
+                                <p class="text-danger" th:errors="*{title}"
+                                   th:if="${#fields.hasErrors('title')}"></p>
+                                <!--Description-->
+                                <label class="lecturer_input-label-doc" th:for="description">Description:</label>
+                                <textarea type="text" th:id="description"
+                                          class="lecturer_textarea form-control lecturer__input-doc"
+                                          th:field="*{description}" placeholder="Enter description"></textarea>
 
-                                <tr>
-                                    <td class="lib_input-label"><label th:for="documentTitle">Document Code</label></td>
-                                    <td><input type="text" th:id="documentTitle" class="lib_input form-control"
-                                               th:field="*{title}" placeholder="Enter document code" required>
-                                        <p class="text-danger" th:errors="*{title}"
-                                           th:if="${#fields.hasErrors('title')}"></p>
-                                    </td>
-                                </tr>
+                                <label for="resourceType" class="lecturer_input-label-doc">Type:</label>
+                                <div class="d-flex lecturer__input-doc">
+                                    <select class="form-select " name="respondResourceType"
+                                            style="font-size: 1.3rem"
+                                            id="resourceType">
+                                        <option th:each="resourceType : ${resourceTypes}"
+                                                th:text="${resourceType.getDisplayValue()}"
+                                                th:value="${resourceType.getDisplayValue()}"
+                                                th:selected="${document.resourceType}">
+                                        </option>
+                                    </select>
+                                    <button type="button" id="defineResourceType"
+                                            class="lecturer_search-btn ms-2 border-0 ps-4 pe-4"><i
+                                            class="fa-solid fa-plus"></i></button>
+                                </div>
 
-                                <tr>
-                                    <td class="lib_input-label"><label th:for="description">Description</label></td>
-                                    <td><textarea type="text" th:id="description" class="lib_textarea form-control"
-                                                  th:field="*{description}" placeholder="Enter description"></textarea>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="lib_input-label"><label for="keyword">Course:</label></td>
-                                    <td>
-                                        <div id="searchForm" style="display: flex">
-                                            <input type="text" id="keyword" name="keyword"
-                                                   class="lib_input form-control">
-                                            <button onclick="submitSearchCourseForm()" type="button"
-                                                    class="lib_search-btn border-0 ms-2">Search
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td style="width: 450px">
-                                        <select id="results" size="5" class="form-control"
-                                                style="display: none; font-size: 1.3rem; max-height: 150px; overflow: scroll"></select>
-                                    </td>
-                                </tr>
-                                <tr id="selectTopic" style="display: none">
-                                    <td class="lib_input-label"><label for="topicList">Select Topic:</label>
-                                    </td>
-                                    <td id="topicList" style="display: flex">
-                                    </td>
-                                </tr>
-
-                                <tr id="selectedTopicsWrapper" style="display: none">
-                                    <td class="lib_input-label"><label for="selectedTopics">Selected Topics:</label>
-                                    </td>
-                                    <td>
-                                        <ul id="selectedTopics" class="d-flex list-group">
-                                        </ul>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="lib_input-label"><label for="resourceType">Resource Type:</label>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <select class="form-select" name="respondResourceType"
-                                                    style="font-size: 1.3rem"
-                                                    id="resourceType">
-                                                <option th:each="resourceType : ${resourceTypes}"
-                                                        th:text="${resourceType.getDisplayValue()}"
-                                                        th:value="${resourceType}">
-                                                </option>
-                                            </select>
-                                            <button type="button" class="lib_search-btn ms-2 border-0"><i
-                                                    class="fa-solid fa-plus" id="defineResourceType"></i></button>
-                                        </div>
-
-
-                                    </td>
-                                </tr>
-
-                                <tr id="inputResourceWrapper"
-                                    style="display: none;">
-                                    <td></td>
-                                    <td style="display: flex">
-                                        <input type="text" class="lib_input form-control" id="inputResource"
+                                <div id="inputResourceWrapper"
+                                     style="display: none; margin-top: 4px">
+                                    <div class="lecturer__input-doc d-flex">
+                                        <input type="text" class="lecturer_input form-control" id="inputResource"
                                                placeholder="Define your resource type...">
-                                        <button type="button" class="lib_search-btn ms-2 border-0" id="defineButton">
+                                        <button type="button" class="lecturer_search-btn ms-2 border-0"
+                                                id="defineButton" style="border-radius: 2px">
                                             Define
                                         </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="lib_input-label"><label th:for="file">File Upload</label></td>
-                                    <td>
-                                        <input type="file" th:name="file" id="fileUploadInput"
-                                               class="file-input form-control" style="font-size: 1.3rem"
-                                               required>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>
-                                        <button type="submit" class="btn lib_btn-save" id="submitAllData">Save</button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </form>
+                                    </div>
+                                </div>
+
+                                <div id="editorWrapper">
+                                    <div class="d-flex justify-content-between">
+                                        <label for="editor" class="lecturer_input-label-doc">Content:</label>
+
+                                        <div id="uploadFile">
+                                            <button type="button" class="border-0" style="padding: 4px 6px; border-radius: 2px">
+                                                Upload available file
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <textarea id="editor"
+                                              th:field="*{editorContent}" th:value="${document.editorContent}"></textarea>
+                                </div>
+
+
+
+                                <div id="uploadFileInput" style="display: none" class="mt-2">
+                                    <div class="d-flex justify-content-between lecturer__input-doc">
+                                        <label th:for="file" class="lecturer_input-label-doc">File Upload:</label>
+
+                                        <div id="editContent" class="d-flex align-items-center">
+                                            <button type="button" class="border-0" style="padding: 4px 6px; border-radius: 2px">
+                                                Create new content
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <input type="file" th:name="file" id="fileUploadInput"
+                                           class="file-input form-control lecturer__input-doc" style="font-size: 1.3rem"
+                                    >
+                                </div>
+
+                                <button type="submit" class="btn btn-save lecturer_btn-save"
+                                        id="submitAllData">Save
+                                </button>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -162,146 +161,21 @@
         crossorigin="anonymous"></script>
 <script src="/js/lecturer.js"></script>
 <script th:inline="javascript">
-
-    // DECLARE
-    const select = $('#results');
-    const selectTopicDiv = $('#selectTopic');
-    const selectedTopicsWrapper = $('#selectedTopicsWrapper');
-
-    // WHEN READY
-    $(document).ready(function () {
-
-        $(document).on('dblclick', '.course', function () {
-            let courseId = $(this).val();
-            let course = $(this).text();
-            let courseCode = $(this).data('course-code');
-            $('#keyword').val(course);
-            select.fadeOut();
-            selectTopicDiv.fadeIn();
-            getTopics(courseId, courseCode);
-        });
-
-        $('#defineResourceType').click(function () {
-            $('#inputResourceWrapper').fadeIn();
-        });
-    });
-
-    // ADD DOCUMENT
-
-    // Course and topic
-    function submitSearchCourseForm() {
-        var keyword = $('#keyword').val();
-        searchCourses(keyword);
-    }
-
-    function searchCourses(keyword) {
-        $.ajax({
-            url: '/api/courses?keyword=' + keyword,
-            type: 'GET',
-            success: function (data) {
-                displayCourses(data);
-            },
-            error: function () {
-                console.log('Error occurred during search');
-            }
-        });
-    }
-
-    function displayCourses(courses) {
-        select.empty();
-
-        $.each(courses, function (index, course) {
-            var {courseId, courseCode, courseName} = course;
-
-            var option = $('<option class="course">')
-                .val(courseId)
-                .data('course-code', courseCode)
-                .text(courseCode + " - " + courseName);
-
-            select.append(option);
-        });
-
-        select.fadeIn();
-    }
-
-    function getTopics(courseId, courseCode) {
-        $.ajax({
-            url: '/api/courses/' + courseId + '/topics',
-            type: 'GET',
-            success: function (data) {
-                displayTopics(data, courseCode);
-            },
-            error: function () {
-                console.log('Error occurred while getting topics');
-            }
-        });
-    }
-
-    function displayTopics(topics, courseCode) {
-        var resultsDiv = $('#topicList');
-        resultsDiv.empty();
-
-        var topicSelect = $('<select id="topicSelect" class="lib_input form-select">');
-
-        $.each(topics, function (index, topic) {
-            var topicId = topic.topicId;
-            var topicName = topic.topicTitle;
-
-            var option = $('<option>')
-                .attr('value', topicId)
-                .data('course-code', courseCode)
-                .text(topicName);
-
-            topicSelect.append(option);
-        });
-
-        resultsDiv.append(topicSelect).append($('<button id="saveButton" class="lib_search-btn border-0 ms-2" type="button"\n' +
-            '                                                onclick="saveSelectedTopics()">Add\n' +
-            '                                        </button>'));
-    }
-
-    var selectedTopicIds = [];
-
-    function saveSelectedTopics() {
-        selectedTopicsWrapper.fadeIn();
-        var topicSelect = $('#topicSelect');
-        var topicId = topicSelect.find('option:selected').val();
-        var topicName = topicSelect.find('option:selected').text();
-        var courseCode = topicSelect.find('option:selected').data('course-code');
-        if (selectedTopicIds.includes(topicId)) {
-            alert("This topic has been chosen!")
-            return;
-        }
-
-        var listItem = $('<li class="list-group-item d-flex justify-content-between">')
-            .text(topicName + " - " + courseCode)
-            .data('topic-id', topicId);
-        listItem.append($('<i class="fa-solid fa-xmark mt-1 delete-topic" style="font-size: 16px; cursor: pointer;"></i>'));
-        $('#selectedTopics').append(listItem);
-
-        selectedTopicIds.push(topicId);
-        console.log(selectedTopicIds)
-    }
-
-    $(document).on('click', '.delete-topic', function () {
-        var listItem = $(this).closest('li');
-        var topicId = listItem.data('topic-id');
-
-        listItem.remove();
-
-        var index = selectedTopicIds.indexOf(topicId);
-        if (index !== -1) {
-            selectedTopicIds.splice(index, 1);
-        }
-
-        if (selectedTopicIds.length == 0) {
-            selectedTopicsWrapper.fadeOut();
-        } else {
-            selectedTopicsWrapper.fadeIn();
-        }
-    });
-
     // Resource Type
+    $('#defineResourceType').click(function () {
+        $('#inputResourceWrapper').fadeIn();
+    });
+
+    $('#uploadFile').click(function () {
+        $('#editorWrapper').fadeOut();
+        $('#uploadFileInput').fadeIn();
+    });
+
+    $('#editContent').click(function () {
+        $('#editorWrapper').fadeIn();
+        $('#uploadFileInput').fadeOut();
+    });
+
     $('#defineButton').click(function () {
         var inputValue = $('#inputResource').val().trim();
         var selectResource = $('#resourceType');
@@ -336,8 +210,7 @@
     });
 
     // VALIDATION AND SWAL
-
-    validate_addDocument();
+    // validate_addDocument();
 
     var successParam = [[${param.success}]];
     if (successParam) {
@@ -357,25 +230,22 @@
         );
     }
 
-    // CLICK SAVE TO SEND ALL DATA
-
-
-    // $(document).on('submit', '#add-form', function () {
-    //
-    //     var respondResourceType = $('#resourceType').val();
-    //     var topicIds = selectedTopicIds.join(',');
-    //     console.log(topicIds);
-    //     $.ajax({
-    //         url: '/librarian/documents/add?topicIds='+topicIds+'&respondResourceType='+respondResourceType,
-    //         type: 'POST',
-    //         success: function (response) {
-    //             alert("s")
-    //         },
-    //         error: function (xhr, status, error) {
-    //             alert("f")
-    //         }
-    //     });
-    // });
+    // CK editor
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            ckfinder: {
+                uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
+            },
+        })
+        .then(editor => {
+            editor.editing.view.change(writer => {
+                writer.setStyle('height', '400px', editor.editing.view.document.getRoot());
+            });
+            console.log(Array.from(editor.ui.componentFactory.names()));
+        })
+        .catch(error => {
+            console.error(error);
+        });
 </script>
 </body>
 

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Lecturer | Details Course</title>
+    <title th:text="'Lecturer | ' + ${document.getTitle()}"></title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -15,7 +15,9 @@
     <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.min.js" integrity="sha512-RV+l/3iMDTmIt64ztJmriqLRZl2IwGHcG+655gFxUa20Uq9GljEsY3wibq5BZkGzRlMbYFHUPelVQvWvZxP38w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.min.js"
+            integrity="sha512-RV+l/3iMDTmIt64ztJmriqLRZl2IwGHcG+655gFxUa20Uq9GljEsY3wibq5BZkGzRlMbYFHUPelVQvWvZxP38w=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body class="app_container">
@@ -34,17 +36,35 @@
                     <div class="stu_course-content main" id="main">
                         <div style="width: 100%">
                             <div class="document-details-info border-bottom">
-                                <div style="flex: 3">
-                                    <div class="doc-info-name h2" style="margin-bottom: 4px">
-                                        <i class="fa-solid fa-file"></i>
-                                        <a class="doc-info-name" th:text="${document.getTitle()}"></a></div>
-                                    <div style="display: flex; width: 100%">
+                                <div>
+                                    <div class="doc-info-name d-flex justify-content-between" style="margin-bottom: 4px">
+                                        <div style="flex: 3; margin-right: 2rem">
+                                            <i class="fa-solid fa-file"></i>
+                                            <a class="doc-info-name h2" th:text="${document.getTitle()}"></a>
+                                            <div style="display: flex; width: 100%">
                                         <span style="flex: 1">Type: <span class="lecturer-name"
                                                                           th:text="${document.resourceType.resourceTypeName}"></span></span>
+                                            </div>
+                                            <div><p id="content" class="doc-info-description"
+                                                    style="text-align: justify; margin-bottom: 0; margin-top: 1rem"
+                                                    th:text="${document.description}"></p>
+                                                <span id="readMoreBtn" style="display: none;" class="read-more"
+                                                      onclick="toggleContent()">Read more</span></div>
+                                        </div>
+                                        <div style="flex: 1; display: flex; justify-content: center">
+                                            <div>
+                                                <a class="btn btn--hover mb-2 mt-2" th:href="@{'/lecturer/documents/' + ${document.id} + '/update'}">
+                                                    <span><i class="fa-solid fa-edit"></i>  Edit document</span>
+                                                </a>
+                                                <a class="btn btn--hover" th:href="@{'/lecturer/documents/' + ${document.id} + '/delete'}">
+                                                    <span><i class="fa-solid fa-trash"></i>  Delete document</span>
+                                                </a>
+                                            </div>
+
+                                        </div>
                                     </div>
-                                    <div><p id="content" class="doc-info-description"
-                                            style="text-align: justify; margin-bottom: 0; margin-top: 1rem" th:text="${document.description}"></p>
-                                        <span id="readMoreBtn" style="display: none;" class="read-more" onclick="toggleContent()">Read more</span></div>
+
+
                                 </div>
 
                                 <div class="stu_save-course-link" style="flex: 1;">
@@ -60,11 +80,13 @@
                                              style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
                                         </div>
                                     </th:block>
-<!--                                    <th:block th:if="${document.docType.toString().equals('TXT')}">-->
-<!--                                        <embed th:attr="src=@{'data:text/plain;base64,' + ${data}}" type="text/plain" width="100%" height="600px">-->
-<!--                                    </th:block>-->
+                                    <!--                                    <th:block th:if="${document.docType.toString().equals('TXT')}">-->
+                                    <!--                                        <embed th:attr="src=@{'data:text/plain;base64,' + ${data}}" type="text/plain" width="100%" height="600px">-->
+                                    <!--                                    </th:block>-->
                                     <th:block th:if="${document.docType.toString().equals('PDF')}">
-                                        <embed class="doc-content-view" th:attr="src='data:application/pdf;base64,' + ${data}" type="application/pdf" width="100%" height="600px">
+                                        <embed class="doc-content-view"
+                                               th:attr="src='data:application/pdf;base64,' + ${data}"
+                                               type="application/pdf" width="100%" height="600px">
                                     </th:block>
                                 </div>
 
@@ -77,44 +99,44 @@
                                             </a>
                                         </li>
                                     </ul>
-                                    <div class="lec__question-in-doc-content" th:if="${questions ne null } AND ${questions.size} > 0">
-                                        <div class="lec__question-content" th:each="question : ${questions}">
-                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${question.student.account.name}"></span></h6>
-                                            <p class="lec__question-content" th:utext="${question.content}"></p>
-                                            <p class="lec__question-content" ><span class="lec__answer-date" th:text="${question.lastModifiedDate}"></span> <a class="lec__add-reply view-question-link-item" th:question-id="${question.id}" onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>
+<!--                                    <div class="lec__question-in-doc-content" th:if="${questions ne null } AND ${questions.size} > 0">-->
+<!--                                        <div class="lec__question-content" th:each="question : ${questions}">-->
+<!--                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${question.student.account.name}"></span></h6>-->
+<!--                                            <p class="lec__question-content" th:utext="${question.content}"></p>-->
+<!--                                            <p class="lec__question-content" ><span class="lec__answer-date" th:text="${question.lastModifiedDate}"></span> <a class="lec__add-reply view-question-link-item" th:question-id="${question.id}" onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>-->
 
-                                            </p>
-                                            <p  th:if="${question.answers.size()} > 0" th:id="'view-more-reply-'+${question.getId()}" th:question-id="${question.id}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply lec__question-content">View more <span th:text="${question.answers.size()}"></span> reply</p>
-                                            <p style="display:none;"  th:if="${question.answers.size()} > 0" th:id="'see-less-reply-'+${question.getId()}" th:question-id="${question.id}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply lec__question-content">See less</p>
-                                            <p style="display:none;"  th:id="'loading-reply-'+${question.getId()}" th:question-id="${question.id}" class="view-question-reply lec__question-content"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
-                                            <div class="reply-content" th:id="'list-reply-content-'+${question.getId()}">
-<!--                                                <div class="reply-content" th:if="${answers ne null}" th:each="answer : ${answers}">-->
-<!--                                                    <h6 class="stu__reply-creater-name"><i class="fa-solid fa-user"></i> <span th:if="${answer.studentName ne null}"  th:text="${answer.studentName}"></span> <span th:if="${answer.lecturerName ne null}"  th:text="${answer.lecturerName}"></span></h6>-->
-<!--                                                    <p class="lec__reply-content" th:utext="${answer.answerContent}"></p>-->
-<!--                                                    <p class="lec__reply-content" ><span class="lec__answer-date" th:text="${answer.lastModifiedDate}"></span> <a class="lec__like-reply view-question-link-item" th:question-id="${question.id}" onclick="likeReply(this.getAttribute('question-id'))"><i class="fa-regular fa-thumbs-up"></i> Like</a>-->
-<!--                                                </div>-->
-                                            </div>
-                                            <div class="lec__reply-form" th:id="'reply-form'+${question.getId()}">
-                                                <form class="form-lecturer-add-doc-new-reply justify-content-between" method="post" role="form"
-                                                      th:object="${newAnswer}"
-                                                      th:id="'reply-content-form'+${question.getId()}">
-                                                    <div class="">
-                                                        <input type="text" name="docId" th:value="${document.getId()}" readonly hidden>
-                                                        <input type="text" name="quesId" th:value="${question.getId()}" readonly hidden>
-                                                        <div class="form-content">
-                                                            <label th:for="'new-reply-content-'+${question.getId()}" class="lec_input-label-reply">Enter answer:</label>
-                                                            <textarea th:id="'new-reply-content-'+${question.getId()}" class="input-reply-content"
-                                                                      th:field="*{answer}"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="submit-reply-button">
-                                                        <button type="button" title="exist" th:question-id="${question.id}" onclick="existFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-xmark"></i></button>
-                                                        <button type="button" title="Send" th:question-id="${question.id}" onclick="submitFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-paper-plane"></i></button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+<!--                                            </p>-->
+<!--                                            <p  th:if="${question.answers.size()} > 0" th:id="'view-more-reply-'+${question.getId()}" th:question-id="${question.id}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply lec__question-content">View more <span th:text="${question.answers.size()}"></span> reply</p>-->
+<!--                                            <p style="display:none;"  th:if="${question.answers.size()} > 0" th:id="'see-less-reply-'+${question.getId()}" th:question-id="${question.id}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply lec__question-content">See less</p>-->
+<!--                                            <p style="display:none;"  th:id="'loading-reply-'+${question.getId()}" th:question-id="${question.id}" class="view-question-reply lec__question-content"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>-->
+<!--                                            <div class="reply-content" th:id="'list-reply-content-'+${question.getId()}">-->
+<!--&lt;!&ndash;                                                <div class="reply-content" th:if="${answers ne null}" th:each="answer : ${answers}">&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <h6 class="stu__reply-creater-name"><i class="fa-solid fa-user"></i> <span th:if="${answer.studentName ne null}"  th:text="${answer.studentName}"></span> <span th:if="${answer.lecturerName ne null}"  th:text="${answer.lecturerName}"></span></h6>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <p class="lec__reply-content" th:utext="${answer.answerContent}"></p>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <p class="lec__reply-content" ><span class="lec__answer-date" th:text="${answer.lastModifiedDate}"></span> <a class="lec__like-reply view-question-link-item" th:question-id="${question.id}" onclick="likeReply(this.getAttribute('question-id'))"><i class="fa-regular fa-thumbs-up"></i> Like</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </div>&ndash;&gt;-->
+<!--                                            </div>-->
+<!--                                            <div class="lec__reply-form" th:id="'reply-form'+${question.getId()}">-->
+<!--                                                <form class="form-lecturer-add-doc-new-reply justify-content-between" method="post" role="form"-->
+<!--                                                      th:object="${newAnswer}"-->
+<!--                                                      th:id="'reply-content-form'+${question.getId()}">-->
+<!--                                                    <div class="">-->
+<!--                                                        <input type="text" name="docId" th:value="${document.getId()}" readonly hidden>-->
+<!--                                                        <input type="text" name="quesId" th:value="${question.getId()}" readonly hidden>-->
+<!--                                                        <div class="form-content">-->
+<!--                                                            <label th:for="'new-reply-content-'+${question.getId()}" class="lec_input-label-reply">Enter answer:</label>-->
+<!--                                                            <textarea th:id="'new-reply-content-'+${question.getId()}" class="input-reply-content"-->
+<!--                                                                      th:field="*{answer}"></textarea>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="submit-reply-button">-->
+<!--                                                        <button type="button" title="exist" th:question-id="${question.id}" onclick="existFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-xmark"></i></button>-->
+<!--                                                        <button type="button" title="Send" th:question-id="${question.id}" onclick="submitFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-paper-plane"></i></button>-->
+<!--                                                    </div>-->
+<!--                                                </form>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                 </div>
                             </div>
                         </div>

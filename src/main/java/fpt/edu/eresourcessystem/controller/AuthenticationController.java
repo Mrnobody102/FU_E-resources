@@ -1,16 +1,13 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.dto.AccountDTO;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.GooglePojo;
-import fpt.edu.eresourcessystem.service.security.CustomizeUserDetailsService;
 import fpt.edu.eresourcessystem.utils.GoogleUtils;
 import fpt.edu.eresourcessystem.utils.RedirectUtil;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.service.AccountService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.http.client.ClientProtocolException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

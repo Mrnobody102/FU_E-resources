@@ -210,6 +210,18 @@ li {
     background-color: rgba(0 ,0 ,0 , 0.1);
 }
 
+
+.btn-save {
+    background-color: var(--background-btn-color-hover);
+    color: white;
+    margin-top: 1rem;
+}
+
+.btn-save:hover {
+    background-color: var(--primary-btn-color);
+    color: var(--hover-color-2);
+}
+
 .btn.btn--primary {
     background-color: var(--primary-btn-color);
     color: white;
@@ -223,6 +235,17 @@ li {
 .btn.btn--disable {
     cursor: default;
     background-color: #888;
+}
+
+.btn.btn--back {
+    background-color: #888;
+    color: white;
+    margin-top: 1rem;
+}
+
+.btn.btn--back:hover {
+    background-color: #575656;
+    color: white;
 }
 
 /* Select  */
@@ -483,17 +506,6 @@ li {
 .admin-main-content,
 .librarian-main-content{
     padding-top: 2rem;
-}
-
-.btn-save {
-    background-color: var(--background-btn-color-hover);
-    color: white;
-    margin-top: 1rem;
-}
-
-.btn-save:hover {
-    background-color: var(--background-btn-color);
-    color: var(--hover-color-2);
 }
 
 .disabled {

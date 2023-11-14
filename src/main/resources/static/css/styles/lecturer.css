@@ -176,14 +176,13 @@
 
 /*Course*/
 
-.lec__navbar-favourite-list,
-.lec__navbar-view-doc-list{
+.lec__navbar-list{
     /*display: inline;*/
-    margin: 2rem;
+    margin: 2rem 2rem 0;
     width: 85%;
     padding: 1rem;
 }
-.lec__navbar-favourite-item,
+.lec__navbar-item,
 .lec__navbar-view-doc-item{
     display: inline;
     padding: 1rem 1.5rem;
@@ -191,7 +190,7 @@
     border-radius: 0.3rem;
 
 }
-.lec__navbar-favourite-item:hover a,
+.lec__navbar-item:hover a,
 .lec__navbar-view-doc-item:hover a{
     color: var(--background-btn-color);
 }
@@ -228,6 +227,7 @@
 
 .lecturer_textarea {
     font-size: 1.3rem;
+    height: 150px;
 }
 
 .lecturer__input-doc {

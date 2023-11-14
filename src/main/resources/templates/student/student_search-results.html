@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>FPT University E-resources</title>
+    <title>Search | FPT University E-resources</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -38,7 +38,7 @@
                                 <input type="text" class="header__search-input"
                                        placeholder="Enter here ..."
                                        name="search"
-                                       th:id="search-text">
+                                       th:id="search-text" th:value="${search}">
                                 <!-- Header-search-history -->
                                 <div class="header__search-history">
                                     <h3 class="header__search-history-heading">
@@ -71,47 +71,46 @@
                                     </li>
                                 </ul>
                             </div>
-                            <button class="header__search-btn">
+                            <button class="header__search-btn" type="submit">
                                 <i class="header__search-btn-icon fas fa-search"></i>
                             </button>
                         </form>
 
-                        <div class="stu__recent-course-content">
-                            <div class="stu__div-content-recent-title">
-                                <h2 class="p border-bottom">
-                                    Recent
-                                </h2>
-                            </div>
-                            <div class="stu__courses-list-recent home-courses">
-                                <div class="stu__view-recent-courses">
-                                    <div class="stu__view-list-course-content">
-                                        <div class="view-inline-list">
-                                            <ul class="home__course-list  d-flex">
-                                                <li class="home__course-item grid__column-2"  th:each="course : ${recentCourses}">
-                                                    <div class="home__course-wrapper-inline">
-                                                        <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
-                                                        <a class="home__course-name-inline" th:text="${course.courseName}"
-                                                           th:href="@{'/student/courses/' + ${course.id}}"></a>
-                                                        <p class="home__course-description" th:text="${course.description}"></p>
-                                                        <ul class="home__course-lecturer-list">
-                                                            <li class="home__course-lecturer-item" th:if="${course.lecturer ne null}">
-                                                                <a class="home__course-lecturer-link"
-                                                                   href="">
-                                                                    <span>Lecturer: </span>
-                                                                    <span th:text="${course.lecturer.account.name}"></span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <!-- NO RESULT-->
 
+                        <!-- RESULTS-->
+                        <div style="margin: 1rem 2rem">
+                            <h2>
+                                Results
+                            </h2>
                         </div>
 
+                        <!--Document view list-->
+                        <div class="d-flex document-view-info border-bottom" style="margin: 2rem 2rem"
+                             th:each="document : ${foundDocuments}">
+
+                            <div class="doc-info-head grid__column-7">
+                                <p class="doc-info-title"><a
+                                        th:href="@{'/student/documents/' + ${document.getDocumentId()}}">
+                                    <span th:text="${document.title}"></span></a>
+                                </p>
+                                <p class="doc-info-description">
+                                    <span th:text="${document.description}"></span>
+                                </p>
+                            </div>
+<!--                            <div class="doc-info grid__column-2">-->
+<!--                                <p><span class="doc-info-date" th:text="${document.lastModifiedDate}"></span>-->
+<!--                                    <span class="doc-info-rating">| Rating: 5</span><i class="fa-solid fa-star"></i></p>-->
+<!--                            </div>-->
+                            <div class="grid__column-1">
+                                <form action="" method="">
+                                    <input type="text" value="docId" hidden>
+                                    <button class="stu__btn_save-doc" type="submit">
+                                        <i class="fa-regular fa-bookmark"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        <!--End Document view-->
 
 
                     </div>

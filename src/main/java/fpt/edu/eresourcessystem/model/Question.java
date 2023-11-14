@@ -2,7 +2,7 @@ package fpt.edu.eresourcessystem.model;
 
 
 import fpt.edu.eresourcessystem.dto.CourseLogDTO;
-import fpt.edu.eresourcessystem.dto.QuestionDto;
+import fpt.edu.eresourcessystem.dto.QuestionDTO;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -54,13 +54,13 @@ public class Question {
     private String lastModifiedDate;
 
     // Constructor DTO
-    public Question(QuestionDto questionDto) {
-        this.id = questionDto.getId();
-        this.content = questionDto.getContent();
-        this.student = questionDto.getStudent();
-        this.documentId = questionDto.getDocumentId();
-        this.answers = questionDto.getAnswers();
-        this.lecturer = questionDto.getLecturer();
+    public Question(QuestionDTO questionDTO) {
+        this.id = questionDTO.getId();
+        this.content = questionDTO.getContent();
+        this.student = questionDTO.getStudent();
+        this.documentId = questionDTO.getDocumentId();
+        this.answers = questionDTO.getAnswers();
+        this.lecturer = questionDTO.getLecturer();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
 

@@ -2,7 +2,6 @@ package fpt.edu.eresourcessystem.dto;
 
 
 import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Topic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
