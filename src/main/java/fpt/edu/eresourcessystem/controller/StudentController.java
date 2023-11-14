@@ -273,4 +273,11 @@ public class StudentController {
         }
         return "student/library/student_my-notes";
     }
+
+
+    @GetMapping({"/feedbacks/add"})
+    public String addFeedback( final Model model) {
+
+        return "student/feedback/student_feedback-add";
+    }
 }
