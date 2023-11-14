@@ -61,7 +61,7 @@
 
             </form>
             <div>
-              <a class="lib_btn-add" type="button" th:href="@{/admin/accounts/add}">
+              <a class="lib_btn-add" type="button" th:href="@{/admin/feedbacks/add}">
                 <i class="fa-solid fa-plus"></i>
                 <span>New</span>
               </a>
@@ -72,58 +72,24 @@
           <div class="table-responsive" th:if="${accounts ne null}">
             <table class="table table-striped table-sm">
               <tr class="n8">
-                <th>ID</th>
-                <th>Student</th>
-                <th>Content</th>
+                <th>STT </th>
+                <th>Email</th>
+                <th>Feedback Content</th>
                 <th>Create Date</th>
-                <th></th>
+                <th>Status</th>
                 <!--                                <th></th>-->
               </tr>
-              <th:block th:each="account, iterStart : ${feedbacks}">
+              <th:block th:each="feedback, iterStart : ${feedbacks}">
                 <tr>
                   <td th:text="${iterStart.index +1}"></td>
-                  <td><a th:href="@{'/admin/accounts/' + ${account.getId} + '/update'}"
-                         th:text="${account.name}"></a></td>
-                  <td th:text="${account.email}"></td>
-                  <td th:text="${account.role}"></td>
-                  <td th:text="${account.campus}"></td>
-                  <!--                                    <td colspan="2">-->
-                  <!--                                        <a class="update-account"-->
-                  <!--                                           th:href="@{'/admin/accounts/'+${account.accountId} + '/update'}">Update</a>-->
-                  <!--                                        <a class="delete-account" th:id="${account.accountId}">Delete</a>-->
-                  <!--                                    </td>-->
+                  <td><a th:href="@{'/admin/feedbacks/' + ${feedback.getId}}"
+                         th:text="${feedback.getStudent().getAccount().getEmail()}"></a></td>
+                  <td th:text="${feedback.getFeedbackContent()}"></td>
+                  <td th:text="${feedback.getCreatedDate()}"></td>
+                  <td th:text="${feedback.getStatus()}"></td>
                 </tr>
               </th:block>
             </table>
-            <nav th:if="${totalPage} > 1" aria-label="Page navigation example">
-              <ul class="pagination" id="pagination">
-                <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
-                  <a class="page-link previous-page-account"
-                     style="cursor: pointer">
-                    &laquo;
-                  </a>
-                </li>
-
-                <li th:each="pageIndex: ${pages}" class="page-item"
-                    th:classappend=" (${currentPage == pageIndex}) ? 'active' : '' ">
-                  <th:block th:if="${pageIndex == -1}">
-                    <span class="page-link">...</span>
-                  </th:block>
-                  <th:block th:if="${pageIndex != -1}">
-                    <a th:text="${pageIndex}" th:value="${pageIndex}"
-                       class="page-link page-account-number"
-                       style="cursor: pointer"
-                    ></a>
-                  </th:block>
-                </li>
-                <li th:class="${currentPage == totalPage} ? 'page-item disabled' : 'page-item'">
-                  <a class="page-link next-page-account"
-                     style="cursor: pointer">
-                    &raquo;
-                  </a>
-                </li>
-              </ul>
-            </nav>
           </div>
         </div>
       </div>

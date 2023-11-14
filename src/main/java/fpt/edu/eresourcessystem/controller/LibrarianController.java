@@ -84,7 +84,7 @@ public class LibrarianController {
     @GetMapping({"/courses/add"})
     public String addCourse(final Model model) {
         model.addAttribute("course", new Course());
-        model.addAttribute("statuses", CourseEnum.Status.values());
+//        model.addAttribute("statuses", CourseEnum.Status.values());
         return "librarian/course/librarian_add-course";
     }
 

@@ -58,7 +58,7 @@
                         <th>STT</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Status</th>
+<!--                        <th>Status</th>-->
                         <th>Course List</th>
 
                     </tr>
@@ -68,7 +68,7 @@
                             <td><a th:href="@{'/librarian/lectures/' + ${lecture.getId()}}"
                                    th:text="${lecture.getAccount().getName()}"></a></td>
                             <td><span class="description" th:text="${lecture.getAccount().getEmail()}"></span></td>
-                            <td th:text="${lecture.getDeleteFlg()}"></td>
+<!--                            <td th:text="${lecture.getDeleteFlg()}"></td>-->
                             <td>
                                 <th:block th:each="course : ${lecture.getCourses()}">
                                     <a th:href="@{'/librarian/courses/' + ${course.getId()}}">
