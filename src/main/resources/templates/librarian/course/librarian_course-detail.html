@@ -137,36 +137,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
 
+<script th:inline="javascript">
 
-<script>
-    // $(document).ready(function () {
-    //     $('.add-lecture-button').click(function () {
-    //         var lecturerEmail = $('#lecturerEmailInput').val(); // Get the entered email
-    //
-    //         // Perform validation on the email if needed
-    //
-    //         var courseId = ${course.getId};
-    //
-    //         var formData = {
-    //             email: lecturerEmail,
-    //             courseId: courseId
-    //         };
-    //
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: '@{'/librarian/courses/add-lecture'}', // Update the URL as needed
-    //             data: JSON.stringify(formData),
-    //             contentType: 'application/json',
-    //             success: function (data) {
-    //                 // Handle the success response if needed
-    //                 console.log(data);
-    //             },
-    //             error: function () {
-    //                 // Handle the error if lecture addition fails
-    //             }
-    //         });
-    //     });
-    // });
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Delete course successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check course information again!',
+            'error'
+        );
+    }
+
 </script>
 
 </body>

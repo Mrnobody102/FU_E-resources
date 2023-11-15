@@ -16,6 +16,8 @@
                 </div>
 
                 <div class="auth-form__form">
+                    <div th:if="${param.error}" class="alert alert-danger" role="alert">Invalid username or password</div>
+
                     <div class="auth-form__group">
                         <input type="email" name="username" class="auth-form__input" placeholder="Your Email">
                     </div>

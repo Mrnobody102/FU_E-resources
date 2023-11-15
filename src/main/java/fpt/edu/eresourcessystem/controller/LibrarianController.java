@@ -433,28 +433,29 @@ public class LibrarianController {
     public String addLecturer(@PathVariable String courseId, @RequestParam String lecturerId, final Model model) {
         Account account = accountService.findById(lecturerId);
         Lecturer lecturer = lecturerService.findByAccountId(account.getId());
+
         Course course = courseService.updateLectureId(courseId, lecturer);
 
-        lecturer.getCourses().add(course);
-        lecturerService.updateLecturer(lecturer);
+        if (course == null) {
+            return "redirect:/courses/"+courseId+"/add-lecture?error";
+        }
+        else {
+            lecturer.getCourses().add(course);
+            lecturerService.updateLecturer(lecturer);
 
-        SimpleMailMessage message = new SimpleMailMessage();
+            SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setFrom("maihoa362001@gmail.com");
-        message.setTo("ngaydoidemcho93@gmail.com");
-        message.setSubject("Subject : Thông báo quản lý môn học " + course.getCourseCode());
-        message.setText("Body : " +
-                "Tên môn học: " + course.getCourseName());
+            message.setFrom("maihoa362001@gmail.com");
+            message.setTo("ngaydoidemcho93@gmail.com");
+            message.setSubject("Subject : Thông báo quản lý môn học " + course.getCourseCode());
+            message.setText("Body : " +
+                    "Tên môn học: " + course.getCourseName());
 
-        javaMailSender.send(message);
+            javaMailSender.send(message);
 
-//        if (null != lecturer) {
-//            Account accountLecturer = lecturer.getAccount();
-//            model.addAttribute("accountLecturer", accountLecturer);
-//        }
-        model.addAttribute("course", course);
-//        model.addAttribute("topics", topics);
-        return "librarian/course/librarian_course-detail";
+            model.addAttribute("course", course);
+            return "librarian/course/librarian_course-detail";
+        }
     }
 
     @GetMapping({"/lectures"})
