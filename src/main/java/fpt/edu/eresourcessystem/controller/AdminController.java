@@ -7,12 +7,14 @@ import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
@@ -37,11 +39,13 @@ public class AdminController {
     private final DocumentService documentService;
     private final FeedbackService feedbackService;
 
+    private  final TrainingTypeService trainingTypeService;
+
     public AdminController(AccountService accountService, AdminService adminService,
                            LibrarianService librarianService, LecturerService lecturerService,
                            StudentService studentService, CourseService courseService,
                            TopicService topicService, DocumentService documentService,
-                           FeedbackService feedbackService) {
+                           FeedbackService feedbackService, TrainingTypeService trainingTypeService) {
         this.accountService = accountService;
         this.adminService = adminService;
         this.librarianService = librarianService;
@@ -51,6 +55,7 @@ public class AdminController {
         this.topicService = topicService;
         this.documentService = documentService;
         this.feedbackService = feedbackService;
+        this.trainingTypeService = trainingTypeService;
     }
 
     /*
@@ -363,5 +368,35 @@ public class AdminController {
 //        return  "librarian/course/detailCourseTest";
     }
 
+
+    @GetMapping("/trainingtypes/add")
+    public String showAddForm(Model model) {
+        // Add an empty TrainingType object to the model to bind form data
+        model.addAttribute("trainingType", new TrainingType());
+        return "admin/training_type/admin_training-type-add";
+    }
+
+    @PostMapping("/trainingtypes/add")
+    public String addTrainingType(@ModelAttribute("trainingtype") @Valid TrainingType trainingType,
+                                  BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "admin/training_type/admin_training-type-add";
+        }
+        try {
+            // Save the new training type using the service layer
+            trainingTypeService.save(trainingType);
+            redirectAttributes.addFlashAttribute("success", "Training type saved successfully.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "There was an error saving the training type.");
+        }
+
+        return "redirect:/admin/trainingtypes/list";
+    }
+
+    @GetMapping("/trainingtypes/list")
+    public String listTrainingTypes(Model model) {
+        model.addAttribute("trainingTypes", trainingTypeService.findAll());
+        return "admin/training_type/admin_training-type"; // Thymeleaf template for listing training types
+    }
 
 }
