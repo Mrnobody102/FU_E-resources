@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.model;
 import fpt.edu.eresourcessystem.dto.AnswerDTO;
 import fpt.edu.eresourcessystem.dto.QuestionDTO;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -40,6 +42,8 @@ public class Answer {
     @DocumentReference(lazy = true)
     private Lecturer lecturer;
 
+    private QuestionAnswerEnum.Status status;
+
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
     //Audit Log
@@ -59,5 +63,18 @@ public class Answer {
         this.question = answerDTO.getQuestionId();
         this.lecturer = answerDTO.getLecturer();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+        this.status = QuestionAnswerEnum.Status.CREATED;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Answer answer)) return false;
+        return Objects.equals(getId(), answer.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

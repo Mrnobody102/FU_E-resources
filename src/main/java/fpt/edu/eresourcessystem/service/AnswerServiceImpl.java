@@ -70,4 +70,10 @@ public class AnswerServiceImpl implements AnswerService{
         List<Answer> answers = answerRepository.findByQuestion(question);
         return answers;
     }
+
+    @Override
+    public List<Answer> findByStudentAnsQuestion(Student student, Question question) {
+        List<Answer> answers = answerRepository.findByStudentAndQuestion(student, question);
+        return answers;
+    }
 }

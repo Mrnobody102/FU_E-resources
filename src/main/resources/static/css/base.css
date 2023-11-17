@@ -518,13 +518,17 @@ li {
 .doc-info-date{
     color: #888888;
 }
-.require-input{
+.error-input{
+    display: none;
+}
+.require-input, .error-input{
     color: var(--danger-color);
     align-items: start;
 }
 .view-question-reply{
     cursor: pointer;
     font-weight: var(--font-medium);
+    margin-left: 1.2rem;
 }
 
 .view-question-reply:hover{

@@ -16,7 +16,7 @@
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-    <link rel="stylesheet" th:href="@{/css/styles/librarian.css}">
+    <link rel="stylesheet" th:href="@{/css/styles/admin.css}">
 
 
     <!-- SweetAlert từ CDN -->
@@ -34,13 +34,31 @@
                 <a th:href="@{/admin}">Home</a>
                 <span> &gt; Course logs</span>
             </div>
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Course logs</h1>
-<!--                <div class="btn-toolbar mb-2 mb-md-0">-->
-<!--                    <div class="btn-group">-->
-<!--                        <button class="btn btn-sm btn-outline-secondary" type="button">Export</button>-->
-<!--                    </div>-->
-<!--                </div>-->
+            <div class="adm__navbar-manage border-bottom">
+                <div class="adm__navbar-inline">
+                    <ul class="adm__navbar-tracking-list">
+                        <li class="adm__navbar-tracking-item ">
+                            <a th:href="@{/admin/user_log/tracking}">
+                                User-Logs Tracking
+                            </a>
+                        </li>
+                        <li class="adm__navbar-tracking-item ">
+                            <a th:href="@{/admin/course_log/tracking}">
+                                Course-Logs Tracking
+                            </a>
+                        </li>
+                        <li class="adm__navbar-tracking-item adm__navbar-active">
+                            <a th:href="@{/admin/document_log/tracking}">
+                                Document-Logs Tracking
+                            </a>
+                        </li>
+                        <li class="adm__navbar-tracking-item">
+                            <a th:href="@{/admin/statistics}">
+                                Statistics
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="d-flex justify-content-center">
                 <div class="lib_data-list-wrapper">

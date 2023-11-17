@@ -67,4 +67,15 @@ public class CourseLogServiceImpl implements CourseLogService{
         query.with(pageable);
         return mongoTemplate.findDistinct(query,"courseId", CourseLog.class, String.class);
     }
+
+    @Override
+    public List<CourseLog> findByCourseCodeOrCodeName(String search) {
+        Criteria criteria = new Criteria().orOperator(
+                Criteria.where("course.code").regex(search, "i"),
+                Criteria.where("course.name").regex(search, "i")
+        );
+        Query query = new Query(criteria);
+        return mongoTemplate.find(query, CourseLog.class);
+    }
+
 }

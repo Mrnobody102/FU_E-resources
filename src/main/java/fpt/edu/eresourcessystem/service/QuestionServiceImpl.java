@@ -35,6 +35,13 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public List<Question> findByStudent(Student student) {
+        List<Question> questions = questionRepository.findByStudent(student);
+        System.out.println(questions.size());
+        return questions;
+    }
+
+    @Override
     public Question findById(String quesId) {
         Optional<Question> question = questionRepository.findById(quesId);
         return question.orElse(null);

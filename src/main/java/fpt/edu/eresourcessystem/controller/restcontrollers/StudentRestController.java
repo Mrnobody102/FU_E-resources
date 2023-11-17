@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/student")
 public class StudentRestController {
@@ -109,24 +112,6 @@ public class StudentRestController {
         }
     }
 
-    @PostMapping("/answer/add")
-    @Transactional
-    public Answer addAnswer(@ModelAttribute AnswerDTO answerDTO){
-        Student student = getLoggedInStudent();
-        if(null == student){
-            return null;
-        }else if(null==answerDTO){
-            return null;
-        }
-        answerDTO.setStudent(student);
-        Answer answer = answerService.addAnswer(new Answer(answerDTO));
-        if(null!= answer){
-            return answer;
-        }else {
-            return null;
-        }
-    }
-
     @PostMapping(value = "/answer/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     @Transactional
     public ResponseEntity<AnswerResponseDTO> addQuestion(@ModelAttribute AnswerDTO answerDTO,
@@ -149,6 +134,22 @@ public class StudentRestController {
             questionService.updateQuestion(question);
             AnswerResponseDTO answerResponseDTO = new AnswerResponseDTO(answer);
             ResponseEntity<AnswerResponseDTO> responseEntity = new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
+            return responseEntity;
+        }else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/answers/get/{questionId}", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<AnswerResponseDto>> getAnswerOfQuestion(@PathVariable String questionId){
+        Question question = questionService.findById(questionId);
+        List<Answer> answers = answerService.findByQuestion(question);
+        List<AnswerResponseDto> answerResponseDtos = new ArrayList<>();
+        if(null!= answers){
+            for (Answer answer: answers) {
+                answerResponseDtos.add(new AnswerResponseDto(answer));
+            }
+            ResponseEntity<List<AnswerResponseDto>> responseEntity = new ResponseEntity<>(answerResponseDtos, HttpStatus.OK);
             return responseEntity;
         }else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

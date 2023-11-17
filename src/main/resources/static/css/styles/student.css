@@ -290,7 +290,7 @@ stu__navbar-view-doc-item:hover a{
     margin: 0;
 }
 .form-student-add-doc-new-question{
-    margin-top: 1rem;
+    margin-top: 0.2rem;
     border-radius: 2rem;
     border: 1px solid #888888;
     display: none;
@@ -320,4 +320,82 @@ stu__navbar-view-doc-item:hover a{
 }
 .submit-question-button button i:hover{
     color: black;
+}
+.stu__question-in-doc-content{
+    margin-top: 1rem;
+}
+.stu__question-view-wrapper {
+    padding: 16px;
+    background-color: white;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .16);
+}
+.stu__question-title{
+    font-size: var(--medium-font-size);
+    font-weight: bold;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+.stu__question-title:hover{
+    text-decoration: underline;
+}
+.stu__reply-form{
+    display: none;
+}
+.form-student-add-doc-new-reply{
+    margin-top: 1rem;
+    margin-left: 1.2rem;
+    border-radius: 2rem;
+    border: 1px solid #888888;
+    padding: 1rem;
+}
+.input-reply-content{
+    width: 100%;
+    height: 5rem;
+    overflow-y: auto;
+    border: none;
+    display: inline;
+    resize: none;
+}
+.input-reply-content:focus{
+    outline: none;
+}
+.submit-reply-button{
+    text-align: right;
+}
+.submit-reply-button button{
+    border: none;
+    display: inline;
+    background: white;
+}
+.submit-reply-button button i{
+    color: #888888;
+}
+.submit-reply-button button i:hover{
+    color: black;
+}
+.reply-content{
+    /*display: none;*/
+}
+
+.view-reply-link-item,
+.view-question-link-item{
+    cursor: pointer;
+    font-size: var(--medium-font-size);
+    font-weight: var(--font-medium);
+}
+.view-reply-link-item:hover,
+.view-question-link-item:hover{
+    text-decoration: underline;
+}
+.stu__my-question-content p{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.reply-content{
+    padding-top: 0.5rem;
+    padding-bottom: 0.2rem;
 }
