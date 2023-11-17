@@ -36,13 +36,28 @@
                 <div class="lib_search-container">
                     <form class="d-flex" th:action="@{/librarian/lectures/list/1}" th:method="get">
                         <div class="d-flex">
-                            <div>
-                                <input type="text" id="filter-search"
-                                       class="form-control form-control-solid w-350px ps-14 mb-3"
-                                       placeholder="Search lecture..."/>
-                            </div>
-                            <a class="lib_show-all-btn" th:href="@{/librarian/lectures/list/1}">Show All</a>
+                            <input class="lib_search-content" type="text" placeholder="Search course.." name="search"
+                                   th:value="${search}" id="search-text"/>
+                            <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
+                                <i class="lib_search-btn-icon fas fa-search"></i>
+                            </button>
+
+                            <a class="btn lib_show-all-btn" th:href="@{/librarian/lectures/list}">Show AlL</a>
                         </div>
+
+<!--                        <div class="dropdown">-->
+<!--                            <button class="btn lib_show-all-btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                                Choose a training type-->
+<!--                            </button>-->
+<!--                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+<!--                                <a class="dropdown-item" th:each="trainingType : ${trainingTypes}" th:text="${trainingType.trainingTypeName}" th:href="@{/search(trainingTypeId=${trainingType.id}, search=${search})}"></a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <select id="select-training-type" name="trainingTypeId" class="lib_show-all-btn selectpicker show-tick" data-style="btn-white" data-live-search="true">
+                            <option selected disabled value="">Choose a training type</option>
+                            <option th:each="trainingType : ${trainingTypes}" th:value="${trainingType.id}" th:text="${trainingType.trainingTypeName}"></option>
+                        </select>
                     </form>
                     <div>
                         <a class="lib_btn-add" type="button" th:href="@{/librarian/lectures/create-lecture}">

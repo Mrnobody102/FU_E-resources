@@ -9,6 +9,7 @@ import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -28,16 +29,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/librarian")
 @PropertySource("web-setting.properties")
 public class LibrarianController {
 
-    @Autowired
-    JavaMailSender javaMailSender;
+    private final  JavaMailSender javaMailSender;
 
-
-    @Value("${page-size}")
-    private Integer pageSize;
+//    @Value("${page-size}")
+    private static final Integer pageSize = 2;
     private final AccountService accountService;
     private final LibrarianService librarianService;
     private final LecturerService lecturerService;
@@ -49,17 +49,19 @@ public class LibrarianController {
 
     private final LecturerCourseService lecturerCourseService;
 
-    public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, LecturerCourseService lecturerCourseService) {
-        this.accountService = accountService;
-        this.librarianService = librarianService;
-        this.lecturerService = lecturerService;
-        this.studentService = studentService;
-        this.courseService = courseService;
-        this.topicService = topicService;
-        this.resourceTypeService = resourceTypeService;
-        this.documentService = documentService;
-        this.lecturerCourseService = lecturerCourseService;
-    }
+    private final TrainingTypeService trainingTypeService;
+
+//    public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, LecturerCourseService lecturerCourseService) {
+//        this.accountService = accountService;
+//        this.librarianService = librarianService;
+//        this.lecturerService = lecturerService;
+//        this.studentService = studentService;
+//        this.courseService = courseService;
+//        this.topicService = topicService;
+//        this.resourceTypeService = resourceTypeService;
+//        this.documentService = documentService;
+//        this.lecturerCourseService = lecturerCourseService;
+//    }
 
     /*
     DASHBOARD
@@ -460,22 +462,15 @@ public class LibrarianController {
 
     @GetMapping({"/lectures"})
     public String showLectures(final Model model) {
-//        Course course = courseService.findByCourseId(courseId);
-//        List<Topic> topics = topicService.findByCourseId(courseId);
-//        Lecturer lecturer = lecturerService.findCurrentCourseLecturer(courseId);
-//
-//        if (null != lecturer) {
-//            Account accountLecturer = accountService.findById(lecturer.getAccount().getId());
-//            model.addAttribute("accountLecturer", accountLecturer);
-//        }
-        List<Lecturer> lecturers = lecturerService.findAll();
-        model.addAttribute("lecturers", lecturers);
+        List<TrainingType> trainingTypes = trainingTypeService.findAll();
+        model.addAttribute("trainingTypes", trainingTypes);
         return "librarian/lecture/librarian_lectures";
-//        return  "librarian/course/detailCourseTest";
     }
 
     @GetMapping({"/lectures/list"})
-    public String showLecture() {
+    public String showLecture(final Model model) {
+        List<Lecturer> lecturers = lecturerService.findAll();
+        model.addAttribute("lecturers", lecturers);
         return "librarian/lecture/librarian_lectures";
     }
 
@@ -513,7 +508,9 @@ public class LibrarianController {
     @GetMapping("/lectures/create-lecture")
     public String showAddLectureForm(Model model) {
         List<Course> allCourses = courseService.findAll();
+        List<TrainingType> trainingTypes = trainingTypeService.findAll();
         model.addAttribute("allCourses", allCourses);
+        model.addAttribute("trainingTypes",trainingTypes);
         model.addAttribute("lecture", new Lecturer());
         return "librarian/lecture/librarian_add-lecture";
     }

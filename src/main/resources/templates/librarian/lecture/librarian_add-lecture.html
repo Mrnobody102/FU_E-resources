@@ -70,6 +70,16 @@
                                 </select>
                             </div>
 
+                            <div class="form-group mt-5">
+                                <label for="select-multiple-training">Training Type </label>
+
+                                <select id="select-multiple-training" th:field="*{trainingType}"  class="form-control selectpicker show-tick"  data-style="btn-white"  data-live-search="true"  >
+                                    <option selected disabled th:value="0">Choose a training type</option>
+                                    <option th:each="trainingType : ${trainingTypes}" th:value="${trainingType.getId()}"
+                                            th:text="${trainingType.trainingTypeName}"></option>
+                                </select>
+                            </div>
+
                             <button type="submit" class="btn lib_show-all-btn">Add Lecture</button>
                         </div>
                     </div>

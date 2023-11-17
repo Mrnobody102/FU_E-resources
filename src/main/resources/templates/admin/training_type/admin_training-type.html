@@ -43,7 +43,6 @@
                     <div class="lib_search-container">
                         <form class="d-flex" th:action="@{/admin/trainingtypes/list/1}" method="get" th:id="search-form">
                             <div class="d-flex">
-
                                 <input class="lib_search-content" type="text" placeholder="Search user.."
                                        th:name="search" th:id="search-text" th:value="${search}"/>
                                 <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
@@ -51,9 +50,6 @@
                                 </button>
                                 <a class="btn lib_show-all-btn" th:href="@{/admin/trainingtypes/list/1}">Show AlL</a>
                             </div>
-
-
-
                         </form>
                         <div>
                             <a class="lib_btn-add" type="button" th:href="@{/admin/trainingtypes/add}">
@@ -81,12 +77,12 @@
                                        th:text="${trainingType.trainingTypeName}"></a></td>
                                 <td th:text="${trainingType.trainingTypeDescription}"></td>
                                 <td>
-                                    <th:block th:each="course : ${trainingType.getCourses()}">
+<!--                                    <th:block th:each="course : ${trainingType.getCourses()}">-->
 <!--                                        <a th:href="@{'/librarian/courses/' + ${course.getId()}}">-->
-                                            <button class="button-a-background"
+                                            <button th:each="course : ${trainingType.getCourses()}" class="button-a-background"
                                                     th:text="${course.getCourseCode()}"></button>
 <!--                                        </a>-->
-                                    </th:block>
+<!--                                    </th:block>-->
                                 </td>
 
                             </tr>
