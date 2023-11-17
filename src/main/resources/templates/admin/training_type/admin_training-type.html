@@ -51,17 +51,12 @@
                                 </button>
                                 <a class="btn lib_show-all-btn" th:href="@{/admin/trainingtypes/list/1}">Show AlL</a>
                             </div>
-                            <!--                            <div>-->
-                            <!--                                <a class="btn lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">-->
-                            <!--                                    <i class="fa-solid fa-plus"></i>-->
-                            <!--                                    <span>New</span>-->
-                            <!--                                </a>-->
-                            <!--                            </div>-->
+
 
 
                         </form>
                         <div>
-                            <a class="lib_btn-add" type="button" th:href="@{/admin/trainingtype/add}">
+                            <a class="lib_btn-add" type="button" th:href="@{/admin/trainingtypes/add}">
                                 <i class="fa-solid fa-plus"></i>
                                 <span>New</span>
                             </a>
@@ -76,6 +71,7 @@
                                 <th>STT</th>
                                 <th>Name</th>
                                 <th>Description</th>
+                                <th>List Courses</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -84,6 +80,15 @@
                                 <td><a th:href="@{'/admin/trainingtypes/' + ${trainingType.id}}"
                                        th:text="${trainingType.trainingTypeName}"></a></td>
                                 <td th:text="${trainingType.trainingTypeDescription}"></td>
+                                <td>
+                                    <th:block th:each="course : ${trainingType.getCourses()}">
+<!--                                        <a th:href="@{'/librarian/courses/' + ${course.getId()}}">-->
+                                            <button class="button-a-background"
+                                                    th:text="${course.getCourseCode()}"></button>
+<!--                                        </a>-->
+                                    </th:block>
+                                </td>
+
                             </tr>
                             </tbody>
                         </table>

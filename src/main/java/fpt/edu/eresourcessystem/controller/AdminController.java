@@ -372,7 +372,8 @@ public class AdminController {
 
     @GetMapping("/trainingtypes/add")
     public String showAddForm(Model model) {
-        // Add an empty TrainingType object to the model to bind form data
+        List<Course> allCourses = courseService.findAll(); // Retrieve all available courses
+        model.addAttribute("allCourses", allCourses);
         model.addAttribute("trainingType", new TrainingType());
         return "admin/training_type/admin_training-type-add";
     }

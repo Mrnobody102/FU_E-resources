@@ -512,7 +512,7 @@ public class LibrarianController {
 
     @GetMapping("/lectures/create-lecture")
     public String showAddLectureForm(Model model) {
-        List<Course> allCourses = courseService.findAll(); // Retrieve all available courses
+        List<Course> allCourses = courseService.findAll();
         model.addAttribute("allCourses", allCourses);
         model.addAttribute("lecture", new Lecturer());
         return "librarian/lecture/librarian_add-lecture";
