@@ -76,13 +76,10 @@
                                 <td><a th:href="@{'/admin/trainingtypes/' + ${trainingType.id}}"
                                        th:text="${trainingType.trainingTypeName}"></a></td>
                                 <td th:text="${trainingType.trainingTypeDescription}"></td>
-                                <td>
-<!--                                    <th:block th:each="course : ${trainingType.getCourses()}">-->
-<!--                                        <a th:href="@{'/librarian/courses/' + ${course.getId()}}">-->
-                                            <button th:each="course : ${trainingType.getCourses()}" class="button-a-background"
-                                                    th:text="${course.getCourseCode()}"></button>
-<!--                                        </a>-->
-<!--                                    </th:block>-->
+                                <td th:text="${trainingType.getCourses().size()}">
+<!--                                            <button th:each="course : ${trainingType.getCourses()}" class="button-a-background"-->
+<!--                                                    th:text="${course.getCourseCode()}"></button>-->
+
                                 </td>
 
                             </tr>
