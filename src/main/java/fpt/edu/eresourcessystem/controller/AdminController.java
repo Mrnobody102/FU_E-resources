@@ -234,7 +234,6 @@ public class AdminController {
             model.addAttribute("errorMessage", "account not exist.");
             return "exception/404";
         } else {
-
             Account checkEmailDuplicate = accountService.findByEmail(accountDTO.getEmail());
             if (checkEmailDuplicate != null &&
                     !checkExist.getEmail().equalsIgnoreCase(accountDTO.getEmail())) {

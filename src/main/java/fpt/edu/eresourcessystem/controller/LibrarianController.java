@@ -2,6 +2,7 @@ package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.CourseDTO;
 import fpt.edu.eresourcessystem.dto.DocumentDTO;
+import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
@@ -460,14 +461,14 @@ public class LibrarianController {
         }
     }
 
-    @GetMapping({"/lectures"})
-    public String showLectures(final Model model) {
-        List<TrainingType> trainingTypes = trainingTypeService.findAll();
-        model.addAttribute("trainingTypes", trainingTypes);
-        return "librarian/lecture/librarian_lectures";
-    }
+//    @GetMapping({"/lectures"})
+//    public String showLectures(final Model model) {
+//        List<TrainingType> trainingTypes = trainingTypeService.findAll();
+//        model.addAttribute("trainingTypes", trainingTypes);
+//        return "librarian/lecture/librarian_lectures";
+//    }
 
-    @GetMapping({"/lectures/list"})
+    @GetMapping({"/lectures/list", "/lectures"})
     public String showLecture(final Model model) {
         List<Lecturer> lecturers = lecturerService.findAll();
         List<TrainingType> trainingTypes = trainingTypeService.findAll();
@@ -496,6 +497,9 @@ public class LibrarianController {
     public String showLectureDetail(@PathVariable String lectureId, final Model model) {
         Lecturer lecturer = lecturerService.findLecturerById(lectureId);
         model.addAttribute("lecturer", lecturer);
+        model.addAttribute("roles", AccountEnum.Role.values());
+        model.addAttribute("campuses", AccountEnum.Campus.values());
+        model.addAttribute("genders", AccountEnum.Gender.values());
         return "librarian/lecture/librarian_lecture-detail";
     }
 
@@ -530,12 +534,19 @@ public class LibrarianController {
 
     }
 
-    @PostMapping("/update")
-    public String updateLecturer(@ModelAttribute("lecturer") Lecturer lecturer) {
-        // Update the lecturer's information in the database
-        lecturerService.update(lecturer);
+    @PostMapping("/lectures/update")
+    public String updateLecture( @ModelAttribute("lecturer") Lecturer updatedLecture, final Model model) {
+        // Check if the lectureId is valid (you can add additional validation)
+        if (updatedLecture == null ) {
+            return "redirect:/error"; // Redirect to an error page or handle invalid ID
+        }
+        // Call the service to update the lecture
+        boolean updateSuccess = lecturerService.update(updatedLecture);
 
-        // Redirect to a success page or display a confirmation message
-        return "redirect:/lecturer/success";
+        if (updateSuccess) {
+            return "redirect:/lectures/" + updatedLecture.getId() +"/success";
+        } else {
+            return "redirect:/lectures/error"; // Redirect to an error page if the update fails
+        }
     }
 }

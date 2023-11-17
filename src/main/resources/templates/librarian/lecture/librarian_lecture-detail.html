@@ -55,16 +55,8 @@
 
                     <div class="add-form-content">
                         <table class="table-form lib_table m-5">
-                            <form method="post" th:object="${lecture}" th:action="@{/librarian/lectures/update}">
-                                <!--                            <tr class="lib_input-wrapper">-->
-                                <!--                                <td class="lib_input-label"><label th:for="email">Email</label></td>-->
-                                <!--                                <td><input type="text"-->
-                                <!--                                           class="lib_input form-control" th:value="*{lecturer.getAccount().getEmail()}"-->
-                                <!--                                           placeholder="Enter email" required>-->
-
-                                <!--                                </td>-->
-                                <!--                            </tr>-->
-
+                            <form method="post" th:object="${lecturer}"
+                                  th:action="@{/librarian/lectures/update}">
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label for="name">Name:</label></td>
                                     <td>
@@ -85,10 +77,7 @@
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label">Gender:</td>
                                     <td>
-                                        <input type="radio" id="male" name="gender" value="M" class="lib_input"
-                                               th:checked="${lecturer.account.gender == 'M'}"> Male
-                                        <input type="radio" id="female" name="gender" value="F" class="lib_input"
-                                               th:checked="${lecturer.account.gender == 'F'}"> Female
+                                        <span th:text="${lecturer.account.gender}"></span>
                                     </td>
                                 </tr>
 
@@ -101,25 +90,6 @@
                                     </td>
                                 </tr>
 
-
-                                <tr class="lib_input-wrapper">
-                                    <td class="lib_input-label"><label for="dateOfBirth">Date of Birth:</label></td>
-                                    <td>
-                                        <input type="date" id="dateOfBirth" name="dateOfBirth"
-                                               class="lib_input form-control" th:value="${lecturer.account.dateOfBirth}"
-                                               required>
-                                    </td>
-                                </tr>
-
-
-                                <tr class="lib_input-wrapper">
-                                    <td class="lib_input-label"><label for="campus">Campus:</label></td>
-                                    <td>
-                                        <input type="text" id="campus" name="campus" class="lib_input form-control"
-                                               th:value="${lecturer.account.campus}" placeholder="Enter campus"
-                                               required>
-                                    </td>
-                                </tr>
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label for="role">Role:</label></td>
                                     <td>
@@ -129,15 +99,15 @@
                                     </td>
                                 </tr>
 
-                                <tr class="lib_input-wrapper">
-                                    <td class="lib_input-label"><label for="trainingType">Training Type:</label></td>
-                                    <td>
-                                        <!-- You can replace the input type and values with appropriate Thymeleaf expressions -->
-                                        <input type="text" id="trainingType" name="trainingType"
-                                               class="lib_input form-control" th:value="${lecturer.trainingType}"
-                                               placeholder="Enter training type" required>
-                                    </td>
-                                </tr>
+                                <!--                                <tr class="lib_input-wrapper">-->
+                                <!--                                    <td class="lib_input-label"><label for="trainingType">Training Type:</label></td>-->
+                                <!--                                    <td>-->
+                                <!--                                        &lt;!&ndash; You can replace the input type and values with appropriate Thymeleaf expressions &ndash;&gt;-->
+                                <!--                                        <input type="text" id="trainingType" name="trainingType"-->
+                                <!--                                               class="lib_input form-control" th:value="${lecturer.trainingType}"-->
+                                <!--                                               placeholder="Enter training type" required>-->
+                                <!--                                    </td>-->
+                                <!--                                </tr>-->
 
                                 <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label for="createdBy">Created By:</label></td>
@@ -145,7 +115,7 @@
                                         <!-- You can replace the input type and values with appropriate Thymeleaf expressions -->
                                         <input type="text" id="createdBy" name="createdBy"
                                                class="lib_input form-control" th:value="${lecturer.createdBy}"
-                                               placeholder="Enter created by" required>
+                                               placeholder="Enter created by" readonly>
                                     </td>
                                 </tr>
 
@@ -155,7 +125,7 @@
                                         <!-- You can replace the input type and values with appropriate Thymeleaf expressions -->
                                         <input type="text" id="createdDate" name="createdDate"
                                                class="lib_input form-control" th:value="${lecturer.createdDate}"
-                                               placeholder="Enter created date" required>
+                                               placeholder="Enter created date" readonly>
                                     </td>
                                 </tr>
 
@@ -166,7 +136,7 @@
                                         <!-- You can replace the input type and values with appropriate Thymeleaf expressions -->
                                         <input type="text" id="lastModifiedBy" name="lastModifiedBy"
                                                class="lib_input form-control" th:value="${lecturer.lastModifiedBy}"
-                                               placeholder="Enter last modified by" required>
+                                               placeholder="Enter last modified by" readonly>
                                     </td>
                                 </tr>
 
@@ -177,7 +147,13 @@
                                         <!-- You can replace the input type and values with appropriate Thymeleaf expressions -->
                                         <input type="text" id="lastModifiedDate" name="lastModifiedDate"
                                                class="lib_input form-control" th:value="${lecturer.lastModifiedDate}"
-                                               placeholder="Enter last modified date" required>
+                                               placeholder="Enter last modified date" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+<!--                                        <button type="submit" class="btn lib_show-all-btn mt-5">Update Lecture</button>-->
                                     </td>
                                 </tr>
                             </form>
@@ -267,17 +243,17 @@
         );
     }
 
-    $(document).ready(function () {
-
-        // show is Admin
-        $('#role').change(function () {
-            if ($(this).val() === 'LIBRARIAN') {
-                $('#isAdminCheckbox').show();
-            } else {
-                $('#isAdminCheckbox').hide();
-            }
-        });
-    })
+    // $(document).ready(function () {
+    //
+    //     // show is Admin
+    //     $('#role').change(function () {
+    //         if ($(this).val() === 'LIBRARIAN') {
+    //             $('#isAdminCheckbox').show();
+    //         } else {
+    //             $('#isAdminCheckbox').hide();
+    //         }
+    //     });
+    // })
 </script>
 </body>
 </html>
