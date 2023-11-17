@@ -81,7 +81,8 @@
                             <tbody>
                             <tr th:each="trainingType,iterStat : ${trainingTypes}">
                                 <td th:text="${iterStat.index+1}">1</td>
-                                <td th:text="${trainingType.trainingTypeName}"></td>
+                                <td><a th:href="@{'/admin/trainingtypes/' + ${trainingType.id}}"
+                                       th:text="${trainingType.trainingTypeName}"></a></td>
                                 <td th:text="${trainingType.trainingTypeDescription}"></td>
                             </tr>
                             </tbody>

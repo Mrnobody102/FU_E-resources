@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
@@ -397,6 +398,18 @@ public class AdminController {
     public String listTrainingTypes(Model model) {
         model.addAttribute("trainingTypes", trainingTypeService.findAll());
         return "admin/training_type/admin_training-type"; // Thymeleaf template for listing training types
+    }
+
+    @GetMapping("/trainingtypes/{id}")
+    public String viewTrainingTypeDetail(@PathVariable("id") String id, Model model, RedirectAttributes redirectAttributes) {
+        Optional<TrainingType> trainingTypeOptional = trainingTypeService.findById(id);
+        if (trainingTypeOptional.isPresent()) {
+            model.addAttribute("trainingType", trainingTypeOptional.get());
+            return "admin/training_type/admin_training-type-detail"; // Thymeleaf template for the details view
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Training type not found!");
+            return "redirect:/admin/trainingtypes/list";
+        }
     }
 
 }

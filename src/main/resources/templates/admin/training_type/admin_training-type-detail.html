@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>View Training Type</title>
+  <!-- Include Bootstrap CSS and other required script tags -->
+</head>
+<body>
+
+<div>
+  <h1>Training Type Details</h1>
+  <div th:if="${trainingType}">
+    <div>
+      <strong>ID:</strong> <span th:text="${trainingType.id}"></span>
+    </div>
+    <div>
+      <strong>Name:</strong> <span th:text="${trainingType.trainingTypeName}"></span>
+    </div>
+    <div>
+      <strong>Description:</strong> <span th:text="${trainingType.trainingTypeDescription}"></span>
+    </div>
+    <div>
+      <strong>Created By:</strong> <span th:text="${trainingType.createdBy}"></span>
+    </div>
+    <div>
+      <strong>Created Date:</strong> <span th:text="${#dates.format(trainingType.createdDate, 'dd/MM/yyyy HH:mm:ss')}"></span>
+    </div>
+    <div>
+      <strong>Last Modified By:</strong> <span th:text="${trainingType.lastModifiedBy}"></span>
+    </div>
+    <div>
+      <strong>Last Modified Date:</strong> <span th:text="${#dates.format(trainingType.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')}"></span>
+    </div>
+  </div>
+  <div th:if="${error}">
+    <p th:text="${error}"></p>
+  </div>
+  <a th:href="@{/admin/trainingtypes/list}">Back to list</a>
+</div>
+
+</body>
+</html>
