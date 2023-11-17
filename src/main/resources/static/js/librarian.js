@@ -60,7 +60,7 @@ function addIndexToTable(){
                     type: "GET",
                     url: url + "?currentPage=" + encodeURIComponent(currentPageWithoutSuccess),
                     success: function () {
-                        window.location.href = currentPageWithoutSuccess + "?success";
+                        window.location.href = "list/1" + "?success";
                         Swal.fire('Deleted!', successMessage, 'success');
                     },
                     error: function () {

@@ -135,7 +135,27 @@
 <!--        $(this).closest('form').submit();-->
 <!--    });-->
 <!--</script>-->
+<script th:inline="javascript">
 
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Delete course successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check course information again!',
+            'error'
+        );
+    }
+
+</script>
 
 </body>
 </html>

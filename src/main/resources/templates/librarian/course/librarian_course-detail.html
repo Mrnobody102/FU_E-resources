@@ -10,6 +10,9 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css">
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
@@ -21,6 +24,35 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+    <style>
+        /*.bootstrap-select {*/
+        /*    max-width: 200px;*/
+        /*}*/
+        /*.bootstrap-select .btn {*/
+        /*    border-style: solid;*/
+        /*    border-left-width: 3px;*/
+        /*    border-left-color: #00DDDD;*/
+        /*    border-top: none;*/
+        /*    border-bottom: none;*/
+        /*    border-right: none;*/
+        /*    color: black;*/
+        /*    font-weight: 200;*/
+        /*    padding: 12px 12px;*/
+        /*    font-size: 16px;*/
+        /*    margin-bottom: 10px;*/
+        /*    -webkit-appearance: none;*/
+        /*    -moz-appearance: none;*/
+        /*    appearance: none;*/
+        /*}*/
+        /*.bootstrap-select .dropdown-menu {*/
+        /*    margin: 15px 0 0;*/
+        /*}*/
+        /*select::-ms-expand {*/
+        /*    !* for IE 11 *!*/
+        /*    display: none;*/
+        /*}*/
+    </style>
 
 </head>
 
@@ -65,8 +97,13 @@
                             </p>
                         </td>
                         <td th:unless="${course.getLecturer() ne null}">
-                            <form method="post" th:action="@{'/librarian/courses/' + ${course.getId()} + '/add-lecture'}">
-                                <input type="text" id="lecturerEmail" name="lecturerEmail"  placeholder="Email" />
+                            <form method="post" th:field="*{accounts}" th:action="@{'/librarian/courses/' + ${course.getId()} + '/add-lecture'}">
+<!--                                <input type="text" id="lecturerEmail" name="lecturerEmail"  placeholder="Email" />-->
+                                <select id="select-multiple-account" class=" wia-filter-value selectpicker show-tick"  data-style="btn-white" name="lecturerId"  data-live-search="true"  >
+                                    <option selected disabled th:value="0">Choose a lecturer</option>
+                                    <option th:each="account : ${accounts}" th:value="${account.getId()}"
+                                            th:text="${account.getEmail()}"></option>
+                                </select>
                                 <button type="submit" class="btn-info">Add </button>
                             </form>
                         </td>
@@ -95,41 +132,31 @@
 <script th:src="@{/js/librarian.js}"></script>
 
 <!--Bootstrap script-->
-<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
 
+<script th:inline="javascript">
 
-<script>
-    // $(document).ready(function () {
-    //     $('.add-lecture-button').click(function () {
-    //         var lecturerEmail = $('#lecturerEmailInput').val(); // Get the entered email
-    //
-    //         // Perform validation on the email if needed
-    //
-    //         var courseId = ${course.getId};
-    //
-    //         var formData = {
-    //             email: lecturerEmail,
-    //             courseId: courseId
-    //         };
-    //
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: '@{'/librarian/courses/add-lecture'}', // Update the URL as needed
-    //             data: JSON.stringify(formData),
-    //             contentType: 'application/json',
-    //             success: function (data) {
-    //                 // Handle the success response if needed
-    //                 console.log(data);
-    //             },
-    //             error: function () {
-    //                 // Handle the error if lecture addition fails
-    //             }
-    //         });
-    //     });
-    // });
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Delete course successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check course information again!',
+            'error'
+        );
+    }
+
 </script>
 
 </body>

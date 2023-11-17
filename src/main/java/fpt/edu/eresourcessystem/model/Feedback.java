@@ -28,6 +28,8 @@ public class Feedback {
 
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
+
+    private String status;
     //Audit Log
     @CreatedBy
     private String createdBy;

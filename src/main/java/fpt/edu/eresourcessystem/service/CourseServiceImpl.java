@@ -291,7 +291,7 @@ public class CourseServiceImpl implements CourseService{
     public Course updateLectureId(String courseId, Lecturer newLecture) {
         Optional<Course> courseOptional = courseRepository.findById(courseId);
 
-        if (courseOptional.isPresent()) {
+        if (courseOptional.isPresent() &&  courseOptional.get().getLecturer() == null) {
             Course course = courseOptional.get();
             course.setLecturer(newLecture);
             return courseRepository.save(course);
