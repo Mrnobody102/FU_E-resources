@@ -8,6 +8,7 @@ import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.LecturerCourse;
 import fpt.edu.eresourcessystem.repository.LecturerCourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,17 +23,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@AllArgsConstructor
 @Service(value = "lecturerService")
 public class LecturerServiceImpl implements LecturerService {
     private final LecturerRepository lecturerRepository;
     private final LecturerCourseRepository lecturerCourseRepository;
     private final MongoTemplate mongoTemplate;
 
-    public LecturerServiceImpl(LecturerRepository lecturerRepository, LecturerCourseRepository lecturerCourseRepository, MongoTemplate mongoTemplate) {
-        this.lecturerRepository = lecturerRepository;
-        this.lecturerCourseRepository = lecturerCourseRepository;
-        this.mongoTemplate = mongoTemplate;
-    }
+//    public LecturerServiceImpl(LecturerRepository lecturerRepository, LecturerCourseRepository lecturerCourseRepository, MongoTemplate mongoTemplate) {
+//        this.lecturerRepository = lecturerRepository;
+//        this.lecturerCourseRepository = lecturerCourseRepository;
+//        this.mongoTemplate = mongoTemplate;
+//    }
 
     @Override
     public Lecturer findByCourseId(String courseId) {
@@ -153,6 +155,19 @@ public class LecturerServiceImpl implements LecturerService {
     public Lecturer findLecturerById(String lectureId) {
         Lecturer lecturer = lecturerRepository.findLecturerById(lectureId);
         return lecturer;
+    }
+
+    @Override
+    public boolean update(Lecturer lecturer) {
+        Optional<Lecturer> existingLecturer = lecturerRepository.findById(lecturer.getId());
+        if (existingLecturer.isEmpty()) {
+            return false; // Lecturer not found, update failed
+        }
+
+        Lecturer lecturerToUpdate = existingLecturer.get();
+        lecturerRepository.save(lecturerToUpdate);
+
+        return true; // Update successful
     }
 
 

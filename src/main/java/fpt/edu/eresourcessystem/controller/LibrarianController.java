@@ -470,6 +470,8 @@ public class LibrarianController {
     @GetMapping({"/lectures/list"})
     public String showLecture(final Model model) {
         List<Lecturer> lecturers = lecturerService.findAll();
+        List<TrainingType> trainingTypes = trainingTypeService.findAll();
+        model.addAttribute("trainingTypes", trainingTypes);
         model.addAttribute("lecturers", lecturers);
         return "librarian/lecture/librarian_lectures";
     }
@@ -492,16 +494,8 @@ public class LibrarianController {
 
     @GetMapping({"/lectures/{lectureId}"})
     public String showLectureDetail(@PathVariable String lectureId, final Model model) {
-
-//        if (null != lecturer) {
-//            Account accountLecturer = accountService.findById(lecturer.getAccount().getId());
-//            model.addAttribute("accountLecturer", accountLecturer);
-//        }
         Lecturer lecturer = lecturerService.findLecturerById(lectureId);
-        List<LecturerCourse> lecturerCourseList = lecturerCourseService.findLecturerCoursesById(lecturer);
-//        lecturer.setLecturerCourses(lecturerCourseList);
         model.addAttribute("lecturer", lecturer);
-
         return "librarian/lecture/librarian_lecture-detail";
     }
 
@@ -525,6 +519,7 @@ public class LibrarianController {
                 lecturerService.addLecturer(lecturer);
 //        lecturer.getAccount().setRole();
                 for (int i = 0; i < lecturer.getCourses().size(); i++) {
+                    if (lecturer.getCourses().get(i).getLecturer() == null)
                     courseService.updateLectureId(String.valueOf(lecturer.getCourses().get(i)), lecturer);
                 }
                 return "redirect:/librarian/lectures/create-lecture?success";
@@ -533,5 +528,14 @@ public class LibrarianController {
         } else
             return "redirect:/librarian/lectures/create-lecture?error";
 
+    }
+
+    @PostMapping("/update")
+    public String updateLecturer(@ModelAttribute("lecturer") Lecturer lecturer) {
+        // Update the lecturer's information in the database
+        lecturerService.update(lecturer);
+
+        // Redirect to a success page or display a confirmation message
+        return "redirect:/lecturer/success";
     }
 }
