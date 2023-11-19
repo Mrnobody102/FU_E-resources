@@ -6,16 +6,42 @@
     <title>Librarian | Lectures</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <!--    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
 
+    <style>
+        .dataTables_wrapper .dataTables_length {
+            display: none;
+            float: right;
+        }
+        #filterTable_filter{
+            float: left;
+            padding-bottom: 25px;
+        }
+        select.lib_show-all-btn{
+            display: inline;
+            width: 200px;
+            margin-left: 25px;
+            padding: 5px;
+        }
+        .dataTables_info {
+            display: none;
+        }
+        .dataTables_wrapper .dataTables_paginate {
+            text-align: center;
+            float: none;
+        }
+    </style>
+
 </head>
 <body class="app_container">
-
 <header class="row" th:replace="~{fragments/header::headerLibrarianSection}"></header>
 <div class="main_content">
     <div class="grid app__container-content-wrapper">
@@ -35,14 +61,26 @@
             <div class="lib_data-list-wrapper">
                 <div class="lib_search-container">
                     <form class="d-flex" th:action="@{/librarian/lectures/list/1}" th:method="get">
-                        <div class="d-flex">
-                            <div>
-                                <input type="text" id="filter-search"
-                                       class="form-control form-control-solid w-350px ps-14 mb-3"
-                                       placeholder="Search lecture..."/>
-                            </div>
-                            <a class="lib_show-all-btn" th:href="@{/librarian/lectures/list/1}">Show All</a>
-                        </div>
+<!--                        <div class="d-flex">-->
+<!--                            <input class="lib_search-content" type="text" placeholder="Search course.." name="search"-->
+<!--                                   th:value="${search}" id="search-text"/>-->
+<!--                            <button type="submit" class="lib_search-btn-wrapper lib_search-btn">-->
+<!--                                <i class="lib_search-btn-icon fas fa-search"></i>-->
+<!--                            </button>-->
+
+<!--                            <a class="btn lib_show-all-btn" th:href="@{/librarian/lectures/list}">Show AlL</a>-->
+<!--                        </div>-->
+
+
+
+                        <select id="select-training-type" name="trainingTypeId"
+                                class="lib_show-all-btn selectpicker show-tick" data-style="btn-white"
+                                data-live-search="true">
+                            <option value="">Choose a training type</option>
+                            <option th:each="trainingType : ${trainingTypes}"
+                                    th:value="${trainingType.trainingTypeName}"
+                                    th:text="${trainingType.trainingTypeName}"></option>
+                        </select>
                     </form>
                     <div>
                         <a class="lib_btn-add" type="button" th:href="@{/librarian/lectures/create-lecture}">
@@ -53,30 +91,31 @@
                 </div>
             </div>
             <div class="table-view" th:if="${lecturers ne null}">
-                <table class="table table-striped table-sm table-bordered" id="my_data_table">
-                    <tr class="table-head">
+                <table class="table table-striped table-sm" id="filterTable">
+                    <thead class="table-head">
                         <th>STT</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <!--                        <th>Status</th>-->
+                        <th>TrainingType</th>
                         <th>Course List</th>
 
-                    </tr>
+                    </thead>
                     <tbody>
-                    <th:block th:each="lecture, iterStat : ${lecturers}" c>
-                        <tr>
+                    <th:block th:each="lecture, iterStat : ${lecturers}">
+                        <tr >
                             <td th:text="${iterStat.index+1}">1</td>
                             <td><a th:href="@{'/librarian/lectures/' + ${lecture.getId()}}"
                                    th:text="${lecture.getAccount().getName()}"></a></td>
                             <td><span class="description" th:text="${lecture.getAccount().getEmail()}"></span></td>
-                            <!--                            <td th:text="${lecture.getDeleteFlg()}"></td>-->
+                            <td th:text="${lecture.getTrainingType()?.getTrainingTypeName()} ?: 'N/A'"></td>
+
                             <td>
-                                <th:block th:each="course : ${lecture.getCourses()}">
-                                    <a th:href="@{'/librarian/courses/' + ${course.getId()}}">
-                                        <button class="button-a-background"
-                                                th:text="${course.getCourseCode()}"></button>
-                                    </a>
-                                </th:block>
+                                                                <th:block th:each="course : ${lecture.getCourses()}">
+                                                                    <a th:href="@{'/librarian/courses/' + ${course.getId()}}">
+                                                                        <button class="button-a-background"
+                                                                                th:text="${course.getCourseCode()}"></button>
+                                                                    </a>
+                                                                </th:block>
                             </td>
 
                         </tr>
@@ -89,204 +128,66 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $("document").ready(function () {
+
+        $("#filterTable").dataTable({
+            "searching": true
+        });
+
+        //Get a reference to the new datatable
+        var table = $('#filterTable').DataTable();
+
+        //Take the category filter drop down and append it to the datatables_filter div.
+        //You can use this same idea to move the filter anywhere withing the datatable that you want.
+        $("#filterTable_filter.dataTables_filter").append($("#select-training-type"));
+
+        //Get the column index for the Category column to be used in the method below ($.fn.dataTable.ext.search.push)
+        //This tells datatables what column to filter on when a user selects a value from the dropdown.
+        //It's important that the text used here (Category) is the same for used in the header of the column to filter
+        var categoryIndex = 0;
+        $("#filterTable th").each(function (i) {
+            if ($($(this)).html() == "TrainingType") {
+                categoryIndex = i;
+                return false;
+            }
+        });
+
+        //Use the built in datatables API to filter the existing rows by the Category column
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var selectedItem = $('#select-training-type').val()
+                var category = data[categoryIndex];
+                if (selectedItem === "" || category.includes(selectedItem)) {
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        //Set the change event for the Category Filter dropdown to redraw the datatable each time
+        //a user selects a new filter.
+        $("#select-training-type").change(function (e) {
+            table.draw();
+        });
+
+        table.draw();
+    });
+</script>
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
 <!-- Bootstrap script -->
-<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+<!--<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"-->
+<!--        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"-->
+<!--        crossorigin="anonymous"></script>-->
 <!-- Custom script -->
 <script th:src="@{/js/librarian/librarian.js}"></script>
 </body>
-<script>
-    (function ($) {
 
-        var paginate = {
-            startPos: function (pageNumber, perPage) {
-                return pageNumber * perPage;
-            },
-
-            getPage: function (items, startPos, perPage) {
-                var page = [];
-                items = items.slice(startPos, items.length);
-                for (var i = 0; i < perPage; i++) {
-                    page.push(items[i]);
-                }
-
-                return page;
-            },
-
-            totalPages: function (items, perPage) {
-                return Math.ceil(items.length / perPage);
-            },
-
-            createBtns: function (totalPages, currentPage) {
-                var pagination = $('<div class="pagination" />');
-
-                pagination.append('<span class="pagination-button">&laquo;</span>');
-
-                for (var i = 1; i <= totalPages; i++) {
-                    if (totalPages > 5 && currentPage !== i) {
-                        if (currentPage === 1 || currentPage === 2) {
-                            if (i > 5) continue;
-                        } else if (currentPage === totalPages || currentPage === totalPages - 1) {
-                            // show last 5 pages
-                            if (i < totalPages - 4) continue;
-                        } else {
-                            if (i < currentPage - 2 || i > currentPage + 2) {
-                                continue;
-                            }
-                        }
-                    }
-
-                    var pageBtn = $('<span class="pagination-button page-num" />');
-                    if (i == currentPage) {
-                        pageBtn.addClass('active');
-                    }
-                    pageBtn.text(i);
-                    pagination.append(pageBtn);
-                }
-                pagination.append($('<span class="pagination-button">&raquo;</span>'));
-                return pagination;
-            },
-            createPage: function (items, currentPage, perPage) {
-
-                $('.pagination').remove();
-
-                // set context for the items
-                var container = items.parent(),
-
-                    items = items.detach().toArray(),
-
-                    startPos = this.startPos(currentPage - 1, perPage),
-                    page = this.getPage(items, startPos, perPage);
-
-                $.each(page, function () {
-                    if (this.window === undefined) {
-                        container.append($(this));
-                    }
-                });
-
-                var totalPages = this.totalPages(items, perPage),
-                    pageButtons = this.createBtns(totalPages, currentPage);
-
-                container.after(pageButtons);
-            }
-        };
-
-        $.fn.paginate = function (perPage) {
-            var items = $(this);
-
-            if (isNaN(perPage) || perPage === undefined) {
-                perPage = 5;
-            }
-
-            if (items.length <= perPage) {
-                return true;
-            }
-
-            if (items.length !== items.parent()[0].children.length) {
-                items.wrapAll('<div class="pagination-items" />');
-            }
-
-            paginate.createPage(items, 1, perPage);
-
-            // handle click events on the buttons
-            $(document).on('click', '.pagination-button', function (e) {
-                var currentPage = parseInt($('.pagination-button.active').text(), 10),
-                    newPage = currentPage,
-                    totalPages = paginate.totalPages(items, perPage),
-                    target = $(e.target);
-
-                newPage = parseInt(target.text(), 10);
-                if (target.text() == '«') newPage = 1;
-                if (target.text() == '»') newPage = totalPages;
-
-                if (newPage > 0 && newPage <= totalPages) {
-                    paginate.createPage(items, newPage, perPage);
-                }
-            });
-        };
-
-    })(jQuery);
-
-    document.getElementById("filter-search").addEventListener("input", function () {
-        const filterValue = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#my_data_table tbody tr");
-
-        rows.forEach(function (row) {
-            const cells = row.querySelectorAll("td");
-            let found = false;
-            cells.forEach(function (cell) {
-                if (cell.textContent.toLowerCase().includes(filterValue)) {
-                    found = true;
-                }
-            });
-            if (found) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    });
-</script>
-<style>
-    .pagination {
-        display: flex;
-        width: 75%;
-        margin: 1rem auto 5rem auto;
-        text-align: center;
-
-    &
-    :after {
-        content: '';
-        clear: both;
-    }
-
-    }
-
-    .pagination-button {
-        display: inline-block;
-        padding: 5px 10px;
-        border: 1px solid #e0e0e0;
-        background-color: #eee;
-        color: #333;
-        cursor: pointer;
-        transition: background 0.1s, color 0.1s;
-
-    &
-    :hover {
-        background-color: #ddd;
-        color: #3366cc;
-    }
-
-    &
-    .active {
-        background-color: #bbb;
-        border-color: #bbb;
-        color: #3366cc;
-    }
-
-    $
-    border-radius:
-
-    18
-    px
-
-    ;
-
-    &
-    :first-of-type {
-        border-radius: $ border-radius 0 0 $ border-radius;
-    }
-
-    &
-    :last-of-type {
-        border-radius: 0 $ border-radius $ border-radius 0;
-    }
-
-    }
-</style>
 </html>
