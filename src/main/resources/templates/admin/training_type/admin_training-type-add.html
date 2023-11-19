@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Librarian | Add Training Type</title>
 
-
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css">
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
@@ -82,6 +82,21 @@
                                             </td>
                                         </tr>
 
+                                        <tr class="lib_input-wrapper">
+                                            <td class="lib_input-label"><label th:for="trainingTypeDescription">
+                                                Courses of Training Type</label>
+                                            </td>
+                                            <td>
+
+                                                <select id="select-multiple-course" th:field="*{courses}"  class="form-control selectpicker show-tick"  data-style="btn-white" multiple data-live-search="true"  >
+                                                    <option selected disabled th:value="0">Choose a course</option>
+                                                    <option th:each="course : ${allCourses}" th:value="${course.getId()}"
+                                                            th:text="${course.getCourseName()}"></option>
+                                                </select>
+                                            </td>
+                                        </tr>
+
+
                                         <tr>
                                             <td></td>
                                             <td>
@@ -103,9 +118,10 @@
 <div th:replace="~{fragments/footer :: footerSection}"></div>
 
 <!--Bootstrap script-->
-<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
 
 <!--Custom script-->
 <script th:src="@{/js/librarian/librarian.js}"></script>

@@ -40,4 +40,7 @@ public interface LecturerService {
 
 
     Lecturer findLecturerById(String lectureId);
+
+    boolean update(Lecturer lecturer);
+
 }

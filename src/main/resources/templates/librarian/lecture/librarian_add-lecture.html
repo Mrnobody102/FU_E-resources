@@ -17,7 +17,6 @@
 
     <!-- SweetAlert từ CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 
@@ -68,6 +67,16 @@
                                     <option selected disabled th:value="0">Choose a course</option>
                                     <option th:each="course : ${allCourses}" th:value="${course.getId()}"
                                             th:text="${course.getCourseName()}"></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group mt-5">
+                                <label for="select-multiple-training">Training Type </label>
+
+                                <select id="select-multiple-training" th:field="*{trainingType}"  class="form-control selectpicker show-tick"  data-style="btn-white"  data-live-search="true"  >
+                                    <option selected disabled th:value="0">Choose a training type</option>
+                                    <option th:each="trainingType : ${trainingTypes}" th:value="${trainingType.getId()}"
+                                            th:text="${trainingType.trainingTypeName}"></option>
                                 </select>
                             </div>
 

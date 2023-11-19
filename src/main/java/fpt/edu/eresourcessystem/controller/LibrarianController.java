@@ -1,12 +1,16 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.CourseDTO;
+import fpt.edu.eresourcessystem.dto.DocumentDTO;
+import fpt.edu.eresourcessystem.enums.AccountEnum;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.bson.types.ObjectId;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -24,16 +28,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/librarian")
 @PropertySource("web-setting.properties")
 public class LibrarianController {
 
-    @Autowired
-    JavaMailSender javaMailSender;
+    private final  JavaMailSender javaMailSender;
 
-
-    @Value("${page-size}")
-    private Integer pageSize;
+//    @Value("${page-size}")
+    private static final Integer pageSize = 2;
     private final AccountService accountService;
     private final LibrarianService librarianService;
     private final LecturerService lecturerService;
@@ -45,17 +48,19 @@ public class LibrarianController {
 
     private final LecturerCourseService lecturerCourseService;
 
-    public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, LecturerCourseService lecturerCourseService) {
-        this.accountService = accountService;
-        this.librarianService = librarianService;
-        this.lecturerService = lecturerService;
-        this.studentService = studentService;
-        this.courseService = courseService;
-        this.topicService = topicService;
-        this.resourceTypeService = resourceTypeService;
-        this.documentService = documentService;
-        this.lecturerCourseService = lecturerCourseService;
-    }
+    private final TrainingTypeService trainingTypeService;
+
+//    public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, LecturerCourseService lecturerCourseService) {
+//        this.accountService = accountService;
+//        this.librarianService = librarianService;
+//        this.lecturerService = lecturerService;
+//        this.studentService = studentService;
+//        this.courseService = courseService;
+//        this.topicService = topicService;
+//        this.resourceTypeService = resourceTypeService;
+//        this.documentService = documentService;
+//        this.lecturerCourseService = lecturerCourseService;
+//    }
 
     /*
     DASHBOARD
@@ -231,10 +236,8 @@ public class LibrarianController {
                              @RequestParam(required = false, defaultValue = "") String search,
                              final Model model, HttpServletRequest request) {
         Page<Course> page;
-
         page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-        System.out.println(page.get());
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
@@ -358,24 +361,19 @@ public class LibrarianController {
         }
     }
 
-    @GetMapping({"/lectures"})
-    public String showLectures(final Model model) {
-//        Course course = courseService.findByCourseId(courseId);
-//        List<Topic> topics = topicService.findByCourseId(courseId);
-//        Lecturer lecturer = lecturerService.findCurrentCourseLecturer(courseId);
-//
-//        if (null != lecturer) {
-//            Account accountLecturer = accountService.findById(lecturer.getAccount().getId());
-//            model.addAttribute("accountLecturer", accountLecturer);
-//        }
-        List<Lecturer> lecturers = lecturerService.findAll();
-        model.addAttribute("lecturers", lecturers);
-        return "librarian/lecture/librarian_lectures";
-//        return  "librarian/course/detailCourseTest";
-    }
+//    @GetMapping({"/lectures"})
+//    public String showLectures(final Model model) {
+//        List<TrainingType> trainingTypes = trainingTypeService.findAll();
+//        model.addAttribute("trainingTypes", trainingTypes);
+//        return "librarian/lecture/librarian_lectures";
+//    }
 
-    @GetMapping({"/lectures/list"})
-    public String showLecture() {
+    @GetMapping({"/lectures/list", "/lectures"})
+    public String showLecture(final Model model) {
+        List<Lecturer> lecturers = lecturerService.findAll();
+        List<TrainingType> trainingTypes = trainingTypeService.findAll();
+        model.addAttribute("trainingTypes", trainingTypes);
+        model.addAttribute("lecturers", lecturers);
         return "librarian/lecture/librarian_lectures";
     }
 
@@ -397,23 +395,20 @@ public class LibrarianController {
 
     @GetMapping({"/lectures/{lectureId}"})
     public String showLectureDetail(@PathVariable String lectureId, final Model model) {
-
-//        if (null != lecturer) {
-//            Account accountLecturer = accountService.findById(lecturer.getAccount().getId());
-//            model.addAttribute("accountLecturer", accountLecturer);
-//        }
         Lecturer lecturer = lecturerService.findLecturerById(lectureId);
-        List<LecturerCourse> lecturerCourseList = lecturerCourseService.findLecturerCoursesById(lecturer);
-//        lecturer.setLecturerCourses(lecturerCourseList);
         model.addAttribute("lecturer", lecturer);
-
+        model.addAttribute("roles", AccountEnum.Role.values());
+        model.addAttribute("campuses", AccountEnum.Campus.values());
+        model.addAttribute("genders", AccountEnum.Gender.values());
         return "librarian/lecture/librarian_lecture-detail";
     }
 
     @GetMapping("/lectures/create-lecture")
     public String showAddLectureForm(Model model) {
-        List<Course> allCourses = courseService.findAll(); // Retrieve all available courses
+        List<Course> allCourses = courseService.findAll();
+        List<TrainingType> trainingTypes = trainingTypeService.findAll();
         model.addAttribute("allCourses", allCourses);
+        model.addAttribute("trainingTypes",trainingTypes);
         model.addAttribute("lecture", new Lecturer());
         return "librarian/lecture/librarian_add-lecture";
     }
@@ -428,6 +423,7 @@ public class LibrarianController {
                 lecturerService.addLecturer(lecturer);
 //        lecturer.getAccount().setRole();
                 for (int i = 0; i < lecturer.getCourses().size(); i++) {
+                    if (lecturer.getCourses().get(i).getLecturer() == null)
                     courseService.updateLectureId(String.valueOf(lecturer.getCourses().get(i)), lecturer);
                 }
                 return "redirect:/librarian/lectures/create-lecture?success";
@@ -436,5 +432,21 @@ public class LibrarianController {
         } else
             return "redirect:/librarian/lectures/create-lecture?error";
 
+    }
+
+    @PostMapping("/lectures/update")
+    public String updateLecture( @ModelAttribute("lecturer") Lecturer updatedLecture, final Model model) {
+        // Check if the lectureId is valid (you can add additional validation)
+        if (updatedLecture == null ) {
+            return "redirect:/error"; // Redirect to an error page or handle invalid ID
+        }
+        // Call the service to update the lecture
+        boolean updateSuccess = lecturerService.update(updatedLecture);
+
+        if (updateSuccess) {
+            return "redirect:/lectures/" + updatedLecture.getId() +"/success";
+        } else {
+            return "redirect:/lectures/error"; // Redirect to an error page if the update fails
+        }
     }
 }

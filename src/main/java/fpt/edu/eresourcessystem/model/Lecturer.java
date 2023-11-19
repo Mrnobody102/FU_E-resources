@@ -25,6 +25,9 @@ public class Lecturer {
     @DocumentReference(lazy = true)
     private Account account;
 
+    @DocumentReference
+    private TrainingType trainingType;
+
     private List<String> lecturerCourses;
     @DocumentReference(lazy = true)
     private List<Course> courses;
