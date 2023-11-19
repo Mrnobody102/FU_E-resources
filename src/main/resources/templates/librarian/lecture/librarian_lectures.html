@@ -107,7 +107,7 @@
                             <td><a th:href="@{'/librarian/lectures/' + ${lecture.getId()}}"
                                    th:text="${lecture.getAccount().getName()}"></a></td>
                             <td><span class="description" th:text="${lecture.getAccount().getEmail()}"></span></td>
-                            <td th:text="${lecture.getTrainingType()?.getTrainingTypeName()} ?: 'N/A'"></td>
+                            <td th:text="${lecture.getTrainingType().getTrainingTypeName()} ?: 'N/A'"></td>
 
                             <td>
                                                                 <th:block th:each="course : ${lecture.getCourses()}">
