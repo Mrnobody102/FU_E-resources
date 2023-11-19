@@ -44,8 +44,8 @@
                                         Lecturer:
                                         <a href="" class="lecturer-name" th:text="${account.name}">
                                         </a></span>
-                                        <span style="flex: 1">Type: <span class="lecturer-name"
-                                                                          th:text="${document.resourceType.resourceTypeName}"></span></span>
+<!--                                        <span style="flex: 1">Type: <span class="lecturer-name"-->
+<!--                                                                          th:text="${document.resourceType.resourceTypeName}"></span></span>-->
                                     </div>
                                     <div><p>Description: <span th:text="${document.description}"></span></p></div>
                                 </div>
@@ -119,20 +119,20 @@
 
                                 <div class="stu__navbar-view-doc">
                                     <ul class="stu__navbar-view-doc-list border-bottom">
-                                        <li class="stu__navbar-view-doc-item" id="link-view-questions">
-                                            <a href="#question" onclick="viewQuestion()">
+                                        <li class="stu__navbar-view-doc-item" id="link-view-question">
+                                            <a href="#question" onclick="viewSection('question')">
                                                 Question & Answer
                                             </a>
                                         </li>
-                                        <li class="stu__navbar-view-doc-item stu__navbar-active" id="link-view-notes">
-                                            <a href="#note" onclick="viewNote()">
+                                        <li class="stu__navbar-view-doc-item stu__navbar-active" id="link-view-note">
+                                            <a href="#note" onclick="viewSection('note')">
                                                 Notes
                                             </a>
                                         </li>
                                     </ul>
                                 </div>
                                 <!--Note section-->
-                                <div id="note">
+                                <div th:href="@{'/student/documents/'+${document.id}+'#note'}" id="note" class="section-view">
                                     <div class="stu__note-in-doc-view">
                                         <div class="stu__note-in-doc-content" th:if="${note ne null}">
                                             <div class="stu__note-content">
@@ -166,7 +166,7 @@
                                     </div>
                                 </div>
                                 <!--End note section-->
-                                <div id="question" style="display: none" class="stu_doc-view-question-content">
+                                <div th:href="@{'/student/documents/'+${document.id}+'#question'}" id="question" style="display: none" class="stu_doc-view-question-content section-view">
                                     <div class="stu__save-question">
                                         <button class="btn btn--hover add-doc-question" id="add-doc-question">New Question</button>
                                     </div>
@@ -330,6 +330,18 @@
         .catch(error => {
             console.error(error);
         });
+    // Xử lý fragment identifier nếu có trong URL
+    document.addEventListener("DOMContentLoaded", function () {
+        var hash = window.location.hash;
+        if (hash) {
+            var element = document.querySelector(hash);
+            if (element) {
+                var sectionId = hash.substring(1); // Loại bỏ dấu '#'
+                showSection(sectionId);
+
+            }
+        }
+    });
 
 </script>
 </body>

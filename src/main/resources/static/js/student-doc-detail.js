@@ -11,6 +11,24 @@ function viewNote() {
     $("#link-view-questions").removeClass("stu__navbar-active")
     $("#link-view-notes").addClass("stu__navbar-active");
 }
+function viewSection(sectionId){
+    // Ẩn tất cả các phần
+    $('.stu__navbar-view-doc-item').each(function() {
+        $(this).removeClass('stu__navbar-active');
+    });
+    $(".section-view").each(function (){
+        $(this).css("display", "none");
+    })
+
+    var selectedSection = $("#link-view-" + sectionId);
+    if (selectedSection.length) {
+        selectedSection.addClass('stu__navbar-active');
+    }
+    var selectedSection = $("#" + sectionId);
+    if (selectedSection.length) {
+        selectedSection.css("display", "block");
+    }
+}
 
 function submitFormAddQuestion(param) {
 
@@ -187,6 +205,16 @@ function showReplyForm(questionId) {
 }
 
 $(document).ready(function () {
+    // add scroll to fragment identifier if id exist in URL
+    var hash = window.location.hash;
+    if (hash) {
+        var element = document.querySelector(hash);
+        if(element){
+            var sectionId = hash.substring(1); // exclude '#'
+            viewSection(sectionId);
+            element.scrollIntoView();
+        }
+    }
 
     $("body").on("click", ".add-note", function () {
         var contextPath = $(this).attr("contextPath");

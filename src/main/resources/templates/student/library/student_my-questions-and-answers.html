@@ -112,7 +112,7 @@
                                                     <!--                          <h2 class="home__note-title" th:text="${studentNote.title}"-->
                                                     <!--                              href=""></h2>-->
                                                     <a class="stu__question-title" th:text="${studentQuestion.documentId.title}"
-                                                       th:href="@{'/student/documents/' + ${studentQuestion.documentId.id}}"></a>
+                                                       th:href="@{'/student/documents/' + ${studentQuestion.documentId.id}+'#question'}"></a>
                                                     <p class="home__note-description"
                                                        th:text="${studentQuestion.content}"></p>
                                                     <p class="home__note-date">
@@ -120,7 +120,7 @@
                                                     </p>
                                                     <div class="home__note-item stu__list-answers" th:each="answer : ${studentQuestion.answers}">
                                                         <a class="stu__question-title" th:text="${answer.documentId.title}"
-                                                           th:href="@{'/student/documents/' + ${answer.documentId.id}}"></a>
+                                                           th:href="@{'/student/documents/' + ${answer.documentId.id}+ '#question'}"></a>
                                                         <p class="home__note-description"
                                                            th:text="${answer.answer}"></p>
                                                         <p class="home__note-date">
