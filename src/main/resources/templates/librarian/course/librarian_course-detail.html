@@ -91,12 +91,12 @@
 <!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>-->
 <!--                            </p>-->
                         </th>
-                        <td th:if="${course.getLecturer() ne null}">
+                        <td th:if="${checkLecturerCourse}">
                            <p th:text="${course.getLecturer().getAccount().getName()} + ' - ' + ${course.getLecturer().getAccount().getEmail()} "></p>
                             <p><a class="btn-info" th:href="@{'/librarian/courses/'+${course.getId()}+'/remove-lecture'}">Remove</a>
                             </p>
                         </td>
-                        <td th:unless="${course.getLecturer() ne null}">
+                        <td th:unless="${checkLecturerCourse}">
                             <form method="post" th:field="*{accounts}" th:action="@{'/librarian/courses/' + ${course.getId()} + '/add-lecture'}">
 <!--                                <input type="text" id="lecturerEmail" name="lecturerEmail"  placeholder="Email" />-->
                                 <select id="select-multiple-account" class=" wia-filter-value selectpicker show-tick"  data-style="btn-white" name="lecturerId"  data-live-search="true"  >
@@ -129,7 +129,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Custom script-->
-<script th:src="@{/js/librarian.js}"></script>
+<script th:src="@{/js/librarian/librarian.js}"></script>
 
 <!--Bootstrap script-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

@@ -1,6 +1,5 @@
 package fpt.edu.eresourcessystem.model;
 
-import fpt.edu.eresourcessystem.dto.CourseLogDTO;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
@@ -11,7 +10,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 

@@ -29,6 +29,8 @@ import java.util.Optional;
 @RequestMapping("/admin")
 @PropertySource("web-setting.properties")
 public class AdminController {
+    @Value("${page-size}")
+    private Integer pageSize;
 
     private final AccountService accountService;
     private final AdminService adminService;
@@ -39,11 +41,9 @@ public class AdminController {
     private final TopicService topicService;
     private final DocumentService documentService;
     private final UserLogService userLogService;
-    @Value("${page-size}")
-    private Integer pageSize;
     private final FeedbackService feedbackService;
 
-    private  final TrainingTypeService trainingTypeService;
+    private final TrainingTypeService trainingTypeService;
 
     public AdminController(AccountService accountService, AdminService adminService,
                            LibrarianService librarianService, LecturerService lecturerService,
@@ -124,7 +124,7 @@ public class AdminController {
     /*
     This function to display librarians and created course by that librarians
      */
-    @GetMapping("/courseCreator")
+    @GetMapping("/course_creator")
     String findCourseByLibrarian(final Model model) {
 
         List<Account> librarianList = accountService.findAllLibrarian();
@@ -387,14 +387,16 @@ public class AdminController {
         model.addAttribute("roleSearch", roleSearch);
         return "admin/system_log/admin_user_logs";
     }
+
     @GetMapping("/course_log/tracking")
-    public String courseLogManage(){
+    public String courseLogManage() {
         return "admin/system_log/admin_course_logs";
     }
+
     @GetMapping("/feedbacks/list/{pageIndex}")
     String showFeedbacksByPage(@PathVariable Integer pageIndex,
-                             @RequestParam(required = false, defaultValue = "") String search,
-                             final Model model, HttpServletRequest request) {
+                               @RequestParam(required = false, defaultValue = "") String search,
+                               final Model model, HttpServletRequest request) {
         Page<Course> page;
 //        page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
 //        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
@@ -458,7 +460,7 @@ public class AdminController {
     }
 
     @GetMapping("/document_log/tracking")
-    public String documentLogManage(){
+    public String documentLogManage() {
         return "admin/system_log/admin_document_logs";
     }
 }

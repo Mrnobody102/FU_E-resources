@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnswerResponseDTO {
+public class AnswerResponseDto {
 
     private String answerId;
 
@@ -25,7 +25,7 @@ public class AnswerResponseDTO {
     private String lecturerName;
 
     private String lastModifiedDate;
-    public AnswerResponseDTO(Answer answer){
+    public AnswerResponseDto(Answer answer){
         this.answerId= answer.getId();
         this.answerContent = answer.getAnswer();
         if(null!=answer.getStudent() && null!=answer.getStudent().getAccount()){

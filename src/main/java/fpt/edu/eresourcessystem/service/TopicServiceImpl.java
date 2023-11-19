@@ -4,7 +4,12 @@ import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.repository.TopicRepository;
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +19,9 @@ import java.util.Optional;
 public class TopicServiceImpl implements TopicService {
     private final TopicRepository topicRepository;
     private final DocumentService documentService;
-    MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
+    @Autowired
     public TopicServiceImpl(TopicRepository topicRepository, DocumentService documentService, MongoTemplate mongoTemplate) {
         this.topicRepository = topicRepository;
         this.documentService = documentService;
@@ -97,6 +103,13 @@ public class TopicServiceImpl implements TopicService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void addDocumentToTopic(String topicId, ObjectId documentId) {
+        Query query = new Query(Criteria.where("id").is(topicId));
+        Update update = new Update().push("documents", documentId);
+        mongoTemplate.updateFirst(query, update, Topic.class);
     }
 
 }

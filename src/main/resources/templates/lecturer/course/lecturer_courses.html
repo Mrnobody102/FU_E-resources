@@ -76,31 +76,31 @@
                             <ul class="lec__navbar-list border-bottom">
                                 <li class="lec__navbar-item"
                                     th:classappend="${status == 'all' ? 'lec__navbar-active' : ''}">
-                                    <a href="/lecturer/courses/list/all/1">
+                                    <a th:href="@{/lecturer/courses/list/all/1}">
                                         All courses
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
                                     th:classappend="${status == 'new' ? 'lec__navbar-active' : ''}">
-                                    <a href="/lecturer/courses/list/new/1">
+                                    <a th:href="@{/lecturer/courses/list/new/1}">
                                         New courses
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
                                     th:classappend="${status == 'publish' ? 'lec__navbar-active' : ''}">
-                                    <a href="/lecturer/courses/list/publish/1">
+                                    <a th:href="@{/lecturer/courses/list/publish/1}">
                                         Publish courses
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
                                     th:classappend="${status == 'draft' ? 'lec__navbar-active' : ''}">
-                                    <a href="/lecturer/courses/list/draft/1">
+                                    <a th:href="@{/lecturer/courses/list/draft/1}">
                                         Editing courses
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
                                     th:classappend="${status == 'hide' ? 'lec__navbar-active' : ''}">
-                                    <a href="/lecturer/courses/list/hide/1">
+                                    <a th:href="@{/lecturer/courses/list/hide/1}">
                                         Hidden courses
                                     </a>
                                 </li>
@@ -185,7 +185,7 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/lecturer.js}"></script>
+<script th:src="@{/js/lecturer/lecturer.js}"></script>
 </body>
 </html>
 

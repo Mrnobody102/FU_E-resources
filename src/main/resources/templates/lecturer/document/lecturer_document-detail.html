@@ -39,8 +39,7 @@
                                 <div>
                                     <div class="doc-info-name d-flex justify-content-between" style="margin-bottom: 4px">
                                         <div style="flex: 3; margin-right: 2rem">
-                                            <i class="fa-solid fa-file"></i>
-                                            <a class="doc-info-name h2" th:text="${document.getTitle()}"></a>
+                                            <p class="doc-info-name h2" th:text="${document.getTitle()}"></p>
                                             <div style="display: flex; width: 100%">
                                         <span style="flex: 1">Type: <span class="lecturer-name"
                                                                           th:text="${document.resourceType.resourceTypeName}"></span></span>
@@ -158,8 +157,8 @@
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
-<script src="/js/lecturer.js"></script>
-<script src="/js/lecturer-doc-detail.js"></script>
+<script src="/js/lecturer/lecturer.js"></script>
+<script src="/js/lecturer/lecturer-doc-detail.js"></script>
 <script>
     var content = document.getElementById("content");
     var button = document.getElementById("readMoreBtn");

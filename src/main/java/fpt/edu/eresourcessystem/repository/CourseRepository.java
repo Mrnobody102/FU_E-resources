@@ -32,7 +32,8 @@ public interface CourseRepository extends
     @Query(("{$and:[{ 'deleteFlg' : 'PRESERVED' },"
             + "{$or: ["
             + "    {courseCode: {$regex: ?0}},"
-            + "    {courseName: {$regex: ?1}}"
+            + "    {courseName: {$regex: ?1}},"
+            + "    {courseDescription: {$regex: ?2}}"
             + "    ]}"
             + "]}"))
     Page<Course> findByCourseCodeLikeOrCourseNameLikeOrDescriptionLike(String code,String name,String description,Pageable pageable);

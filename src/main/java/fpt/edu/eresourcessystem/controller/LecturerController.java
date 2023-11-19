@@ -8,6 +8,7 @@ import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
@@ -37,7 +38,9 @@ public class LecturerController {
     private final DocumentService documentService;
     private final CourseLogService courseLogService;
 
-    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, CourseLogService courseLogService) {
+    private final QuestionService questionService;
+
+    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, CourseLogService courseLogService, QuestionService questionService) {
         this.courseService = courseService;
         this.accountService = accountService;
         this.lecturerService = lecturerService;
@@ -45,6 +48,7 @@ public class LecturerController {
         this.resourceTypeService = resourceTypeService;
         this.documentService = documentService;
         this.courseLogService = courseLogService;
+        this.questionService = questionService;
     }
 
 
@@ -261,11 +265,16 @@ public class LecturerController {
             model.addAttribute("errorMessage", "Could not found document.");
             return "exception/404";
         } else {
-            if (!document.getDocType().toString().equalsIgnoreCase("UNKNOWN")) {
+            // get list question
+            List<Question> questions =  questionService.findByDocId(document);
+
+            if(!document.getDocType().toString().equalsIgnoreCase("UNKNOWN")){
                 String base64EncodedData = Base64.getEncoder().encodeToString(document.getContent());
                 model.addAttribute("data", base64EncodedData);
             }
+            model.addAttribute("newAnswer", new Answer());
             model.addAttribute("document", document);
+            model.addAttribute("questions", questions);
             return "lecturer/document/lecturer_document-detail";
         }
     }
@@ -313,13 +322,8 @@ public class LecturerController {
         resourceTypeService.updateResourceType(resourceType);
 
         // Thêm document vào topic
-        List<Document> topicDocuments = topic.getDocuments();
-        if (topicDocuments == null) {
-            topicDocuments = new ArrayList<>();
-        }
-        topicDocuments.add(document);
-        topic.setDocuments(topicDocuments);
-        topicService.updateTopic(topic);
+        // Sử dụng $push để thêm document vào topic mà không cần lấy toàn bộ documents
+        topicService.addDocumentToTopic(topicId, new ObjectId(document.getId()));
 
         return "redirect:/lecturer/topics/" + topicId + "/documents/add?success";
     }

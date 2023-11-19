@@ -1,6 +1,5 @@
 package fpt.edu.eresourcessystem.dto;
 
-import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Course;
 import lombok.AllArgsConstructor;

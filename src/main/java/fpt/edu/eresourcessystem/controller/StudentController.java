@@ -8,7 +8,7 @@ import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
-import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDTO;
+import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 
@@ -67,7 +69,10 @@ public class StudentController {
     }
 
     private Student getLoggedInStudent() {
-        return studentService.findAll().get(0);
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account loggedInAccount = accountService.findByEmail(loggedInEmail);
+        Student loggedInStudent = studentService.findByAccountId(loggedInAccount.getId());
+        return loggedInStudent;
     }
     /*
         HOME
@@ -78,10 +83,8 @@ public class StudentController {
         return userLog;
     }
     @GetMapping({"", "/home"})
-    public String getStudentHome(@ModelAttribute Account account, final Model model) {
-        Student student = getLoggedInStudent();
-        List<String> courseLogs = courseLogService.findStudentRecentView(student.getAccount().getEmail());
-//        System.out.println(courseLogs);
+    public String getStudentHome(final Model model) {
+        List<String> courseLogs = courseLogService.findStudentRecentView(getLoggedInStudent().getAccount().getEmail());
         List<Course> recentCourses = courseService.findByListId(courseLogs);
         model.addAttribute("recentCourses", recentCourses);
         return "student/student_home";
@@ -100,8 +103,6 @@ public class StudentController {
      */
     @GetMapping("/courses")
     public String getStudentCourse(@ModelAttribute Account account, final Model model) {
-//        List<Course> courses = courseService.findAll();
-//        model.addAttribute("courses", courses);
         return "student/course/student_courses";
     }
 
@@ -117,14 +118,15 @@ public class StudentController {
         }
         // add course log
         CourseLog courseLog = new CourseLog(course, CommonEnum.Action.VIEW);
-        courseLog = courseLogService.addCourseLog(courseLog);
-        System.out.println(courseLog);
+        courseLogService.addCourseLog(courseLog);
         model.addAttribute("course", course);
         if (studentService.checkCourseSaved(student.getId(), courseId)) {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);
         // add log
         addUserLog("/student/course/"+ courseId);
+
+        // Need to optimize
         return "student/course/student_course-detail";
     }
 
@@ -161,7 +163,6 @@ public class StudentController {
         // auth
         Student student = getLoggedInStudent();
         Document document = documentService.findById(docId);
-        System.out.println(document.getDocStatus());
         if(null == student){
             return "common/login";
         }else if(null == document){
@@ -169,8 +170,14 @@ public class StudentController {
         }else if(DocumentEnum.DocumentStatusEnum.HIDE == document.getDocStatus()){
             return "exception/404";
         }
+        if(!document.getDocType().toString().equalsIgnoreCase("UNKNOWN")){
+            String base64EncodedData = Base64.getEncoder().encodeToString(document.getContent());
+            model.addAttribute("data", base64EncodedData);
+        }
 
+        // Need to optimize
         Account account = accountService.findByEmail(document.getCreatedBy());
+
         DocumentNote documentNote = documentNoteService.findByDocIdAndStudentId(docId,student.getId());
         if(null!= documentNote){
             model.addAttribute("documentNote", documentNote);
@@ -180,17 +187,19 @@ public class StudentController {
 
         // get list questions
         List<Question> questions = questionService.findByDocId(document);
-        List<QuestionResponseDTO> questionResponseDTOs = new ArrayList<>();
-        List<QuestionResponseDTO> myQuestionResponseDTOs = new ArrayList<>();
+        List<QuestionResponseDto> questionResponseDtos = new ArrayList<>();
+        List<QuestionResponseDto> myQuestionResponseDtos = new ArrayList<>();
+
+        // Need to optimize - dùng AJAX ik =)))))))))))))))))))))))))))))))))))))))))))))))))))
         for (Question q: questions) {
             if(!q.getStudent().getId().equals(student.getId())){
-                questionResponseDTOs.add(new QuestionResponseDTO(q));
+                questionResponseDtos.add(new QuestionResponseDto(q));
             }else {
-                myQuestionResponseDTOs.add(new QuestionResponseDTO(q));
+                myQuestionResponseDtos.add(new QuestionResponseDto(q));
             }
         }
-        model.addAttribute("questions", questionResponseDTOs);
-        model.addAttribute("myQuestions", myQuestionResponseDTOs);
+        model.addAttribute("questions", questionResponseDtos);
+        model.addAttribute("myQuestions", myQuestionResponseDtos);
         model.addAttribute("document", document);
         model.addAttribute("account", account);
         model.addAttribute("newQuestion", new Question());
@@ -384,6 +393,7 @@ public class StudentController {
         }
     }
 
+    // tối ưu
     @GetMapping("/my_library/my_questions/history")
     public String viewMyQuestions(final Model model){
         Student student = getLoggedInStudent();

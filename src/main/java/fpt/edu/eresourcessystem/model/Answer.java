@@ -1,7 +1,6 @@
 package fpt.edu.eresourcessystem.model;
 
 import fpt.edu.eresourcessystem.dto.AnswerDTO;
-import fpt.edu.eresourcessystem.dto.QuestionDTO;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import jakarta.validation.constraints.NotEmpty;
@@ -13,7 +12,6 @@ import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import java.util.List;
 import java.util.Objects;
 
 @Data

@@ -1,9 +1,7 @@
 package fpt.edu.eresourcessystem.model;
 
 import fpt.edu.eresourcessystem.dto.CourseLogDTO;
-import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +18,7 @@ public class CourseLog {
     @Id
     private String id;
 
-    @DocumentReference
+    @DocumentReference(lazy = true)
     private Course course;
     private String oldContent;
     private String newContent;

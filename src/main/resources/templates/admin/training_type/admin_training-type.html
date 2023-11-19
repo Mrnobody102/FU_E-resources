@@ -61,7 +61,7 @@
 
                         </form>
                         <div>
-                            <a class="lib_btn-add" type="button" th:href="@{/admin/trainingtype/add}">
+                            <a class="lib_btn-add" type="button" th:href="@{/admin/trainingtypes/add}">
                                 <i class="fa-solid fa-plus"></i>
                                 <span>New</span>
                             </a>
@@ -102,7 +102,7 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/admin.js}"></script>
+<script th:src="@{/js/admin/admin.js}"></script>
 <script>
     $('form select').on('change', function () {
         $(this).closest('form').submit();

@@ -2,6 +2,7 @@ package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Topic;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -20,4 +21,5 @@ public interface TopicService {
 
     boolean delete(String topicId);
 
+    void addDocumentToTopic(String topicId, ObjectId documentId);
 }

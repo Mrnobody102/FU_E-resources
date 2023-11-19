@@ -7,10 +7,8 @@ import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
-import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class Librarian{
     @Id
     private String id;
     @NotNull
-    @DocumentReference
+    @DocumentReference(lazy = true)
     private Account account;
     @DocumentReference(lazy = true)
     private List<Course> createdCourses;

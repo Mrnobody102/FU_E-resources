@@ -35,7 +35,7 @@
                             <span> &gt; <a th:href="@{/lecturer/courses/list/all/1}"> Courses management</a> </span>
                             <span> &gt; <a th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
                         </div>
-                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 course-detail-info-title">
                             <div style="flex:3 ;">
                                 <h1 class="h2" th:text="${course.courseCode} + ' - ' + ${course.courseName}"></h1>
                                 <p id="content" class="doc-info-description"
@@ -85,12 +85,12 @@
                                 <div class="topic-list-content">
                                     <div class="topic-view-list">
                                         <!--Topic view-->
-                                        <div class="topic-item" th:each="topic : ${course.topics}">
+                                        <div class="topic-item pt-2 pb-3 border-bottom" th:each="topic : ${course.topics}">
                                             <div class="topic-title">
                                                 <h3 class="topic-info-title d-flex justify-content-between">
                                                     <a th:href="@{'/lecturer/topics/' + ${topic.id}}"
                                                        th:text="${topic.topicTitle}" style="flex: 3"></a>
-                                                    <div style="flex: 1; display: flex; justify-content: center">
+                                                    <div style="flex: 1; display: flex; justify-content: center; min-width: fit-content">
                                                         <div>
                                                             <a class="lec__edit-topic-icon"
                                                                th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}">
@@ -150,7 +150,7 @@
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-<script src="/js/lecturer.js"></script>
+<script src="/js/lecturer/lecturer.js"></script>
 <script>
     function toggleContent() {
         var content = document.getElementById("content");

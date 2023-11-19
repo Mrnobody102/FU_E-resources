@@ -152,16 +152,13 @@
     margin-left: 12px;
 }
 ::placeholder{
-    font-size: medium;
+    font-size: 1.4rem;
 }
 .d-flex.justify-content-center{
-    margin-top: 50px;
+    margin-top: 20px;
 }
 .d-flex.justify-content-between{
-    margin-top: 30px;
-}
-.app__container-content{
-    margin-top: 20px;
+    margin-top: 10px;
 }
 .adm__navbar-manage{
     margin-top: 1rem;

@@ -5,8 +5,8 @@ import fpt.edu.eresourcessystem.dto.AnswerDTO;
 import fpt.edu.eresourcessystem.dto.DocumentNoteDTO;
 import fpt.edu.eresourcessystem.dto.QuestionDTO;
 import fpt.edu.eresourcessystem.model.*;
-import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDTO;
-import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDTO;
+import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
+import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -93,7 +93,7 @@ public class StudentRestController {
 
     @PostMapping(value = "/question/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     @Transactional
-    public ResponseEntity<QuestionResponseDTO> addQuestion(@ModelAttribute QuestionDTO questionDTO, @RequestParam String docId){
+    public ResponseEntity<QuestionResponseDto> addQuestion(@ModelAttribute QuestionDTO questionDTO, @RequestParam String docId){
         Student student = getLoggedInStudent();
         Document document = documentService.findById(docId);
         if(null == student || null==questionDTO || null==document){
@@ -104,8 +104,8 @@ public class StudentRestController {
         Question question = questionService.addQuestion(new Question(questionDTO));
         if(null!= question){
 //            System.out.println(question);
-            QuestionResponseDTO questionResponseDTO = new QuestionResponseDTO(question);
-            ResponseEntity<QuestionResponseDTO> responseEntity = new ResponseEntity<>(questionResponseDTO, HttpStatus.OK);
+            QuestionResponseDto questionResponseDTO = new QuestionResponseDto(question);
+            ResponseEntity<QuestionResponseDto> responseEntity = new ResponseEntity<>(questionResponseDTO, HttpStatus.OK);
             return responseEntity;
         }else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -114,7 +114,7 @@ public class StudentRestController {
 
     @PostMapping(value = "/answer/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     @Transactional
-    public ResponseEntity<AnswerResponseDTO> addQuestion(@ModelAttribute AnswerDTO answerDTO,
+    public ResponseEntity<AnswerResponseDto> addQuestion(@ModelAttribute AnswerDTO answerDTO,
                                                          @RequestParam String docId,
                                                          @RequestParam String quesId){
         Student student = getLoggedInStudent();
@@ -132,8 +132,8 @@ public class StudentRestController {
             // update list answer of the question
             question.getAnswers().add(answer);
             questionService.updateQuestion(question);
-            AnswerResponseDTO answerResponseDTO = new AnswerResponseDTO(answer);
-            ResponseEntity<AnswerResponseDTO> responseEntity = new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
+            AnswerResponseDto answerResponseDTO = new AnswerResponseDto(answer);
+            ResponseEntity<AnswerResponseDto> responseEntity = new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
             return responseEntity;
         }else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

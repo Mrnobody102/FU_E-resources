@@ -2,11 +2,11 @@ package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.CourseDTO;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
-import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -231,8 +231,10 @@ public class LibrarianController {
                              @RequestParam(required = false, defaultValue = "") String search,
                              final Model model, HttpServletRequest request) {
         Page<Course> page;
+
         page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+        System.out.println(page.get());
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
@@ -250,7 +252,10 @@ public class LibrarianController {
     public String showCourseDetail(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
         List<Account> accounts = accountService.findAllLecturer();
+        boolean checkLecturerCourse = course.getLecturer().getId() != null ? true : false;
+
         model.addAttribute("course", course);
+        model.addAttribute("checkLecturerCourse", checkLecturerCourse);
         model.addAttribute("accounts", accounts);
         return "librarian/course/librarian_course-detail";
     }
@@ -274,13 +279,11 @@ public class LibrarianController {
      * @param model
      * @return
      */
-    @GetMapping({"/courses/{courseId}/addLecturers"})
+    @GetMapping({"/courses/{courseId}/add-lecturer"})
     public String addLecturersProcess(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
-        Lecturer lecturers = lecturerService.findByCourseId(courseId);
         List<Account> accounts = accountService.findAllLecturer();
         model.addAttribute("course", course);
-        model.addAttribute("lecturers", lecturers);
         model.addAttribute("accounts", accounts);
         return "librarian/course/librarian_add-lecturer-to-course";
     }
@@ -303,15 +306,6 @@ public class LibrarianController {
 
 //    LECTURER MANAGEMENT
 
-//    @GetMapping({"/lectures/{username}"})
-//    public String findLecturerByUsername(@PathVariable String username, final Model model) {
-//        Account account = accountService.findByUsername(username);
-//        Lecturer lecturer = lecturerService.findByAccountId(account.getId());
-//        model.addAttribute("lecturer", lecturer);
-//        return "librarian_lecture-detail";
-//    }
-
-
     @GetMapping({"/courses/{courseId}/add-lecture"})
     public String addLecturer(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
@@ -324,7 +318,8 @@ public class LibrarianController {
     @GetMapping({"/courses/{courseId}/remove-lecture"})
     public String removeLecture(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
-        boolean removed = lecturerService.removeCourse(course.getLecturer(), course);
+        Lecturer lecturer = course.getLecturer();
+        boolean removed = lecturerService.removeCourse(lecturer.getId(), new ObjectId(courseId));
         boolean removed1 = courseService.removeLecture(courseId);
         if (true == removed && removed1 == true) {
             return "redirect:/librarian/courses/{courseId}/add-lecture?success";
@@ -347,21 +342,19 @@ public class LibrarianController {
             return "redirect:/courses/"+courseId+"/add-lecture?error";
         }
         else {
-            lecturer.getCourses().add(course);
-            lecturerService.updateLecturer(lecturer);
+            lecturerService.addCourseToLecturer(lecturer.getId(), new ObjectId(courseId));
 
             SimpleMailMessage message = new SimpleMailMessage();
 
             message.setFrom("maihoa362001@gmail.com");
-            message.setTo("ngaydoidemcho93@gmail.com");
+            // Change to lecturer mail
+            message.setTo("huypq1801@gmail.com");
             message.setSubject("Subject : Thông báo quản lý môn học " + course.getCourseCode());
             message.setText("Body : " +
                     "Tên môn học: " + course.getCourseName());
 
             javaMailSender.send(message);
-
-            model.addAttribute("course", course);
-            return "librarian/course/librarian_course-detail";
+            return "redirect:/librarian/courses/{courseId}";
         }
     }
 
