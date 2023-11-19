@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Search | FPT University E-resources</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+</head>
+<body class="app_container">
+<!-- Header -->
+<div th:replace="~{fragments/header::studentHeaderSection}"></div>
+<div class="main_content">
+    <div class="container-content-wrapper">
+        <!--  Main-->
+        <div class="container-content">
+            <div class="main-content stu_course-saved">
+                <div class="stu_course-saved-content d-flex">
+                    <div class="stu_sidebar">
+                        <div th:replace="~{fragments/sidebar:: studentSidebar('home')}"></div>
+                    </div>
+                    <div class="stu_course-saved-content main" id="main">
+                        <form th:action="@{/student/search}" class="header__search">
+                            <!--Label-->
+                            <div class="search-label">
+                                <label th:for="search">Search courses, documents, topics,...</label>
+                            </div>
+                            <!-- Input  -->
+                            <div class="header__search-input-wrap">
+                                <input type="text" class="header__search-input"
+                                       placeholder="Enter here ..."
+                                       name="search"
+                                       th:id="search-text" th:value="${search}">
+                                <!-- Header-search-history -->
+                                <div class="header__search-history">
+                                    <h3 class="header__search-history-heading">
+                                        Search history
+                                    </h3>
+                                    <ul class="header__search-history-list">
+
+                                        <li class="header__search-history-item">
+                                            <a href="">Software</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Select-find-scope -->
+                            <div class="header__search-select">
+                                <span class="header__search-select-label">          </span>
+                                <i class="header__search-select-icon fas fa-angle-down"></i>
+                                <ul class="header__search-option">
+                                    <li class="header__search-option-item header__search-option-item--active">
+                                        <span class="">All results</span>
+                                        <i class="fas fa-check"></i>
+                                    </li>
+                                    <li class="header__search-option-item">
+                                        <span class="">library</span>
+                                        <i class="fas fa-check"></i>
+                                    </li>
+                                    <li class="header__search-option-item">
+                                        <span class="">e-resources</span>
+                                        <i class="fas fa-check"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button class="header__search-btn" type="submit">
+                                <i class="header__search-btn-icon fas fa-search"></i>
+                            </button>
+                        </form>
+
+                        <!-- NO RESULT-->
+
+                        <!-- RESULTS-->
+                        <div style="margin: 1rem 2rem">
+                            <h2>
+                                Results
+                            </h2>
+                        </div>
+
+                        <!--Document view list-->
+                        <div class="d-flex document-view-info border-bottom" style="margin: 2rem 2rem"
+                             th:each="document : ${foundDocuments}">
+
+                            <div class="doc-info-head grid__column-7">
+                                <p class="doc-info-title"><a
+                                        th:href="@{'/student/documents/' + ${document.getDocumentId()}}">
+                                    <span th:text="${document.title}"></span></a>
+                                </p>
+                                <p class="doc-info-description">
+                                    <span th:text="${document.description}"></span>
+                                </p>
+                            </div>
+<!--                            <div class="doc-info grid__column-2">-->
+<!--                                <p><span class="doc-info-date" th:text="${document.lastModifiedDate}"></span>-->
+<!--                                    <span class="doc-info-rating">| Rating: 5</span><i class="fa-solid fa-star"></i></p>-->
+<!--                            </div>-->
+                            <div class="grid__column-1">
+                                <form action="" method="">
+                                    <input type="text" value="docId" hidden>
+                                    <button class="stu__btn_save-doc" type="submit">
+                                        <i class="fa-regular fa-bookmark"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        <!--End Document view-->
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footerSection}"></div>
+
+
+<!--jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<!--Custom script-->
+<script th:src="@{/js/student/student.js}"></script>
+</body>
+</html>

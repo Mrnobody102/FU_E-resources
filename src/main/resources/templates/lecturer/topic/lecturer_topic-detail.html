@@ -27,7 +27,7 @@
             <div class="main-content lec__course-saved">
                 <div class="lec__course-saved-content d-flex">
                     <div class="lec__sidebar">
-                        <div th:replace="~{fragments/sidebar:: lecturerSidebar}"></div>
+                        <div th:replace="~{fragments/sidebar:: lecturerSidebar('my-courses-management')}"></div>
                     </div>
 
                     <div class="lec__courses-content main" id="main-lecturer">
@@ -47,7 +47,7 @@
                             <div style="flex: 1; display: flex; justify-content: center">
                                 <div>
                                     <a class="btn btn--hover mb-2 mt-2"
-                                       th:href="@{'/lecturer/topics/' + ${topic.id} +'/documents/add'}">
+                                       th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}">
                                          <span><i class="fa-regular fa-edit"></i>  Edit topic</span>
                                     </a>
                                     <a class="btn btn--hover"
@@ -104,7 +104,7 @@
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-<script src="/js/lecturer.js"></script>
+<script src="/js/lecturer/lecturer.js"></script>
 </body>
 
 </html>

@@ -19,7 +19,7 @@ public class Admin {
     private String id;
 
     @NotNull
-    @DocumentReference
+    @DocumentReference(lazy = true)
     private Account account;
 
     // Delete flag

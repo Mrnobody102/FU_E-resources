@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,9 +29,9 @@ import java.util.Optional;
 @RequestMapping("/admin")
 @PropertySource("web-setting.properties")
 public class AdminController {
-
     @Value("${page-size}")
     private Integer pageSize;
+
     private final AccountService accountService;
     private final AdminService adminService;
     private final LibrarianService librarianService;
@@ -38,14 +40,15 @@ public class AdminController {
     private final CourseService courseService;
     private final TopicService topicService;
     private final DocumentService documentService;
+    private final UserLogService userLogService;
     private final FeedbackService feedbackService;
 
-    private  final TrainingTypeService trainingTypeService;
+    private final TrainingTypeService trainingTypeService;
 
     public AdminController(AccountService accountService, AdminService adminService,
                            LibrarianService librarianService, LecturerService lecturerService,
                            StudentService studentService, CourseService courseService,
-                           TopicService topicService, DocumentService documentService,
+                           TopicService topicService, DocumentService documentService, UserLogService userLogService,
                            FeedbackService feedbackService, TrainingTypeService trainingTypeService) {
         this.accountService = accountService;
         this.adminService = adminService;
@@ -55,6 +58,7 @@ public class AdminController {
         this.courseService = courseService;
         this.topicService = topicService;
         this.documentService = documentService;
+        this.userLogService = userLogService;
         this.feedbackService = feedbackService;
         this.trainingTypeService = trainingTypeService;
     }
@@ -83,20 +87,44 @@ public class AdminController {
         return "admin/account/admin_accounts";
     }
 
-//    @GetMapping({"/courseCreator"})
-//    public String manageCourseCreators() {
-//        return "admin/account/admin_course_creators";
-//    }
 
+    @GetMapping("/systemLog")
+    String manageSystemLog(final Model model) {
+        return "admin/system_log/admin_system_logs";
+    }
+
+    @GetMapping("/systemLog/userLog")
+    String viewUserLog(final Model model) {
+        return "admin/system_log/admin_user_logs";
+    }
+
+    @GetMapping("/systemLog/courseLog")
+    String viewCourseLog(final Model model) {
+        return "admin/system_log/admin_course_logs";
+    }
+
+    @GetMapping("/systemLog/documentLog")
+    String viewDocumentLog(final Model model) {
+        return "admin/system_log/admin_document_logs";
+    }
+
+    @GetMapping("/trainingTypeManagement")
+    String manageTrainingType(final Model model) {
+        return "admin/training_type_management/admin_training_type_management";
+    }
+
+    /*
+    This function to display detail of courses for admin
+     */
     @GetMapping("/course/{courseId}")
-    String getCourseByLibrarian(@PathVariable String courseId, final Model model){
-        return "admin/account/admin_course_detail";
+    String getCourseByLibrarian(@PathVariable String courseId, final Model model) {
+        return "admin/course_creator/admin_course_detail";
     }
 
     /*
     This function to display librarians and created course by that librarians
      */
-    @GetMapping("/courseCreator")
+    @GetMapping("/course_creator")
     String findCourseByLibrarian(final Model model) {
 
         List<Account> librarianList = accountService.findAllLibrarian();
@@ -115,8 +143,9 @@ public class AdminController {
             model.addAttribute("courses", courses);
         }
 
-        return "admin/account/admin_course_creators";
+        return "admin/course_creator/admin_course_creators";
     }
+
 
     @GetMapping("/accounts/list/{pageIndex}")
     String findAccountByPage(@PathVariable Integer pageIndex,
@@ -228,7 +257,7 @@ public class AdminController {
      */
     @PostMapping("/accounts/update")
     public String updateAccount(@ModelAttribute AccountDTO accountDTO,
-                                       final Model model) {
+                                final Model model) {
         Account checkExist = accountService.findById(accountDTO.getId());
         if (null == checkExist) {
             model.addAttribute("errorMessage", "account not exist.");
@@ -345,10 +374,28 @@ public class AdminController {
         return "redirect:/admin/accounts" + accountId + "/update";
     }
 
+    @GetMapping({"/user_log/tracking"})
+    public String userLogManage(@RequestParam(required = false, defaultValue = "") String search,
+                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+                                @RequestParam(required = false, defaultValue = "all") String roleSearch,
+                                final Model model) {
+        List<UserLog> userLogs = userLogService.findAll();
+        model.addAttribute("userLogs", userLogs);
+        model.addAttribute("roles", AccountEnum.Role.values());
+        model.addAttribute("roleSearch", roleSearch);
+        return "admin/system_log/admin_user_logs";
+    }
+
+    @GetMapping("/course_log/tracking")
+    public String courseLogManage() {
+        return "admin/system_log/admin_course_logs";
+    }
+
     @GetMapping("/feedbacks/list/{pageIndex}")
     String showFeedbacksByPage(@PathVariable Integer pageIndex,
-                             @RequestParam(required = false, defaultValue = "") String search,
-                             final Model model, HttpServletRequest request) {
+                               @RequestParam(required = false, defaultValue = "") String search,
+                               final Model model, HttpServletRequest request) {
         Page<Course> page;
 //        page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
 //        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
@@ -412,4 +459,8 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/document_log/tracking")
+    public String documentLogManage() {
+        return "admin/system_log/admin_document_logs";
+    }
 }

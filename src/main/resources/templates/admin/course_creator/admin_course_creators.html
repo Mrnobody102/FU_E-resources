@@ -11,7 +11,7 @@
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-    <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+    <link th:href="@{/css/styles/admin.css}" rel="stylesheet">
 
     <!-- SweetAlert từ CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -25,7 +25,7 @@
     <div class="grid app__container-content-wrapper">
         <div class="app__container-content">
             <div class="course-details-head">
-                <a th:href="@{/templates/admin}">Home</a>
+                <a th:href="@{/admin}">Home</a>
                 <span> &gt; Course Creators</span>
             </div>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -36,25 +36,25 @@
                     </div>
                 </div>
             </div>
-<!--                        <div class="d-flex justify-content-center">-->
-<!--                            <div class="lib_data-list-wrapper">-->
-<!--                                <div class="lib_search-container">-->
-<!--                                    <form class="d-flex" th:action="@{/admin/accounts/list/1}" method="get" th:id="search-form">-->
-<!--                                        <div class="d-flex">-->
+                        <div class="d-flex justify-content-center">
+                            <div class="lib_data-list-wrapper">
+                                <div class="lib_search-container">
+                                    <form class="d-flex" th:action="@{/admin/accounts/list/1}" method="get" th:id="search-form">
+                                        <div class="d-flex">
 
-<!--                                            <input class="lib_search-content" type="text" placeholder="Search user.."-->
-<!--                                                   th:name="search" th:id="search-text" th:value="${search}"/>-->
-<!--                                            <button type="submit" class="lib_search-btn-wrapper lib_search-btn">-->
-<!--                                                <i class="lib_search-btn-icon fas fa-search"></i>-->
-<!--                                            </button>-->
-<!--                                            <a class="btn lib_show-all-btn" th:href="@{/admin/accounts/list/1}">Show AlL</a>-->
-<!--                                        </div>-->
-<!--                                        &lt;!&ndash;                            <div>&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                                <a class="btn lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                                    <i class="fa-solid fa-plus"></i>&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                                    <span>New</span>&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                                </a>&ndash;&gt;-->
-<!--                                        &lt;!&ndash;                            </div>&ndash;&gt;-->
+                                            <input class="lib_search-content" type="text" placeholder="Search user.."
+                                                   th:name="search" th:id="search-text" th:value="${search}"/>
+                                            <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
+                                                <i class="lib_search-btn-icon fas fa-search"></i>
+                                            </button>
+                                            <a class="btn lib_show-all-btn" th:href="@{/admin/accounts/list/1}">Show AlL</a>
+                                        </div>
+<!--                                                                    <div>-->
+<!--                                                                        <a class="btn lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">-->
+<!--                                                                            <i class="fa-solid fa-plus"></i>-->
+<!--                                                                            <span>New</span>-->
+<!--                                                                        </a>-->
+<!--                                                                    </div>-->
 
 <!--                                        <div class="d-flex">-->
 <!--                                            <select class="lib_filter" th:name="role" th:id="role" onchange="this.form.submit()">-->
@@ -67,7 +67,7 @@
 <!--                                                </option>-->
 <!--                                            </select>-->
 <!--                                        </div>-->
-<!--                                    </form>-->
+                                    </form>
 <!--                                    <div>-->
 <!--                                        <a class="lib_btn-add" type="button" th:href="@{/admin/accounts/add}">-->
 <!--                                            <i class="fa-solid fa-plus"></i>-->
@@ -75,7 +75,7 @@
 <!--                                        </a>-->
 <!--                                    </div>-->
 
-<!--                                </div>-->
+                                </div>
 
             <div class="table-responsive" th:if="${librarians ne null}">
                 <table class="table table-striped table-sm">
@@ -171,7 +171,8 @@
         </div>
     </div>
 </div>
-
+</div>
+</div>
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -180,7 +181,7 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/librarian.js}"></script>
+<script th:src="@{/js/librarian/librarian.js}"></script>
 <!--<script>-->
 <!--    $('form select').on('change', function () {-->
 <!--        $(this).closest('form').submit();-->

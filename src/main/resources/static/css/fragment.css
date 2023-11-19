@@ -55,6 +55,13 @@
     padding:0;
     margin: 0;
 }
+.header__system-name:hover{
+    text-decoration: underline;
+}
+.header__system-name i{
+    color: white;
+    font-size: 2rem;
+}
 .header__logo{
     margin-left: 2rem;
 }
@@ -71,6 +78,7 @@
 .header__navbar-item-link:hover {
     color: rgb(255, 255, 255);
     cursor: pointer;
+    text-decoration: underline;
 }
 
 
@@ -85,8 +93,7 @@
 }
 
 .header__navbar-icon:hover {
-    font-size: 2rem;
-    /*box-shadow: 0 0 0.3rem rgba(255, 255, 255, 0.8);*/
+    box-shadow: 0 0 0.3rem rgba(255, 255, 255, 0.8);
 }
 
 /* Main navbar */
@@ -144,15 +151,16 @@
     transform-origin: top right;
     animation: growthScale ease .2s, fadeIn ease .4s;
     position: absolute;
-    width: 400px;
-    top: 120%;
+    width: auto;
+    /*top: 120%;*/
     background-color: var(--white-color);
-    right: 0;
+    right: 31rem;
     display: none;
     z-index: 2;
     border-radius: 10px;
     box-shadow: 0 2px 6px gray;
     border: solid rgb(223, 217, 217) 1px;
+    margin-top: 8px;
 }
 
 .header__notify-header::before {
@@ -162,7 +170,7 @@
     border-color: transparent transparent var(--white-color) transparent;
     z-index: 0;
     position: absolute;
-    right: 40px;
+    right: 37px;
     top: -9px;
 }
 
@@ -287,7 +295,7 @@
     color: var(--text-color);
     margin-top: 8px;
     padding: 16px;
-    right: 0;
+    right: 26rem;
     text-align: center;
     --growth-from: 0;
     --growth-to: 1;
@@ -588,7 +596,7 @@
 }
 
 .header__search-input {
-    width: auto;
+    width: 100%;
     height: 100%;
     border: none;
     border-radius: 20px;
@@ -810,6 +818,7 @@
 }
 
 .app__container-content {
+    margin-top: 6px;
     padding-top: 18px;
     width: 90%;
 }
@@ -1059,6 +1068,7 @@
 .sidebar {
     position: fixed;
     width: 25rem;
+    height: 100%;
     min-height:auto;
     background-color: white;
     backdrop-filter: blur(16px);
@@ -1083,6 +1093,7 @@
 .sidebar-icon{
     font-size: var(--large-font-size);
     padding-top: 0.3rem;
+    color: white;
 }
 
 .sidebar__logo {
@@ -1199,6 +1210,8 @@
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
 }
+
+/*.active-link i,*/
 .active-link span {
     color: var(--white-color);
 }
@@ -1327,5 +1340,39 @@
         width: calc(100% - 7rem);
         margin-left: 7rem;
         transition: opacity .5s;
+    }
+}
+
+/* CSS cho màn hình lớn hơn hoặc bằng 768px */
+@media screen and (min-width: 768px) {
+    .item {
+        display: block; /* Hiển thị phần tử */
+    }
+}
+
+/* CSS cho màn hình nhỏ hơn 768px */
+@media screen and (max-width: 767px) {
+    .header__navbar-user-name,
+    .header__navbar-user-role,
+    .header__label
+    {
+        display: none; /* Ẩn phần tử */
+    }
+    .header__logo img{
+        width: 20vw;
+        height: auto;
+    }
+    .header__system-name{
+        display: none;
+    }
+    .header__navbar-icon{
+        font-size: 1.5rem;
+    }
+    .header__navbar-user-img{
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    .sidebar-icon{
+        font-size: 1.5rem;
     }
 }

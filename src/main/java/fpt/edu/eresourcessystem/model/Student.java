@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
+import java.util.Objects;
 
 @Document("students")
 @Data
@@ -22,7 +23,7 @@ public class Student {
     private String id;
 
     @NotNull
-    @DocumentReference
+    @DocumentReference(lazy = true)
     private Account account;
 
     private List<String> savedDocuments;
@@ -48,5 +49,17 @@ public class Student {
     public Student(@NotNull Account account) {
         this.account = account;
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student student)) return false;
+        return Objects.equals(getId(), student.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

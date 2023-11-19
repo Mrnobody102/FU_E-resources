@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.service;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -27,7 +28,10 @@ public interface LecturerService {
     Page<Lecturer> findLecturerByLecturerIdLike(String lectureId, int pageIndex, int pageSize);
 
 
-    boolean removeCourse(Lecturer lecturer, Course course);
+    void addCourseToLecturer(String lecturerId, ObjectId courseId);
+
+
+    boolean removeCourse(String lecturerId, ObjectId courseId);
 
     Page<Course> findListManagingCourse(Lecturer lecturer, String status, int pageIndex, int pageSize);
 
@@ -36,7 +40,4 @@ public interface LecturerService {
 
 
     Lecturer findLecturerById(String lectureId);
-
-    boolean update(Lecturer lecturer);
-
 }

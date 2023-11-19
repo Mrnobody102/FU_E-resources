@@ -1,0 +1,189 @@
+.lib-main_menu {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+}
+
+.lib-main_menu-item {
+    border-bottom: var(--border-color) 1px solid;
+    padding: 16px 0 8px 2px;
+}
+
+.lib-main_menu-item i {
+    width: 36px;
+}
+
+.lib_data-list-wrapper {
+    width: 100%;
+}
+
+.lib_search-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.lib_search-content {
+    border: 1px solid var(--border-color);
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    height: 36px;
+}
+
+.lib_search-btn-wrapper {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border-color);
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    margin-left: -0.5px;
+}
+
+.lib_show-all-btn {
+    margin-left: 12px;
+    margin-right: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.lib_search-btn:hover,
+.lib_show-all-btn:hover,
+.lib_btn-add:hover {
+    color: var(--lib-dashboard-color);
+}
+
+.lib_btn-add {
+    border: 1px solid var(--border-color);
+}
+
+.lib_btn-save {
+    background-color: var(--primary-btn-color);
+    color: white;
+}
+
+.lib_btn-save:hover {
+    color: var(--hover-color-2);
+}
+
+.lib_btn-delete {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.lib_btn-delete:hover {
+    color: var(--hover-color-2);
+}
+
+.lib_table {
+    width: 64%;
+}
+
+.lib_content {
+    margin-left: 36px;
+    margin-bottom: 18px;
+}
+
+.lib_input-label {
+    padding: 8px 18px;
+}
+
+.lib_input {
+    height: 30px;
+    font-size: 1.3rem;
+}
+
+.lib_textarea {
+    font-size: 1.3rem;
+}
+
+.lib_course-info-topic {
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--second-back-ground);
+}
+
+.lib_course_topics {
+    margin: 2rem;
+}
+
+.course-info-label {
+    text-align: right;
+    padding-right: 1.5rem;
+}
+
+.lib_input-label {
+    text-align: right;
+}
+
+.lib_course-general-info-content {
+    padding: 1.5rem;
+    border-radius: 3rem;
+    border: 1px solid #d2d0d0;
+}
+
+.lib_course-info {
+    margin: 1rem;
+    /*background: #cfecd9;*/
+}
+
+.lib_add-new {
+    float: right;
+    padding-bottom: 1rem;
+}
+
+.lib_btn-add {
+    background: #9ed5b0;
+    padding: 0.7rem 1rem;
+    border: 1px solid #d2d0d0;
+    border-radius: 1rem;
+}
+
+.lib_btn-add:hover {
+    background: #94d3aa;
+}
+
+.input-group-append {
+    cursor: pointer;
+}
+#datepicker{
+    margin-left: 12px;
+}
+#2{
+    margin-left: 12px;
+}
+::placeholder{
+    font-size: 1.4rem;
+}
+.d-flex.justify-content-center{
+    margin-top: 20px;
+}
+.d-flex.justify-content-between{
+    margin-top: 10px;
+}
+.adm__navbar-manage{
+    margin-top: 1rem;
+}
+.adm__navbar-tracking-list{
+    /*display: inline;*/
+    margin: 0;
+    width: 90%;
+    padding: 1rem 1rem 1rem 0;
+}
+
+.adm__navbar-tracking-item{
+    display: inline;
+    padding: 1rem ;
+    font-weight: var(--font-medium);
+    border-radius: 0.3rem;
+
+}
+.adm__navbar-tracking-item:hover a{
+    color: var(--background-btn-color);
+}
+.adm__navbar-active a{
+    color: var(--background-btn-color);
+}
+.adm__navbar-active {
+    color: var(--background-btn-color);
+    border-bottom: 2px solid var(--link-color);
+}

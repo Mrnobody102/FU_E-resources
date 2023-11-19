@@ -5,18 +5,19 @@
 <!--LIBRARIAN HEADER-->
 <body th:fragment="headerLibrarianSection">
 <header class="header header-librarian">
-    <div class="grid">
+    <div class="">
         <!-- Header navbar -->
-        <nav class="header__navbar">
-            <h2 class="header__system-name header__navbar-list">
+        <nav class="header__navbar grid">
+            <h2 class="header__system-name header__navbar-list grid__column-2">
+                <i class="fa-solid fa-house"></i>
                 E-Resources
             </h2>
-            <a href="/" class="header__logo-link">
+            <a href="/" class="header__logo-link grid__column-2">
                 <div class="header__logo">
                     <img alt="" th:src="@{/images/fptUniversityLogo.png}">
                 </div>
             </a>
-            <ul class="header__navbar-list">
+            <ul class="header__navbar-list grid__column-9">
                 <li class="header__navbar-item header__notify-appearance">
                     <a href="" class="header__navbar-item-link">
                         <i class="header__navbar-icon fas fa-bell"></i>
@@ -50,69 +51,16 @@
                 <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                     <div class="header__navbar-user-wrap">
                         <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name">Vũ Thanh Tùng</span> <span>(Librarian)</span>
+                        <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span class="header__navbar-user-role">(Librarian)</span>
                     </div>
                 </li>
                 <li class="header__navbar-item">
                     <a th:href="@{/logout}" onclick="" class="header__navbar-item-link">
                         <i class="header__navbar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></i>
-                        Logout</a>
+                        <span class="header__label" >Logout</span></a>
                 </li>
             </ul>
         </nav>
-<!--        &lt;!&ndash; Header with search  &ndash;&gt;-->
-<!--        <div class="header-with-search">-->
-<!--            <a href="/" class="header__logo-link">-->
-<!--                <div class="header__logo">-->
-<!--                    <img alt="" th:src="@{/images/fptUniversityLogo.png}">-->
-<!--                </div>-->
-<!--            </a>-->
-
-<!--            &lt;!&ndash; Header-search &ndash;&gt;-->
-<!--            <div class="header__search">-->
-<!--                &lt;!&ndash; Input  &ndash;&gt;-->
-<!--                <div class="header__search-input-wrap">-->
-<!--                    <input type="text" class="header__search-input" placeholder="Search courses, documents, topics...">-->
-<!--                    &lt;!&ndash; Header-search-history &ndash;&gt;-->
-<!--                    <div class="header__search-history">-->
-<!--                        <h3 class="header__search-history-heading">-->
-<!--                            Search history-->
-<!--                        </h3>-->
-<!--                        <ul class="header__search-history-list">-->
-
-<!--                            <li class="header__search-history-item">-->
-<!--                                <a href="">Software</a>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                &lt;!&ndash; Select-find-scope &ndash;&gt;-->
-<!--                <div class="header__search-select">-->
-<!--                    <span class="header__search-select-label">All results</span>-->
-<!--                    <i class="header__search-select-icon fas fa-angle-down"></i>-->
-<!--                    <ul class="header__search-option">-->
-<!--                        <li class="header__search-option-item header__search-option-item&#45;&#45;active">-->
-<!--                            <span class="">All results</span>-->
-<!--                            <i class="fas fa-check"></i>-->
-<!--                        </li>-->
-<!--                        <li class="header__search-option-item">-->
-<!--                            <span class="">e-resources</span>-->
-<!--                            <i class="fas fa-check"></i>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--                <button class="header__search-btn">-->
-<!--                    <i class="header__search-btn-icon fas fa-search"></i>-->
-<!--                </button>-->
-<!--            </div>-->
-
-<!--            &lt;!&ndash; Advance search &ndash;&gt;-->
-<!--            <div class="header__advance-search">-->
-<!--                <a href="" class="header__advance-search-link">-->
-<!--                    Advance search-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </div>-->
     </div>
 </header>
 </body>
@@ -121,18 +69,19 @@
 <!--Copy from Librarian header and change name-->
 <body th:fragment="headerAdminSection">
 <header class="header-librarian">
-    <div class="grid">
+    <div class="">
         <!-- Header navbar -->
-        <nav class="header__navbar">
-            <h2 class="header__system-name header__navbar-list">
+        <nav class="header__navbar grid">
+            <h2 class="header__system-name header__navbar-list  grid__column-2">
+                <i class="fa-solid fa-house"></i>
                 E-Resources
             </h2>
-            <a href="/" class="header__logo-link">
+            <a href="/" class="header__logo-link  grid__column-2">
                 <div class="header__logo">
                     <img alt="" th:src="@{/images/fptUniversityLogo.png}">
                 </div>
             </a>
-            <ul class="header__navbar-list">
+            <ul class="header__navbar-list  grid__column-9">
                 <li class="header__navbar-item header__notify-appearance">
                     <a href="" class="header__navbar-item-link">
                         <i class="header__navbar-icon fas fa-bell"></i>
@@ -161,69 +110,19 @@
                         </footer>
                     </div>
                 </li>
-                <!-- <li href="" class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">Login</li>
-                          <li href="" class="header__navbar-item header__navbar-item--strong">Sign Up</li> -->
                 <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                     <div class="header__navbar-user-wrap">
                         <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name">Vũ Thanh Tùng</span> <span>(Admin)</span>
+                        <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span class="header__navbar-user-role">(Admin)</span>
                     </div>
                 </li>
                 <li class="header__navbar-item">
                     <a th:href="@{/logout}" onclick="" class="header__navbar-item-link" style="font-weight: bold">
                         <i class="header__navbar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></i>
-                        Logout</a>
+                        <span class="header__label" >Logout</span></a>
                 </li>
             </ul>
         </nav>
-        <!-- Header with search  -->
-<!--        <div class="header-with-search">-->
-<!--            -->
-<!--            &lt;!&ndash; Header-search &ndash;&gt;-->
-<!--            <div class="header__search">-->
-<!--                &lt;!&ndash; Input  &ndash;&gt;-->
-<!--                <div class="header__search-input-wrap">-->
-<!--                    <input type="text" class="header__search-input" placeholder="Search courses, documents, topics...">-->
-<!--                    &lt;!&ndash; Header-search-history &ndash;&gt;-->
-<!--                    <div class="header__search-history">-->
-<!--                        <h3 class="header__search-history-heading">-->
-<!--                            Search history-->
-<!--                        </h3>-->
-<!--                        <ul class="header__search-history-list">-->
-
-<!--                            <li class="header__search-history-item">-->
-<!--                                <a href="">Software</a>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                &lt;!&ndash; Select-find-scope &ndash;&gt;-->
-<!--                <div class="header__search-select">-->
-<!--                    <span class="header__search-select-label">All results</span>-->
-<!--                    <i class="header__search-select-icon fas fa-angle-down"></i>-->
-<!--                    <ul class="header__search-option">-->
-<!--                        <li class="header__search-option-item header__search-option-item&#45;&#45;active">-->
-<!--                            <span class="">All results</span>-->
-<!--                            <i class="fas fa-check"></i>-->
-<!--                        </li>-->
-<!--                        <li class="header__search-option-item">-->
-<!--                            <span class="">e-resources</span>-->
-<!--                            <i class="fas fa-check"></i>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--                <button class="header__search-btn">-->
-<!--                    <i class="header__search-btn-icon fas fa-search"></i>-->
-<!--                </button>-->
-<!--            </div>-->
-
-<!--            &lt;!&ndash; Advance search &ndash;&gt;-->
-<!--            <div class="header__advance-search">-->
-<!--                <a href="" class="header__advance-search-link">-->
-<!--                    Advance search-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </div>-->
     </div>
 </header>
 </body>
@@ -280,16 +179,16 @@
                             </footer>
                         </div>
                     </li>
-                    <li class="header__navbar-item">
-                        <a href="" class="header__navbar-item-link">
-                            <i class="header__navbar-icon far fa-question-circle"></i>
-                            <!--                            Help-->
-                        </a>
-                    </li>
+<!--                    <li class="header__navbar-item">-->
+<!--                        <a href="" class="header__navbar-item-link">-->
+<!--                            <i class="header__navbar-icon far fa-question-circle"></i>-->
+<!--                            &lt;!&ndash;                            Help&ndash;&gt;-->
+<!--                        </a>-->
+<!--                    </li>-->
                     <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                         <div class="header__navbar-user-wrap">
                             <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                            <span class="header__navbar-user-name">Vũ Thanh Tùng</span> <span>(Lecturer)</span>
+                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"></span> <span class="header__navbar-user-role">(Lecturer)</span>
                         </div>
                         <div class="header__navbar-user-option-list header__bridge">
                             <div class="header__navbar-user-profile">
@@ -298,8 +197,8 @@
                                          class="header__navbar-user-profile-img">
                                 </div>
                                 <div style="min-width: max-content">
-                                    <p>Vũ Thanh Tùng</p>
-                                    <p>20/02/2001 - Male</p>
+                                    <p th:text="${loggedInUser.name}"></p>
+                                    <p th:text="${loggedInUser.dateOfBirth}"></p>
                                 </div>
                             </div>
                             <div class="student__log-out">
@@ -312,7 +211,13 @@
                     <li class="header__navbar-item">
                         <a th:href="@{/logout}" onclick="" class="header__navbar-item-link" style="font-weight: bold">
                             <i class="header__navbar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></i>
-                            Logout</a>
+                            <span class="header__label" >Logout</span></a>
+                    </li>
+                    <li class="header__navbar-item">
+                        <a href="" class="header__navbar-item-link">
+                            <i class="header__navbar-icon far fa-question-circle"></i>
+                            <!--                            Help-->
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -329,21 +234,21 @@
     <div class="stu__header-content">
         <!-- Header navbar -->
         <nav class="header__navbar row">
-            <div class="sidebar-system col-md-2">
+            <div class="sidebar-system col-2">
                 <div class="sidebar__arrow row">
-                    <i id="toggle" class="fa-solid fa-bars col-md-2 sidebar-icon"></i>
-                    <h2 class="header__system-name col-md-10">
+                    <i id="toggle" class="fa-solid fa-bars col-2 sidebar-icon"></i>
+                    <h2 class="header__system-name col-10">
                         <!-- FPT University-->
                         E-Resources
                     </h2>
                 </div>
             </div>
-            <a href="/" class="header__logo-link col-md-2">
+            <a href="/" class="header__logo-link col-2">
                 <div class="header__logo">
                     <img alt="" th:src="@{/images/fptUniversityLogo.png}">
                 </div>
             </a>
-            <div class="header__link-list col-md-8">
+            <div class="header__link-list col-8">
                 <ul class="header__navbar-list">
                     <li class="header__navbar-item header__notify-appearance">
                         <a href="" class="header__navbar-item-link">
@@ -374,18 +279,10 @@
                             </footer>
                         </div>
                     </li>
-                    <li class="header__navbar-item">
-                        <a href="" class="header__navbar-item-link">
-                            <i class="header__navbar-icon far fa-question-circle"></i>
-<!--                            Help-->
-                        </a>
-                    </li>
-                    <!-- <li href="" class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">Login</li>
-                              <li href="" class="header__navbar-item header__navbar-item--strong">Sign Up</li> -->
                     <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                         <div class="header__navbar-user-wrap">
                             <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                            <span class="header__navbar-user-name">Vũ Thanh Tùng</span> <span>(Student)</span>
+                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"></span> <span  class="header__navbar-user-role">(Student)</span>
                         </div>
                         <div class="header__navbar-user-option-list header__bridge">
                             <div class="header__navbar-user-profile">
@@ -394,8 +291,8 @@
                                          class="header__navbar-user-profile-img">
                                 </div>
                                 <div style="min-width: max-content">
-                                    <p>Vũ Thanh Tùng</p>
-                                    <p>20/02/2001 - Male</p>
+                                    <p th:text="${loggedInUser.name}"></p>
+                                    <p th:text="${loggedInUser.dateOfBirth}"></p>
                                 </div>
                             </div>
                             <div class="student__log-out">
@@ -408,7 +305,13 @@
                     <li class="header__navbar-item">
                         <a th:href="@{/logout}" onclick="" class="header__navbar-item-link" style="font-weight: bold">
                             <i class="header__navbar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></i>
-                            Logout</a>
+                            <span class="header__label" >Logout</span></a>
+                    </li>
+                    <li class="header__navbar-item">
+                        <a href="" class="header__navbar-item-link">
+                            <i class="header__navbar-icon far fa-question-circle"></i>
+<!--                                                        Help-->
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -437,18 +340,18 @@
                 <li class="header__navbar-item">
                     <a href="" class="header__navbar-item-link">
                         <i class="header__navbar-icon fas fa-phone"></i>
-                        Contact us
+                        <span class="header__label" >Contact us</span>
                     </a>
                 </li>
                 <li class="header__navbar-item">
                     <a href="" class="header__navbar-item-link">
                         <i class="header__navbar-icon far fa-question-circle"></i>
-                        Help & FAQs</a>
+                        <span class="header__label" >Help & FAQs</span></a>
                 </li>
                 <li id="openLoginModal" class="header__navbar-item">
                     <a th:href="@{/login}" class="header__navbar-item-link" style="font-weight: bold">
                         <i class="fa-solid fa-right-to-bracket"></i>
-                        Login</a>
+                        <span class="header__label">Login</span></a>
                 </li>
             </ul>
         </nav>

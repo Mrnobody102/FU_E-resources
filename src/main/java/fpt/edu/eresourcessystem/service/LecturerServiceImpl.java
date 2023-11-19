@@ -1,14 +1,11 @@
 package fpt.edu.eresourcessystem.service;
 
+import com.mongodb.client.result.UpdateResult;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
-import fpt.edu.eresourcessystem.enums.CourseEnum;
-import fpt.edu.eresourcessystem.model.Account;
-import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Lecturer;
-import fpt.edu.eresourcessystem.model.LecturerCourse;
+import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.repository.LecturerCourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerRepository;
-import lombok.AllArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,24 +14,25 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@AllArgsConstructor
 @Service(value = "lecturerService")
 public class LecturerServiceImpl implements LecturerService {
     private final LecturerRepository lecturerRepository;
     private final LecturerCourseRepository lecturerCourseRepository;
     private final MongoTemplate mongoTemplate;
 
-//    public LecturerServiceImpl(LecturerRepository lecturerRepository, LecturerCourseRepository lecturerCourseRepository, MongoTemplate mongoTemplate) {
-//        this.lecturerRepository = lecturerRepository;
-//        this.lecturerCourseRepository = lecturerCourseRepository;
-//        this.mongoTemplate = mongoTemplate;
-//    }
+    @Autowired
+    public LecturerServiceImpl(LecturerRepository lecturerRepository, LecturerCourseRepository lecturerCourseRepository, MongoTemplate mongoTemplate) {
+        this.lecturerRepository = lecturerRepository;
+        this.lecturerCourseRepository = lecturerCourseRepository;
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public Lecturer findByCourseId(String courseId) {
@@ -51,6 +49,7 @@ public class LecturerServiceImpl implements LecturerService {
     public Lecturer updateLecturer(Lecturer lecturer) {
         Optional<Lecturer> foundLecturer = lecturerRepository.findById(lecturer.getId());
         if (foundLecturer.isPresent()) {
+            lecturer.getCourses();
             Lecturer result = lecturerRepository.save(lecturer);
             return result;
         }
@@ -99,29 +98,22 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
 
-//    @Override
-//    public Lecturer addLectureWithCourse(Lecturer lecturer) {
-//        Optional<Lecturer> foundLecturer = lecturerRepository.findById(lecturer.getId());
-//        if(foundLecturer.isPresent()){
-//
-//            Lecturer result =  lecturerRepository.save(lecturer);
-//            return result;
-//        }
-//        return null;
-//    }
+    @Override
+    public void addCourseToLecturer(String lecturerId, ObjectId courseId) {
+        Query query = new Query(Criteria.where("id").is(lecturerId));
+        Update update = new Update().push("courses", courseId);
+        mongoTemplate.updateFirst(query, update, Lecturer.class);
+    }
 
 
     @Override
-    public boolean removeCourse(Lecturer lecturer, Course course) {
-        if (lecturer == null || course == null) {
-            return false;
-        }
+    public boolean removeCourse(String lecturerId, ObjectId courseId) {
+        if (lecturerId != null || courseId != null) {
+            Query query = new Query(Criteria.where("id").is(lecturerId));
+            Update update = new Update().pull("courses", courseId);
+            UpdateResult result = mongoTemplate.updateFirst(query, update, Lecturer.class);
 
-        if (lecturer.getCourses().contains(course)) {
-            lecturer.getCourses().remove(course);
-            lecturerRepository.save(lecturer);
-
-            return true; // Indicate that the course was successfully removed
+            return result.getModifiedCount() > 0; // Indicate that the course was successfully removed
         }
 
         return false;

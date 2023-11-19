@@ -1,6 +1,5 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.dto.ResourceTypeDTO;
 import fpt.edu.eresourcessystem.model.ResourceType;
 
 import java.util.List;

@@ -23,7 +23,22 @@
             color: red;
             /*font-size: smaller;*/
         }
+        .highlight {
+            background-color: yellow;
+        }
+
+        .note-sticker {
+            position: absolute;
+            background-color: white;
+            border: 1px solid black;
+            padding: 10px;
+            display: none;
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!-- CK Editor-->
+    <script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
+    <script th:src="@{/ckfinder/static/ckfinder.js}"></script>
 
 </head>
 <body class="app_container">
@@ -37,15 +52,14 @@
             <div class="main-content stu_course-saved">
                 <div class="stu_course-saved-content d-flex">
                     <div class="stu_sidebar">
-                        <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
+                        <div th:replace="~{fragments/sidebar:: studentSidebar('courses')}"></div>
                     </div>
-                    <div class="stu_course-content main" id="main">
+                    <div class="stu_course-content border-start main" id="main">
                         <div style="width: 100%">
                             <div class="document-details-info border-bottom">
                                 <div style="flex: 3">
                                     <div class="doc-info-name h2" style="margin-bottom: 4px">
-                                        <i class="fa-solid fa-file"></i>
-                                        <a class="doc-info-name" th:text="${document.getTitle()}"></a></div>
+                                        <p class="doc-info-name" th:text="${document.getTitle()}"></p></div>
                                     <div style="display: flex; width: 100%">
                                     <span class="course-info-lecturer" style="flex: 1; margin-bottom: 4px">
                                         Lecturer:
@@ -58,18 +72,14 @@
                                 </div>
 
 
-                                <div class="stu_save-course-link">
-                                    <p><a class="unsaved-course">
-                                        <i class="fa-regular fa-bookmark"></i>
-                                        Bookmark</a>
-                                    </p>
-                                    <p><a class="unsaved-course" th:if="${saved ne null} AND ${saved} == false"
-                                          th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">
+                                <div class="stu_save-course-link stu_save-doc-link">
+                                    <p><a class="unsaved-doc" th:if="${saved ne null} AND ${saved} == true"
+                                        th:attr="docId=${document.getId}">
                                         <i class="fa-solid fa-bookmark"></i>
                                         Unbookmark</a>
                                     </p>
-                                    <p><a class="saved-course" th:if="${saved ne null} AND ${saved} == true"
-                                          th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">
+                                    <p><a class="save-doc" th:if="${saved ne null} AND ${saved} == false"
+                                          th:attr="docId=${document.getId}">
                                         <i class="fa-regular fa-bookmark"></i>
                                         Bookmark</a></p>
                                 </div>
@@ -78,7 +88,7 @@
 
 
                                 <div style="display: flex">
-                                    <div style="display: flex">
+                                    <div style="display: flex; flex: 3">
                                         <th:block th:if="${document.docType.toString().equals('UNKNOWN')}">
                                             <div class="doc-content-view" th:utext="${document.editorContent}"
                                                  style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
@@ -90,6 +100,10 @@
                                         <th:block th:if="${document.docType.toString().equals('PDF')}">
                                             <embed class="doc-content-view" th:attr="src='data:application/pdf;base64,' + ${data}" type="application/pdf" width="100%" height="600px">
                                         </th:block>
+                                    </div>
+                                    <div class="note-sticker">
+                                        <textarea id="noteText"></textarea>
+                                        <button onclick="saveNote()">Save Note</button>
                                     </div>
                                     <div class="student__course-document-list" style="flex: 1">
 
@@ -145,10 +159,9 @@
                                 <!--Note section-->
                                 <div id="note">
                                     <div class="stu__note-in-doc-view">
-                                        <h3 class="stu__note-in-doc-head">Note</h3>
                                         <div class="stu__note-in-doc-content" th:if="${note ne null}">
                                             <div class="stu__note-content">
-                                                <div th:text="${note.content}"></div>
+                                                <div th:utext="${note.content}"></div>
                                             </div>
                                             <div class="view-note-link">
                                                 <div class="justify-content-end">
@@ -157,100 +170,110 @@
                                             </div>
                                         </div>
                                         <div class="stu__note-in-doc-textarea" th:if="${note == null}">
-                                            <form action="">
-                                        <textarea class="stu__note-in-doc-edit-space">
-
-                                        </textarea>
-                                                <div class="stu__save-note">
-                                                    <button type="" id="add-note" docId="${doc.id}">Save</button>
+                                            <div class="stu__save-note">
+                                                <button type="" id="add-doc-note">Save Note</button>
+                                            </div>
+                                            <form class="form-student-add-doc-notes" method="post" role="form"
+                                                  th:action="@{/document_notes/add}"
+                                                  th:object="${documentNote}"
+                                                  th:id="add-form" enctype="multipart/form-data">
+                                                <input type="text" th:field="*{docId}" th:value="${document.getId}" readonly hidden>
+                                                <div id="editorWrapper">
+                                                    <div class="d-flex justify-content-between">
+                                                        <label for="editor" class=".student_input-label">Content:</label>
+                                                        <label class=".student_input-label error-input">Content require!</label>
+                                                    </div>
+                                                    <textarea id="editor"
+                                                              th:field="*{content}" required></textarea>
                                                 </div>
                                             </form>
                                         </div>
-
-
-                                        <!--Front end demo-->
-                                        <div class="stu__note-in-doc-content">
-                                            <h3 class="stu__note-in-doc-head">Note</h3>
-                                            <div class="stu__note-content" style="white-space: pre">
-                                                The Bishop of Guildford’s Communities Fund (BGCF) exists to reach out to
-                                                disadvantaged
-                                                and vulnerable people across the Diocese of Guildford in the name of Christ.
-
-                                                Grants are offered to projects initiated by Church of England churches
-                                                (and those in active partnership with them) to assist in fulfilling any
-                                                aspect of the Diocesan vision, Transforming Church, Transforming Lives.
-
-                                                The BGCF gives grants to a range of community projects including those
-                                                which:
-
-                                                - Support people with disabilities and mental ill-health
-                                                - Provide facilities and services for older citizens, children and young
-                                                people
-                                                - Support families and disadvantaged communities
-                                                - Provide practical help for the financially challenged
-                                                - Offer training and skills programmes
-                                            </div>
-                                            <div class="view-note-link">
-                                                <div class="justify-content-end">
-                                                    <span class="stu__note-date">2-11-2023</span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!--End front end note demo -->
                                     </div>
                                 </div>
                                 <!--End note section-->
-                                <div id="question" style="display: none">
-                                    <!--Front end demo-->
+                                <div id="question" style="display: none" class="stu_doc-view-question-content">
+                                    <div class="stu__save-question">
+                                        <button class="btn btn--hover add-doc-question" id="add-doc-question">New Question</button>
+                                    </div>
+                                    <form class="form-student-add-doc-new-question justify-content-between" method="post" role="form"
+                                          th:object="${newQuestion}"
+                                            id="form-add-new-question">
+                                        <div class="">
+                                            <input type="text" name="docId" th:value="${document.getId()}" readonly hidden>
+                                            <div class="form-content">
+                                                <label th:id="error-input-new-question" class="student_input-label-question error-input">Content require!</label>
+                                                <label for="new-question-content" class="student_input-label-question">Enter Question:</label>
+                                                <textarea id="new-question-content" class="input-question-content"
+                                                          th:field="*{content}"></textarea>
+
+                                            </div>
+                                        </div>
+                                        <div class="submit-question-button">
+                                            <button type="button" title="exist" th:id="exist-new-question-form-button" onclick="existFormAddQuestion()"><i class="fa-solid fa-xmark"></i></button>
+                                            <a type="button" title="Sending" style="display:none;"  th:id="sending-new-question"><i class="fas fa-spinner fa-spin"></i> Sending...</a>
+                                            <button type="button" title="Send" th:id="send-new-question-button" onclick="submitFormAddQuestion()"><i class="fa-solid fa-paper-plane"></i></button>
+                                        </div>
+                                    </form>
+
                                     <div class="stu__question-in-doc-content">
-                                        <h3 class="stu__question-in-doc-head">My question</h3>
-                                        <div class="stu__question-content" style="white-space: pre">
-                                            The Bishop of Guildford’s Communities Fund (BGCF) exists to reach out to
-                                            disadvantaged
-                                            and vulnerable people across the Diocese of Guildford in the name of Christ.
+<!--                                        <h5 class="my-question-header">My questions</h5>-->
+                                        <div class="stu__my-question-content" id="my-questions">
+                                            <div class="stu__question-content"  th:if="${myQuestions ne null} AND ${myQuestions.size} > 0" th:each="myQuestion : ${myQuestions}">
+                                                <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${myQuestion.studentName}"></span>(You)</h6>
+                                                <p class="stu__question-content" th:text="${myQuestion.questionContent}"></p>
+                                                <div class="justify-content-end link-view-question stu__question-content" th:if="${myQuestion.lastModifiedDate}">
+                                                    <span class="stu__note-date" th:text="${myQuestion.lastModifiedDate}"></span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a><a class="lec__add-reply view-question-link-item" th:question-id="${myQuestion.questionId}" onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>
+                                                </div>
 
-                                            Grants are offered to projects initiated by Church of England churches
-                                            (and those in active partnership with them) to assist in fulfilling any
-                                            aspect of the Diocesan vision, Transforming Church, Transforming Lives.
+                                                <!-- view reply -->
+                                                <p  th:if="${myQuestion.totalAnswers} > 0" th:id="'view-more-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">View all <span th:id="'number-reply-'+ ${myQuestion.questionId}" th:text="${myQuestion.totalAnswers}"></span> reply</p>
+                                                <p style="display:none;"  th:if="${myQuestion.totalAnswers} > 0" th:id="'see-less-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">See less</p>
+                                                <p style="display:none;"  th:id="'loading-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" class="view-question-reply lec__question-content see-less"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
+                                                <div class="reply-content" th:id="'list-reply-content-'+${myQuestion.questionId}">
 
-                                            The BGCF gives grants to a range of community projects including those
-                                            which:
-
-                                            - Support people with disabilities and mental ill-health
-                                            - Provide facilities and services for older citizens, children and young
-                                            people
-                                            - Support families and disadvantaged communities
-                                            - Provide practical help for the financially challenged
-                                            - Offer training and skills programmes
+                                                </div>
+                                                <!--Reply form-->
+                                                <div class="stu__reply-form" th:id="'reply-form'+${myQuestion.questionId}">
+                                                    <form class="form-student-add-doc-new-reply justify-content-between" method="post" role="form"
+                                                          th:object="${newAnswer}"
+                                                          th:id="'reply-content-form'+${myQuestion.questionId}">
+                                                        <div class="">
+                                                            <input type="text" name="docId" th:value="${document.getId()}" readonly hidden>
+                                                            <input type="text" name="quesId" th:value="${myQuestion.questionId}" readonly hidden>
+                                                            <label th:id="'new-reply-content-error-'+${myQuestion.questionId}" class=".student_input-label error-input">Content require!</label>
+                                                            <div class="form-content">
+                                                                <label th:for="'new-reply-content-'+${myQuestion.questionId}" class="lec_input-label-reply">Enter answer:</label>
+                                                                <textarea th:id="'new-reply-content-'+${myQuestion.questionId}" class="input-reply-content"
+                                                                          th:field="*{answer}" required></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="submit-reply-button">
+                                                            <button type="button" title="exist" th:id="'exist-reply-form-button-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="existFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-xmark"></i></button>
+                                                            <a type="button" title="Sending" style="display:none;"  th:id="'sending-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}"><i class="fas fa-spinner fa-spin"></i> Sending...</a>
+                                                            <button type="button" title="Send" th:id="'send-reply-button-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="submitFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-paper-plane"></i></button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="view-note-link">
-                                            <div class="justify-content-end">
-                                                <span class="stu__note-date">2-11-2023</span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a>
+
+                                    </div>
+
+                                    <div class="stu__question-in-doc-content" th:if="${questions ne null } AND ${questions.size} > 0">
+                                        <h5 class="others-question-header">Others' questions</h5>
+                                        <div class="stu__question-content" th:each="question : ${questions}">
+                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${question.studentName}"></span></h6>
+                                            <p class="stu__question-content" th:utext="${question.questionContent}"></p>
+                                            <p class="stu__answer-date stu__question-content" th:text="${question.lastModifiedDate}">Lecturer: <span class="stu__answer-lecturer" th:if="${question.lecturerName ne null}" th:text="${question.lecturerName}"></span></p>
+                                            <p  th:if="${question.totalAnswers} > 0"  class="view-question-reply stu__question-content">view <span th:text="${question.totalAnswers}"></span> reply</p>
+                                            <p style="display:none;"  th:if="${question.totalAnswers} > 0" th:id="'see-less-reply-'+${question.questionId}" th:question-id="${question.questionId}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">See less</p>
+                                            <p style="display:none;"  th:id="'loading-reply-'+${question.questionId}" th:question-id="${question.questionId}" class="view-question-reply stu__question-content"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
+                                            <!--                                        View reply-->
+                                            <div class="reply-content" th:id="'list-reply-content-'+${question.questionId}">
 
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="stu__answer-in-doc-content">
-                                        <h3 class="stu__question-in-doc-head lecturer-name">Reply</h3>
-                                        <div class="stu__question-content" style="white-space: pre">
-                                            The BGCF gives grants to a range of community projects including those
-                                            which:
-
-                                            - Support people with disabilities and mental ill-health
-                                            - Provide facilities and services for older citizens, children and young
-                                            people
-                                            - Support families and disadvantaged communities
-                                            - Provide practical help for the financially challenged
-                                            - Offer training and skills programmes
-                                        </div>
-                                        <div class="view-question-link">
-                                            <div class="justify-content-end">
-                                                <span class="stu__answer-date">2-11-2023</span>   <span class="stu__answer-lecturer">Lecturer: Pham Quang Huy</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--End front end note demo -->
                                 </div>
 
                                 <div class="list-view-inline bot-doctype-list">
@@ -295,7 +318,103 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/student.js}"></script>
-<script th:src="@{/js/student-doc-detail.js}"></script>
+<script th:src="@{/js/student/student.js}"></script>
+<script th:src="@{/js/student/student-doc-detail.js}"></script>
+<script>
+    var isHighlighting = false;
+
+    $(document).ready(function() {
+        $(document).on('mouseup', function(e) {
+            var selectedText = window.getSelection().toString();
+
+            if (selectedText !== '') {
+                isHighlighting = true;
+                var noteSticker = $('.note-sticker');
+                noteSticker.css({ top: e.pageY, left: e.pageX });
+                noteSticker.fadeIn();
+
+                $('#noteText').val('');
+            }
+        });
+
+        $(document).on('click', function(e) {
+            var noteSticker = $('.note-sticker');
+
+            if (noteSticker.is(':visible')) {
+                if (!noteSticker.is(e.target) && noteSticker.has(e.target).length === 0 && !isHighlighting) {
+                    noteSticker.fadeOut(); // Ẩn khung note
+                }
+            }
+
+            isHighlighting = false;
+        });
+    });
+
+    function saveNote() {
+        var selectedText = window.getSelection().toString();
+        var noteText = $('#noteText').val();
+
+        // Gửi dữ liệu lưu note vào server, sử dụng Ajax
+        $.ajax({
+            url: '/notes',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ text: noteText }),
+            success: function(response) {
+                // Xử lý phản hồi từ server
+                if (response.success) {
+                    var highlightedText = $('<span>').addClass('highlight').text(selectedText);
+
+                    // Thay thế đoạn bôi đen bằng đoạn bôi đen đã làm nổi bật
+                    window.getSelection().getRangeAt(0).surroundContents(highlightedText);
+                } else {
+                    // Xử lý khi lưu không thành công
+                }
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                // Xử lý lỗi
+            }
+        });
+
+        $('.note-sticker').fadeOut();
+    }
+</script>
+<script th:inline="javascript">
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Save note successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check note information again!',
+            'error'
+        );
+    }
+
+    // CK editor
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            ckfinder: {
+                uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
+            },
+        })
+        .then(editor => {
+            editor.editing.view.change(writer => {
+                writer.setStyle('height', '200px', editor.editing.view.document.getRoot());
+            });
+            console.log(Array.from(editor.ui.componentFactory.names()));
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+</script>
 </body>
 </html>

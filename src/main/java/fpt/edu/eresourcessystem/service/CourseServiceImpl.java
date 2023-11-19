@@ -7,6 +7,7 @@ import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.Librarian;
 import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,7 +49,6 @@ public class CourseServiceImpl implements CourseService{
             }
         }
         return null;
-
     }
 
     @Override
@@ -247,6 +247,7 @@ public class CourseServiceImpl implements CourseService{
         List<Course> results = mongoTemplate.find(query, Course.class);
         Page<Course> page =  PageableExecutionUtils.getPage(results, pageable,
                 () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Course.class));
+        System.out.println(page.getTotalPages());
         return page;
     }
 
@@ -291,9 +292,10 @@ public class CourseServiceImpl implements CourseService{
     public Course updateLectureId(String courseId, Lecturer newLecture) {
         Optional<Course> courseOptional = courseRepository.findById(courseId);
 
-        if (courseOptional.isPresent() &&  courseOptional.get().getLecturer() == null) {
+        if (courseOptional.isPresent() &&  courseOptional.get().getLecturer().getId() == null) {
             Course course = courseOptional.get();
             course.setLecturer(newLecture);
+            course.setStatus(CourseEnum.Status.NEW);
             return courseRepository.save(course);
         } else {
             // Xử lý trường hợp không tìm thấy khóa học với courseId

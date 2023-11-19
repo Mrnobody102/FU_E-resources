@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Librarian | Course | Add topic</title>
+    <title th:text="${course.courseCode} + ' - ' + ${course.courseName}"></title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -36,8 +36,8 @@
         <div class="container-content">
             <div class="main-content stu_course-saved">
                 <div class="stu_course-saved-content d-flex">
-                    <div class="stu_sidebar">
-                        <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
+                    <div class="stu_sidebar" th:with="sidebarParam = ${saved} ? 'my-favourite' : 'courses'">
+                        <div th:replace="~{fragments/sidebar:: studentSidebar(${sidebarParam})}"></div>
                     </div>
                     <div class="stu_course-content main d-flex" id="main">
                         <div class="student__course-document-view border-end" style="flex: 3">
@@ -86,8 +86,9 @@
                                                         <span th:text="${document.description}"></span>
                                                     </p>
                                                 </div>
-                                                <div class="doc-info-date grid__column-2">
-                                                    <p><span>mm/dd/yyyy</span> <span>| Rating: 5</span><i class="fa-solid fa-star"></i></p>
+                                                <div class="doc-info grid__column-2">
+                                                    <p><span class="doc-info-date" th:text="${document.lastModifiedDate}"></span>
+                                                        <span class="doc-info-rating">| Rating: 5</span><i class="fa-solid fa-star"></i></p>
                                                 </div>
                                                 <div class="grid__column-1">
                                                     <form action="" method="">
@@ -169,6 +170,6 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/student.js}"></script>
+<script th:src="@{/js/student/student.js}"></script>
 </body>
 </html>

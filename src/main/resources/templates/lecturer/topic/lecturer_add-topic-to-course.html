@@ -31,7 +31,7 @@
             <div class="main-content stu_course-saved">
                 <div class="stu_course-saved-content d-flex">
                     <div class="stu_sidebar">
-                        <div th:replace="~{fragments/sidebar:: lecturerSidebar}"></div>
+                        <div th:replace="~{fragments/sidebar:: lecturerSidebar('my-courses-management')}"></div>
                     </div>
 
                     <div class="stu_courses-content main" id="main-lecturer">
@@ -91,6 +91,33 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="topic-item">
+                                <div class="topic-title">
+                                    <h3 class="topic-info-title d-flex justify-content-between">
+                                        Added topics
+                                    </h3>
+                                </div>
+                                <!--Document view list-->
+                                <div class="d-flex align-items-center document-view-info border-bottom"
+                                     th:each="topic : ${course.getTopics()}">
+                                    <div class="doc-info-head" style="max-width: 75%">
+                                        <p class="doc-info-title"><a
+                                                th:href="@{'/lecturer/topics/' + ${topic.id}}">
+                                            <span th:text="${topic.topicTitle}"></span></a>
+                                        </p>
+                                        <p class="doc-info-description">
+                                            <span th:text="${topic.topicDescription}"></span>
+                                        </p>
+                                    </div>
+                                    <div style="margin-left: 5%">
+                                        <a class="lec__edit-topic-icon"
+                                           th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}">
+                                            <i
+                                                    class="fa-regular fa-edit"></i> </a>
+                                    </div>
+                                </div>
+                                <!--End Document view-->
+                            </div>
                         </section>
                     </div>
                 </div>
@@ -113,16 +140,16 @@
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-<script src="/js/lecturer.js"></script>
+<script src="/js/lecturer/lecturer.js"></script>
 
 <script th:inline="javascript">
-    validate_addAccount();
+    // validate_addTopic();
 
     var successParam = [[${param.success}]];
     if (successParam) {
         Swal.fire(
             'Success!',
-            'Save account successful!',
+            'Save topic successful!',
             'success'
         );
     }
@@ -131,7 +158,7 @@
     if (errorParam) {
         Swal.fire(
             'Error!',
-            'Please check account information again!',
+            'Please check again!',
             'error'
         );
     }

@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
@@ -23,7 +22,7 @@ public class Lecturer {
     private String id;
 
     @NotNull
-    @DocumentReference
+    @DocumentReference(lazy = true)
     private Account account;
 
     @DocumentReference
@@ -32,8 +31,10 @@ public class Lecturer {
     private List<String> lecturerCourses;
     @DocumentReference(lazy = true)
     private List<Course> courses;
+    @DocumentReference(lazy = true)
     private List<String> documents;
-    private List<String> answers; // 1 answer per question
+    @DocumentReference(lazy = true)
+    private List<String> answers;
 
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
@@ -52,4 +53,6 @@ public class Lecturer {
         this.account = account;
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
+
+
 }

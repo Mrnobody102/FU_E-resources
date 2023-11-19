@@ -9,4 +9,5 @@ public interface CourseLogService {
     List<String> findStudentRecentView(String accountId);
 
     List<String> findLecturerRecentView(String accountId);
+    List<CourseLog> findByCourseCodeOrCodeName(String search);
 }

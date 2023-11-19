@@ -10,7 +10,10 @@ public class CommonEnum {
         CREATE("Create"),
         UPDATE("Update"),
         DELETE("Delete"),
-        VIEW("View");
+        VIEW("View"),
+        UPDATE_LECTURER("Update-lecturer"),
+        REMOVE_LECTURER("remove-lecturer"),
+        UPDATE_STATUS("update-status");
         private final String displayValue;
 
         Action(String displayValue) {

@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.model;
 
-import fpt.edu.eresourcessystem.dto.CourseLogDTO;
+import fpt.edu.eresourcessystem.dto.UserLogDto;
+import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
 
 
 @Data
@@ -27,6 +30,11 @@ public class UserLog {
     @CreatedBy
     private String account; // email
     @CreatedDate
-    private String date; // time
-
+    private LocalDateTime time; // time
+    private AccountEnum.Role role;
+    public UserLog(UserLogDto userLogDto){
+        this.id = userLogDto.getId();
+        this.url = userLogDto.getUrl();
+        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+    }
 }

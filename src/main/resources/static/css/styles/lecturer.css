@@ -176,14 +176,18 @@
 
 /*Course*/
 
-.lec__navbar-favourite-list,
-.lec__navbar-view-doc-list{
+.course-detail-info-title {
+    border-bottom: var(--disable-link-text-color) 2px solid;
+    margin-bottom: 1rem;
+}
+
+.lec__navbar-list{
     /*display: inline;*/
-    margin: 2rem;
+    margin: 2rem 2rem 0;
     width: 85%;
     padding: 1rem;
 }
-.lec__navbar-favourite-item,
+.lec__navbar-item,
 .lec__navbar-view-doc-item{
     display: inline;
     padding: 1rem 1.5rem;
@@ -191,14 +195,15 @@
     border-radius: 0.3rem;
 
 }
-.lec__navbar-favourite-item:hover,
-lec__navbar-view-doc-item:hover{
-    /*background-color: var(--second-background-btn-color);*/
-    box-shadow: rgba(136, 165, 191, 0.48) 0px 2px 16px 0px, rgba(255, 255, 255, 0.8) 0px -2px 16px 0px;
+.lec__navbar-item:hover a,
+.lec__navbar-view-doc-item:hover a{
+    color: var(--background-btn-color);
+}
+.lec__navbar-active a{
+    color: var(--background-btn-color);
 }
 .lec__navbar-active{
-    /*background-color: var(--second-background-btn-color-hover);*/
-    box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+    border-bottom: 2px solid var(--link-color);
 }
 .resource-type-list{
     margin:0 0 1.5rem 0;
@@ -215,7 +220,7 @@ lec__navbar-view-doc-item:hover{
     text-align: right;
 }
 
-.lecturer_input-label-doc {
+.lecturer_input-label-doc,.student_input-label {
     padding-top: 8px;
     padding-bottom: 4px;
 }
@@ -227,6 +232,7 @@ lec__navbar-view-doc-item:hover{
 
 .lecturer_textarea {
     font-size: 1.3rem;
+    height: 150px;
 }
 
 .lecturer__input-doc {
@@ -247,4 +253,77 @@ lec__navbar-view-doc-item:hover{
     border: 1px solid #888888;
     margin-bottom: 0.5rem;
 }
+.lec__question-content{
+    padding: 0.2rem 0.2rem 0.2rem 2.5rem;
+    margin: 0;
+}
+.lec__question-content{
+    padding: 0.2rem 0.2rem 0.2rem 1.5rem;
+    margin: 0;
+}
 
+.lec__question-date,
+.lec__answer-date,
+.lec__answer-lecturer
+{
+    font-size: var(--normal-font-size);
+    padding: 0.2rem;
+    margin: 0;
+}
+.lec_link-reply-question{
+    cursor: pointer;
+}
+.lec__reply-form{
+    display: none;
+}
+
+.form-lecturer-add-doc-new-reply{
+    margin-top: 0.2rem;
+    margin-left: 1.2rem;
+    border-radius: 2rem;
+    border: 1px solid #888888;
+    padding: 1rem;
+}
+.input-reply-content{
+    width: 100%;
+    height: 5rem;
+    overflow-y: auto;
+    border: none;
+    display: inline;
+    resize: none;
+}
+.input-reply-content:focus{
+    outline: none;
+}
+.submit-reply-button{
+    text-align: right;
+}
+.submit-reply-button button{
+    border: none;
+    display: inline;
+    background: white;
+}
+.submit-reply-button button i{
+    color: #888888;
+}
+.submit-reply-button button i:hover{
+    color: black;
+}
+.reply-content{
+    /*display: none;*/
+}
+
+.view-reply-link-item,
+.view-question-link-item{
+    cursor: pointer;
+    font-size: var(--medium-font-size);
+    font-weight: var(--font-medium);
+}
+.view-reply-link-item:hover,
+.view-question-link-item:hover{
+    text-decoration: underline;
+}
+.reply-content{
+    padding-top: 0.5rem;
+    padding-bottom: 0.2rem;
+}

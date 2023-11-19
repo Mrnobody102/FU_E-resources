@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 public interface DocumentNoteService {
     DocumentNote findById(String studentNoteId);
     DocumentNote findByDocIdAndStudentId(String docId, String studentId);
-    DocumentNote addStudentNote(DocumentNote documentNote);
-    DocumentNote updateStudentNote(DocumentNote documentNote);
-    boolean deleteStudentNote(DocumentNote documentNote);
+    DocumentNote addDocumentNote(DocumentNote documentNote);
+    DocumentNote updateDocumentNote(DocumentNote documentNote);
+    boolean deleteDocumentNote(DocumentNote documentNote);
 }

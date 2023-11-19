@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.dto;
 
 
+import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,16 @@ public class StudentNoteDTO {
     @Id
     private String id;
     private String studentId;
-    private String content;
+    private String title;
+    private String description;
+    private DocumentEnum.DocumentStatusEnum status;
+
+    private DocumentEnum.DocumentFormat docType;
+    private String suffix;
+
+    private byte[] content;
+
+    private String editorContent;
 
     // Only use when response, no need in requests
     private String createdBy;

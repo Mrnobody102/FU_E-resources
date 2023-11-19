@@ -6,9 +6,9 @@ import com.mongodb.client.gridfs.model.GridFSFile;
 import fpt.edu.eresourcessystem.dto.DocumentDTO;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Document;
-import fpt.edu.eresourcessystem.model.ResourceType;
-import fpt.edu.eresourcessystem.model.Topic;
+import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import fpt.edu.eresourcessystem.repository.DocumentRepository;
+import fpt.edu.eresourcessystem.repository.elasticsearch.EsDocumentRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,19 +20,17 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service("documentService")
 public class DocumentServiceImpl implements DocumentService {
-    private DocumentRepository documentRepository;
+    private final DocumentRepository documentRepository;
+    private final EsDocumentRepository esDocumentRepository;
     private final MongoTemplate mongoTemplate;
 
     private GridFsTemplate template;
@@ -40,8 +38,9 @@ public class DocumentServiceImpl implements DocumentService {
     private GridFsOperations operations;
 
     @Autowired
-    public DocumentServiceImpl(DocumentRepository documentRepository, MongoTemplate mongoTemplate, GridFsTemplate template, GridFsOperations operations) {
+    public DocumentServiceImpl(DocumentRepository documentRepository, EsDocumentRepository esDocumentRepository, MongoTemplate mongoTemplate, GridFsTemplate template, GridFsOperations operations) {
         this.documentRepository = documentRepository;
+        this.esDocumentRepository = esDocumentRepository;
         this.mongoTemplate = mongoTemplate;
         this.template = template;
         this.operations = operations;
@@ -87,6 +86,10 @@ public class DocumentServiceImpl implements DocumentService {
         return page;
     }
 
+    @Override
+    public Iterable<EsDocument> searchDocument(String search) {
+        return esDocumentRepository.findByTitleContainingOrDescriptionContainingOrDocTypeLikeOrEditorContentContainingIgnoreCase(search);
+    }
 
     @Override
     public Document addDocument(DocumentDTO documentDTO, String id) throws IOException {
@@ -99,16 +102,19 @@ public class DocumentServiceImpl implements DocumentService {
                 String fileExtension = StringUtils.getFilenameExtension(filename);
                 documentDTO.setSuffix(fileExtension);
                 Document result = documentRepository.save(new Document(documentDTO));
+                esDocumentRepository.save(new EsDocument(result));
                 return result;
             } else {
                 documentDTO.setSuffix("unknown");
                 Document result = documentRepository.save(new Document(documentDTO));
+                esDocumentRepository.save(new EsDocument(result));
                 return result;
             }
         } else {
             Optional<Document> checkExist = documentRepository.findById(documentDTO.getId());
             if (!checkExist.isPresent()) {
                 Document result = documentRepository.save(new Document(documentDTO));
+                esDocumentRepository.save(new EsDocument(result));
                 return result;
             }
             return null;

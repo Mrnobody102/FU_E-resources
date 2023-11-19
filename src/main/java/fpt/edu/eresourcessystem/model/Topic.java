@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -18,14 +19,15 @@ import java.util.List;
 @Document("topics")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"documents"})
 public class Topic {
     @Id
     private String id;
     @NotNull
-    @DocumentReference
+    @DocumentReference(lazy = true)
     private Course course;
     @DocumentReference(lazy = true)
-    private List<fpt.edu.eresourcessystem.model.Document> documents; // NEW
+    private List<fpt.edu.eresourcessystem.model.Document> documents;
 
     private String topicTitle;
     private String topicDescription;
@@ -53,4 +55,6 @@ public class Topic {
         this.topicDescription = topicDTO.getTopicDescription();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
+
+
 }

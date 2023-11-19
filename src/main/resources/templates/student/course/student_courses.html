@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Course</title>
+    <title>Course | FPT University E-resources</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -24,7 +24,7 @@
             <div class="main-content stu_course">
                 <div class="stu_course-content d-flex">
                     <div class="stu_sidebar">
-                        <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
+                        <div th:replace="~{fragments/sidebar:: studentSidebar('courses')}"></div>
                     </div>
                     <div class="stu_courses-content main" id="main">
                         <form th:action="@{/student/search_course/1}">
@@ -73,7 +73,7 @@
                                         </option>
                                     </select>
                                 </div>
-                                <button class="header__search-btn">
+                                <button class="header__search-btn" type="submit">
                                     <i class="header__search-btn-icon fas fa-search"></i>
                                 </button>
                             </div>
@@ -156,7 +156,7 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/student.js}"></script>
+<script th:src="@{/js/student/student.js}"></script>
 <script>
     $('form select').on('change', function () {
         $(this).closest('form').submit();

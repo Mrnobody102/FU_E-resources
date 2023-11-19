@@ -25,15 +25,19 @@
             <div class="main-content lec__course-saved">
                 <div class="lec__course-saved-content d-flex">
                     <div class="lec__sidebar">
-                        <div th:replace="~{fragments/sidebar:: lecturerSidebar}"></div>
+                        <div th:replace="~{fragments/sidebar:: lecturerSidebar('home')}"></div>
                     </div>
 
                     <div class="lec__courses-content main" id="main-lecturer">
                         <div class="header__search">
+                            <!--Label-->
+                            <div class="search-label">
+                                <label th:for="search">Search courses, documents, topics,...</label>
+                            </div>
                             <!-- Input  -->
                             <div class="header__search-input-wrap">
                                 <input type="text" class="header__search-input"
-                                       placeholder="Search courses, documents, topics...">
+                                       placeholder="Enter here...">
                                 <!-- Header-search-history -->
                                 <div class="header__search-history">
                                     <h3 class="header__search-history-heading">
@@ -147,6 +151,6 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/lecturer.js}"></script>
+<script th:src="@{/js/lecturer/lecturer.js}"></script>
 </body>
 </html>

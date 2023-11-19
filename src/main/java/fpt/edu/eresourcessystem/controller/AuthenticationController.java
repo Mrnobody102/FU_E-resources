@@ -1,16 +1,16 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.dto.AccountDTO;
+import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.GooglePojo;
-import fpt.edu.eresourcessystem.service.security.CustomizeUserDetailsService;
+import fpt.edu.eresourcessystem.model.UserLog;
+import fpt.edu.eresourcessystem.service.UserLogService;
 import fpt.edu.eresourcessystem.utils.GoogleUtils;
 import fpt.edu.eresourcessystem.utils.RedirectUtil;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.service.AccountService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.http.client.ClientProtocolException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,30 +25,40 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class AuthenticationController {
     private final AccountService accountService;
-
     private final GoogleUtils googleUtils;
+    private final UserLogService userLogService;
 
-    public AuthenticationController(AccountService accountService, GoogleUtils googleUtils) {
+    public AuthenticationController(AccountService accountService, GoogleUtils googleUtils, UserLogService userLogService) {
         this.accountService = accountService;
         this.googleUtils = googleUtils;
+        this.userLogService = userLogService;
     }
 
     @GetMapping({"/login"})
     public String loginView(final Model model, Authentication authentication) {
         model.addAttribute("campuses", AccountEnum.getListCampus());
         String redirect = getAuthenticatedUserRedirectUrl(authentication);
-        if (redirect != null) return redirect;
+        if (redirect != null) {
+            // log user action
+            UserLogDto userLogDto = new UserLogDto("/login");
+            UserLog userLog = userLogService.addUserLog(new UserLog(userLogDto));
+            return redirect;
+        }
         return "guest/guest_login";
     }
 
     @GetMapping({"/logout"})
     public String logout() {
+        // log user action
+        UserLogDto userLogDto = new UserLogDto("/logout");
+        UserLog userLog = userLogService.addUserLog(new UserLog(userLogDto));
         return "redirect:/login";
     }
 
@@ -63,7 +73,7 @@ public class AuthenticationController {
     }
 
     @RequestMapping("/login-google")
-    public String loginGoogle(HttpServletRequest request) throws ClientProtocolException, IOException {
+    public String loginGoogle(HttpServletRequest request) throws ClientProtocolException, IOException, ParseException {
         String code = request.getParameter("code");
 
         if (code == null || code.isEmpty()) {
@@ -91,6 +101,9 @@ public class AuthenticationController {
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 //        System.out.println(authentication.getAuthorities());
+        // log user action
+//        UserLogDto userLogDto = new UserLogDto("/login");
+//        UserLog userLog = userLogService.addUserLog(new UserLog(userLogDto));
         return "redirect:" +RedirectUtil.getRedirectUrl(authentication);
     }
 

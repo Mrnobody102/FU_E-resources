@@ -1,10 +1,9 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import fpt.edu.eresourcessystem.dto.DocumentNoteDTO;
 import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
-import jakarta.validation.constraints.NotEmpty;
+import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +21,15 @@ public class StudentNote {
     @NotNull
     private String studentId;
     private String title;
-    @NotEmpty(message = "note.validation.note.required")
-    private String content;
+    private String description;
+    private DocumentEnum.DocumentStatusEnum status;
+
+    private DocumentEnum.DocumentFormat docType;
+    private String suffix;
+
+    private byte[] content;
+
+    private String editorContent;
 
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
@@ -39,16 +45,18 @@ public class StudentNote {
 
     // Constructor DTO
 
-    public StudentNote(String id, @NotNull String studentId, String content) {
-        this.id = id;
-        this.studentId = studentId;
-        this.content = content;
-    }
 
     public StudentNote(StudentNoteDTO studentNoteDTO) {
         this.id = studentNoteDTO.getId();
         this.studentId = studentNoteDTO.getStudentId();
+        this.title = studentNoteDTO.getTitle();
+        this.description = studentNoteDTO.getDescription();
         this.content = studentNoteDTO.getContent();
+        this.editorContent = studentNoteDTO.getEditorContent();
+        this.status = studentNoteDTO.getStatus();
+        this.suffix = studentNoteDTO.getSuffix();
+        this.docType = DocumentEnum.DocumentFormat.getDocType(studentNoteDTO.getSuffix());
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+
     }
 }

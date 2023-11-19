@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Personal course</title>
+    <title>My documents | FPT University E-resources</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -25,7 +25,7 @@
             <div class="main-content stu_course-saved">
                 <div class="stu_course-saved-content d-flex">
                     <div class="stu_sidebar">
-                        <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
+                        <div th:replace="~{fragments/sidebar:: studentSidebar('my-favourite')}"></div>
                     </div>
 
                     <div class="stu_courses-content main" id="main">
@@ -94,7 +94,7 @@
                                     <p class="h3">No document bookmarked.</p>
                                 </div>
                                 <div class="stu__view-list-course-content">
-<!--                                     th:if="${documentsSaved ne null} AND ${documentsSaved.size()} > 0">-->
+                                    <!--                                     th:if="${documentsSaved ne null} AND ${documentsSaved.size()} > 0">-->
 
                                     <!--Document view list-->
                                     <div class="d-flex justify-content-between document-view-info border-bottom"
@@ -102,71 +102,27 @@
 
                                         <div class="doc-info-head grid__column-7">
                                             <p class="doc-info-title"><a th:href="@{'/student/documents/' + ${doc.id}}">
-                                                <span th:text="doc.name"></span></a>
+                                                <span th:text="${doc.title}"></span></a>
                                             </p>
                                             <p class="doc-info-description-brief">
-                                                <span th:text="doc.description"></span>
+                                                <span th:text="${doc.description}"></span>
                                             </p>
+
                                             <p class="doc-info-resource-type list-inline-item">
-                                                <th:block th:each="resource : ${doc.getResourceTypes()}">
-                                                    <a th:href="@{'/student/topics/'+${resource.topic.id}}"
-                                                       th:text="${resource.topic.topicTitle}"></a>
+                                                <th:block th:each="resource : ${doc.resourceType}">
+                                                    <a th:href="@{'/student/courses/'+${resource.course.id}}"
+                                                       th:text="${resource.course.courseCode}"></a>
                                                 </th:block>
                                             </p>
                                         </div>
-                                        <div class="stu_save-doc-link grid__column-1">
-                                            <p><a class="unsaved-course"
-                                                  th:href="@{'/student/documents/'+ ${doc.getId} + '/unsave_document'}">
+                                        <div class="stu_save-course-link stu_save-doc-link grid__column-3">
+                                            <p><a class="unsaved-doc"
+                                                  th:attr="docId=${doc.getId}">
                                                 <i class="fa-solid fa-bookmark"></i>
                                                 Unbookmark</a>
                                             </p>
                                         </div>
                                     </div>
-                                    <!--?Exapmle-->
-                                    <div class="d-flex justify-content-between document-view-info border-bottom">
-                                        <div class="doc-info-head grid__column-7">
-                                            <p class="doc-info-title">
-                                                <a href=""><span>Document name</span></a>
-                                            </p>
-                                            <p class="doc-info-description-brief">
-                                                <span>Document description</span>
-                                            </p>
-                                            <p class="doc-info-resource-type list-inline-item">
-                                                <a class="link-primary" href="">topic 1 - mln</a> |
-                                                <a class="link-primary" href="">topic 3 - hcm</a>
-                                            </p>
-                                        </div>
-                                        <div class="stu_save-course-link grid__column-1">
-                                            <p><a class="unsaved-course">
-                                                <i class="fa-solid fa-bookmark"></i>
-                                                Unbookmark</a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <!-- End example-->
-
-                                    <!--?Exapmle-->
-                                    <div class="d-flex justify-content-between document-view-info border-bottom">
-                                        <div class="doc-info-head grid__column-7">
-                                            <p class="doc-info-title">
-                                                <a href=""><span>Document name</span></a>
-                                            </p>
-                                            <p class="doc-info-description-brief">
-                                                <span>Document description</span>
-                                            </p>
-                                            <p class="doc-info-resource-type list-inline-item">
-                                                <a class="link-primary" href="">topic 1 - mln</a> |
-                                                <a class="link-primary" href="">topic 3 - hcm</a>
-                                            </p>
-                                        </div>
-                                        <div class="stu_save-course-link grid__column-1">
-                                            <p><a class="unsaved-course">
-                                                <i class="fa-solid fa-bookmark"></i>
-                                                Unbookmark</a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <!-- End example-->
                                 </div>
                                 <!--End list doc-->
                             </div>
@@ -188,6 +144,6 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/student.js}"></script>
+<script th:src="@{/js/student/student.js}"></script>
 </body>
 </html>

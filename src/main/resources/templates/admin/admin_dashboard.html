@@ -13,7 +13,7 @@
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-    <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+    <link th:href="@{/css/styles/admin.css}" rel="stylesheet">
 </head>
 <body class="app_container">
 <header th:replace="~{fragments/header::headerLibrarianSection}"></header>
@@ -27,14 +27,24 @@
                         Accounts management</a>
                 </div>
                 <div class="lib-main_menu-item">
-                                        <a th:href="@{/admin/courseCreator}">
+                                        <a th:href="@{/admin/course_creator}">
                     <i class="p-2 fa fa-book"></i>
                     Course-creator</a>
                 </div>
                 <div class="lib-main_menu-item">
-                    <a th:href="@{/admin/feedbacks}">
+                    <a th:href="@{/admin/trainingtypes/list}">
+                        <i class="p-2 fa fa-window-maximize"></i>
+                        Training types management</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/admin/feedbacks/list}">
                         <i class="p-2 fa fa-comments"></i>
                         Feedbacks management</a>
+                </div>
+                <div class="lib-main_menu-item">
+                    <a th:href="@{/admin/user_log/tracking}">
+                        <i class="p-2 fa fa-history" aria-hidden="true"></i>
+                        User Activity Tracking And Log</a>
                 </div>
                 <div class="lib-main_menu-item">
                     <a th:href="@{/admin/librarian}">
@@ -52,10 +62,15 @@
                         Login as student</a>
                 </div>
                 <div class="lib-main_menu-item">
-                    <a th:href="@{/admin/settings}">
-                        <i class="p-2 fa fa-cog" aria-hidden="true"></i>
-                        Settings</a>
+                    <a th:href="@{/admin/user_log/tracking}">
+                        <i class="p-2 fa fa-hdd" aria-hidden="true"></i>
+                        Backup and restore</a>
                 </div>
+<!--                <div class="lib-main_menu-item">-->
+<!--                    <a th:href="@{/librarian/settings}">-->
+<!--                        <i class="p-2 fa fa-cog" aria-hidden="true"></i>-->
+<!--                        Settings</a>-->
+<!--                </div>-->
             </div>
         </div>
     </div>
@@ -65,7 +80,7 @@
 <div th:replace="~{fragments/footer :: footerSection}"></div>
 
 <!--Custom script-->
-<script th:src="@{/js/librarian.js}"></script>
+<script th:src="@{/js/librarian/librarian.js}"></script>
 
 <!--Bootstrap script-->
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"

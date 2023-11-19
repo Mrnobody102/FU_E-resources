@@ -24,7 +24,7 @@
             <div class="main-content lec__course">
                 <div class="lec__course-content d-flex">
                     <div class="lec__sidebar">
-                        <div th:replace="~{fragments/sidebar:: lecturerSidebar}"></div>
+                        <div th:replace="~{fragments/sidebar:: lecturerSidebar('my-courses-management')}"></div>
                     </div>
 
                     <div class="lec__courses-content main" id="main-lecturer">
@@ -73,30 +73,35 @@
                             </button>
                         </div>
                         <div class="lec__navbar-favourite">
-                            <ul class="lec__navbar-favourite-list border-bottom">
-                                <li class="lec__navbar-favourite-item" th:classappend="${status == 'all' ? 'lec__navbar-active' : ''}">
-                                    <a href="/lecturer/courses/list/all/1" >
+                            <ul class="lec__navbar-list border-bottom">
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status == 'all' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{/lecturer/courses/list/all/1}">
                                         All courses
                                     </a>
                                 </li>
-                                <li class="lec__navbar-favourite-item" th:classappend="${status == 'new' ? 'lec__navbar-active' : ''}">
-                                    <a href="/lecturer/courses/list/new/1">
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status == 'new' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{/lecturer/courses/list/new/1}">
                                         New courses
                                     </a>
                                 </li>
-                                <li class="lec__navbar-favourite-item" th:classappend="${status == 'publish' ? 'lec__navbar-active' : ''}">
-                                    <a href="/lecturer/courses/list/publish/1">
-                                        Public courses
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status == 'publish' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{/lecturer/courses/list/publish/1}">
+                                        Publish courses
                                     </a>
                                 </li>
-                                <li class="lec__navbar-favourite-item" th:classappend="${status == 'draft' ? 'lec__navbar-active' : ''}">
-                                    <a href="/lecturer/courses/list/draft/1">
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status == 'draft' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{/lecturer/courses/list/draft/1}">
                                         Editing courses
                                     </a>
                                 </li>
-                                <li class="lec__navbar-favourite-item" th:classappend="${status == 'hide' ? 'lec__navbar-active' : ''}">
-                                    <a href="/lecturer/courses/list/hide/1">
-                                        Hided courses
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status == 'hide' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{/lecturer/courses/list/hide/1}">
+                                        Hidden courses
                                     </a>
                                 </li>
                             </ul>
@@ -109,16 +114,36 @@
                                         <ul class="home__course-list">
                                             <li class="home__course-item">
                                                 <div class="home__course-wrapper" th:each="course : ${courses}">
-                                                    <h2 class="home__course-code" th:text="${course.courseCode}" href=""></h2>
+                                                    <h2 class="home__course-code" th:text="${course.courseCode}"
+                                                        href=""></h2>
                                                     <a class="home__course-name" th:text="${course.courseName}"
                                                        th:href="@{'/lecturer/courses/' + ${course.id}}"></a>
-                                                    <p class="home__course-description" th:text="${course.description}"></p>
+                                                    <p class="home__course-description"
+                                                       th:text="${course.description}"></p>
                                                     <ul class="home__course-lecturer-list">
-                                                        <li class="home__course-lecturer-item" th:if="${course.librarian ne null}">
+                                                        <li class="home__course-lecturer-item"
+                                                            th:if="${course.librarian ne null}">
                                                             Created by:
                                                             <a class="home__course-lecturer-link"
                                                                href="" th:text="${course.librarian.account.name}">
                                                             </a>
+                                                        </li>
+                                                        <li class="home__course-lecturer-item">
+                                                            <th:block th:if="${status == 'all'}">
+                                                                Status:
+                                                                <th:block
+                                                                        th:if="${course.status.toString().equals('PUBLISH')}">
+                                        <span class="text-success fw-bold">Publish</span>
+                                                                </th:block>
+                                                                <th:block
+                                                                        th:if="${course.status.toString().equals('DRAFT')}">
+                                        <span class="text-warning fw-bold">Draft</span>
+                                                                </th:block>
+                                                                <th:block
+                                                                        th:if="${course.status.toString().equals('HIDE')}">
+                                        <span class="text-secondary fw-bold">Hidden</span>
+                                                                </th:block>
+                                                            </th:block>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -160,7 +185,7 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/lecturer.js}"></script>
+<script th:src="@{/js/lecturer/lecturer.js}"></script>
 </body>
 </html>
 

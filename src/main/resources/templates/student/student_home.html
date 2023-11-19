@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Personal course</title>
+    <title>FPT University E-resources</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -25,20 +25,21 @@
             <div class="main-content stu_course-saved">
                 <div class="stu_course-saved-content d-flex">
                     <div class="stu_sidebar">
-                        <div th:replace="~{fragments/sidebar:: studentSidebar}"></div>
+                        <div th:replace="~{fragments/sidebar:: studentSidebar('home')}"></div>
                     </div>
                     <div class="stu_course-saved-content main" id="main">
-                        <div class="header__search">
+                        <form th:action="@{/student/search}" class="header__search">
                             <!--Label-->
                             <div class="search-label">
-                                <label th:for="search">Search courses, documents, topics,...</label>
+                                <label th:for="search">Search resource
+                                </label>
                             </div>
                             <!-- Input  -->
                             <div class="header__search-input-wrap">
                                 <input type="text" class="header__search-input"
                                        placeholder="Enter here ..."
                                        name="search"
-                                       th:id="search-text" th:value="${search}">
+                                       th:id="search-text">
                                 <!-- Header-search-history -->
                                 <div class="header__search-history">
                                     <h3 class="header__search-history-heading">
@@ -74,7 +75,7 @@
                             <button class="header__search-btn">
                                 <i class="header__search-btn-icon fas fa-search"></i>
                             </button>
-                        </div>
+                        </form>
 
                         <div class="stu__recent-course-content">
                             <div class="stu__div-content-recent-title">
@@ -131,6 +132,6 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/student.js}"></script>
+<script th:src="@{/js/student/student.js}"></script>
 </body>
 </html>
