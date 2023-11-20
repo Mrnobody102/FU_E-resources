@@ -13,6 +13,28 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+
+
+    <style>
+        label.error {
+            margin-top: 5px;
+            margin-left: 5px;
+            display: block;
+            color: red;
+            /*font-size: smaller;*/
+        }
+        .highlight {
+            background-color: yellow;
+        }
+
+        .note-sticker {
+            position: absolute;
+            background-color: white;
+            border: 1px solid black;
+            padding: 10px;
+            display: none;
+        }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <!-- CK Editor-->
     <script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
@@ -37,8 +59,7 @@
                             <div class="document-details-info border-bottom">
                                 <div style="flex: 3">
                                     <div class="doc-info-name h2" style="margin-bottom: 4px">
-                                        <i class="fa-solid fa-file"></i>
-                                        <a class="doc-info-name" th:text="${document.getTitle()}"></a></div>
+                                        <p class="doc-info-name" th:text="${document.getTitle()}"></p></div>
                                     <div style="display: flex; width: 100%">
                                     <span class="course-info-lecturer" style="flex: 1; margin-bottom: 4px">
                                         Lecturer:
@@ -67,7 +88,7 @@
 
 
                                 <div style="display: flex">
-                                    <div style="display: flex">
+                                    <div style="display: flex; flex: 3">
                                         <th:block th:if="${document.docType.toString().equals('UNKNOWN')}">
                                             <div class="doc-content-view" th:utext="${document.editorContent}"
                                                  style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
@@ -79,6 +100,10 @@
                                         <th:block th:if="${document.docType.toString().equals('PDF')}">
                                             <embed class="doc-content-view" th:attr="src='data:application/pdf;base64,' + ${data}" type="application/pdf" width="100%" height="600px">
                                         </th:block>
+                                    </div>
+                                    <div class="note-sticker">
+                                        <textarea id="noteText"></textarea>
+                                        <button onclick="saveNote()">Save Note</button>
                                     </div>
                                     <div class="student__course-document-list" style="flex: 1">
 
@@ -293,8 +318,67 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/student.js}"></script>
-<script th:src="@{/js/student-doc-detail.js}"></script>
+<script th:src="@{/js/student/student.js}"></script>
+<script th:src="@{/js/student/student-doc-detail.js}"></script>
+<script>
+    var isHighlighting = false;
+
+    $(document).ready(function() {
+        $(document).on('mouseup', function(e) {
+            var selectedText = window.getSelection().toString();
+
+            if (selectedText !== '') {
+                isHighlighting = true;
+                var noteSticker = $('.note-sticker');
+                noteSticker.css({ top: e.pageY, left: e.pageX });
+                noteSticker.fadeIn();
+
+                $('#noteText').val('');
+            }
+        });
+
+        $(document).on('click', function(e) {
+            var noteSticker = $('.note-sticker');
+
+            if (noteSticker.is(':visible')) {
+                if (!noteSticker.is(e.target) && noteSticker.has(e.target).length === 0 && !isHighlighting) {
+                    noteSticker.fadeOut(); // Ẩn khung note
+                }
+            }
+
+            isHighlighting = false;
+        });
+    });
+
+    function saveNote() {
+        var selectedText = window.getSelection().toString();
+        var noteText = $('#noteText').val();
+
+        // Gửi dữ liệu lưu note vào server, sử dụng Ajax
+        $.ajax({
+            url: '/notes',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ text: noteText }),
+            success: function(response) {
+                // Xử lý phản hồi từ server
+                if (response.success) {
+                    var highlightedText = $('<span>').addClass('highlight').text(selectedText);
+
+                    // Thay thế đoạn bôi đen bằng đoạn bôi đen đã làm nổi bật
+                    window.getSelection().getRangeAt(0).surroundContents(highlightedText);
+                } else {
+                    // Xử lý khi lưu không thành công
+                }
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                // Xử lý lỗi
+            }
+        });
+
+        $('.note-sticker').fadeOut();
+    }
+</script>
 <script th:inline="javascript">
     var successParam = [[${param.success}]];
     if (successParam) {

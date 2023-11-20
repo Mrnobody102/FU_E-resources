@@ -7,6 +7,7 @@ import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.Librarian;
 import fpt.edu.eresourcessystem.model.Topic;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -291,9 +292,10 @@ public class CourseServiceImpl implements CourseService{
     public Course updateLectureId(String courseId, Lecturer newLecture) {
         Optional<Course> courseOptional = courseRepository.findById(courseId);
 
-        if (courseOptional.isPresent()) {
+        if (courseOptional.isPresent() &&  courseOptional.get().getLecturer().getId() == null) {
             Course course = courseOptional.get();
             course.setLecturer(newLecture);
+            course.setStatus(CourseEnum.Status.NEW);
             return courseRepository.save(course);
         } else {
             // Xử lý trường hợp không tìm thấy khóa học với courseId

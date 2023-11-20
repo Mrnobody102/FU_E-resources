@@ -1,11 +1,13 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.LecturerCourse;
 import fpt.edu.eresourcessystem.model.LecturerCourseId;
 import fpt.edu.eresourcessystem.repository.LecturerCourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service("lecturerCourseService")
@@ -33,6 +35,13 @@ public class LecturerCourseServiceImpl implements LecturerCourseService{
             }
         }
         return null;
+    }
+
+    @Override
+    public List<LecturerCourse> findLecturerCoursesById(Lecturer lecturer) {
+
+        List<LecturerCourse> lecturerCourseList = lecturerCourseRepository.findLecturerCoursesById(lecturer);
+        return lecturerCourseList;
     }
 
 

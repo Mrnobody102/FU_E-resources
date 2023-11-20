@@ -1,12 +1,12 @@
 package fpt.edu.eresourcessystem.service;
 
+import com.mongodb.client.result.UpdateResult;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
-import fpt.edu.eresourcessystem.enums.CourseEnum;
-import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Lecturer;
-import fpt.edu.eresourcessystem.model.LecturerCourse;
+import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.repository.LecturerCourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerRepository;
+import org.bson.types.ObjectId;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,18 +15,21 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+//@AllArgsConstructor
 @Service(value = "lecturerService")
 public class LecturerServiceImpl implements LecturerService {
     private final LecturerRepository lecturerRepository;
     private final LecturerCourseRepository lecturerCourseRepository;
     private final MongoTemplate mongoTemplate;
 
+    @Autowired
     public LecturerServiceImpl(LecturerRepository lecturerRepository, LecturerCourseRepository lecturerCourseRepository, MongoTemplate mongoTemplate) {
         this.lecturerRepository = lecturerRepository;
         this.lecturerCourseRepository = lecturerCourseRepository;
@@ -47,8 +50,8 @@ public class LecturerServiceImpl implements LecturerService {
     @Override
     public Lecturer updateLecturer(Lecturer lecturer) {
         Optional<Lecturer> foundLecturer = lecturerRepository.findById(lecturer.getId());
-        if(foundLecturer.isPresent()){
-            Lecturer result =  lecturerRepository.save(lecturer);
+        if (foundLecturer.isPresent()) {
+            Lecturer result = lecturerRepository.save(lecturer);
             return result;
         }
         return null;
@@ -96,53 +99,36 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
 
-
-//    @Override
-//    public Lecturer addLectureWithCourse(Lecturer lecturer) {
-//        Optional<Lecturer> foundLecturer = lecturerRepository.findById(lecturer.getId());
-//        if(foundLecturer.isPresent()){
-//
-//            Lecturer result =  lecturerRepository.save(lecturer);
-//            return result;
-//        }
-//        return null;
-//    }
-
     @Override
-    public Lecturer findLecturerByEmail(String email) {
-        return lecturerRepository.findByAccount_Email(email);
+    public void addCourseToLecturer(String lecturerId, ObjectId courseId) {
+        Query query = new Query(Criteria.where("id").is(lecturerId));
+        Update update = new Update().push("courses", courseId);
+        mongoTemplate.updateFirst(query, update, Lecturer.class);
     }
 
+
     @Override
-    public boolean removeCourse(String lectureId, Course course) {
-        Optional<Lecturer> optionalLecture = lecturerRepository.findById(lectureId);
+    public boolean removeCourse(String lecturerId, ObjectId courseId) {
+        if (lecturerId != null || courseId != null) {
+            Query query = new Query(Criteria.where("id").is(lecturerId));
+            Update update = new Update().pull("courses", courseId);
+            UpdateResult result = mongoTemplate.updateFirst(query, update, Lecturer.class);
 
-        if (optionalLecture.isPresent()) {
-            Lecturer lecture = optionalLecture.get();
-
-            // Check if the course is associated with the lecture
-            if (lecture.getCourses().contains(course)) {
-                lecture.getCourses().remove(course);
-                lecturerRepository.save(lecture);
-
-                // Optionally, update the course to remove the lecture's association
-//                course.setLecturer(null);
-//                courseService.updateCourse(course);
-
-                return true;
-            }
+            return result.getModifiedCount() > 0; // Indicate that the course was successfully removed
         }
+
         return false;
     }
+
     @Override
     public Page<Course> findListManagingCourse(Lecturer lecturer, String status, int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         Criteria criteria = new Criteria();
         // Sort by the "time" in descending order to get the most recent documents
         criteria.andOperator(
-            criteria.where("lecturer.id").is(lecturer.getId()),
-            status.equalsIgnoreCase("ALL") ? new Criteria() : criteria.where("status").is(status.toUpperCase()),
-            criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+                criteria.where("lecturer.id").is(lecturer.getId()),
+                status.equalsIgnoreCase("ALL") ? new Criteria() : criteria.where("status").is(status.toUpperCase()),
+                criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
         );
         Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("lecturerCourseIds.createdDate")));
 
@@ -152,5 +138,30 @@ public class LecturerServiceImpl implements LecturerService {
         return PageableExecutionUtils.getPage(results, pageable,
                 () -> mongoTemplate.count(query, Course.class));
     }
+
+
+    public Lecturer findLecturerByAccount(Account account) { // status
+        return lecturerRepository.findLecturerByAccount(account);
+    }
+
+    @Override
+    public Lecturer findLecturerById(String lectureId) {
+        Lecturer lecturer = lecturerRepository.findLecturerById(lectureId);
+        return lecturer;
+    }
+
+    @Override
+    public boolean update(Lecturer lecturer) {
+        Optional<Lecturer> existingLecturer = lecturerRepository.findById(lecturer.getId());
+        if (existingLecturer.isEmpty()) {
+            return false; // Lecturer not found, update failed
+        }
+
+        Lecturer lecturerToUpdate = existingLecturer.get();
+        lecturerRepository.save(lecturerToUpdate);
+
+        return true; // Update successful
+    }
+
 
 }

@@ -1,24 +1,250 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      lang="en" charset="UTF-8">
 <head>
-    <meta charset="UTF-8">
-    <title>Lecture Detail</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Lecturer Detail</title>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+
+
+    <!-- SweetAlert từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+    <style>
+        label.error {
+            margin-top: 5px;
+            margin-left: 5px;
+            display: block;
+            color: red;
+            /*font-size: smaller;*/
+        }
+
+
+    </style>
+
 </head>
-<body>
-<div class="container">
-    <h1>Lecture Detail</h1>
+<body class="app_container">
 
-    <!-- Display Lecture Information -->
-    <div class="lecture-details">
-        <h2 th:text="${lecture.title}"></h2>
-        <p th:text="${lecture.description}"></p>
-        <p>Date: <span th:text="${#dates.format(lecture.date, 'dd/MM/yyyy HH:mm')}"></span></p>
+<header th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<div class="main_content">
+    <div class="grid app__container-content-wrapper">
+        <div class="app__container-content">
+            <div class="course-details-head">
+                <a th:href="@{/admin}">Home</a>
+                <span> &gt; <a th:href="@{/librarian/lectures/list}">Lecturer management</a></span>
+                <span> &gt; Lecture Detail</span>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Detail lecturer</h1>
+
+            </div>
+            <div class="lib_content">
+                <div class="add-form">
+
+                    <div class="add-form-content">
+                        <table class="table-form lib_table m-5">
+                            <form method="post" th:object="${lecturer}"
+                                  th:action="@{/librarian/lectures/update}">
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label for="name">Name:</label></td>
+                                    <td>
+                                        <input type="text" id="name" name="name" class="lib_input form-control"
+                                               th:value="${lecturer.account.name}" placeholder="Enter name" required>
+                                    </td>
+                                </tr>
+
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label for="dateOfBirth">Date of Birth:</label></td>
+                                    <td>
+                                        <input type="date" id="dateOfBirth" name="dateOfBirth"
+                                               class="lib_input form-control" th:value="${lecturer.account.dateOfBirth}"
+                                               required>
+                                    </td>
+                                </tr>
+
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label">Gender:</td>
+                                    <td>
+                                        <span th:text="${lecturer.account.gender}"></span>
+                                    </td>
+                                </tr>
+
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label for="campus">Campus:</label></td>
+                                    <td>
+                                        <input type="text" id="campus" name="campus" class="lib_input form-control"
+                                               th:value="${lecturer.account.campus}" placeholder="Enter campus"
+                                               required>
+                                    </td>
+                                </tr>
+
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label for="role">Role:</label></td>
+                                    <td>
+                                        <!-- You can replace the input type and values with appropriate Thymeleaf expressions -->
+                                        <input type="text" id="role" name="role" class="lib_input form-control"
+                                               th:value="${lecturer.account.role}" placeholder="Enter role" required>
+                                    </td>
+                                </tr>
+
+                                <!--                                <tr class="lib_input-wrapper">-->
+                                <!--                                    <td class="lib_input-label"><label for="trainingType">Training Type:</label></td>-->
+                                <!--                                    <td>-->
+                                <!--                                        &lt;!&ndash; You can replace the input type and values with appropriate Thymeleaf expressions &ndash;&gt;-->
+                                <!--                                        <input type="text" id="trainingType" name="trainingType"-->
+                                <!--                                               class="lib_input form-control" th:value="${lecturer.trainingType}"-->
+                                <!--                                               placeholder="Enter training type" required>-->
+                                <!--                                    </td>-->
+                                <!--                                </tr>-->
+
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label for="createdBy">Created By:</label></td>
+                                    <td>
+                                        <!-- You can replace the input type and values with appropriate Thymeleaf expressions -->
+                                        <input type="text" id="createdBy" name="createdBy"
+                                               class="lib_input form-control" th:value="${lecturer.createdBy}"
+                                               placeholder="Enter created by" readonly>
+                                    </td>
+                                </tr>
+
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label for="createdDate">Created Date:</label></td>
+                                    <td>
+                                        <!-- You can replace the input type and values with appropriate Thymeleaf expressions -->
+                                        <input type="text" id="createdDate" name="createdDate"
+                                               class="lib_input form-control" th:value="${lecturer.createdDate}"
+                                               placeholder="Enter created date" readonly>
+                                    </td>
+                                </tr>
+
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label for="lastModifiedBy">Last Modified By:</label>
+                                    </td>
+                                    <td>
+                                        <!-- You can replace the input type and values with appropriate Thymeleaf expressions -->
+                                        <input type="text" id="lastModifiedBy" name="lastModifiedBy"
+                                               class="lib_input form-control" th:value="${lecturer.lastModifiedBy}"
+                                               placeholder="Enter last modified by" readonly>
+                                    </td>
+                                </tr>
+
+                                <tr class="lib_input-wrapper">
+                                    <td class="lib_input-label"><label for="lastModifiedDate">Last Modified
+                                        Date:</label></td>
+                                    <td>
+                                        <!-- You can replace the input type and values with appropriate Thymeleaf expressions -->
+                                        <input type="text" id="lastModifiedDate" name="lastModifiedDate"
+                                               class="lib_input form-control" th:value="${lecturer.lastModifiedDate}"
+                                               placeholder="Enter last modified date" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <button type="submit" class="btn lib_btn-save">Update</button>
+                                        <button type="button" class="btn lib_btn-delete" th:id="${lecturer.getId}">Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            </form>
+
+                        </table>
+                        <!-- Display Courses -->
+                        <h2>List Courses Created:</h2>
+                        <table class="table table-striped table-sm table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Course Name</th>
+                                <th>Course Code</th>
+                                <th>Created Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="course : ${lecturer.courses}">
+                                <td th:text="${course.getCourseName()}"></td>
+                                <td th:text="${course.getCourseCode()}"></td>
+                                <td th:text="${#dates.format(course.getCreatedDate(), 'dd/MM/yyyy HH:mm')}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <h2>List Document Created:</h2>
+                        <!--                        <table class="table table-striped table-sm table-bordered">-->
+                        <!--                            <thead>-->
+                        <!--                            <tr>-->
+                        <!--                                <th>Document Name</th>-->
+                        <!--                                <th>Course Code</th>-->
+                        <!--                                <th>Created Date</th>-->
+                        <!--                            </tr>-->
+                        <!--                            </thead>-->
+                        <!--                            <tbody>-->
+                        <!--                            <tr th:each="course : ${lecturer.courses}">-->
+                        <!--                                <td th:text="${course.getCourseName()}"></td>-->
+                        <!--                                <td th:text="${course.getCourseCode()}"></td>-->
+                        <!--                                <td th:text="${#dates.format(course.getCreatedDate(), 'dd/MM/yyyy')}"></td>-->
+
+                        <!--                            </tr>-->
+                        <!--                            </tbody>-->
+                        <!--                        </table>-->
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Add more details as needed -->
-
-    <!-- Back Button to Navigate Back -->
-    <a th:href="@{/lectures}">Back to Lectures</a>
 </div>
+
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footerSection}"></div>
+
+
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+<!--Custom script-->
+<script th:src="@{/js/librarian/librarian.js}"></script>
+
+<!--Validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script th:src="@{/js/validation.js}"></script>
+<script th:src="@{/js/admin/admin.js}"></script>
+
+<script th:inline="javascript">
+    validate_updateAccount();
+
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Update account successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check account information again!',
+            'error'
+        );
+    }
+
+</script>
 </body>
 </html>

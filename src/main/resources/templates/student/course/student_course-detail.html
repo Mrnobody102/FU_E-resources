@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Librarian | Course | Add topic</title>
+    <title th:text="${course.courseCode} + ' - ' + ${course.courseName}"></title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -170,6 +170,6 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/student.js}"></script>
+<script th:src="@{/js/student/student.js}"></script>
 </body>
 </html>

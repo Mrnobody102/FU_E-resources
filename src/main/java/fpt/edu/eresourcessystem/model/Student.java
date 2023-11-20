@@ -23,7 +23,7 @@ public class Student {
     private String id;
 
     @NotNull
-    @DocumentReference
+    @DocumentReference(lazy = true)
     private Account account;
 
     private List<String> savedDocuments;

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin | Feedbacks </title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" th:href="@{/css/base.css}"/>
+  <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+  <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+
+  <!-- SweetAlert từ CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+</head>
+<body class="app_container">
+<header th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<div class="main_content">
+  <div class="grid app__container-content-wrapper">
+    <div class="app__container-content">
+      <div class="course-details-head">
+        <a th:href="@{/admin}">Home</a>
+        <span> &gt; Users management</span>
+      </div>
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Feedbacks management</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="lib_data-list-wrapper">
+          <div class="lib_search-container">
+            <form class="d-flex" th:action="@{/admin/feedbacks/list/1}" method="get" th:id="search-form">
+              <div class="d-flex">
+
+                <input class="lib_search-content" type="text" placeholder="Search user.."
+                       th:name="search" th:id="search-text" th:value="${search}"/>
+                <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
+                  <i class="lib_search-btn-icon fas fa-search"></i>
+                </button>
+                <a class="btn lib_show-all-btn" th:href="@{/admin/feedbacks/list/1}">Show AlL</a>
+              </div>
+              <!--                            <div>-->
+              <!--                                <a class="btn lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">-->
+              <!--                                    <i class="fa-solid fa-plus"></i>-->
+              <!--                                    <span>New</span>-->
+              <!--                                </a>-->
+              <!--                            </div>-->
+
+
+            </form>
+            <div>
+              <a class="lib_btn-add" type="button" th:href="@{/admin/feedbacks/add}">
+                <i class="fa-solid fa-plus"></i>
+                <span>New</span>
+              </a>
+            </div>
+
+          </div>
+
+          <div class="table-responsive" th:if="${feedbacks ne null}">
+            <table class="table table-striped table-sm">
+              <tr class="n8">
+                <th>STT </th>
+                <th>Email</th>
+                <th>Feedback Content</th>
+                <th>Create Date</th>
+                <th>Status</th>
+                <!--                                <th></th>-->
+              </tr>
+              <th:block th:each="feedback, iterStart : ${feedbacks}">
+                <tr>
+                  <td th:text="${iterStart.index +1}"></td>
+                  <td><a th:href="@{'/admin/feedbacks/' + ${feedback.getId}}"
+                         th:text="${feedback.getStudent().getAccount().getEmail()}"></a></td>
+                  <td th:text="${feedback.getFeedbackContent()}"></td>
+                  <td th:text="${feedback.getCreatedDate()}"></td>
+                  <td th:text="${feedback.getStatus()}"></td>
+                </tr>
+              </th:block>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<!--Custom script-->
+<script th:src="@{/js/admin/admin.js}"></script>
+<script>
+  $('form select').on('change', function () {
+    $(this).closest('form').submit();
+  });
+</script>
+
+</body>
+</html>

@@ -2,13 +2,15 @@ package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.CourseDTO;
 import fpt.edu.eresourcessystem.dto.DocumentDTO;
+import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
-import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import org.bson.types.ObjectId;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -20,24 +22,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/librarian")
 @PropertySource("web-setting.properties")
 public class LibrarianController {
 
-    @Autowired
-    JavaMailSender javaMailSender;
+    private final  JavaMailSender javaMailSender;
 
-
-    @Value("${page-size}")
-    private Integer pageSize;
+//    @Value("${page-size}")
+    private static final Integer pageSize = 2;
     private final AccountService accountService;
     private final LibrarianService librarianService;
     private final LecturerService lecturerService;
@@ -49,17 +48,19 @@ public class LibrarianController {
 
     private final LecturerCourseService lecturerCourseService;
 
-    public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, LecturerCourseService lecturerCourseService) {
-        this.accountService = accountService;
-        this.librarianService = librarianService;
-        this.lecturerService = lecturerService;
-        this.studentService = studentService;
-        this.courseService = courseService;
-        this.topicService = topicService;
-        this.resourceTypeService = resourceTypeService;
-        this.documentService = documentService;
-        this.lecturerCourseService = lecturerCourseService;
-    }
+    private final TrainingTypeService trainingTypeService;
+
+//    public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, LecturerCourseService lecturerCourseService) {
+//        this.accountService = accountService;
+//        this.librarianService = librarianService;
+//        this.lecturerService = lecturerService;
+//        this.studentService = studentService;
+//        this.courseService = courseService;
+//        this.topicService = topicService;
+//        this.resourceTypeService = resourceTypeService;
+//        this.documentService = documentService;
+//        this.lecturerCourseService = lecturerCourseService;
+//    }
 
     /*
     DASHBOARD
@@ -84,7 +85,7 @@ public class LibrarianController {
     @GetMapping({"/courses/add"})
     public String addCourse(final Model model) {
         model.addAttribute("course", new Course());
-        model.addAttribute("statuses", CourseEnum.Status.values());
+//        model.addAttribute("statuses", CourseEnum.Status.values());
         return "librarian/course/librarian_add-course";
     }
 
@@ -207,18 +208,18 @@ public class LibrarianController {
         Course checkExist = courseService.findByCourseId(course.getId());
 
         if (null == checkExist) {
-            return "redirect:/librarian/courses/" + course.getId()+ "/update?error";
+            return "redirect:/librarian/courses/" + course.getId() + "/update?error";
         } else {
             Course checkCodeDuplicate = courseService.findByCourseCode(course.getCourseCode());
             if (checkCodeDuplicate != null &&
                     !checkExist.getCourseCode().equalsIgnoreCase(course.getCourseCode())) {
-                return "redirect:/librarian/courses/" + course.getId()+ "/update?error";
+                return "redirect:/librarian/courses/" + course.getId() + "/update?error";
             }
             checkExist.setCourseCode(course.getCourseCode());
             checkExist.setCourseName(course.getCourseName());
             checkExist.setDescription(course.getDescription());
             courseService.updateCourse(checkExist);
-            return "redirect:/librarian/courses/" + course.getId()+ "/update?success";
+            return "redirect:/librarian/courses/" + course.getId() + "/update?success";
         }
     }
 
@@ -253,7 +254,12 @@ public class LibrarianController {
     @GetMapping({"/courses/{courseId}"})
     public String showCourseDetail(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
+        List<Account> accounts = accountService.findAllLecturer();
+        boolean checkLecturerCourse = course.getLecturer().getId() != null ? true : false;
+
         model.addAttribute("course", course);
+        model.addAttribute("checkLecturerCourse", checkLecturerCourse);
+        model.addAttribute("accounts", accounts);
         return "librarian/course/librarian_course-detail";
     }
 
@@ -276,13 +282,11 @@ public class LibrarianController {
      * @param model
      * @return
      */
-    @GetMapping({"/courses/{courseId}/addLecturers"})
+    @GetMapping({"/courses/{courseId}/add-lecturer"})
     public String addLecturersProcess(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
-        Lecturer lecturers = lecturerService.findByCourseId(courseId);
         List<Account> accounts = accountService.findAllLecturer();
         model.addAttribute("course", course);
-        model.addAttribute("lecturers", lecturers);
         model.addAttribute("accounts", accounts);
         return "librarian/course/librarian_add-lecturer-to-course";
     }
@@ -303,105 +307,7 @@ public class LibrarianController {
     }
 
 
-
-    /*
-        DOCUMENTS
-     */
-
-    /**
-     * List all documents
-     *
-     * @return list documents
-     */
-    @GetMapping({"/documents/list"})
-    public String showDocuments() {
-        return "librarian/document/librarian_documents";
-    }
-
-    @GetMapping("/documents/list/{pageIndex}")
-    String showDocumentsByPage(@PathVariable Integer pageIndex,
-                               @RequestParam(required = false, defaultValue = "") String search,
-                               @RequestParam(required = false, defaultValue = "all") String course,
-                               @RequestParam(required = false, defaultValue = "all") String topic,
-                               final Model model, HttpServletRequest request) {
-        Page<Document> page = documentService.filterAndSearchDocument(course, topic, search, search, pageIndex, pageSize);
-
-        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-        model.addAttribute("pages", pages);
-        model.addAttribute("totalPage", page.getTotalPages());
-        model.addAttribute("currentPage", pageIndex);
-        model.addAttribute("documents", page.getContent());
-        model.addAttribute("search", search);
-        model.addAttribute("selectedCourse", course);
-        model.addAttribute("courses", courseService.findAll());
-        return "librarian/document/librarian_documents";
-    }
-
-    @GetMapping({"/documents/{documentId}"})
-    public String showDocumentDetail(@PathVariable String documentId, final Model model) {
-        Document document = documentService.findById(documentId);
-        model.addAttribute("document", document);
-        return "librarian/document/librarian_document-detail";
-    }
-
-    @GetMapping({"/documents/add"})
-    public String addDocument(final Model model) {
-        model.addAttribute("document", new Document());
-        model.addAttribute("courses", courseService.findAll());
-        model.addAttribute("resourceTypes", DocumentEnum.DefaultTopicResourceTypes.values());
-        System.out.println(DocumentEnum.DefaultTopicResourceTypes.values());
-        return "librarian/document/librarian_add-document";
-    }
-
-    @PostMapping("/documents/add")
-    public String addDocumentProcess(@ModelAttribute DocumentDTO documentDTO,
-//                                     @RequestParam(value="topicIds") String topicIds,
-//                                     @RequestParam(value="respondResourceType") String respondResourceType,
-                                     @RequestParam("file") MultipartFile file) throws IOException {
-//        List<ResourceType> resourceTypes = new ArrayList<>();
-//        List<String> selectedTopicIds = Arrays.asList(topicIds.split(","));
-//        for(String topic:selectedTopicIds) {
-//            ResourceType resourceType = new ResourceType();
-//            resourceType.setResourceTypeName(respondResourceType);
-//            resourceType.setTopicId(topic);
-//            resourceType.getDocuments().add(document.getDocumentId());
-//            // Add resource type
-//            resourceTypes.add(resourceTypeService.addResourceType(resourceType));
-//        }
-//        List<String> resourceTypeIds = resourceTypes.stream()
-//                .map(ResourceType::getResourceTypeId)
-//                .collect(Collectors.toList());
-//        document.setResourceTypeId(resourceTypeIds);
-
-        // thêm check file trước khi add
-        String id = documentService.addFile(file);
-        documentService.addDocument(documentDTO, id);
-        return "redirect:/librarian/documents/add?success";
-    }
-
-    @GetMapping({"/documents/update/{documentId}"})
-    public String updateDocumentProcess(@PathVariable(required = false) String documentId, final Model model) {
-        if (null == documentId) {
-            documentId = "";
-        }
-        Document document = documentService.findById(documentId);
-        if (null == document) {
-            return "redirect:librarian/documents/update?error";
-        } else {
-            model.addAttribute("document", new Document());
-            model.addAttribute("courses", courseService.findAll());
-            return "librarian/document/librarian_update-document";
-        }
-    }
-
-    @GetMapping({"/lectures/{username}"})
-    public String findLecturerByUsername(@PathVariable String username, final Model model) {
-        Account account = accountService.findByUsername(username);
-        Lecturer lecturer = lecturerService.findByAccountId(account.getId());
-        model.addAttribute("lecturer", lecturer);
-        return "librarian_lecture-detail";
-    }
-
+//    LECTURER MANAGEMENT
 
     @GetMapping({"/courses/{courseId}/add-lecture"})
     public String addLecturer(@PathVariable String courseId, final Model model) {
@@ -415,65 +321,59 @@ public class LibrarianController {
     @GetMapping({"/courses/{courseId}/remove-lecture"})
     public String removeLecture(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
-        boolean removed = lecturerService.removeCourse(course.getLecturer().getId(), course);
+        Lecturer lecturer = course.getLecturer();
+        boolean removed = lecturerService.removeCourse(lecturer.getId(), new ObjectId(courseId));
         boolean removed1 = courseService.removeLecture(courseId);
         if (true == removed && removed1 == true) {
             return "redirect:/librarian/courses/{courseId}/add-lecture?success";
         } else return "redirect:/librarian/courses/{courseId}/add-lecture?error";
-
     }
 
     /**
      * @param courseId course id
-     * @param model model attribute
+     * @param model    model attribute
      * @return
      */
     @PostMapping({"/courses/{courseId}/add-lecture"})
-    public String addLecturer(@PathVariable String courseId, @RequestParam String lecturerEmail, final Model model) {
-        Account account = accountService.findByUsername(lecturerEmail);
+    public String addLecturer(@PathVariable String courseId, @RequestParam String lecturerId, final Model model) {
+        Account account = accountService.findById(lecturerId);
         Lecturer lecturer = lecturerService.findByAccountId(account.getId());
+
         Course course = courseService.updateLectureId(courseId, lecturer);
 
-        lecturer.getCourses().add(course);
-        lecturerService.updateLecturer(lecturer);
+        if (course == null) {
+            return "redirect:/courses/"+courseId+"/add-lecture?error";
+        }
+        else {
+            lecturerService.addCourseToLecturer(lecturer.getId(), new ObjectId(courseId));
 
-        SimpleMailMessage message = new SimpleMailMessage();
+            SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setFrom("maihoa362001@gmail.com");
-        message.setTo("ngaydoidemcho93@gmail.com");
-        message.setSubject("Subject : Thông báo quản lý môn học " + course.getCourseCode());
-        message.setText("Body : " +
-                "Tên môn học: " + course.getCourseName());
+            message.setFrom("maihoa362001@gmail.com");
+            // Change to lecturer mail
+            message.setTo("huypq1801@gmail.com");
+            message.setSubject("Subject : Thông báo quản lý môn học " + course.getCourseCode());
+            message.setText("Body : " +
+                    "Tên môn học: " + course.getCourseName());
 
-        javaMailSender.send(message);
-
-//        if (null != lecturer) {
-//            Account accountLecturer = lecturer.getAccount();
-//            model.addAttribute("accountLecturer", accountLecturer);
-//        }
-        model.addAttribute("course", course);
-//        model.addAttribute("topics", topics);
-        return "librarian/course/librarian_course-detail";
+            javaMailSender.send(message);
+            return "redirect:/librarian/courses/{courseId}";
+        }
     }
 
-    @GetMapping({"/lectures"})
-    public String showLectures(final Model model) {
-//        Course course = courseService.findByCourseId(courseId);
-//        List<Topic> topics = topicService.findByCourseId(courseId);
-//        Lecturer lecturer = lecturerService.findCurrentCourseLecturer(courseId);
-//
-//        if (null != lecturer) {
-//            Account accountLecturer = accountService.findById(lecturer.getAccount().getId());
-//            model.addAttribute("accountLecturer", accountLecturer);
-//        }
+//    @GetMapping({"/lectures"})
+//    public String showLectures(final Model model) {
+//        List<TrainingType> trainingTypes = trainingTypeService.findAll();
+//        model.addAttribute("trainingTypes", trainingTypes);
+//        return "librarian/lecture/librarian_lectures";
+//    }
+
+    @GetMapping({"/lectures/list", "/lectures"})
+    public String showLecture(final Model model) {
         List<Lecturer> lecturers = lecturerService.findAll();
+        List<TrainingType> trainingTypes = trainingTypeService.findAll();
+        model.addAttribute("trainingTypes", trainingTypes);
         model.addAttribute("lecturers", lecturers);
-        return "librarian/lecture/librarian_lectures";
-//        return  "librarian/course/detailCourseTest";
-    }
-
-    @GetMapping({"/lectures/list"})
-    public String showLecture() {
         return "librarian/lecture/librarian_lectures";
     }
 
@@ -495,16 +395,58 @@ public class LibrarianController {
 
     @GetMapping({"/lectures/{lectureId}"})
     public String showLectureDetail(@PathVariable String lectureId, final Model model) {
-//        Course course = courseService.findByCourseId(courseId);
-//        List<Topic> topics = topicService.findByCourseId(courseId);
-//        Lecturer lecturer = lecturerService.findCurrentCourseLecturer(courseId);
-//
-//        if (null != lecturer) {
-//            Account accountLecturer = accountService.findById(lecturer.getAccount().getId());
-//            model.addAttribute("accountLecturer", accountLecturer);
-//        }
-//        model.addAttribute("course", course);
-//        model.addAttribute("topics", topics);
+        Lecturer lecturer = lecturerService.findLecturerById(lectureId);
+        model.addAttribute("lecturer", lecturer);
+        model.addAttribute("roles", AccountEnum.Role.values());
+        model.addAttribute("campuses", AccountEnum.Campus.values());
+        model.addAttribute("genders", AccountEnum.Gender.values());
         return "librarian/lecture/librarian_lecture-detail";
+    }
+
+    @GetMapping("/lectures/create-lecture")
+    public String showAddLectureForm(Model model) {
+        List<Course> allCourses = courseService.findAll();
+        List<TrainingType> trainingTypes = trainingTypeService.findAll();
+        model.addAttribute("allCourses", allCourses);
+        model.addAttribute("trainingTypes",trainingTypes);
+        model.addAttribute("lecture", new Lecturer());
+        return "librarian/lecture/librarian_add-lecture";
+    }
+
+
+    @PostMapping("/lectures/create-lecture")
+    public String addLectureCourse(@ModelAttribute Lecturer lecturer, @RequestParam String email) {
+        Account lecture = accountService.findByEmail(email);
+        if (lecture != null) {
+            lecturer.setAccount(lecture);
+            if (lecturerService.findLecturerByAccount(lecture) == null) {
+                lecturerService.addLecturer(lecturer);
+//        lecturer.getAccount().setRole();
+                for (int i = 0; i < lecturer.getCourses().size(); i++) {
+                    if (lecturer.getCourses().get(i).getLecturer() == null)
+                    courseService.updateLectureId(String.valueOf(lecturer.getCourses().get(i)), lecturer);
+                }
+                return "redirect:/librarian/lectures/create-lecture?success";
+            } else
+                return "redirect:/librarian/lectures/create-lecture?error";
+        } else
+            return "redirect:/librarian/lectures/create-lecture?error";
+
+    }
+
+    @PostMapping("/lectures/update")
+    public String updateLecture( @ModelAttribute("lecturer") Lecturer updatedLecture, final Model model) {
+        // Check if the lectureId is valid (you can add additional validation)
+        if (updatedLecture == null ) {
+            return "redirect:/error"; // Redirect to an error page or handle invalid ID
+        }
+        // Call the service to update the lecture
+        boolean updateSuccess = lecturerService.update(updatedLecture);
+
+        if (updateSuccess) {
+            return "redirect:/lectures/" + updatedLecture.getId() +"/success";
+        } else {
+            return "redirect:/lectures/error"; // Redirect to an error page if the update fails
+        }
     }
 }

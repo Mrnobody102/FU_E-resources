@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Lecturer | Details Course</title>
+    <title th:text="'Lecturer | ' + ${document.getTitle()}"></title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -15,7 +15,9 @@
     <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.min.js" integrity="sha512-RV+l/3iMDTmIt64ztJmriqLRZl2IwGHcG+655gFxUa20Uq9GljEsY3wibq5BZkGzRlMbYFHUPelVQvWvZxP38w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.min.js"
+            integrity="sha512-RV+l/3iMDTmIt64ztJmriqLRZl2IwGHcG+655gFxUa20Uq9GljEsY3wibq5BZkGzRlMbYFHUPelVQvWvZxP38w=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body class="app_container">
@@ -34,17 +36,34 @@
                     <div class="stu_course-content main" id="main">
                         <div style="width: 100%">
                             <div class="document-details-info border-bottom">
-                                <div style="flex: 3">
-                                    <div class="doc-info-name h2" style="margin-bottom: 4px">
-                                        <i class="fa-solid fa-file"></i>
-                                        <a class="doc-info-name" th:text="${document.getTitle()}"></a></div>
-                                    <div style="display: flex; width: 100%">
+                                <div>
+                                    <div class="doc-info-name d-flex justify-content-between" style="margin-bottom: 4px">
+                                        <div style="flex: 3; margin-right: 2rem">
+                                            <p class="doc-info-name h2" th:text="${document.getTitle()}"></p>
+                                            <div style="display: flex; width: 100%">
                                         <span style="flex: 1">Type: <span class="lecturer-name"
                                                                           th:text="${document.resourceType.resourceTypeName}"></span></span>
+                                            </div>
+                                            <div><p id="content" class="doc-info-description"
+                                                    style="text-align: justify; margin-bottom: 0; margin-top: 1rem"
+                                                    th:text="${document.description}"></p>
+                                                <span id="readMoreBtn" style="display: none;" class="read-more"
+                                                      onclick="toggleContent()">Read more</span></div>
+                                        </div>
+                                        <div style="flex: 1; display: flex; justify-content: center">
+                                            <div>
+                                                <a class="btn btn--hover mb-2 mt-2" th:href="@{'/lecturer/documents/' + ${document.id} + '/update'}">
+                                                    <span><i class="fa-solid fa-edit"></i>  Edit document</span>
+                                                </a>
+                                                <a class="btn btn--hover" th:href="@{'/lecturer/documents/' + ${document.id} + '/delete'}">
+                                                    <span><i class="fa-solid fa-trash"></i>  Delete document</span>
+                                                </a>
+                                            </div>
+
+                                        </div>
                                     </div>
-                                    <div><p id="content" class="doc-info-description"
-                                            style="text-align: justify; margin-bottom: 0; margin-top: 1rem" th:text="${document.description}"></p>
-                                        <span id="readMoreBtn" style="display: none;" class="read-more" onclick="toggleContent()">Read more</span></div>
+
+
                                 </div>
 
                                 <div class="stu_save-course-link" style="flex: 1;">
@@ -60,11 +79,13 @@
                                              style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
                                         </div>
                                     </th:block>
-<!--                                    <th:block th:if="${document.docType.toString().equals('TXT')}">-->
-<!--                                        <embed th:attr="src=@{'data:text/plain;base64,' + ${data}}" type="text/plain" width="100%" height="600px">-->
-<!--                                    </th:block>-->
+                                    <!--                                    <th:block th:if="${document.docType.toString().equals('TXT')}">-->
+                                    <!--                                        <embed th:attr="src=@{'data:text/plain;base64,' + ${data}}" type="text/plain" width="100%" height="600px">-->
+                                    <!--                                    </th:block>-->
                                     <th:block th:if="${document.docType.toString().equals('PDF')}">
-                                        <embed class="doc-content-view" th:attr="src='data:application/pdf;base64,' + ${data}" type="application/pdf" width="100%" height="600px">
+                                        <embed class="doc-content-view"
+                                               th:attr="src='data:application/pdf;base64,' + ${data}"
+                                               type="application/pdf" width="100%" height="600px">
                                     </th:block>
                                 </div>
 
@@ -136,8 +157,8 @@
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
-<script src="/js/lecturer.js"></script>
-<script src="/js/lecturer-doc-detail.js"></script>
+<script src="/js/lecturer/lecturer.js"></script>
+<script src="/js/lecturer/lecturer-doc-detail.js"></script>
 <script>
     var content = document.getElementById("content");
     var button = document.getElementById("readMoreBtn");

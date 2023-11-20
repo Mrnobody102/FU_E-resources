@@ -51,7 +51,7 @@
                 <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                     <div class="header__navbar-user-wrap">
                         <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name">Vũ Thanh Tùng </span> <span class="header__navbar-user-role">(Librarian)</span>
+                        <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span class="header__navbar-user-role">(Librarian)</span>
                     </div>
                 </li>
                 <li class="header__navbar-item">
@@ -113,7 +113,7 @@
                 <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                     <div class="header__navbar-user-wrap">
                         <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name">Vũ Thanh Tùng </span> <span class="header__navbar-user-role">(Admin)</span>
+                        <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span class="header__navbar-user-role">(Admin)</span>
                     </div>
                 </li>
                 <li class="header__navbar-item">
@@ -188,7 +188,7 @@
                     <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                         <div class="header__navbar-user-wrap">
                             <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                            <span class="header__navbar-user-name">Vũ Thanh Tùng</span> <span class="header__navbar-user-role">(Lecturer)</span>
+                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"></span> <span class="header__navbar-user-role">(Lecturer)</span>
                         </div>
                         <div class="header__navbar-user-option-list header__bridge">
                             <div class="header__navbar-user-profile">
@@ -197,8 +197,8 @@
                                          class="header__navbar-user-profile-img">
                                 </div>
                                 <div style="min-width: max-content">
-                                    <p>Vũ Thanh Tùng</p>
-                                    <p>20/02/2001 - Male</p>
+                                    <p th:text="${loggedInUser.name}"></p>
+                                    <p th:text="${loggedInUser.dateOfBirth}"></p>
                                 </div>
                             </div>
                             <div class="student__log-out">
@@ -279,18 +279,10 @@
                             </footer>
                         </div>
                     </li>
-<!--                    <li class="header__navbar-item">-->
-<!--                        <a href="" class="header__navbar-item-link">-->
-<!--                            <i class="header__navbar-icon far fa-question-circle"></i>-->
-<!--&lt;!&ndash;                            Help&ndash;&gt;-->
-<!--                        </a>-->
-<!--                    </li>-->
-                    <!-- <li href="" class="header__navbar-item header__navbar-item--strong header__navbar-item--separate">Login</li>
-                              <li href="" class="header__navbar-item header__navbar-item--strong">Sign Up</li> -->
                     <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                         <div class="header__navbar-user-wrap">
                             <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                            <span class="header__navbar-user-name">Vũ Thanh Tùng</span> <span  class="header__navbar-user-role">(Student)</span>
+                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"></span> <span  class="header__navbar-user-role">(Student)</span>
                         </div>
                         <div class="header__navbar-user-option-list header__bridge">
                             <div class="header__navbar-user-profile">
@@ -299,8 +291,8 @@
                                          class="header__navbar-user-profile-img">
                                 </div>
                                 <div style="min-width: max-content">
-                                    <p>Vũ Thanh Tùng</p>
-                                    <p>20/02/2001 - Male</p>
+                                    <p th:text="${loggedInUser.name}"></p>
+                                    <p th:text="${loggedInUser.dateOfBirth}"></p>
                                 </div>
                             </div>
                             <div class="student__log-out">

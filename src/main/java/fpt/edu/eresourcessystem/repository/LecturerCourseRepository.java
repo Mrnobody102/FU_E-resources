@@ -16,4 +16,6 @@ public interface LecturerCourseRepository extends MongoRepository<LecturerCourse
     Optional<LecturerCourse> findById(LecturerCourseId lecturerCourseId);
     @Query("{ 'lecturerCourseId.courseId' : ?0, 'lecturerCourseId.lastModifiedDate' : null }")
     LecturerCourse findCurrentCourseLecturer(String courseId);
+
+    List<LecturerCourse> findLecturerCoursesById(Lecturer lecturer);
 }

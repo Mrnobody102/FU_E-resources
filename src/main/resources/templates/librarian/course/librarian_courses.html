@@ -51,7 +51,7 @@
                                 <i class="lib_search-btn-icon fas fa-search"></i>
                             </button>
 
-                            <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list/1}">Show AlL</a>
+                            <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list/1}">Show All</a>
                         </div>
                     </form>
                     <div>
@@ -128,14 +128,34 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/librarian.js}"></script>
+<script th:src="@{/js/librarian/librarian.js}"></script>
 <!--<script>-->
 
 <!--    $('form select').on('change', function () {-->
 <!--        $(this).closest('form').submit();-->
 <!--    });-->
 <!--</script>-->
+<script th:inline="javascript">
 
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Delete course successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check course information again!',
+            'error'
+        );
+    }
+
+</script>
 
 </body>
 </html>

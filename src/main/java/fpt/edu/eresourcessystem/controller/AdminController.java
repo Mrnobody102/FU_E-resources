@@ -6,6 +6,8 @@ import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
@@ -20,11 +23,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
 @PropertySource("web-setting.properties")
 public class AdminController {
+    @Value("${page-size}")
+    private Integer pageSize;
 
     private final AccountService accountService;
     private final AdminService adminService;
@@ -35,10 +41,15 @@ public class AdminController {
     private final TopicService topicService;
     private final DocumentService documentService;
     private final UserLogService userLogService;
-    @Value("${page-size}")
-    private Integer pageSize;
+    private final FeedbackService feedbackService;
 
-    public AdminController(AccountService accountService, AdminService adminService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, DocumentService documentService, UserLogService userLogService) {
+    private final TrainingTypeService trainingTypeService;
+
+    public AdminController(AccountService accountService, AdminService adminService,
+                           LibrarianService librarianService, LecturerService lecturerService,
+                           StudentService studentService, CourseService courseService,
+                           TopicService topicService, DocumentService documentService, UserLogService userLogService,
+                           FeedbackService feedbackService, TrainingTypeService trainingTypeService) {
         this.accountService = accountService;
         this.adminService = adminService;
         this.librarianService = librarianService;
@@ -48,6 +59,8 @@ public class AdminController {
         this.topicService = topicService;
         this.documentService = documentService;
         this.userLogService = userLogService;
+        this.feedbackService = feedbackService;
+        this.trainingTypeService = trainingTypeService;
     }
 
     /*
@@ -111,7 +124,7 @@ public class AdminController {
     /*
     This function to display librarians and created course by that librarians
      */
-    @GetMapping("/courseCreator")
+    @GetMapping("/course_creator")
     String findCourseByLibrarian(final Model model) {
 
         List<Account> librarianList = accountService.findAllLibrarian();
@@ -250,7 +263,6 @@ public class AdminController {
             model.addAttribute("errorMessage", "account not exist.");
             return "exception/404";
         } else {
-
             Account checkEmailDuplicate = accountService.findByEmail(accountDTO.getEmail());
             if (checkEmailDuplicate != null &&
                     !checkExist.getEmail().equalsIgnoreCase(accountDTO.getEmail())) {
@@ -374,13 +386,81 @@ public class AdminController {
         model.addAttribute("roleSearch", roleSearch);
         return "admin/system_log/admin_user_logs";
     }
+
     @GetMapping("/course_log/tracking")
-    public String courseLogManage(){
+    public String courseLogManage() {
         return "admin/system_log/admin_course_logs";
     }
 
+    @GetMapping("/feedbacks/list/{pageIndex}")
+    String showFeedbacksByPage(@PathVariable Integer pageIndex,
+                               @RequestParam(required = false, defaultValue = "") String search,
+                               final Model model, HttpServletRequest request) {
+        Page<Course> page;
+//        page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
+//        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+//        model.addAttribute("pages", pages);
+//        model.addAttribute("totalPage", page.getTotalPages());
+//        model.addAttribute("courses", page.getContent());
+//        model.addAttribute("search", search);
+//        model.addAttribute("currentPage", pageIndex);
+        return "librarian/course/librarian_courses";
+    }
+
+    @GetMapping({"/feedbacks"})
+    public String showFeedbacks(final Model model) {
+        List<Feedback> feedbacks = feedbackService.findAll();
+        model.addAttribute("feedbacks", feedbacks);
+        return "admin/feedback/admin_feedbacks";
+//        return  "librarian/course/detailCourseTest";
+    }
+
+
+    @GetMapping("/trainingtypes/add")
+    public String showAddForm(Model model) {
+        List<Course> allCourses = courseService.findAll(); // Retrieve all available courses
+        model.addAttribute("allCourses", allCourses);
+        model.addAttribute("trainingType", new TrainingType());
+        return "admin/training_type/admin_training-type-add";
+    }
+
+    @PostMapping("/trainingtypes/add")
+    public String addTrainingType(@ModelAttribute("trainingtype") @Valid TrainingType trainingType,
+                                  BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "admin/training_type/admin_training-type-add";
+        }
+        try {
+            // Save the new training type using the service layer
+            trainingTypeService.save(trainingType);
+            redirectAttributes.addFlashAttribute("success", "Training type saved successfully.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "There was an error saving the training type.");
+        }
+
+        return "redirect:/admin/trainingtypes/list";
+    }
+
+    @GetMapping("/trainingtypes/list")
+    public String listTrainingTypes(Model model) {
+        model.addAttribute("trainingTypes", trainingTypeService.findAll());
+        return "admin/training_type/admin_training-type"; // Thymeleaf template for listing training types
+    }
+
+    @GetMapping("/trainingtypes/{id}")
+    public String viewTrainingTypeDetail(@PathVariable("id") String id, Model model, RedirectAttributes redirectAttributes) {
+        Optional<TrainingType> trainingTypeOptional = trainingTypeService.findById(id);
+        if (trainingTypeOptional.isPresent()) {
+            model.addAttribute("trainingType", trainingTypeOptional.get());
+            return "admin/training_type/admin_training-type-detail"; // Thymeleaf template for the details view
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Training type not found!");
+            return "redirect:/admin/trainingtypes/list";
+        }
+    }
+
     @GetMapping("/document_log/tracking")
-    public String documentLogManage(){
+    public String documentLogManage() {
         return "admin/system_log/admin_document_logs";
     }
 }

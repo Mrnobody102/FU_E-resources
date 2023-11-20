@@ -1,12 +1,12 @@
 package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 
-import fpt.edu.eresourcessystem.dto.AnswerDto;
+import fpt.edu.eresourcessystem.dto.AnswerDTO;
 import fpt.edu.eresourcessystem.dto.DocumentNoteDTO;
-import fpt.edu.eresourcessystem.dto.QuestionDto;
+import fpt.edu.eresourcessystem.dto.QuestionDTO;
 import fpt.edu.eresourcessystem.model.*;
-import fpt.edu.eresourcessystem.responseDto.AnswerResponseDto;
-import fpt.edu.eresourcessystem.responseDto.QuestionResponseDto;
+import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
+import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -93,19 +93,19 @@ public class StudentRestController {
 
     @PostMapping(value = "/question/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     @Transactional
-    public ResponseEntity<QuestionResponseDto> addQuestion(@ModelAttribute QuestionDto questionDto, @RequestParam String docId){
+    public ResponseEntity<QuestionResponseDto> addQuestion(@ModelAttribute QuestionDTO questionDTO, @RequestParam String docId){
         Student student = getLoggedInStudent();
         Document document = documentService.findById(docId);
-        if(null == student || null==questionDto || null==document){
+        if(null == student || null==questionDTO || null==document){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        questionDto.setStudent(student);
-        questionDto.setDocumentId(document);
-        Question question = questionService.addQuestion(new Question(questionDto));
+        questionDTO.setStudent(student);
+        questionDTO.setDocumentId(document);
+        Question question = questionService.addQuestion(new Question(questionDTO));
         if(null!= question){
-            System.out.println(question);
-            QuestionResponseDto questionResponseDto = new QuestionResponseDto(question);
-            ResponseEntity<QuestionResponseDto> responseEntity = new ResponseEntity<>(questionResponseDto, HttpStatus.OK);
+//            System.out.println(question);
+            QuestionResponseDto questionResponseDTO = new QuestionResponseDto(question);
+            ResponseEntity<QuestionResponseDto> responseEntity = new ResponseEntity<>(questionResponseDTO, HttpStatus.OK);
             return responseEntity;
         }else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -114,26 +114,26 @@ public class StudentRestController {
 
     @PostMapping(value = "/answer/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     @Transactional
-    public ResponseEntity<AnswerResponseDto> addQuestion(@ModelAttribute AnswerDto answerDto,
+    public ResponseEntity<AnswerResponseDto> addQuestion(@ModelAttribute AnswerDTO answerDTO,
                                                          @RequestParam String docId,
                                                          @RequestParam String quesId){
         Student student = getLoggedInStudent();
         Document document = documentService.findById(docId);
         Question question = questionService.findById(quesId);
-        if(null == student || null == answerDto || null==document || null == question){
+        if(null == student || null == answerDTO || null==document || null == question){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        answerDto.setStudent(student);
-        answerDto.setQuestionId(question);
-        answerDto.setDocumentId(document);
-        Answer answer = answerService.addAnswer(new Answer(answerDto));
+        answerDTO.setStudent(student);
+        answerDTO.setQuestionId(question);
+        answerDTO.setDocumentId(document);
+        Answer answer = answerService.addAnswer(new Answer(answerDTO));
         if(null!= answer){
 //            System.out.println(question);
             // update list answer of the question
             question.getAnswers().add(answer);
             questionService.updateQuestion(question);
-            AnswerResponseDto answerResponseDto = new AnswerResponseDto(answer);
-            ResponseEntity<AnswerResponseDto> responseEntity = new ResponseEntity<>(answerResponseDto, HttpStatus.OK);
+            AnswerResponseDto answerResponseDTO = new AnswerResponseDto(answer);
+            ResponseEntity<AnswerResponseDto> responseEntity = new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
             return responseEntity;
         }else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

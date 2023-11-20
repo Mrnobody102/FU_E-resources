@@ -25,10 +25,10 @@ public class Course {
     private String id;
 
     @NotNull
-    @DocumentReference
+    @DocumentReference(lazy = true)
     private Librarian librarian;
 
-    @DocumentReference
+    @DocumentReference(lazy = true)
     private Lecturer lecturer;
 
     @Indexed(unique = true)
@@ -38,7 +38,7 @@ public class Course {
     @NotEmpty(message = "course.validation.courseName.required")
     private String courseName;
     private String description;
-    @DocumentReference
+    @DocumentReference(lazy = true)
     private TrainingType trainingType;
 
     @DocumentReference(lazy = true)

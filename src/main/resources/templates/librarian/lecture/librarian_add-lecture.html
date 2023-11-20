@@ -1,10 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Lecture</title>
 
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+
+    <!-- SweetAlert từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+    <style>
+
+        label.error {
+            margin-top: 5px;
+            margin-left: 5px;
+            display: block;
+            color: red;
+            /*font-size: smaller;*/
+        }
+    </style>
+</head>
+<body class="app_container">
+
+<header class="row" th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<div class="main_content">
+    <div class="grid app__container-content-wrapper">
+        <div class="app__container-content">
+            <div class="course-details-head">
+                <a th:href="@{/librarian}">Home</a>
+                <span> &gt; <a th:href="@{/librarian/lectures}">Lecturers management</a></span>
+                <span> &gt; Add new lecturer</span>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Add lecturer</h1>
+
+            </div>
+            <form method="post" th:object="${lecture}" th:action="@{/librarian/lectures/create-lecture}">
+                <div class="lib_content">
+                    <div class="lib_form">
+
+                        <div class="lib_form-content">
+
+
+                            <!-- Lecture Email -->
+                            <div class="form-group">
+                                <label for="email">Lecturer Email</label>
+                                <input type="text" id="email" name="email" class="form-control" required/>
+                            </div>
+
+                            <!-- Lecture Courses (Assuming Lecture has a List<Course> courses) -->
+                            <div class="form-group mt-5">
+                                <label for="select-multiple-course">Assign to Courses</label>
+
+                                <select id="select-multiple-course" th:field="*{courses}"  class="form-control selectpicker show-tick"  data-style="btn-white" multiple data-live-search="true"  >
+                                    <option selected disabled th:value="0">Choose a course</option>
+                                    <option th:each="course : ${allCourses}" th:value="${course.getId()}"
+                                            th:text="${course.getCourseName()}"></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group mt-5">
+                                <label for="select-multiple-training">Training Type </label>
+
+                                <select id="select-multiple-training" th:field="*{trainingType}"  class="form-control selectpicker show-tick"  data-style="btn-white"  data-live-search="true"  >
+                                    <option selected disabled th:value="0">Choose a training type</option>
+                                    <option th:each="trainingType : ${trainingTypes}" th:value="${trainingType.getId()}"
+                                            th:text="${trainingType.trainingTypeName}"></option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn lib_show-all-btn">Add Lecture</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+
+<!--Custom script-->
+<script th:src="@{/js/librarian/librarian.js}"></script>
+
+<!--Bootstrap script-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+
+<!--Validate-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script th:src="@{/js/validation.js}"></script>
+
+<script th:inline="javascript">
+    // validate_addCourse();
+
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Save course successful!',
+            'success'
+        );
+    }
+
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check course information again!',
+            'error'
+        );
+    }
+</script>
 </body>
 </html>

@@ -1,13 +1,10 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.dto.AnswerDto;
-import fpt.edu.eresourcessystem.dto.QuestionDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.repository.AnswerRepository;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import java.util.List;
 import java.util.Optional;
 

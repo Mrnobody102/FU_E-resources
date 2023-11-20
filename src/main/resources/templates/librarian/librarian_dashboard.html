@@ -36,7 +36,7 @@
                 <div class="lib-main_menu-item">
                     <a th:href="@{/librarian/lectures}">
                         <i class="p-2 fa fa-book"></i>
-                        Lectures management</a>
+                        Lecturers management</a>
                 </div>
 
                 <div class="lib-main_menu-item">
@@ -56,12 +56,6 @@
 <!--                </div>-->
 
                 <div class="lib-main_menu-item">
-<!--                    <a th:href="@{/librarian/statistics}">-->
-                        <i class="p-2 fa fa-file"></i>
-                        Document Reports </a>
-                </div>
-
-                <div class="lib-main_menu-item">
                     <a th:href="@{/lecturer}">
                         <i class="p-2 fas fa-chalkboard-teacher"></i>
                         Login as lecturer</a>
@@ -71,11 +65,11 @@
                         <i class="p-2 fa fa-graduation-cap" aria-hidden="true"></i>
                         Login as student</a>
                 </div>
-                <div class="lib-main_menu-item">
-                    <a th:href="@{/librarian/settings}">
-                        <i class="p-2 fa fa-cog" aria-hidden="true"></i>
-                        Settings</a>
-                </div>
+<!--                <div class="lib-main_menu-item">-->
+<!--                    <a th:href="@{/librarian/settings}">-->
+<!--                        <i class="p-2 fa fa-cog" aria-hidden="true"></i>-->
+<!--                        Settings</a>-->
+<!--                </div>-->
             </div>
         </div>
     </div>
@@ -85,7 +79,7 @@
 <div th:replace="~{fragments/footer :: footerSection}"></div>
 
 <!--Custom script-->
-<script th:src="@{/js/librarian.js}"></script>
+<script th:src="@{/js/librarian/librarian.js}"></script>
 
 <!--Bootstrap script-->
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"

@@ -29,16 +29,15 @@ public interface LecturerRepository extends MongoRepository<Lecturer, String> {
     @Query("SELECT l FROM lecturers l  where l.id in ?1")
     Lecturer findByCourseId(String courseId);
 
-    Page<Lecturer> findLecturerByIdLike(String Id, Pageable pageable );
+    Page<Lecturer> findLecturerByIdLike(String Id, Pageable pageable);
 
 //    Page<Lecturer> findLecturer( Pageable pageable );
 
-    Page<Lecturer> findLecturerByCreatedByLike (String createBy, Pageable pageable);
+    Page<Lecturer> findLecturerByCreatedByLike(String createBy, Pageable pageable);
 
-    @Query("{ 'Account.email' : ?0 }")
-    Lecturer findByAccount_Email(String email);
+    Lecturer findLecturerByAccount(Account account);
 
-
+    Lecturer findLecturerById(String lectureId);
 
 }
 

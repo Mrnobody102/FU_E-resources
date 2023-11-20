@@ -6,115 +6,105 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Update Topic</title>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
   <link rel="stylesheet" th:href="@{/css/base.css}"/>
   <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-  <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap"
-          rel="stylesheet"
-  />
+  <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+  <!-- SweetAlert từ CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 </head>
 
-<body>
-<div class="app_container">
-  <!-- Header -->
-  <div class="row" th:replace="~{fragments/header::headerLecturerSection}"></div>
+<body class="app_container">
+<!-- Header -->
+<div class="row" th:replace="~{fragments/header::headerLecturerSection}"></div>
+<div class="main_content">
+  <div class="container-content-wrapper">
+    <!--  Main-->
+    <div class="container-content">
+      <div class="main-content stu_course-saved">
+        <div class="stu_course-saved-content d-flex">
+          <div class="stu_sidebar">
+            <div th:replace="~{fragments/sidebar:: lecturerSidebar('my-courses-management')}"></div>
+          </div>
 
-  <!-- Content -->
-  <main class="main_content">
-    <div class="sidebar librarianCourseSidebar">
-      <nav id="sidebar">
-        <ul class="list-unstyled components func_list">
-          <li class="func_item">
-            <a th:href="@{/lecturer}">Home</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <div class="course-details-head">
-      <a th:href="@{'/lecturer/courses/' + ${course.getId}}"
-         th:text="|${course.courseCode} - ${course.courseName}|"></a>
-      <span> &gt; <a th:href="@{'/lecturer/courses/updateTopic/' + ${topic.getId}}">Update topic</a> </span>
-    </div>
-    <section>
-      <h1>Detail Subject</h1>
-      <hr />
-      <div class="add-content">
-        <div class="add-form">
-          <div th:if="${param.success}">
-            <div class="alert alert-info">Save course successful !!!</div>
-          </div>
-          <div th:if="${param.error}">
-            <div class="alert alert-danger">Please check course information again !!!</div>
-          </div>
-          <div class="add-form-content">
-            <table th:if="course ne null">
-              <tr>
-                <th>Course</th>
-                <td th:text="| ${course.courseCode} - ${course.courseName}|"></td>
-              </tr>
-              <tr>
-                <th>Topics</th>
-                <td th:if="topics ne null">
-                  <th:block  th:each="topic : ${topics}">
-                    <p> <a  th:href="@{'/lecturer/courses/updateTopic/'+ ${topic.getId}}">Edit</a>
-                      | <a class="delete-topic" th:id="'/' + ${course.getId} + '/' + ${topic.getId}">Remove</a>
-                      <a th:text="|${topic.topicTitle} : ${topic.topicDescription}|"> </a> </p>
-                  </th:block>
-                </td>
-              </tr>
-            </table>
-            <form method="post" role="form" th:action="@{'/lecturer/courses/updateTopic/' + ${topic.getId}}"
-                  th:object="${topic}" th:id="add-form">
-              <h3>Update topic</h3>
-              <table class="table-form add-table">
-                <tr>
-                  <td><label th:for="courseId">Course ID</label></td>
-                  <td><input type="text" th:id="courseId"
-                             class="form-control hidden" th:field="*{course}" readonly>
-                  </td>
-                </tr>
-                <tr>
-                  <td><label th:for="topicId">Topic ID</label></td>
-                  <td><input type="text"
-                             class="form-control hidden" th:field="*{getId}" readonly>
-                  </td>
-                </tr>
-                <tr>
-                  <td><label th:for="topicTitle">Topic Title</label></td>
-                  <td><input type="text"
-                             class="form-control" th:field="*{topicTitle}"
-                             placeholder="Enter topic title" required>
-                    <p class="text-danger" th:errors="*{topicTitle}"
-                       th:if="${#fields.hasErrors('topicTitle')}"></p>
-                  </td>
-                </tr>
-                <tr>
-                  <td><label th:for="topicDescription">Topic Description</label></td>
-                  <td><input type="text"
-                             class="form-control" th:field="*{topicDescription}"
-                             placeholder="Enter description">
-                    <p class="text-danger" th:errors="*{topicDescription}"
-                       th:if="${#fields.hasErrors('topicDescription')}"></p>
-                  </td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>
-                    <button type="submit" class="btn btn-save">Save</button>
-                  </td>
-                </tr>
-              </table>
-            </form>
+          <div class="stu_courses-content main" id="main-lecturer">
+            <div class="course-details-head">
+              <a th:href="@{/lecturer}">Home > </a>
+              <a th:href="@{'/lecturer/courses/' + ${course.getId}}"
+                 th:text="${course.courseCode}"></a>
+              <span> > </span>
+              <a th:href="@{'/lecturer/courses/' + ${course.getId}}"
+                 th:text="${topic.topicTitle}"></a>
+              <span> &gt; Update </span>
+            </div>
+            <section>
+              <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div>
+                  <h2>Update topic</h2>
+                  <b th:text="${topic.topicTitle} + ' - ' + ${course.courseCode}"></b>
+                </div>
+              </div>
+              <div class="add-content">
+                <div class="add-form">
+                  <div class="add-form-content">
+                    <form method="post" role="form" th:action="@{'/lecturer/topics/' + ${topicId} +'/update'}"
+                          th:object="${topic}" th:id="add-form">
+                      <table class="table-form add-table" style="width: 60%">
+                        <tr class="d-none">
+                          <td><label th:for="courseId">Course ID</label></td>
+                          <td><input type="text"
+                                     class="form-control hidden" th:field="*{course}"
+                                     th:id="courseId"
+                                     placeholder="Enter course ID" readonly>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="lecturer_input-label"><label th:for="topicTitle">Title:</label></td>
+                          <td><input type="text"
+                                     class="lecturer_input form-control" th:field="*{topicTitle}"
+                                     placeholder="Enter topic title" required>
+                            <p class="text-danger" th:errors="*{topicTitle}"
+                               th:if="${#fields.hasErrors('topicTitle')}"></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="lecturer_input-label" ><label th:for="topicDescription">Description:</label></td>
+                          <td><textarea
+                                  class="lecturer_textarea form-control" th:field="*{topicDescription}"
+                                  placeholder="Enter description"></textarea>
+                            <p class="text-danger" th:errors="*{topicDescription}"
+                               th:if="${#fields.hasErrors('topicDescription')}"></p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td>
+                            <button type="submit" class="btn btn-save">Save</button>
+                          </td>
+                        </tr>
+                      </table>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+    </div>
+  </div>
 </div>
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -126,7 +116,28 @@
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-<script src="/js/librarian.js"></script>
-</body>
+<script src="/js/lecturer/lecturer.js"></script>
 
+<script th:inline="javascript">
+  // validate_updateTopic();
+
+  var successParam = [[${param.success}]];
+  if (successParam) {
+    Swal.fire(
+            'Success!',
+            'Save topic successful!',
+            'success'
+    );
+  }
+
+  var errorParam = [[${param.error}]];
+  if (errorParam) {
+    Swal.fire(
+            'Error!',
+            'Please check topic information again!',
+            'error'
+    );
+  }
+</script>
+</body>
 </html>

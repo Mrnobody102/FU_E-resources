@@ -43,13 +43,6 @@
                 </a>
 
                 <a href="#" class="sidebar__link"
-                   th:classappend="${#strings.equals(activeLink, 'my-history')} ? 'active-link' : ''">
-                    <i class="fa-solid fa-note-sticky"></i>
-                    <span class="sidebar__link-name">My history</span>
-                    <span class="sidebar__link-floating">My history</span>
-                </a>
-
-                <a href="#" class="sidebar__link"
                    th:classappend="${#strings.equals(activeLink, 'question-answer')} ? 'active-link' : ''">
                     <i class="fa-solid fa-question"></i>
                     <span class="sidebar__link-name">Question & Answer</span>
@@ -60,17 +53,23 @@
                 <span>Other</span>
             </h3>
             <div class="sidebar__list">
-                <a th:href="@{/student}" class="sidebar__link"
-                   th:classappend="${#strings.equals(activeLink, 'log-as-student')} ? 'active-link' : ''">
-                    <i class="p-2 fas fa-chalkboard-teacher"></i>
-                    <span class="sidebar__link-name">Login as student</span>
-                    <span class="sidebar__link-floating">Login as student</span>
-                </a>
                 <a href="#" class="sidebar__link"
                    th:classappend="${#strings.equals(activeLink, 'feedback')} ? 'active-link' : ''">
                     <i class="fa-solid fa-comment"></i>
                     <span class="sidebar__link-name">Feedback</span>
                     <span class="sidebar__link-floating">Feedback</span>
+                </a>
+                <a href="#" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'my-history')} ? 'active-link' : ''">
+                    <i class="fa-solid fa-note-sticky"></i>
+                    <span class="sidebar__link-name">Document issue reports</span>
+                    <span class="sidebar__link-floating">Document issue reports</span>
+                </a>
+                <a th:href="@{/student}" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'log-as-student')} ? 'active-link' : ''">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span class="sidebar__link-name">Login as student</span>
+                    <span class="sidebar__link-floating">Login as student</span>
                 </a>
             </div>
         </div>

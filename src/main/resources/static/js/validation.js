@@ -252,8 +252,15 @@ function validate_addTopic() {
     });
 }
 
+function validate_updateTopic(){
+    // bổ sung
+}
+
 // VALIDATE DOCUMENTS
 function validate_addDocument(){
     // bổ sung
 }
 
+function validate_updateDocument(){
+    // bổ sung
+}

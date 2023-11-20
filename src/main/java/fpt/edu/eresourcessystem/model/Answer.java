@@ -1,7 +1,6 @@
 package fpt.edu.eresourcessystem.model;
 
-import fpt.edu.eresourcessystem.dto.AnswerDto;
-import fpt.edu.eresourcessystem.dto.QuestionDto;
+import fpt.edu.eresourcessystem.dto.AnswerDTO;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import jakarta.validation.constraints.NotEmpty;
@@ -13,7 +12,6 @@ import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -55,13 +53,13 @@ public class Answer {
     private String lastModifiedBy;
     @LastModifiedDate
     private String lastModifiedDate;
-    public Answer(AnswerDto answerDto) {
-        this.id = answerDto.getId();
-        this.answer = answerDto.getAnswer();
-        this.student = answerDto.getStudent();
-        this.documentId = answerDto.getDocumentId();
-        this.question = answerDto.getQuestionId();
-        this.lecturer = answerDto.getLecturer();
+    public Answer(AnswerDTO answerDTO) {
+        this.id = answerDTO.getId();
+        this.answer = answerDTO.getAnswer();
+        this.student = answerDTO.getStudent();
+        this.documentId = answerDTO.getDocumentId();
+        this.question = answerDTO.getQuestionId();
+        this.lecturer = answerDTO.getLecturer();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
         this.status = QuestionAnswerEnum.Status.CREATED;
     }

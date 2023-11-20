@@ -1,10 +1,8 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import fpt.edu.eresourcessystem.dto.ResourceTypeDTO;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

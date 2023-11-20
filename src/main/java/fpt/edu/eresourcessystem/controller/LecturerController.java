@@ -1,6 +1,5 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.dto.CourseDTO;
 import fpt.edu.eresourcessystem.dto.DocumentDTO;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
@@ -9,6 +8,7 @@ import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
@@ -103,28 +103,22 @@ public class LecturerController {
         }
     }
 
-    @PostMapping("/update")
-    public String updateCourse(@ModelAttribute CourseDTO courseDTO, final Model model) { //thêm tham số course state
-        // if status.equals("PUBLISH")
-        Course course = new Course(courseDTO, CourseEnum.Status.PUBLISH);
-        // else ...
-        Course checkExist = courseService.findByCourseId(course.getId());
-        if (null == checkExist) {
-            model.addAttribute("errorMessage", "Course not exist.");
-            return "exception/404";
-        } else {
-            Course checkCodeDuplicate = courseService.findByCourseCode(course.getCourseCode());
-            if (checkCodeDuplicate != null &&
-                    !checkExist.getCourseCode().equalsIgnoreCase(course.getCourseCode())) {
-                //
-            }
-            courseService.updateCourse(course);
-            List<Account> lecturers = accountService.findAllLecturer();
-            model.addAttribute("course", course);
-            model.addAttribute("lecturers", lecturers);
-            model.addAttribute("success", "");
-            return "lecturer/course/lecturer_update-course";
+    @PostMapping("/courses/{courseID}/changeStatus")
+    public String changeCourseStatus(@PathVariable String courseID, @RequestParam String status) {
+        Course course = courseService.findByCourseId(courseID);
+        switch (status.toUpperCase()){
+            case "PUBLISH":
+                course.setStatus(CourseEnum.Status.PUBLISH);
+                break;
+            case "DRAFT":
+                course.setStatus(CourseEnum.Status.DRAFT);
+                break;
+            case "HIDE":
+                course.setStatus(CourseEnum.Status.HIDE);
+                break;
         }
+        courseService.updateCourse(course);
+        return "redirect:/lecturer/courses/" + courseID;
     }
 
     @GetMapping({"/courses/{courseId}"})
@@ -138,12 +132,11 @@ public class LecturerController {
         // add course log
         CourseLog courseLog = new CourseLog(course, CommonEnum.Action.VIEW);
         courseLogService.addCourseLog(courseLog);
-//        CourseLog courseLog = new CourseLog(new CourseLogId(lecturer.getAccount().getId(), courseId, CommonEnum.Action.VIEW, LocalDateTime.now()));
-//        courseLogService.addCourseLog(courseLog);
 
         List<Topic> topics = course.getTopics();
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
+        model.addAttribute("courseStatus", CourseEnum.ChangeableStatus.values());
         return "lecturer/course/lecturer_course-detail";
     }
 
@@ -172,7 +165,6 @@ public class LecturerController {
         return "lecturer/topic/lecturer_add-topic-to-course";
     }
 
-    // Cần tối ưu
     @PostMapping({"topics/add_topic"})
     public String addTopic(@ModelAttribute Topic topic, final Model model) {
         topic = topicService.addTopic(topic);
@@ -188,8 +180,7 @@ public class LecturerController {
         return "lecturer/topic/lecturer_add-topic-to-course";
     }
 
-    // Cần tối ưu
-    @GetMapping({"topics/{topicId}/update_topic"})
+    @GetMapping({"topics/{topicId}/update"})
     public String editTopicProcess(@PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
         Course course = courseService.findByCourseId(topic.getCourse().getId());
@@ -197,18 +188,21 @@ public class LecturerController {
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         model.addAttribute("topic", topic);
+        model.addAttribute("topicId", topicId);
         return "lecturer/topic/lecturer_update-topic-of-course";
     }
 
 
-    @PostMapping({"topics/{topicId}/update_topic"})
+    @PostMapping({"topics/{topicId}/update"})
     public String editTopic(@PathVariable String topicId, @ModelAttribute Topic topic) {
         Topic checkTopicExist = topicService.findById(topicId);
         if (null != checkTopicExist) {
-            topicService.updateTopic(topic);
-            return "redirect:/lecturer/courses/updateTopic/" + topicId;
+            checkTopicExist.setTopicTitle(topic.getTopicTitle());
+            checkTopicExist.setTopicDescription(topic.getTopicDescription());
+            topicService.updateTopic(checkTopicExist);
+            return "redirect:/lecturer/topics/" + topicId + "/update?success";
         }
-        return "lecturer/topic/lecturer_add-topic-to-course";
+        return "redirect:/lecturer/topics/" + topicId + "/update?error";
 
     }
 
@@ -313,7 +307,7 @@ public class LecturerController {
         // Xử lý file
         // thêm check file trước khi add
         String id = "fileNotFound";
-        if(file != null && !file.isEmpty()) {
+        if (file != null && !file.isEmpty()) {
             id = documentService.addFile(file);
         }
         Document document = documentService.addDocument(documentDTO, id);
@@ -328,13 +322,8 @@ public class LecturerController {
         resourceTypeService.updateResourceType(resourceType);
 
         // Thêm document vào topic
-        List<Document> topicDocuments = topic.getDocuments();
-        if (topicDocuments == null) {
-            topicDocuments = new ArrayList<>();
-        }
-        topicDocuments.add(document);
-        topic.setDocuments(topicDocuments);
-        topicService.updateTopic(topic);
+        // Sử dụng $push để thêm document vào topic mà không cần lấy toàn bộ documents
+        topicService.addDocumentToTopic(topicId, new ObjectId(document.getId()));
 
         return "redirect:/lecturer/topics/" + topicId + "/documents/add?success";
     }
@@ -348,30 +337,25 @@ public class LecturerController {
         if (null == document) {
             return "redirect:lecturer/documents/update?error";
         } else {
-            model.addAttribute("document", new Document());
-            model.addAttribute("courses", courseService.findAll());
-            return "lecturer/document/";
+            model.addAttribute("document", document);
+            model.addAttribute("resourceTypes", DocumentEnum.DefaultTopicResourceTypes.values());
+            return "lecturer/document/lecturer_update-document";
         }
     }
 
-    @PostMapping("/courses/update")
-    @Transactional
-    public String updateCourse(@ModelAttribute Course course, final Model model) {
-        Course checkExist = courseService.findByCourseId(course.getId());
+    @PostMapping("/documents/update")
+    public String updateCourse(@ModelAttribute Document document, final Model model) throws IOException {
+        Document checkExist = documentService.findById(document.getId());
 
         if (null == checkExist) {
-            return "redirect:/librarian/courses/" + course.getId()+ "/update?error";
+            return "redirect:/lecturer/documents/" + document.getId() + "/update?error";
         } else {
-            Course checkCodeDuplicate = courseService.findByCourseCode(course.getCourseCode());
-            if (checkCodeDuplicate != null &&
-                    !checkExist.getCourseCode().equalsIgnoreCase(course.getCourseCode())) {
-                return "redirect:/librarian/courses/" + course.getId()+ "/update?error";
-            }
-            checkExist.setCourseCode(course.getCourseCode());
-            checkExist.setCourseName(course.getCourseName());
-            checkExist.setDescription(course.getDescription());
-            courseService.updateCourse(checkExist);
-            return "redirect:/librarian/courses/" + course.getId()+ "/update?success";
+            checkExist.setTitle(document.getTitle());
+            checkExist.setDescription(document.getDescription());
+            checkExist.setResourceType(document.getResourceType());
+            checkExist.setContent(document.getContent());
+            documentService.updateDocument(checkExist);
+            return "redirect:/lecturer/documents/" + document.getId() + "/update?success";
         }
     }
 
