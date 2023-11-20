@@ -83,9 +83,11 @@ public class StudentController {
         return userLog;
     }
     @GetMapping({"", "/home"})
-    public String getStudentHome(final Model model) {
-        List<String> courseLogs = courseLogService.findStudentRecentView(getLoggedInStudent().getAccount().getEmail());
-        List<Course> recentCourses = courseService.findByListId(courseLogs);
+    public String getStudentHome(@ModelAttribute Account account, final Model model) {
+        Student student = getLoggedInStudent();
+        List<Course> recentCourses = courseLogService.findStudentRecentView(student.getAccount().getEmail());
+//        System.out.println(courseLogs);
+//        List<Course> recentCourses = courseService.findByListId(courseLogs);
         model.addAttribute("recentCourses", recentCourses);
         return "student/student_home";
     }
@@ -111,49 +113,48 @@ public class StudentController {
         // auth
         Student student = getLoggedInStudent();
         Course course = courseService.findByCourseId(courseId);
-        if (null == course || null == student) {
+        if(null == course || null == student){
             return "exception/404";
-        } else if (null == course.getStatus() || CourseEnum.Status.PUBLISH != course.getStatus()) {
+        }else if(null == course.getStatus() || CourseEnum.Status.PUBLISH!= course.getStatus()){
             return "exception/404";
         }
         // add course log
         CourseLog courseLog = new CourseLog(course, CommonEnum.Action.VIEW);
-        courseLogService.addCourseLog(courseLog);
+        courseLog = courseLogService.addCourseLog(courseLog);
+        System.out.println(courseLog);
         model.addAttribute("course", course);
         if (studentService.checkCourseSaved(student.getId(), courseId)) {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);
         // add log
         addUserLog("/student/course/"+ courseId);
-
-        // Need to optimize
         return "student/course/student_course-detail";
     }
 
-    @GetMapping("/courses/{courseId}/save_course")
-    public String saveCourse(@PathVariable String courseId) {
-        // get account authorized
-        Student student = getLoggedInStudent();
-        if (null != courseService.findByCourseId(courseId)) {
-            studentService.saveACourse(student.getId(), courseId);
-        }
-        // add log
-        addUserLog("/student/course/" + courseId + "/save_course");
-        return "redirect:/student/courses/" + courseId + "?success";
-    }
-
-    @GetMapping("/courses/{courseId}/unsaved_course")
-    public String unsavedCourse(@PathVariable String courseId) {
-        // get account authorized
-        Student student = getLoggedInStudent();
-
-        if (null != courseService.findByCourseId(courseId)) {
-            studentService.unsavedACourse(student.getId(), courseId);
-        }
-        // add log
-        addUserLog("/student/course/" + courseId + "/unsaved_course");
-        return "redirect:/student/courses/" + courseId + "?success";
-    }
+//    @GetMapping("/courses/{courseId}/save_course")
+//    public String saveCourse(@PathVariable String courseId) {
+//        // get account authorized
+//        Student student = getLoggedInStudent();
+//        if (null != courseService.findByCourseId(courseId)) {
+//            studentService.saveACourse(student.getId(), courseId);
+//        }
+//        // add log
+//        addUserLog("/student/course/" + courseId + "/save_course");
+//        return "redirect:/student/courses/" + courseId + "?success";
+//    }
+//
+//    @GetMapping("/courses/{courseId}/unsaved_course")
+//    public String unsavedCourse(@PathVariable String courseId) {
+//        // get account authorized
+//        Student student = getLoggedInStudent();
+//
+//        if (null != courseService.findByCourseId(courseId)) {
+//            studentService.unsavedACourse(student.getId(), courseId);
+//        }
+//        // add log
+//        addUserLog("/student/course/" + courseId + "/unsaved_course");
+//        return "redirect:/student/courses/" + courseId + "?success";
+//    }
 
     /*
         DOCUMENT
@@ -368,28 +369,22 @@ public class StudentController {
 
     @PostMapping("/my_note/student_notes/add")
     @Transactional
-    public String addMyNote(@ModelAttribute StudentNoteDTO studentNoteDTO, BindingResult result,
-                            @RequestParam(value = "file", required = false) MultipartFile file) throws IOException{
+    public String addMyNote(@ModelAttribute StudentNoteDTO studentNoteDTO,
+                            BindingResult result ){
         Student student = getLoggedInStudent();
         if(null == student){
             return "common/login";
         }else if(null==studentNoteDTO || result.hasErrors()){
-            return "redirect:/student/my_library/my_note/add?error";
-        }
-        // Xử lý file
-        // thêm check file trước khi add
-        String id = "fileNotFound";
-        if(file != null && !file.isEmpty()) {
-            id = documentService.addFile(file);
+            return "redirect:/student/my_note/student_notes/add?error";
         }
         studentNoteDTO.setStudentId(student.getId());
-        StudentNote studentNote = studentNoteService.addStudentNote(studentNoteDTO, id);
+        StudentNote studentNote = studentNoteService.addStudentNote(studentNoteDTO);
         if(null!= studentNote){
             // add log
             addUserLog("/student/my_note/student_notes/add/" +studentNote);
-            return "redirect:/student/my_library/my_note/add?success";
+            return "redirect:/student/my_note/student_notes/add?success";
         }else {
-            return "redirect:/student/my_library/my_note/add?error";
+            return "redirect:/student/my_note/student_notes/add?error";
         }
     }
 

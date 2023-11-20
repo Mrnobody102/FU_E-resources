@@ -40,7 +40,7 @@
                         <div th:replace="~{fragments/sidebar:: studentSidebar(${sidebarParam})}"></div>
                     </div>
                     <div class="stu_course-content main d-flex" id="main">
-                        <div class="student__course-document-view border-end" style="flex: 3">
+                        <div class="student__course-document-view" style="flex: 4">
 
                             <div class="student__document-type-list">
                                 <div class="list-view-inline top-doctype-list">
@@ -88,7 +88,7 @@
                                                 </div>
                                                 <div class="doc-info grid__column-2">
                                                     <p><span class="doc-info-date" th:text="${document.lastModifiedDate}"></span>
-                                                        <span class="doc-info-rating">| Rating: 5</span><i class="fa-solid fa-star"></i></p>
+                                                        <span class="doc-info-rating"> 100 <i class="fa-solid fa-thumbs-up"></i></span></p>
                                                 </div>
                                                 <div class="grid__column-1">
                                                     <form action="" method="">
@@ -139,13 +139,13 @@
                                                                    th:text="${course.lecturer.account.name}"></span>
                                         </a></p>
                                     <div class="stu_save-course-link">
-                                        <p><a class="unsaved-course" th:if="${saved} == true"
-                                              th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">
+                                        <p><a class="unsaved-course" th:if="${saved ne null} AND ${saved} == true"
+                                              th:attr="courseId=${course.getId}">
                                             <i class="fa-solid fa-bookmark"></i>
                                             Unbookmark</a>
                                         </p>
-                                        <p><a class="saved-course" th:if="${saved} == false"
-                                              th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">
+                                        <p><a class="saved-course" th:if="${saved ne null} AND ${saved} == false"
+                                              th:attr="courseId=${course.getId}">
                                             <i class="fa-regular fa-bookmark"></i>
                                             Bookmark</a></p>
                                     </div>
@@ -163,7 +163,6 @@
 <!-- Footer -->
 <div th:replace="~{fragments/footer :: footerSection}"></div>
 
-<!--jquery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Bootstrap script-->
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"

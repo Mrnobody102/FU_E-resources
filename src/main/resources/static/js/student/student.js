@@ -1,3 +1,61 @@
+function unsavedCourse(param){
+    var courseId = $(this).attr("courseId");
+    var loading = "<p><a th:attr=\"courseId=${courseId}\">\n" +
+        "                                        <i class=\"fas fa-spinner fa-spin\"></i>\n" +
+        "                                        UnBookmarking</a></p>"
+    $(".stu_save-course-link").html(loading);
+    $.get({
+        url: '/api/student/courses/'+ courseId + '/unsaved_course',
+        success: function(responseData) {
+            console.log(responseData);
+            var saved = "<p><a class=\"unsaved-course\" courseId=" + courseId + ">" +
+                "                                        <i class=\"fa-solid fa-bookmark\"></i>\n" +
+                "                                        Unbookmark</a>\n" +
+                "                                    </p>";
+            var unsaved = "<p><a class=\"save-course\" courseId=" + courseId + ">" +
+                "                                        <i class=\"fa-regular fa-bookmark\"></i>\n" +
+                "                                        Bookmark</a></p>";
+
+
+            if('saved'== responseData){
+                $(".stu_save-course-link").html(saved);
+            }else if(unsaved){
+                $(".stu_save-course-link").html(unsaved);
+            }
+        },
+        error: function(errorData) {
+        }
+    })
+}
+
+function saveCourse(param){
+    var courseId = $(this).attr("courseId");
+    var loading = "<p><a th:attr=\"courseId=${courseId}\">\n" +
+        "                                        <i class=\"fas fa-spinner fa-spin\"></i>\n" +
+        "                                        Bookmarking</a></p>"
+    $(".stu_save-course-link").html(loading);
+    $.get({
+        url: '/api/student/courses/'+ courseId + '/save_course',
+        success: function(responseData) {
+            console.log(responseData);
+            var saved = "<p><a class=\"unsaved-course\" courseId=" + courseId + ">" +
+                "                                        <i class=\"fa-solid fa-bookmark\"></i>\n" +
+                "                                        Unbookmark</a>\n" +
+                "                                    </p>";
+            var unsaved = "<p><a class=\"save-course\" courseId=" + courseId + ">" +
+                "                                        <i class=\"fa-regular fa-bookmark\"></i>\n" +
+                "                                        Bookmark</a></p>";
+            if('saved'== responseData){
+                $(".stu_save-course-link").html(saved);
+            }else if(unsaved){
+                $(".stu_save-course-link").html(unsaved);
+            }
+        },
+        error: function(errorData) {
+        }
+    })
+}
+
 $(document).ready(function () {
 
     /*
@@ -163,5 +221,62 @@ $(document).ready(function () {
             }
         })
     });
+    $("body").on("click", ".save-course", function() {
+        var courseId = $(this).attr("courseId");
+        var loading = "<p><a th:attr=\"courseId=${courseId}\">\n" +
+            "                                        <i class=\"fas fa-spinner fa-spin\"></i>\n" +
+            "                                        Bookmarking</a></p>"
+        $(".stu_save-course-link").html(loading);
+        $.get({
+            url: '/api/student/courses/'+ courseId + '/save_course',
+            success: function(responseData) {
+                console.log(responseData);
+                var saved = "<p><a class=\"unsaved-course\" courseId=" + courseId + ">" +
+                    "                                        <i class=\"fa-solid fa-bookmark\"></i>\n" +
+                    "                                        Unbookmark</a>\n" +
+                    "                                    </p>";
+                var unsaved = "<p><a class=\"save-course\" courseId=" + courseId + ">" +
+                    "                                        <i class=\"fa-regular fa-bookmark\"></i>\n" +
+                    "                                        Bookmark</a></p>";
+                if('saved'== responseData){
+                    $(".stu_save-course-link").html(saved);
+                }else if(unsaved){
+                    $(".stu_save-course-link").html(unsaved);
+                }
+            },
+            error: function(errorData) {
+            }
+        })
+    })
+
+    $("body").on("click", ".unsaved-course", function() {
+        var courseId = $(this).attr("courseId");
+        var loading = "<p><a th:attr=\"courseId=${courseId}\">\n" +
+            "                                        <i class=\"fas fa-spinner fa-spin\"></i>\n" +
+            "                                        UnBookmarking</a></p>"
+        $(".stu_save-course-link").html(loading);
+        $.get({
+            url: '/api/student/courses/'+ courseId + '/unsaved_course',
+            success: function(responseData) {
+                console.log(responseData);
+                var saved = "<p><a class=\"unsaved-course\" courseId=" + courseId + ">" +
+                    "                                        <i class=\"fa-solid fa-bookmark\"></i>\n" +
+                    "                                        Unbookmark</a>\n" +
+                    "                                    </p>";
+                var unsaved = "<p><a class=\"save-course\" courseId=" + courseId + ">" +
+                    "                                        <i class=\"fa-regular fa-bookmark\"></i>\n" +
+                    "                                        Bookmark</a></p>";
+
+
+                if('saved'== responseData){
+                    $(".stu_save-course-link").html(saved);
+                }else if(unsaved){
+                    $(".stu_save-course-link").html(unsaved);
+                }
+            },
+            error: function(errorData) {
+            }
+        })
+    })
 
 });

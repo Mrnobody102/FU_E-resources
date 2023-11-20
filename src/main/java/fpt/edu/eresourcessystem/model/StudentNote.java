@@ -25,9 +25,6 @@ public class StudentNote {
     private DocumentEnum.DocumentStatusEnum status;
 
     private DocumentEnum.DocumentFormat docType;
-    private String suffix;
-
-    private byte[] content;
 
     private String editorContent;
 
@@ -51,11 +48,8 @@ public class StudentNote {
         this.studentId = studentNoteDTO.getStudentId();
         this.title = studentNoteDTO.getTitle();
         this.description = studentNoteDTO.getDescription();
-        this.content = studentNoteDTO.getContent();
         this.editorContent = studentNoteDTO.getEditorContent();
         this.status = studentNoteDTO.getStatus();
-        this.suffix = studentNoteDTO.getSuffix();
-        this.docType = DocumentEnum.DocumentFormat.getDocType(studentNoteDTO.getSuffix());
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
 
     }

@@ -4,6 +4,7 @@ package fpt.edu.eresourcessystem.controller.restcontrollers;
 import fpt.edu.eresourcessystem.dto.AnswerDTO;
 import fpt.edu.eresourcessystem.dto.DocumentNoteDTO;
 import fpt.edu.eresourcessystem.dto.QuestionDTO;
+import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
@@ -26,18 +28,36 @@ public class StudentRestController {
     private final DocumentService documentService;
     private final DocumentNoteService documentNoteService;
 
+    private final CourseService courseService;
+
     private final QuestionService questionService;
     private final AnswerService answerService;
-    public StudentRestController(StudentService studentService, DocumentService documentService, DocumentNoteService documentNoteService, QuestionService questionService, AnswerService answerService) {
+
+    private final UserLogService userLogService;
+    private final AccountService accountService;
+
+    public StudentRestController(StudentService studentService, DocumentService documentService, DocumentNoteService documentNoteService, CourseService courseService, QuestionService questionService, AnswerService answerService, UserLogService userLogService, AccountService accountService) {
         this.studentService = studentService;
         this.documentService = documentService;
         this.documentNoteService = documentNoteService;
+        this.courseService = courseService;
         this.questionService = questionService;
         this.answerService = answerService;
+        this.userLogService = userLogService;
+        this.accountService = accountService;
+    }
+
+    private UserLog addUserLog(String url){
+        UserLog userLog = new UserLog(new UserLogDto(url));
+        userLog = userLogService.addUserLog(userLog);
+        return userLog;
     }
 
     public Student getLoggedInStudent() {
-        return studentService.findAll().get(0);
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account loggedInAccount = accountService.findByEmail(loggedInEmail);
+        Student loggedInStudent = studentService.findByAccountId(loggedInAccount.getId());
+        return loggedInStudent;
     }
     @GetMapping("/documents/{documentId}/save_document")
     public String saveDocument(@PathVariable String documentId) {
@@ -155,5 +175,41 @@ public class StudentRestController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/courses/{courseId}/save_course")
+    public String saveCourse(@PathVariable String courseId) {
+        // get account authorized
+        Student student = getLoggedInStudent();
+        if (null != courseService.findByCourseId(courseId)) {
+            boolean result = studentService.saveACourse(student.getId(), courseId);
+            if (result) {
+                // add log
+                addUserLog("/student/course/" + courseId + "/save_course");
+                return "saved";
+            } else {
+                return "unsaved";
+            }
+
+        }
+        return "exception";
+    }
+
+    @GetMapping("/courses/{courseId}/unsaved_course")
+    public String unsavedCourse(@PathVariable String courseId) {
+        // get account authorized
+        Student student = getLoggedInStudent();
+        if (null != courseService.findByCourseId(courseId)) {
+            boolean result =  studentService.unsavedACourse(student.getId(), courseId);
+            if (result) {
+                // add log
+                addUserLog("/student/course/" + courseId + "/unsaved_course");
+                return "unsaved";
+            } else {
+                return "saved";
+            }
+        }
+        return "exception";
+    }
+
 
 }
