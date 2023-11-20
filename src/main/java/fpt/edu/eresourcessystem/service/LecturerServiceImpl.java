@@ -6,6 +6,7 @@ import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.repository.LecturerCourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerRepository;
 import org.bson.types.ObjectId;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+//@AllArgsConstructor
 @Service(value = "lecturerService")
 public class LecturerServiceImpl implements LecturerService {
     private final LecturerRepository lecturerRepository;
@@ -49,7 +51,6 @@ public class LecturerServiceImpl implements LecturerService {
     public Lecturer updateLecturer(Lecturer lecturer) {
         Optional<Lecturer> foundLecturer = lecturerRepository.findById(lecturer.getId());
         if (foundLecturer.isPresent()) {
-            lecturer.getCourses();
             Lecturer result = lecturerRepository.save(lecturer);
             return result;
         }

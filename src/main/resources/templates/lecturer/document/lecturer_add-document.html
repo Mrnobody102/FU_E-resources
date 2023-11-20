@@ -13,9 +13,6 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
-
-    <!-- CK Editor-->
-    <script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
     <script th:src="@{/ckfinder/static/ckfinder.js}"></script>
 
     <!-- SweetAlert từ CDN -->
@@ -169,6 +166,9 @@
 <script src="/js/lecturer/lecturer.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<!-- CK Editor-->
+<script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
+<script th:src="@{/js/editor.js}"></script>
 <script th:inline="javascript">
     // Resource Type
     $('#defineResourceType').click(function () {
@@ -238,23 +238,6 @@
             'error'
         );
     }
-
-    // CK editor
-    ClassicEditor
-        .create(document.querySelector('#editor'), {
-            ckfinder: {
-                uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
-            },
-        })
-        .then(editor => {
-            editor.editing.view.change(writer => {
-                writer.setStyle('height', '400px', editor.editing.view.document.getRoot());
-            });
-            console.log(Array.from(editor.ui.componentFactory.names()));
-        })
-        .catch(error => {
-            console.error(error);
-        });
 
 </script>
 </body>
