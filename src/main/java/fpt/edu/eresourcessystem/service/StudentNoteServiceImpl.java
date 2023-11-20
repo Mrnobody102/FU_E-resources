@@ -68,22 +68,11 @@ public class StudentNoteServiceImpl implements StudentNoteService{
     }
 
     @Override
-    public StudentNote addStudentNote(StudentNoteDTO studentNoteDTO, String id) throws IOException {
+    public StudentNote addStudentNote(StudentNoteDTO studentNoteDTO){
         //search file
         if (null == studentNoteDTO.getId()) {
-            if (!id.equalsIgnoreCase("fileNotFound")){
-                GridFSFile file = template.findOne(new Query(Criteria.where("_id").is(id)));
-                studentNoteDTO.setContent(IOUtils.toByteArray(operations.getResource(file).getInputStream()));
-                String filename = StringUtils.cleanPath(file.getFilename());
-                String fileExtension = StringUtils.getFilenameExtension(filename);
-                studentNoteDTO.setSuffix(fileExtension);
                 StudentNote result = studentNoteRepository.save(new StudentNote(studentNoteDTO));
                 return result;
-            } else {
-                studentNoteDTO.setSuffix("unknown");
-                StudentNote result = studentNoteRepository.save(new StudentNote(studentNoteDTO));
-                return result;
-            }
         } else {
             Optional<StudentNote> checkExist = studentNoteRepository.findById(studentNoteDTO.getId());
             if (!checkExist.isPresent()) {

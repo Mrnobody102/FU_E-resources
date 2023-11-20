@@ -45,6 +45,7 @@
     display: inline;
     justify-content: right;
     margin-top: 2rem;
+    cursor: pointer;
 }
 .stu_save-doc-link{
     cursor: pointer;
@@ -94,7 +95,7 @@
     margin: 0;
     padding: 0;
     line-height: 1.5rem;
-    font-size: var(--medium-font-size);
+    font-size: var(--large-font-size);
 }
 .form-chose-doc-type input{
     display: none;
@@ -398,4 +399,16 @@ stu__navbar-view-doc-item:hover a{
 .reply-content{
     padding-top: 0.5rem;
     padding-bottom: 0.2rem;
+}
+.student_input-label {
+    padding-top: 8px;
+    padding-bottom: 4px;
+    font-weight: var(--font-medium);
+}
+.doc-info-rating{
+    margin-left: 0.7rem;
+    margin-right: 0.7rem;
+}
+.doc-info-rating i{
+    color: #0a58ca;
 }

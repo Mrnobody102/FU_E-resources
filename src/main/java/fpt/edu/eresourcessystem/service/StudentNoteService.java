@@ -11,6 +11,6 @@ public interface StudentNoteService {
     Page<StudentNote> getNoteByStudent(String studentId, int pageIndex, int pageSize);
     String addFile(MultipartFile file) throws IOException;
 
-    StudentNote addStudentNote(StudentNoteDTO studentNoteDTO, String id) throws IOException;
+    StudentNote addStudentNote(StudentNoteDTO studentNoteDTO);
 
 }
