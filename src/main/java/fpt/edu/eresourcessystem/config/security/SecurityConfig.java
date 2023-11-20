@@ -80,22 +80,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
                         .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.LECTURER.name())
                         .requestMatchers("/student/**").hasAnyRole(AccountEnum.Role.STUDENT.name())
-//
-//                        .requestMatchers(mvcMatcherBuilder.pattern("/")).permitAll()
-//                        .requestMatchers(mvcMatcherBuilder.pattern("/home")).permitAll()
-//                        .requestMatchers(mvcMatcherBuilder.pattern("/guest")).permitAll()
-//                        .requestMatchers(mvcMatcherBuilder.pattern("/login")).permitAll()
-//                        .requestMatchers(mvcMatcherBuilder.pattern("/ckfinder/*")).permitAll()
-
-//                        .requestMatchers(new AntPathRequestMatcher("images/**")).permitAll()
-//                        .requestMatchers(new AntPathRequestMatcher("css/**")).permitAll()
-//                        .requestMatchers(new AntPathRequestMatcher("js/**")).permitAll()
-//                        .requestMatchers(new AntPathRequestMatcher("assets/**")).permitAll()
-                        // Auth detail
-//                        .requestMatchers(mvcMatcherBuilder.pattern("/librarian/**")).hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
-//                        .requestMatchers(mvcMatcherBuilder.pattern("/lecturer/**")).hasAnyRole(AccountEnum.Role.LECTURER.name())
-//                        .requestMatchers(mvcMatcherBuilder.pattern("/student/**")).hasAnyRole(AccountEnum.Role.STUDENT.name())
                         .anyRequest().authenticated())
+//                        .anyRequest().permitAll());
         ;
 
         // Exception Handling
