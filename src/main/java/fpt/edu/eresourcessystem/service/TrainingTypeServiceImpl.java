@@ -1,5 +1,7 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.TrainingType;
 import fpt.edu.eresourcessystem.repository.TrainingTypeRepository;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,7 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
         trainingTypeRepository.deleteById(id);
     }
 
+    @Override
     public TrainingType updateTrainingType(TrainingType trainingType) {
         TrainingType existingTrainingType = trainingTypeRepository.findById(trainingType.getId())
                 .orElseThrow(() -> new RuntimeException("Training type not found"));
@@ -53,6 +56,18 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
         existingTrainingType.setTrainingTypeDescription(trainingType.getTrainingTypeDescription());
 
         return trainingTypeRepository.save(existingTrainingType);
+    }
+
+    @Override
+    public boolean softDelete(TrainingType trainingType) {
+        Optional<TrainingType> existingTrainingType = trainingTypeRepository.findById(trainingType.getId());
+        if (existingTrainingType.isPresent()) {
+            TrainingType toDelete = existingTrainingType.get();
+            toDelete.setDeleteFlg(CommonEnum.DeleteFlg.DELETED); // Mark as deleted
+            trainingTypeRepository.save(toDelete);
+            return true;
+        }
+        return false;
     }
 
 }

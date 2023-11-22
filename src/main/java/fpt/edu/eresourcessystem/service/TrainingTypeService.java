@@ -17,4 +17,6 @@ public interface TrainingTypeService {
 
      TrainingType updateTrainingType(TrainingType trainingType);
 
+     boolean softDelete(TrainingType trainingType);
+
 }
