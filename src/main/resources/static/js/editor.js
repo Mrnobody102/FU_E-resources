@@ -2,7 +2,7 @@
 ClassicEditor
     .create(document.querySelector('#editor'), {
         ckfinder: {
-            uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
+            uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Images&responseType=json'
         },
     })
     .then(editor => {
