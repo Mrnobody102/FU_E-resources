@@ -15,4 +15,6 @@ public interface TrainingTypeService {
 
      void deleteById(String id) ;
 
+     TrainingType updateTrainingType(TrainingType trainingType);
+
 }

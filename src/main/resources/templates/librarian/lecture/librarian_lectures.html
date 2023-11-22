@@ -7,8 +7,8 @@
 
     <!-- Bootstrap core CSS -->
     <!--    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
 
 
     <!-- Custom styles for this template -->
@@ -21,19 +21,23 @@
             display: none;
             float: right;
         }
-        #filterTable_filter{
+
+        #filterTable_filter {
             float: left;
             padding-bottom: 25px;
         }
-        select.lib_show-all-btn{
+
+        select.lib_show-all-btn {
             display: inline;
             width: 200px;
             margin-left: 25px;
             padding: 5px;
         }
+
         .dataTables_info {
             display: none;
         }
+
         .dataTables_wrapper .dataTables_paginate {
             text-align: center;
             float: none;
@@ -61,16 +65,15 @@
             <div class="lib_data-list-wrapper">
                 <div class="lib_search-container">
                     <form class="d-flex" th:action="@{/librarian/lectures/list/1}" th:method="get">
-<!--                        <div class="d-flex">-->
-<!--                            <input class="lib_search-content" type="text" placeholder="Search course.." name="search"-->
-<!--                                   th:value="${search}" id="search-text"/>-->
-<!--                            <button type="submit" class="lib_search-btn-wrapper lib_search-btn">-->
-<!--                                <i class="lib_search-btn-icon fas fa-search"></i>-->
-<!--                            </button>-->
+                        <!--                        <div class="d-flex">-->
+                        <!--                            <input class="lib_search-content" type="text" placeholder="Search course.." name="search"-->
+                        <!--                                   th:value="${search}" id="search-text"/>-->
+                        <!--                            <button type="submit" class="lib_search-btn-wrapper lib_search-btn">-->
+                        <!--                                <i class="lib_search-btn-icon fas fa-search"></i>-->
+                        <!--                            </button>-->
 
-<!--                            <a class="btn lib_show-all-btn" th:href="@{/librarian/lectures/list}">Show AlL</a>-->
-<!--                        </div>-->
-
+                        <!--                            <a class="btn lib_show-all-btn" th:href="@{/librarian/lectures/list}">Show AlL</a>-->
+                        <!--                        </div>-->
 
 
                         <select id="select-training-type" name="trainingTypeId"
@@ -93,16 +96,16 @@
             <div class="table-view" th:if="${lecturers ne null}">
                 <table class="table table-striped table-sm" id="filterTable">
                     <thead class="table-head">
-                        <th>STT</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>TrainingType</th>
-                        <th>Course List</th>
+                    <th>STT</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>TrainingType</th>
+                    <th>Course List</th>
 
                     </thead>
                     <tbody>
                     <th:block th:each="lecture, iterStat : ${lecturers}">
-                        <tr >
+                        <tr>
                             <td th:text="${iterStat.index+1}">1</td>
                             <td><a th:href="@{'/librarian/lectures/' + ${lecture.getId()}}"
                                    th:text="${lecture.getAccount().getName()}"></a></td>
@@ -110,12 +113,12 @@
                             <td th:text="${lecture.getTrainingType().getTrainingTypeName()} ?: 'N/A'"></td>
 
                             <td>
-                                                                <th:block th:each="course : ${lecture.getCourses()}">
-                                                                    <a th:href="@{'/librarian/courses/' + ${course.getId()}}">
-                                                                        <button class="button-a-background"
-                                                                                th:text="${course.getCourseCode()}"></button>
-                                                                    </a>
-                                                                </th:block>
+                                <th:block th:each="course : ${lecture.getCourses()}">
+                                    <a th:href="@{'/librarian/courses/' + ${course.getId()}}">
+                                        <button class="button-a-background"
+                                                th:text="${course.getCourseCode()}"></button>
+                                    </a>
+                                </th:block>
                             </td>
 
                         </tr>

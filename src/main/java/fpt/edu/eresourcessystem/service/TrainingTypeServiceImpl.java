@@ -17,6 +17,9 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
         this.trainingTypeRepository = trainingTypeRepository;
     }
     public TrainingType save(TrainingType trainingType) {
+        if (trainingType == null) {
+            throw new IllegalArgumentException("TrainingType cannot be null");
+        }
         return trainingTypeRepository.save(trainingType);
     }
 
@@ -25,12 +28,31 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
     }
 
     public Optional<TrainingType> findById(String id) {
+        if (id == null || id.trim().isEmpty()) {
+            throw new IllegalArgumentException("ID cannot be null or empty");
+        }
         return trainingTypeRepository.findById(id);
     }
 
     @Override
     public void deleteById(String id) {
+        if (id == null || id.trim().isEmpty()) {
+            throw new IllegalArgumentException("ID cannot be null or empty");
+        }
+        if (!trainingTypeRepository.existsById(id)) {
+            throw new RuntimeException("TrainingType with ID " + id + " does not exist");
+        }
         trainingTypeRepository.deleteById(id);
+    }
+
+    public TrainingType updateTrainingType(TrainingType trainingType) {
+        TrainingType existingTrainingType = trainingTypeRepository.findById(trainingType.getId())
+                .orElseThrow(() -> new RuntimeException("Training type not found"));
+
+        existingTrainingType.setTrainingTypeName(trainingType.getTrainingTypeName());
+        existingTrainingType.setTrainingTypeDescription(trainingType.getTrainingTypeDescription());
+
+        return trainingTypeRepository.save(existingTrainingType);
     }
 
 }

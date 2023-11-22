@@ -325,9 +325,9 @@ public class LibrarianController {
     @GetMapping({"/courses/{courseId}/remove-lecture"})
     public String removeLecture(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
-        boolean removed = lecturerService.removeCourse(course.getLecturer(), course);
+      //  boolean removed = lecturerService.removeCourse(course.getLecturer(), course);
         boolean removed1 = courseService.removeLecture(courseId);
-        if (true == removed && removed1 == true) {
+        if (removed1 == true) {
             return "redirect:/librarian/courses/{courseId}/add-lecture?success";
         } else return "redirect:/librarian/courses/{courseId}/add-lecture?error";
     }
@@ -364,14 +364,14 @@ public class LibrarianController {
         }
     }
 
-//    @GetMapping({"/lectures"})
-//    public String showLectures(final Model model) {
-//        List<TrainingType> trainingTypes = trainingTypeService.findAll();
-//        model.addAttribute("trainingTypes", trainingTypes);
-//        return "librarian/lecture/librarian_lectures";
-//    }
+    @GetMapping({"/lectures"})
+    public String showLectures(final Model model) {
+        List<TrainingType> trainingTypes = trainingTypeService.findAll();
+        model.addAttribute("trainingTypes", trainingTypes);
+        return "librarian/lecture/librarian_lectures";
+    }
 
-    @GetMapping({"/lectures/list", "/lectures"})
+    @GetMapping({"/lectures/list"})
     public String showLecture(final Model model) {
         List<Lecturer> lecturers = lecturerService.findAll();
         List<TrainingType> trainingTypes = trainingTypeService.findAll();
@@ -427,7 +427,7 @@ public class LibrarianController {
 //        lecturer.getAccount().setRole();
                 for (int i = 0; i < lecturer.getCourses().size(); i++) {
                     if (lecturer.getCourses().get(i).getLecturer() == null)
-                    courseService.updateLectureId(String.valueOf(lecturer.getCourses().get(i)), lecturer);
+                        courseService.updateLectureId(String.valueOf(lecturer.getCourses().get(i)), lecturer);
                 }
                 return "redirect:/librarian/lectures/create-lecture?success";
             } else

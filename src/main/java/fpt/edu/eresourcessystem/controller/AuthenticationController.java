@@ -43,7 +43,8 @@ public class AuthenticationController {
 
     @GetMapping({"/login"})
     public String loginView(final Model model, Authentication authentication) {
-        model.addAttribute("campuses", AccountEnum.getListCampus());
+
+
         String redirect = getAuthenticatedUserRedirectUrl(authentication);
         if (redirect != null) {
             // log user action
@@ -72,7 +73,7 @@ public class AuthenticationController {
         return null;
     }
 
-    @RequestMapping("/login-google")
+    @GetMapping("/login-google")
     public String loginGoogle(HttpServletRequest request) throws ClientProtocolException, IOException, ParseException {
         String code = request.getParameter("code");
 
