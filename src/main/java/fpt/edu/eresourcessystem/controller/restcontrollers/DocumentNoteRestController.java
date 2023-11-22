@@ -24,7 +24,7 @@ public class DocumentNoteRestController {
 
 
     @PostMapping("/add/{docId}")
-    public ResponseEntity<DocumentNote> addStudentNote(@RequestParam String content) {
+    public ResponseEntity<DocumentNote> addStudentNote(@ModelAttribute String content, @PathVariable String docId) {
         // get current account
         Student student = getLoggedInStudent();
         DocumentNoteDTO documentNoteDTO = new DocumentNoteDTO();

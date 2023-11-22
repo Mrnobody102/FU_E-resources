@@ -161,30 +161,41 @@
                                     <div class="stu__note-in-doc-view">
                                         <div class="stu__note-in-doc-content" th:if="${note ne null}">
                                             <div class="stu__note-content">
-                                                <div th:utext="${note.content}"></div>
+                                                <div id="note-content" th:utext="${note.noteContent}"></div>
                                             </div>
                                             <div class="view-note-link">
                                                 <div class="justify-content-end">
-                                                    <a id="editNote">Edit</a> <a id="deleteNote">Delete</a>
+                                                    <a class="edit-Note">Edit</a> <a class="delete-note">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="stu__note-in-doc-content-new" style="display:none;">
+                                            <div class="stu__note-content">
+                                                <div id="new-note-content"></div>
+                                            </div>
+                                            <div class="view-note-link">
+                                                <div class="justify-content-end">
+                                                    <a class="edit-note">Edit</a> <a class="delete-note">Delete</a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="stu__note-in-doc-textarea" th:if="${note == null}">
-                                            <div class="stu__save-note">
-                                                <button type="" id="add-doc-note">Save Note</button>
-                                            </div>
                                             <form class="form-student-add-doc-notes" method="post" role="form"
-                                                  th:action="@{/document_notes/add}"
                                                   th:object="${documentNote}"
-                                                  th:id="add-form" enctype="multipart/form-data">
+                                                  th:id="add-note-form" enctype="multipart/form-data">
                                                 <input type="text" th:field="*{docId}" th:value="${document.getId}" readonly hidden>
                                                 <div id="editorWrapper">
                                                     <div class="d-flex justify-content-between">
                                                         <label for="editor" class=".student_input-label">Content:</label>
-                                                        <label class=".student_input-label error-input">Content require!</label>
+                                                        <label id="error-input-new-note" class="student_input-label-note error-input">Content require!</label>
                                                     </div>
                                                     <textarea id="editor"
-                                                              th:field="*{content}" required></textarea>
+                                                              th:field="*{noteContent}" required></textarea>
+                                                </div>
+                                                <div class="stu__save-note">
+<!--                                                    <button type="submit" id="add-doc-note" onclick="submitFormAddNotes()">Save Note</button>-->
+                                                    <a type="button" title="Sending" style="display:none;"  id="sending-new-note" th:document-id="${document.id}"><i class="fas fa-spinner fa-spin"></i> Sending...</a>
+                                                    <button type="button" title="Send" id="send-new-note-button" th:document-id="${document.id}" onclick="submitFormAddNote(this.getAttribute('document-id'))">Save Note</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -276,28 +287,28 @@
                                     </div>
                                 </div>
 
-                                <div class="list-view-inline bot-doctype-list">
-                                    <form action="" method="" class="form-chose-doc-type">
+<!--                                <div class="list-view-inline bot-doctype-list">-->
+<!--                                    <form action="" method="" class="form-chose-doc-type">-->
 
-                                        <input name="docType" type="radio" id="radio-bot-1" value="All">
-                                        <label for="radio-bot-1">All</label>
+<!--                                        <input name="docType" type="radio" id="radio-bot-1" value="All">-->
+<!--                                        <label for="radio-bot-1">All</label>-->
 
-                                        <input name="docType" type="radio" id="radio-bot-2" value="Reading">
-                                        <label for="radio-bot-2">Reading</label>
+<!--                                        <input name="docType" type="radio" id="radio-bot-2" value="Reading">-->
+<!--                                        <label for="radio-bot-2">Reading</label>-->
 
-                                        <input name="docType" type="radio" id="radio-bot-3" value="Lecturer Notes">
-                                        <label for="radio-bot-3">Lecturer Notes</label>
+<!--                                        <input name="docType" type="radio" id="radio-bot-3" value="Lecturer Notes">-->
+<!--                                        <label for="radio-bot-3">Lecturer Notes</label>-->
 
-                                        <input name="docType" type="radio" id="radio-bot-4" value="Reading">
-                                        <label for="radio-bot-4">Reading</label>
+<!--                                        <input name="docType" type="radio" id="radio-bot-4" value="Reading">-->
+<!--                                        <label for="radio-bot-4">Reading</label>-->
 
-                                        <input name="docType" type="radio" id="radio-bot-5" value="Reading">
-                                        <label for="radio-bot-5">Reading</label>
+<!--                                        <input name="docType" type="radio" id="radio-bot-5" value="Reading">-->
+<!--                                        <label for="radio-bot-5">Reading</label>-->
 
-                                        <input name="docType" type="radio" id="radio-bot-6" value="Reading">
-                                        <label for="radio-bot-6">Reading</label>
-                                    </form>
-                                </div>
+<!--                                        <input name="docType" type="radio" id="radio-bot-6" value="Reading">-->
+<!--                                        <label for="radio-bot-6">Reading</label>-->
+<!--                                    </form>-->
+<!--                                </div>-->
                             </div>
                         </div>
 
@@ -317,9 +328,12 @@
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+
 <!--Custom script-->
 <script th:src="@{/js/student/student.js}"></script>
-<script th:src="@{/js/student/student-doc-detail.js}"></script>
+<!-- CK Editor-->
+<script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
+<script th:inline="javascript" th:src="@{/js/student/student-doc-detail.js}"></script>
 <script>
     var isHighlighting = false;
 
@@ -397,35 +411,6 @@
             'error'
         );
     }
-
-    // CK editor
-    ClassicEditor
-        .create(document.querySelector('#editor'), {
-            ckfinder: {
-                uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
-            },
-        })
-        .then(editor => {
-            editor.editing.view.change(writer => {
-                writer.setStyle('height', '200px', editor.editing.view.document.getRoot());
-            });
-            console.log(Array.from(editor.ui.componentFactory.names()));
-        })
-        .catch(error => {
-            console.error(error);
-        });
-    // Xử lý fragment identifier nếu có trong URL
-    document.addEventListener("DOMContentLoaded", function () {
-        var hash = window.location.hash;
-        if (hash) {
-            var element = document.querySelector(hash);
-            if (element) {
-                var sectionId = hash.substring(1); // Loại bỏ dấu '#'
-                showSection(sectionId);
-
-            }
-        }
-    });
 
 </script>
 </body>

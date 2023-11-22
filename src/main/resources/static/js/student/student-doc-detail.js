@@ -1,3 +1,36 @@
+let newEditor;
+// CK editor
+ClassicEditor
+    .create(document.querySelector('#editor'), {
+        ckfinder: {
+            uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
+        },
+    })
+    .then(editor => {
+        newEditor = editor;
+        editor.editing.view.change(writer => {
+            writer.setStyle('height', '200px', editor.editing.view.document.getRoot());
+        });
+        console.log(Array.from(editor.ui.componentFactory.names()));
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+// Xử lý fragment identifier nếu có trong URL
+document.addEventListener("DOMContentLoaded", function () {
+    var hash = window.location.hash;
+    if (hash) {
+        var element = document.querySelector(hash);
+        if (element) {
+            var sectionId = hash.substring(1); // Loại bỏ dấu '#'
+            showSection(sectionId);
+
+        }
+    }
+});
+
+
 function viewQuestion() {
     $("#note").css("display", "none");
     $("#question").css("display", "block");
@@ -67,6 +100,45 @@ function submitFormAddQuestion(param) {
             },
             error: function (xhr) {
                 // Handle errors
+            }
+        });
+    }
+}
+
+function submitFormAddNote(param) {
+    // var content = $('#editor').val();
+    var content = newEditor.getData();
+    var trimmedString = $.trim(content);
+    console.log(newEditor.getData())
+    if (trimmedString == '') {
+        $('#error-input-new-note').css("display", "block");
+    } else {
+        $('#send-new-note-button').css("display", "none");
+        $('#sending-new-note').css("display", "block");
+        $('#error-input-new-note').css("display", "none");
+        // newEditor.updateElement();
+        //
+        // var data = $('#myForm').serializeArray();
+        // var formData = $('#add-note-form').serialize();
+        // formData.set('noteContent', editorContent);
+        console.log(content);
+        $.ajax({
+            type: 'POST',
+            url: '/api/student/document_note/add/'+param,
+            data: content,
+            dataType: 'application/text',
+            success: function (data) {
+                console.log("success"+data)
+                // var html = data.noteContent;
+                $("#new-note-content").html(html);
+                $('#stu__note-in-doc-content-new').css("display", "block");
+                $('#sending-new-note').css("display", "none");
+                $('#add-note-form').css("display", "none");
+
+            },
+            error: function (xhr) {
+                // Handle errors
+                console.log("error")
             }
         });
     }

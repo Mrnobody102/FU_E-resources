@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeTypeUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -211,5 +212,30 @@ public class StudentRestController {
         return "exception";
     }
 
+    @PostMapping("/document_note/add/{documentId}")
+    public ResponseEntity<DocumentNote> addNewNote(@ModelAttribute DocumentNote documentNote,
+                                                   BindingResult bindingResult,
+                                                   @RequestParam String content,
+                                                   @PathVariable String documentId){
+        Student student = getLoggedInStudent();
+        Document document = documentService.findById(documentId);
+        if(bindingResult.hasErrors()){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        if(null == student || null==documentNote || null==document){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        documentNote.setStudentId(student.getId());
+        documentNote.setDocId(documentId);
+        documentNote.setNoteContent(content);
+        DocumentNote result = documentNoteService.addDocumentNote(documentNote);
+        if(null!= result){
+//            System.out.println(question);
+            ResponseEntity<DocumentNote> responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
+            return responseEntity;
+        }else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }
