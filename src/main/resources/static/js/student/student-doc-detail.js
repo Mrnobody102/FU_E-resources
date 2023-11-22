@@ -91,7 +91,7 @@ function submitFormAddQuestion(param) {
                 var html = "<div class=\"stu__question-content\">\n" +
                     "                                                <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span> " + data.studentName + "(You)</span></h6>\n" +
                     "                                                <p class=\"stu__question-content\">" + data.questionContent + "</p>\n" +
-                    "                                                <span class=\"stu__question-date stu__question-content\">" + data.lastModifiedDate + "</span> <a class=\"view-note-link-item \">Edit</a> | <a class=\"view-note-link-item\">Delete</a>" +
+                    "                                                <span class=\"stu__question-date stu__question-content\">" + data.lastModifiedDate + "</span> <a class=\"view-note-link-item \">Edit</a><a class=\"view-note-link-item\">Delete</a>" +
                     "                                                </div>\n";
 
 
@@ -125,16 +125,15 @@ function submitFormAddNote(param) {
         $.ajax({
             type: 'POST',
             url: '/api/student/document_note/add/'+param,
-            data: content,
-            dataType: 'application/text',
+            data: {'noteContent': content},
+            dataType: 'json',
             success: function (data) {
-                console.log("success"+data)
-                // var html = data.noteContent;
+                console.log("success: " + data.noteContent)
+                var html = data.noteContent;
                 $("#new-note-content").html(html);
                 $('#stu__note-in-doc-content-new').css("display", "block");
                 $('#sending-new-note').css("display", "none");
                 $('#add-note-form').css("display", "none");
-
             },
             error: function (xhr) {
                 // Handle errors

@@ -60,7 +60,8 @@ public class StudentRestController {
         Student loggedInStudent = studentService.findByAccountId(loggedInAccount.getId());
         return loggedInStudent;
     }
-    @GetMapping("/documents/{documentId}/save_document")
+    @PostMapping("/documents/{documentId}/save_document")
+    @Transactional
     public String saveDocument(@PathVariable String documentId) {
         // get account authorized
         Student student = getLoggedInStudent();
@@ -76,7 +77,8 @@ public class StudentRestController {
         return "exception";
     }
 
-    @GetMapping("/documents/{documentId}/unsaved_document")
+    @PostMapping("/documents/{documentId}/unsaved_document")
+    @Transactional
     public String unsavedDoc(@PathVariable String documentId,
                              HttpServletRequest request,
                              HttpSession session) {
@@ -92,25 +94,6 @@ public class StudentRestController {
         }
         return "exception";
     }
-
-    @PostMapping("/my_note/document_notes/add")
-    @Transactional
-    public DocumentNoteDTO addMyNote(@ModelAttribute DocumentNoteDTO documentNoteDTO){
-        Student student = getLoggedInStudent();
-        if(null == student){
-            return null;
-        }else if(null==documentNoteDTO){
-            return null;
-        }
-        documentNoteDTO.setStudentId(student.getId());
-        DocumentNote documentNote = documentNoteService.addDocumentNote(new DocumentNote(documentNoteDTO));
-        if(null!= documentNote){
-            return documentNoteDTO;
-        }else {
-            return null;
-        }
-    }
-
 
     @PostMapping(value = "/question/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     @Transactional
@@ -177,7 +160,8 @@ public class StudentRestController {
         }
     }
 
-    @GetMapping("/courses/{courseId}/save_course")
+    @PostMapping("/courses/{courseId}/save_course")
+    @Transactional
     public String saveCourse(@PathVariable String courseId) {
         // get account authorized
         Student student = getLoggedInStudent();
@@ -195,7 +179,8 @@ public class StudentRestController {
         return "exception";
     }
 
-    @GetMapping("/courses/{courseId}/unsaved_course")
+    @PostMapping("/courses/{courseId}/unsaved_course")
+    @Transactional
     public String unsavedCourse(@PathVariable String courseId) {
         // get account authorized
         Student student = getLoggedInStudent();
@@ -212,25 +197,23 @@ public class StudentRestController {
         return "exception";
     }
 
-    @PostMapping("/document_note/add/{documentId}")
-    public ResponseEntity<DocumentNote> addNewNote(@ModelAttribute DocumentNote documentNote,
-                                                   BindingResult bindingResult,
-                                                   @RequestParam String content,
+    @PostMapping(value = "/document_note/add/{documentId}",  produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    @Transactional
+    public ResponseEntity<DocumentNote> addNewNote(@RequestParam String noteContent,
                                                    @PathVariable String documentId){
         Student student = getLoggedInStudent();
+        System.out.println(noteContent);
         Document document = documentService.findById(documentId);
-        if(bindingResult.hasErrors()){
+        if(null == student || null == noteContent || "".equals(noteContent.trim()) || null==document){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        if(null == student || null==documentNote || null==document){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
+        DocumentNote documentNote = new DocumentNote();
         documentNote.setStudentId(student.getId());
         documentNote.setDocId(documentId);
-        documentNote.setNoteContent(content);
+        documentNote.setNoteContent(noteContent);
         DocumentNote result = documentNoteService.addDocumentNote(documentNote);
         if(null!= result){
-//            System.out.println(question);
+            System.out.println(result);
             ResponseEntity<DocumentNote> responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
             return responseEntity;
         }else {

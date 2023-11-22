@@ -88,7 +88,7 @@
 
 
                                 <div style="display: flex">
-                                    <div style="display: flex; flex: 3">
+                                    <div style="display: flex; flex: 4">
                                         <th:block th:if="${document.docType.toString().equals('UNKNOWN')}">
                                             <div class="doc-content-view" th:utext="${document.editorContent}"
                                                  style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
@@ -276,7 +276,7 @@
                                             <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${question.studentName}"></span></h6>
                                             <p class="stu__question-content" th:utext="${question.questionContent}"></p>
                                             <p class="stu__answer-date stu__question-content" th:text="${question.lastModifiedDate}">Lecturer: <span class="stu__answer-lecturer" th:if="${question.lecturerName ne null}" th:text="${question.lecturerName}"></span></p>
-                                            <p  th:if="${question.totalAnswers} > 0"  class="view-question-reply stu__question-content">view <span th:text="${question.totalAnswers}"></span> reply</p>
+                                            <p  th:if="${question.totalAnswers} > 0" th:id="'view-more-reply-'+${question.questionId}" th:question-id="${question.questionId}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">View <span th:text="${question.totalAnswers}"></span> reply</p>
                                             <p style="display:none;"  th:if="${question.totalAnswers} > 0" th:id="'see-less-reply-'+${question.questionId}" th:question-id="${question.questionId}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">See less</p>
                                             <p style="display:none;"  th:id="'loading-reply-'+${question.questionId}" th:question-id="${question.questionId}" class="view-question-reply stu__question-content"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
                                             <!--                                        View reply-->
