@@ -25,6 +25,9 @@
     margin-left: 2rem;
     border-left: 1px solid var(--second-back-ground);
 }
+.student__course-document-list label{
+    cursor: pointer;
+}
 .list-view-block a, .list-view-block input{
     display: block;
 }
@@ -197,6 +200,7 @@
     padding: 1rem 1.5rem;
     font-weight: var(--font-medium);
     border-radius: 0.3rem;
+    cursor: pointer;
 
 }
 .stu__navbar-favourite-item:hover a,
@@ -438,4 +442,12 @@ stu__navbar-view-doc-item:hover a{
 }
 .question-content{
     font-size: 1.8rem;
+}
+.view-question-list{
+    width: 90%;
+    padding: 0rem 1.3rem 0rem 0rem;
+}
+.view-list{
+    margin: 0.2rem 0.2rem 0.5rem 1.5rem;
+    width: 90%;
 }

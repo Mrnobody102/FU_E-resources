@@ -5,6 +5,8 @@ import fpt.edu.eresourcessystem.dto.AnswerDTO;
 import fpt.edu.eresourcessystem.dto.QuestionDTO;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/student")
@@ -154,11 +157,15 @@ public class StudentRestController {
     public ResponseEntity<List<AnswerResponseDto>> getAnswerOfQuestion(@PathVariable String questionId){
         Question question = questionService.findById(questionId);
         List<Answer> answers = answerService.findByQuestion(question);
-        List<AnswerResponseDto> answerResponseDtos = new ArrayList<>();
         if(null!= answers){
-            for (Answer answer: answers) {
-                answerResponseDtos.add(new AnswerResponseDto(answer));
-            }
+            //update question status
+            question.setStatus(QuestionAnswerEnum.Status.READ);
+            questionService.updateQuestion(question);
+
+            // change to response object
+            List<AnswerResponseDto> answerResponseDtos = answers.stream()
+                    .map(entity -> new AnswerResponseDto(entity))
+                    .collect(Collectors.toList());
             ResponseEntity<List<AnswerResponseDto>> responseEntity = new ResponseEntity<>(answerResponseDtos, HttpStatus.OK);
             return responseEntity;
         }else {
@@ -242,6 +249,32 @@ public class StudentRestController {
         }else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping(value = "/my_question/new_question", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<QuestionResponseDto>> getWaitQuestion(){
+        Student student = getLoggedInStudent();
+        if(null == student){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }else{
+            List<QuestionResponseDto> questionResponseDtos = questionService.findWaitReplyQuestion(student.getId());
+            ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDtos, HttpStatus.OK);
+            return responseEntity;
+        }
+
+    }
+
+    @GetMapping(value = "/my_question/new_replies", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<QuestionResponseDto>> getNewReplyQuestion(){
+        Student student = getLoggedInStudent();
+        if(null == student){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }else{
+            List<QuestionResponseDto> questionResponseDtos = questionService.findNewReplyQuestion(student.getId());
+            ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDtos, HttpStatus.OK);
+            return responseEntity;
+        }
+
     }
 
 }

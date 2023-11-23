@@ -4,6 +4,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import fpt.edu.eresourcessystem.dto.DocumentDTO;
+import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Lecturer;
@@ -15,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
@@ -26,7 +30,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("documentService")
 public class DocumentServiceImpl implements DocumentService {
@@ -58,6 +64,25 @@ public class DocumentServiceImpl implements DocumentService {
 
         //return as a string
         return fileID.toString();
+    }
+
+    @Override
+    public List<DocumentResponseDto> findRelevantDocument(String topicId, String docId) {
+        Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+                .and("id").ne(docId)
+                .and("topic.id").is(topicId))
+                .skip(0)
+                .limit(9)
+                .with(Sort.by(Sort.Order.desc("createdDate")));
+        ;
+        List<Document> documents = mongoTemplate.find(query, Document.class);
+        if (null != documents) {
+            List<DocumentResponseDto> responseList = documents.stream()
+                    .filter(entity -> CommonEnum.DeleteFlg.PRESERVED.equals(entity.getDeleteFlg()))
+                    .map(entity -> new DocumentResponseDto(entity))
+                    .collect(Collectors.toList());
+            return responseList;
+        } else return null;
     }
 
     @Override
@@ -102,7 +127,7 @@ public class DocumentServiceImpl implements DocumentService {
     public Document addDocument(DocumentDTO documentDTO, String id) throws IOException {
         //search file
         if (null == documentDTO.getId()) {
-            if (!id.equalsIgnoreCase("fileNotFound")){
+            if (!id.equalsIgnoreCase("fileNotFound")) {
                 GridFSFile file = template.findOne(new Query(Criteria.where("_id").is(id)));
                 documentDTO.setContent(IOUtils.toByteArray(operations.getResource(file).getInputStream()));
                 String filename = StringUtils.cleanPath(file.getFilename());

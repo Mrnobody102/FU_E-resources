@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
@@ -176,6 +177,19 @@ public class StudentController {
                 questionResponseDtos.add(new QuestionResponseDto(q));
             } else {
                 myQuestionResponseDtos.add(new QuestionResponseDto(q));
+            }
+        }
+
+        // get others doc
+        if(null!= document.getTopic()){
+            List<DocumentResponseDto> relevantDocuments = documentService
+                    .findRelevantDocument(document.getTopic().getId(),docId);
+            if(null!= relevantDocuments && relevantDocuments.size()> 0){
+                model.addAttribute("relevantDocuments", relevantDocuments);
+            }else {
+                relevantDocuments = new ArrayList<>();
+                relevantDocuments.add(new DocumentResponseDto(document));
+                model.addAttribute("relevantDocuments", relevantDocuments);
             }
         }
         model.addAttribute("questions", questionResponseDtos);

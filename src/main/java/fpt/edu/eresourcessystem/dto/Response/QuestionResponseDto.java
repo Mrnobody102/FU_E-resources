@@ -17,6 +17,8 @@ public class QuestionResponseDto {
 
     private String documentId;
 
+    private String documentTitle;
+
     private int totalAnswers;
 
     private String lecturerName;
@@ -29,7 +31,7 @@ public class QuestionResponseDto {
             this.studentName= question.getStudent().getAccount().getName();
         }
         this.documentId = question.getDocumentId().getId();
-
+        this.documentTitle = question.getDocumentId().getTitle();
         if(null!=question.getAnswers()){
             this.totalAnswers = question.getAnswers().size();
         }else {

@@ -75,62 +75,58 @@
                                         My question & answer history
                                     </a>
                                 </li>
-                                <!--                <li class="stu__navbar-favourite-item">-->
-                                <!--                  <a href="">-->
-                                <!--                    My documents-->
-                                <!--                  </a>-->
-                                <!--                </li>-->
-                                <li class="stu__navbar-favourite-item ">
-                                    <a href="">
+                                <li class="stu__navbar-favourite-item" onclick="viewQuestionWaiting(this)">
+                                    <a>
                                         Waiting for reply
                                     </a>
                                 </li>
-                                <li class="stu__navbar-favourite-item ">
-                                    <a href="">
-                                        Has been replied
-                                    </a>
-                                </li>
-                                <li class="stu__navbar-favourite-item ">
-                                    <a href="">
+                                <!--                                <li class="stu__navbar-favourite-item ">-->
+                                <!--                                    <a>-->
+                                <!--                                        Has been replied-->
+                                <!--                                    </a>-->
+                                <!--                                </li>-->
+                                <li class="stu__navbar-favourite-item" onclick="viewNewReplyQuestion(this)">
+                                    <a>
                                         New replies
                                     </a>
                                 </li>
                             </ul>
                         </div>
-                        <div class="stu__courses-list-view">
-                            <div class="stu__view-my-notes">
+                        <div class="view-question-list view-list" id="loading"  style="display:none;">
+                            <p th:id="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</p>
+                        </div>
+                        <div th:id="stu__view-waiting-for-reply-question" style="display: none" class="view-list stu__questions-list-view">
+                        </div>
+                        <div th:id="stu__view-new-reply-question" style="display: none" class="view-list stu__questions-list-view">
+                        </div>
+                        <div th:id="stu__view-question-history" class="stu__questions-list-view">
+                            <div class="stu__question-content">
                                 <div th:if="${param.search} AND ${studentQuestions == null} OR ${studentQuestions.size()} == 0"
                                      class="list-content-not-found">
                                     <p class="h3">You didn't ask any question.</p>
                                 </div>
-                                <div class="stu__view-list-note-content"
+                                <div class="stu__view-list-question-content"
                                      th:if="${studentQuestions ne null} AND ${studentQuestions.size()} > 0">
-                                    <div class="view-note-list">
-                                        <ul class="home__note-list">
-                                            <li class="home__note-item">
-                                                <div class="stu__question-view-wrapper"
-                                                     th:each="studentQuestion : ${studentQuestions}">
-                                                    <!--                          <h2 class="home__note-title" th:text="${studentNote.title}"-->
-                                                    <!--                              href=""></h2>-->
-                                                    <a class="stu__question-title"
-                                                       th:text="'Ask on '+${studentQuestion.documentId.title}"
-                                                       th:href="@{'/student/documents/' + ${studentQuestion.documentId.id}+'#question'}">
-                                                    </a><span class="home__note-date"
-                                                              th:text="${studentQuestion.lastModifiedDate}"></span>
-                                                    <p class="home__note-description"
-                                                       th:text="${studentQuestion.content}"></p>
-                                                    <div class="home__note-item stu__list-answers"
-                                                         th:each="answer : ${studentQuestion.answers}">
-                                                        <a class="stu__question-title"
-                                                           th:text="${answer.student.account.name}"
-                                                           th:href="@{'/student/documents/' + ${answer.documentId.id}+ '#question'}">
-                                                        </a><span class="home__note-date" th:text="${answer.lastModifiedDate}"></span>
-                                                        <p class="home__note-description"
-                                                           th:text="${answer.answer}"></p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                    <div class="view-question-list">
+                                        <div class="stu__question-content-wrapper"
+                                             th:each="studentQuestion : ${studentQuestions}">
+                                            <a class="stu__question-title"
+                                               th:text="'Ask on '+${studentQuestion.documentId.title}"
+                                               th:href="@{'/student/documents/' + ${studentQuestion.documentId.id}+'#question'}"></a>
+                                            <p class="stu__question-content question-content"
+                                               th:text="${studentQuestion.content}"></p>
+                                            <span class="stu__question-content stu__question-date"
+                                                      th:text="${studentQuestion.lastModifiedDate}"></span>
+                                            <!--                                                    <div class="home__note-item stu__list-answers"-->
+                                            <!--                                                         th:each="answer : ${studentQuestion.answers}">-->
+                                            <!--                                                        <a class="stu__question-title"-->
+                                            <!--                                                           th:text="${answer.student.account.name}"-->
+                                            <!--                                                           th:href="@{'/student/documents/' + ${answer.documentId.id}+ '#question'}">-->
+                                            <!--                                                        </a><span class="home__note-date" th:text="${answer.lastModifiedDate}"></span>-->
+                                            <!--                                                        <p class="home__note-description"-->
+                                            <!--                                                           th:text="${answer.answer}"></p>-->
+                                            <!--                                                    </div>-->
+                                        </div>
                                     </div>
                                     <!--                                    <nav th:if="${totalPage ne null} AND ${totalPage} >1" aria-label="Page navigation example">-->
                                     <!--                                        <ul class="pagination home-courses__pagination-distance">-->

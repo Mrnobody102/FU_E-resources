@@ -1,27 +1,31 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
+import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.repository.QuestionRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service("questionService")
 public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
     private final DocumentService documentService; // just for lecturer question, need to be change soon
     private final  StudentService studentService;
     private final AnswerService answerService;
+    private final MongoTemplate mongoTemplate;
 
-    public QuestionServiceImpl(QuestionRepository questionRepository, DocumentService documentService, StudentService studentService, AnswerService answerService) {
-        this.questionRepository = questionRepository;
-        this.documentService = documentService;
-        this.studentService = studentService;
-        this.answerService = answerService;
-    }
 
     @Override
     public List<Question> findByDocId(Document document) {
@@ -33,6 +37,30 @@ public class QuestionServiceImpl implements QuestionService {
     public List<Question> findByDocIdAndStudentId(Document document, Student student) {
         List<Question> questions = questionRepository.findByDocumentIdAndStudent(document, student);
         return questions;
+    }
+
+    @Override
+    public List<QuestionResponseDto> findWaitReplyQuestion(String studentId) {
+        Query query = new Query(Criteria.where("student.id").is(studentId)
+                .and("status").is(QuestionAnswerEnum.Status.CREATED));
+        List<Question> questions = mongoTemplate.find(query, Question.class);
+        List<QuestionResponseDto> responseList = questions.stream()
+                .filter(entity -> CommonEnum.DeleteFlg.PRESERVED.equals(entity.getDeleteFlg()))
+                .map(entity -> new QuestionResponseDto(entity))
+                .collect(Collectors.toList());
+        return responseList;
+    }
+
+    @Override
+    public List<QuestionResponseDto> findNewReplyQuestion(String studentId) {
+        Query query = new Query(Criteria.where("student.id").is(studentId)
+                .and("status").is(QuestionAnswerEnum.Status.REPLIED));
+        List<Question> questions = mongoTemplate.find(query, Question.class);
+        List<QuestionResponseDto> responseList = questions.stream()
+                .filter(entity -> CommonEnum.DeleteFlg.PRESERVED.equals(entity.getDeleteFlg()))
+                .map(entity -> new QuestionResponseDto(entity))
+                .collect(Collectors.toList());
+        return responseList;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.Question;
@@ -11,6 +12,8 @@ public interface QuestionService {
 
     List<Question> findByDocId(Document document);
     List<Question> findByDocIdAndStudentId(Document document, Student student);
+    List<QuestionResponseDto> findWaitReplyQuestion(String studentId);
+    List<QuestionResponseDto> findNewReplyQuestion(String studentId);
     List<Question> findByStudent(Student student);
 
     List<Question> findByLecturer(Lecturer lecturer);
