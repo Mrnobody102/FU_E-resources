@@ -1262,6 +1262,10 @@
         padding-inline: 0.5rem;
         column-gap: 1.4rem;
     }
+    .sidebar__link[title]:hover::after {
+        content: attr(title);
+        display: none;
+    }
     .sidebar__link i {
         font-size: 2rem;
     }

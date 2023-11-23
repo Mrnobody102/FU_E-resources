@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 import fpt.edu.eresourcessystem.dto.AnswerDTO;
 import fpt.edu.eresourcessystem.dto.QuestionDTO;
+import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
@@ -35,7 +36,9 @@ public class StudentRestController {
     private final UserLogService userLogService;
     private final AccountService accountService;
 
-    public StudentRestController(StudentService studentService, DocumentService documentService, DocumentNoteService documentNoteService, CourseService courseService, QuestionService questionService, AnswerService answerService, UserLogService userLogService, AccountService accountService) {
+    private final TopicService topicService;
+
+    public StudentRestController(StudentService studentService, DocumentService documentService, DocumentNoteService documentNoteService, CourseService courseService, QuestionService questionService, AnswerService answerService, UserLogService userLogService, AccountService accountService, TopicService topicService) {
         this.studentService = studentService;
         this.documentService = documentService;
         this.documentNoteService = documentNoteService;
@@ -44,6 +47,7 @@ public class StudentRestController {
         this.answerService = answerService;
         this.userLogService = userLogService;
         this.accountService = accountService;
+        this.topicService = topicService;
     }
 
     private UserLog addUserLog(String url){
@@ -217,6 +221,23 @@ public class StudentRestController {
         if(null!= result){
             System.out.println(result);
             ResponseEntity<DocumentNote> responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
+            return responseEntity;
+        }else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/documents/get_by_topic/{topicId}", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<DocumentResponseDto>> getDocumentOfTopic(@PathVariable String topicId){
+        System.out.println(topicId);
+        Topic topic = topicService.findById(topicId);
+        if(null == topic){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        List<DocumentResponseDto> documents = topicService.findByTopic(topicId);
+        if(null!= documents){
+            ResponseEntity<List<DocumentResponseDto>> responseEntity = new ResponseEntity<>(documents, HttpStatus.OK);
+            System.out.println(documents);
             return responseEntity;
         }else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

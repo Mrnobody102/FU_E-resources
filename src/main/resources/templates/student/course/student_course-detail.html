@@ -72,33 +72,36 @@
                                         <!--Topic view-->
                                         <div class="topic-item">
                                             <div class="topic-title">
-                                                <h3 class="topic-info-title">
+                                                <h3 class="topic-info-title" th:topic-id="${topic.id}"
+                                                    onclick="viewTopicDocument(this.getAttribute('topic-id'))">
                                                     <span th:text="${topic.topicTitle}"></span>
+                                                    <i th:id="'view-less-' + ${topic.id}" class="fa-solid fa-chevron-up"
+                                                       style="display: none"></i>
+                                                    <i th:id="'view-more-' + ${topic.id}"
+                                                       class="fa-solid fa-chevron-down"></i>
                                                 </h3>
                                             </div>
-                                            <!--Document view list-->
-                                            <div class="d-flex document-view-info border-bottom" th:each="document : ${topic.getDocuments()}">
-                                                <div class="doc-info-head grid__column-7">
-                                                    <p class="doc-info-title"><a th:href="@{'/student/documents/' + ${document.id}}">
-                                                        <span th:text="${document.title}"></span></a>
-                                                    </p>
-                                                    <p class="doc-info-description">
-                                                        <span th:text="${document.description}"></span>
-                                                    </p>
-                                                </div>
-                                                <div class="doc-info grid__column-2">
-                                                    <p><span class="doc-info-date" th:text="${document.lastModifiedDate}"></span>
-                                                        <span class="doc-info-rating"> 100 <i class="fa-solid fa-thumbs-up"></i></span></p>
-                                                </div>
-                                                <div class="grid__column-1">
-                                                    <form action="" method="">
-                                                        <input type="text" value="docId" hidden>
-                                                        <button class="stu__btn_save-doc" type="submit">
-                                                            <i class="fa-regular fa-bookmark"></i></button>
-                                                    </form>
-                                                </div>
+                                            <div class="doc-in-topic" th:id="'list-doc-of-topic-' + ${topic.id}" style="display: none">
+                                                <!--Document view list-->
+<!--                                                <div class="d-flex document-view-info border-bottom"-->
+<!--                                                     th:each="document : ${topic.getDocuments()}">-->
+<!--                                                    <div class="doc-info-head grid__column-8">-->
+<!--                                                        <p class="doc-info-title"><a-->
+<!--                                                                th:href="@{'/student/documents/' + ${document.id}}">-->
+<!--                                                            <span th:text="${document.title}"></span></a>-->
+<!--                                                        </p>-->
+<!--                                                        <p class="doc-info-description">-->
+<!--                                                            <span th:text="${document.description}"></span>-->
+<!--                                                        </p>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="doc-info grid__column-2">-->
+<!--                                                        <p><span class="doc-info-date"-->
+<!--                                                                 th:text="${document.lastModifiedDate}"></span></p>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+                                                <!--End Document view-->
                                             </div>
-                                            <!--End Document view-->
+
                                         </div>
                                         <!--End Topic view-->
 
@@ -135,8 +138,9 @@
                                         <a class="course-info-name" th:href="@{'/student/courses/' + ${course.getId}}"
                                            th:text="|${course.courseCode} - ${course.courseName}|"></a></p>
                                     <p class="course-info-lecturer">
-                                        <a href="" th:if="${course.lecturer ne null}">Lecturer: <span class="lecturer-name"
-                                                                   th:text="${course.lecturer.account.name}"></span>
+                                        <a href="" th:if="${course.lecturer ne null}">Lecturer: <span
+                                                class="lecturer-name"
+                                                th:text="${course.lecturer.account.name}"></span>
                                         </a></p>
                                     <div class="stu_save-course-link">
                                         <p><a class="unsaved-course" th:if="${saved ne null} AND ${saved} == true"

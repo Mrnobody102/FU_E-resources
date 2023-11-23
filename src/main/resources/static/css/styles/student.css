@@ -13,6 +13,7 @@
 }
 .student__course-document-view{
     /*padding: 0.7rem;*/
+    min-height: 100%;
 }
 
 .student__course-document-list,
@@ -96,6 +97,18 @@
     padding: 0;
     line-height: 1.5rem;
     font-size: var(--large-font-size);
+    cursor: pointer;
+    align-items: center;
+}
+.topic-info-title:hover{
+    text-decoration: underline;
+    color: var(--link-color);
+}
+.topic-info-title i{
+    font-size: 1rem;
+}
+.doc-in-topic{
+    padding: 0rem 0rem 0rem 1rem;
 }
 .form-chose-doc-type input{
     display: none;

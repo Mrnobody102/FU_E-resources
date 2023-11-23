@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Topic;
 import org.bson.types.ObjectId;
@@ -22,4 +23,6 @@ public interface TopicService {
     boolean delete(String topicId);
 
     void addDocumentToTopic(String topicId, ObjectId documentId);
+
+    List<DocumentResponseDto> findByTopic(String topicId);
 }
