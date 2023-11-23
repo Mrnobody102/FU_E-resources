@@ -534,6 +534,7 @@ li {
 .view-question-reply:hover{
     text-decoration: underline;
     color:var(--link-color) ;
+    font-size: var(--medium-font-size);
 }
 
 .reply-content{

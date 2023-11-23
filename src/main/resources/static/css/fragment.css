@@ -1376,3 +1376,7 @@
         font-size: 1.5rem;
     }
 }
+
+.sidebar__link-floating{
+    display: none;
+}

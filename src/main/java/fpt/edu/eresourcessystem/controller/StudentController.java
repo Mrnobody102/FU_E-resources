@@ -7,6 +7,7 @@ import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
+import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.service.*;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -131,31 +133,6 @@ public class StudentController {
         return "student/course/student_course-detail";
     }
 
-//    @GetMapping("/courses/{courseId}/save_course")
-//    public String saveCourse(@PathVariable String courseId) {
-//        // get account authorized
-//        Student student = getLoggedInStudent();
-//        if (null != courseService.findByCourseId(courseId)) {
-//            studentService.saveACourse(student.getId(), courseId);
-//        }
-//        // add log
-//        addUserLog("/student/course/" + courseId + "/save_course");
-//        return "redirect:/student/courses/" + courseId + "?success";
-//    }
-//
-//    @GetMapping("/courses/{courseId}/unsaved_course")
-//    public String unsavedCourse(@PathVariable String courseId) {
-//        // get account authorized
-//        Student student = getLoggedInStudent();
-//
-//        if (null != courseService.findByCourseId(courseId)) {
-//            studentService.unsavedACourse(student.getId(), courseId);
-//        }
-//        // add log
-//        addUserLog("/student/course/" + courseId + "/unsaved_course");
-//        return "redirect:/student/courses/" + courseId + "?success";
-//    }
-
     /*
         DOCUMENT
     */
@@ -181,11 +158,9 @@ public class StudentController {
 
         DocumentNote documentNote = documentNoteService.findByDocIdAndStudentId(docId,student.getId());
         if(null!= documentNote){
-            model.addAttribute("documentNote", documentNote);
-        }else {
-            model.addAttribute("documentNote", new DocumentNote());
+            model.addAttribute("note", documentNote);
         }
-
+        model.addAttribute("documentNote", new DocumentNote());
         // get list questions
         List<Question> questions = questionService.findByDocId(document);
         List<QuestionResponseDto> questionResponseDtos = new ArrayList<>();
@@ -211,55 +186,6 @@ public class StudentController {
         // add log
         addUserLog("/student/documents/" + docId);
         return "student/course/student_document-detail";
-    }
-
-    @GetMapping("/documents/{documentId}/save_document")
-    public String saveDocument(@PathVariable String documentId,
-                               HttpServletRequest request,
-                               HttpSession session) {
-        // get account authorized
-        Student student = getLoggedInStudent();
-        if (null != documentService.findById(documentId)) {
-            studentService.saveADoc(student.getId(), documentId);
-            // Get the last URL from the session
-            String lastURL = (String) session.getAttribute("lastURL");
-            System.out.println(lastURL);
-            if (lastURL != null) {
-                // Redirect to the last URL
-                return "redirect:" + lastURL;
-            } else {
-                // If the last URL is not available, redirect to a default URL
-                return "redirect:/student/my_library/saved_documents";
-            }
-        }
-        // add log
-        addUserLog("/student/documents/" + documentId+ "/save_document");
-        return "common/login";
-
-    }
-
-    @GetMapping("/documents/{documentId}/unsaved_document")
-    public String unsavedDoc(@PathVariable String documentId,
-                             HttpServletRequest request,
-                             HttpSession session) {
-        // get account authorized
-        Student student = getLoggedInStudent();
-
-        if (null != documentService.findById(documentId)) {
-            studentService.unsavedADoc(student.getId(), documentId);
-            // Get the last URL from the session
-            String lastURL = (String) session.getAttribute("lastURL");
-            if (lastURL != null) {
-                // Redirect to the last URL
-                return "redirect:" + lastURL;
-            } else {
-                // If the last URL is not available, redirect to a default URL
-                return "redirect:/student/my_library/saved_documents";
-            }
-        }
-        // add log
-        addUserLog("/student/documents/" + documentId+ "/unsaved_document");
-        return "common/login";
     }
 
     /*
@@ -312,29 +238,25 @@ public class StudentController {
     @GetMapping({"/search_course/{pageIndex}"})
     public String viewSearchCourse(@PathVariable Integer pageIndex,
                                    @RequestParam(required = false, defaultValue = "") String search,
-                                   @RequestParam(required = false, defaultValue = "all") String filter,
+//                                   @RequestParam(required = false, defaultValue = "all") String filter,
                                    final Model model) {
 //        // auth
-//        Student student = getLoggedInStudent();
-        Page<Course> page;
-        if (null == filter || "all".equals(filter)) {
-            page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, pageSize);
-        } else if ("name".equals(filter)) {
-            page = courseService.findByCourseNameLike(search, pageIndex, pageSize);
-        } else {
-            page = courseService.findByCourseCodeLike(search, pageIndex, pageSize);
-        }
+        Student student = getLoggedInStudent();
+        // search in mongodb
+        Page<Course> page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, pageSize);
+        // search by elastic search
+//        SearchPage<EsCourse> page = courseService.searchCourse(search, pageIndex, pageSize);
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
         model.addAttribute("search", search);
         model.addAttribute("roles", AccountEnum.Role.values());
-        model.addAttribute("filter", filter);
+//        model.addAttribute("filter", filter);
         model.addAttribute("currentPage", pageIndex);
         model.addAttribute("search", search);
         // add log
-        addUserLog("/student/search_course/" + pageIndex+ "?search=" + search + "&filter="+ filter);
+        addUserLog("/student/search_course/" + pageIndex+ "?search=" + search);
         return "student/course/student_courses";
     }
 

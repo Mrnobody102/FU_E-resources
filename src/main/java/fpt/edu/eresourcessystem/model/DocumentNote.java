@@ -22,7 +22,7 @@ public class DocumentNote {
     private String studentId;
 
     @NotEmpty(message = "studentNote.validation.content.required")
-    private String content;
+    private String noteContent;
 
     @NotNull
     private String docId;
@@ -43,7 +43,7 @@ public class DocumentNote {
     public DocumentNote(DocumentNoteDTO documentNoteDTO) {
         this.id = documentNoteDTO.getId();
         this.studentId = documentNoteDTO.getStudentId();
-        this.content = documentNoteDTO.getContent();
+        this.noteContent = documentNoteDTO.getContent();
         this.docId = documentNoteDTO.getDocId();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }

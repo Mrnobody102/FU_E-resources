@@ -1,7 +1,10 @@
 package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.model.*;
+import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
+import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import org.springframework.data.domain.Page;
+import org.springframework.data.elasticsearch.core.SearchPage;
 
 import java.util.List;
 
@@ -54,4 +57,5 @@ public interface CourseService {
     Course updateLectureId(String courseId, Lecturer newLecture);
 
     boolean removeLecture(String courseId);
+    SearchPage<EsCourse> searchCourse(String search, int pageIndex, int pageSize);
 }

@@ -2,7 +2,6 @@ package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 
 import fpt.edu.eresourcessystem.dto.AnswerDTO;
-import fpt.edu.eresourcessystem.dto.DocumentNoteDTO;
 import fpt.edu.eresourcessystem.dto.QuestionDTO;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.model.*;
@@ -59,13 +58,16 @@ public class StudentRestController {
         Student loggedInStudent = studentService.findByAccountId(loggedInAccount.getId());
         return loggedInStudent;
     }
-    @GetMapping("/documents/{documentId}/save_document")
+    @PostMapping("/documents/{documentId}/save_document")
+    @Transactional
     public String saveDocument(@PathVariable String documentId) {
         // get account authorized
         Student student = getLoggedInStudent();
         if (null != documentService.findById(documentId)) {
             boolean result = studentService.saveADoc(student.getId(), documentId);
             if (result) {
+                // add log
+                addUserLog("/student/documents/" + documentId+ "/save_document");
                 return "saved";
             } else {
                 return "unsaved";
@@ -75,7 +77,8 @@ public class StudentRestController {
         return "exception";
     }
 
-    @GetMapping("/documents/{documentId}/unsaved_document")
+    @PostMapping("/documents/{documentId}/unsaved_document")
+    @Transactional
     public String unsavedDoc(@PathVariable String documentId,
                              HttpServletRequest request,
                              HttpSession session) {
@@ -84,6 +87,8 @@ public class StudentRestController {
         if (null != documentService.findById(documentId)) {
             boolean result =  studentService.unsavedADoc(student.getId(), documentId);
             if (result) {
+                // add log
+                addUserLog("/student/documents/" + documentId+ "/unsaved_document");
                 return "unsaved";
             } else {
                 return "saved";
@@ -91,25 +96,6 @@ public class StudentRestController {
         }
         return "exception";
     }
-
-    @PostMapping("/my_note/document_notes/add")
-    @Transactional
-    public DocumentNoteDTO addMyNote(@ModelAttribute DocumentNoteDTO documentNoteDTO){
-        Student student = getLoggedInStudent();
-        if(null == student){
-            return null;
-        }else if(null==documentNoteDTO){
-            return null;
-        }
-        documentNoteDTO.setStudentId(student.getId());
-        DocumentNote documentNote = documentNoteService.addDocumentNote(new DocumentNote(documentNoteDTO));
-        if(null!= documentNote){
-            return documentNoteDTO;
-        }else {
-            return null;
-        }
-    }
-
 
     @PostMapping(value = "/question/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     @Transactional
@@ -176,7 +162,8 @@ public class StudentRestController {
         }
     }
 
-    @GetMapping("/courses/{courseId}/save_course")
+    @PostMapping("/courses/{courseId}/save_course")
+    @Transactional
     public String saveCourse(@PathVariable String courseId) {
         // get account authorized
         Student student = getLoggedInStudent();
@@ -194,7 +181,8 @@ public class StudentRestController {
         return "exception";
     }
 
-    @GetMapping("/courses/{courseId}/unsaved_course")
+    @PostMapping("/courses/{courseId}/unsaved_course")
+    @Transactional
     public String unsavedCourse(@PathVariable String courseId) {
         // get account authorized
         Student student = getLoggedInStudent();
@@ -211,5 +199,28 @@ public class StudentRestController {
         return "exception";
     }
 
+    @PostMapping(value = "/document_note/add/{documentId}",  produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    @Transactional
+    public ResponseEntity<DocumentNote> addNewNote(@RequestParam String noteContent,
+                                                   @PathVariable String documentId){
+        Student student = getLoggedInStudent();
+        System.out.println(noteContent);
+        Document document = documentService.findById(documentId);
+        if(null == student || null == noteContent || "".equals(noteContent.trim()) || null==document){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        DocumentNote documentNote = new DocumentNote();
+        documentNote.setStudentId(student.getId());
+        documentNote.setDocId(documentId);
+        documentNote.setNoteContent(noteContent);
+        DocumentNote result = documentNoteService.addDocumentNote(documentNote);
+        if(null!= result){
+            System.out.println(result);
+            ResponseEntity<DocumentNote> responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
+            return responseEntity;
+        }else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

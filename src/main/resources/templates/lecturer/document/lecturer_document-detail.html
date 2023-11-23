@@ -99,9 +99,9 @@
                                         </li>
                                     </ul>
                                     <div class="lec__question-in-doc-content" th:if="${questions ne null } AND ${questions.size} > 0">
-                                        <div class="lec__question-content" th:each="question : ${questions}">
-                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${question.student.account.name}"></span></h6>
-                                            <p class="lec__question-content" th:utext="${question.content}"></p>
+                                        <div class="lec__question-content-wrapper" th:each="question : ${questions}">
+                                            <h6 class="lec__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${question.student.account.name}"></span></h6>
+                                            <p class="lec__question-content question-content" th:utext="${question.content}"></p>
                                             <p class="lec__question-content" ><span class="lec__answer-date" th:text="${question.lastModifiedDate}"></span> <a class="lec__add-reply view-question-link-item" th:question-id="${question.id}" onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>
 
                                             </p>
@@ -122,7 +122,7 @@
                                                     <div class="">
                                                         <input type="text" name="docId" th:value="${document.getId()}" readonly hidden>
                                                         <input type="text" name="quesId" th:value="${question.getId()}" readonly hidden>
-                                                        <label th:id="'new-reply-content-error-'+${question.getId()}" class=".student_input-label error-input">Content require!</label>
+                                                        <label th:id="'new-reply-content-error-'+${question.getId()}" class="lecturer_input-label error-input">Content require!</label>
                                                         <div class="form-content">
                                                             <label th:for="'new-reply-content-'+${question.getId()}" class="lec_input-label-reply">Enter answer:</label>
                                                             <textarea th:id="'new-reply-content-'+${question.getId()}" class="input-reply-content"
@@ -130,9 +130,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="submit-reply-button">
-                                                        <button type="button" title="exist" th:id="'exist-reply-form-button-'+${question.getId()}" th:question-id="${question.id}" onclick="existFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-xmark"></i></button>
+                                                        <button type="button" title="exist" th:id="'exist-reply-form-button-'+${question.getId()}" th:question-id="${question.id}" onclick="existFormReplyQuestion(this.getAttribute('question-id'))" class="btn-danger"><i class="fa-solid fa-xmark"></i> Close</button>
                                                         <a type="button" title="Sending" style="display:none;"  th:id="'sending-reply-'+${question.getId()}" th:question-id="${question.id}"><i class="fas fa-spinner fa-spin"></i> Sending...</a>
-                                                        <button type="button" title="Send" th:id="'send-reply-button-'+${question.getId()}" th:question-id="${question.id}" onclick="submitFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-paper-plane"></i></button>
+                                                        <button type="button" title="Send" th:id="'send-reply-button-'+${question.getId()}" th:question-id="${question.id}" onclick="submitFormReplyQuestion(this.getAttribute('question-id'))" class="btn-save"><i class="fa-solid fa-paper-plane"> Send</i></button>
                                                     </div>
                                                 </form>
                                             </div>
