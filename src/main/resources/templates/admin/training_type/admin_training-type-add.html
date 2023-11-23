@@ -73,7 +73,7 @@
 
 
                                         <tr class="lib_input-wrapper">
-                                            <td class="lib_input-label"><label th:for="trainingTypeName">Training Type Name</label>
+                                            <td class="lib_input-label"><label th:for="trainingTypeName">Training Type Name*</label>
                                             </td>
                                             <td><input type="text"  th:id="trainingTypeName"
                                                        class="lib_input form-control" th:field="*{trainingTypeName}"
@@ -83,11 +83,13 @@
                                         </tr>
                                         <tr class="lib_input-wrapper">
                                             <td class="lib_input-label"><label th:for="trainingTypeDescription">
-                                                Training Type Description</label>
+                                                Training Type Description*</label>
                                             </td>
-                                            <td><input type="text" th:id="trainingTypeDescription"
-                                                       class="lib_input form-control" th:field="*{trainingTypeDescription}"
-                                                       placeholder="Enter Training Type Description" required>
+                                            <td><textarea class="lib_textarea form-control paragraph"
+                                                          th:id="trainingTypeDescription"
+                                                          th:field="*{trainingTypeDescription}"
+                                                       placeholder="Enter Training Type Description" required >
+                                                </textarea>
 
                                             </td>
                                         </tr>

@@ -50,10 +50,10 @@
                 <table th:object="${trainingType}">
                     <tr class="lib_input-wrapper">
                         <td class="lib_input-label">
-                            <label th:for="id">Training Type ID</label>
+<!--                            <label th:for="id">Training Type ID</label>-->
                         </td>
                         <td>
-                            <input type="text" th:id="id" class="lib_input form-control" th:field="*{id}"
+                            <input hidden="hidden" type="text" th:id="id" class="lib_input form-control" th:field="*{id}"
                                    placeholder="Enter Training Type ID" readonly>
                         </td>
                     </tr>
@@ -79,37 +79,35 @@
                         </td>
                     </tr>
 
-                    <tr class="lib_input-wrapper">
-                        <td class="lib_input-label">
-                            <label th:for="createdBy">Created By</label>
-                        </td>
-                        <td>
-                            <input type="text" th:id="createdBy" class="lib_input form-control"
-                                   th:field="*{createdBy}" placeholder="Enter Created By" required>
-                        </td>
-                    </tr>
+<!--                    <tr class="lib_input-wrapper">-->
+<!--                        <td class="lib_input-label">-->
+<!--                            <label th:for="createdBy">Created By</label>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <input type="text" th:id="createdBy" class="lib_input form-control"-->
+<!--                                   th:field="*{createdBy}" placeholder="Enter Created By" required>-->
+<!--                        </td>-->
+<!--                    </tr>-->
 
-                    <!-- Add more rows for other fields as needed -->
+<!--                    <tr class="lib_input-wrapper">-->
+<!--                        <td class="lib_input-label">-->
+<!--                            <label th:for="createdDate">Created Date</label>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <input type="text" th:id="createdDate" class="lib_input form-control"-->
+<!--                                   th:field="*{createdDate}" placeholder="Enter Created Date" required>-->
+<!--                        </td>-->
+<!--                    </tr>-->
 
-                    <tr class="lib_input-wrapper">
-                        <td class="lib_input-label">
-                            <label th:for="createdDate">Created Date</label>
-                        </td>
-                        <td>
-                            <input type="text" th:id="createdDate" class="lib_input form-control"
-                                   th:field="*{createdDate}" placeholder="Enter Created Date" required>
-                        </td>
-                    </tr>
-
-                    <tr class="lib_input-wrapper">
-                        <td class="lib_input-label">
-                            <label th:for="lastModifiedBy">Last Modified By</label>
-                        </td>
-                        <td>
-                            <input type="text" th:id="lastModifiedBy" class="lib_input form-control"
-                                   th:field="*{lastModifiedBy}" placeholder="Enter Last Modified By" required>
-                        </td>
-                    </tr>
+<!--                    <tr class="lib_input-wrapper">-->
+<!--                        <td class="lib_input-label">-->
+<!--                            <label th:for="lastModifiedBy">Last Modified By</label>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <input type="text" th:id="lastModifiedBy" class="lib_input form-control"-->
+<!--                                   th:field="*{lastModifiedBy}" placeholder="Enter Last Modified By" required>-->
+<!--                        </td>-->
+<!--                    </tr>-->
 
                     <tr class="lib_input-wrapper">
                         <td class="lib_input-label">
@@ -118,19 +116,19 @@
                         <td>
                             <input type="text" th:id="lastModifiedDate" class="lib_input form-control"
                                    th:field="*{lastModifiedDate}" placeholder="Enter Last Modified Date"
-                                   required>
+                                   readonly>
                         </td>
                     </tr>
 
-                    <tr class="lib_input-wrapper">
-                        <td class="lib_input-label">
-                            <label th:for="lastModifiedBy">Last Modified By</label>
-                        </td>
-                        <td>
-                            <input type="text" th:id="lastModifiedBy" class="lib_input form-control"
-                                   th:field="*{lastModifiedBy}" placeholder="Enter Last Modified By" required>
-                        </td>
-                    </tr>
+<!--                    <tr class="lib_input-wrapper">-->
+<!--                        <td class="lib_input-label">-->
+<!--                            <label th:for="lastModifiedBy">Last Modified By</label>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <input type="text" th:id="lastModifiedBy" class="lib_input form-control"-->
+<!--                                   th:field="*{lastModifiedBy}" placeholder="Enter Last Modified By" required>-->
+<!--                        </td>-->
+<!--                    </tr>-->
 
                     <tr class="lib_input-wrapper">
                         <td></td>
@@ -178,13 +176,12 @@
         crossorigin="anonymous"></script>
 
 <!--Custom script-->
-<script th:src="@{/js/librarian.js}"></script>
+<script th:src="@{/js/admin/admin.js}"></script>
 
 <!--Validate-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
 <script th:src="@{/js/validation.js}"></script>
-<script th:src="@{/js/admin.js}"></script>
 
 <script th:inline="javascript">
     validate_updateAccount();

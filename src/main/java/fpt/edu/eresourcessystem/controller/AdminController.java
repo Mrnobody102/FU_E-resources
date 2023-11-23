@@ -426,19 +426,16 @@ public class AdminController {
 
     @PostMapping("/trainingtypes/add")
     public String addTrainingType(@ModelAttribute("trainingtype") @Valid TrainingType trainingType,
-                                  BindingResult result, RedirectAttributes redirectAttributes) {
+                                  BindingResult result) {
         if (result.hasErrors()) {
-            return "admin/training_type/admin_training-type-add";
+            return "admin/training_type/admin_training-type-add?error";
         }
         try {
-            // Save the new training type using the service layer
             trainingTypeService.save(trainingType);
-            redirectAttributes.addFlashAttribute("success", "Training type saved successfully.");
+            return "admin/training_type/admin_training-type-add?success";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "There was an error saving the training type.");
+            return "admin/training_type/admin_training-type-add?error";
         }
-
-        return "redirect:/admin/trainingtypes/list";
     }
 
     @GetMapping("/trainingtypes/list")
