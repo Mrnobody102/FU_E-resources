@@ -25,6 +25,9 @@
     margin-left: 2rem;
     border-left: 1px solid var(--second-back-ground);
 }
+.student__course-document-list label{
+    cursor: pointer;
+}
 .list-view-block a, .list-view-block input{
     display: block;
 }

@@ -1,3 +1,6 @@
+function viewOtherDocument(param){
+    window.location = "/student/documents/" + param;
+}
 function viewAllQuestion() {
     $(".stu__questions-list-view").css("display", "none");
     $("#stu__view-question-history").css("display", "block");
