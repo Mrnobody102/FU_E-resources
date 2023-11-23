@@ -89,4 +89,9 @@ function addIndexToTable(){
         handleDeletion("/librarian/courses/deleteTopic/" + topicId, 'Topic is deleted');
     });
 
+$("body").on("click", ".delete-trainingtype", function () {
+    var tid = $(this).attr("id");
+    handleDeletion("/admin/trainingtypes/delete/"+tid, 'Training type is deleted');
+});
+
 // });

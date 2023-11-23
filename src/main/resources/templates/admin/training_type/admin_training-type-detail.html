@@ -136,7 +136,7 @@
                         <td></td>
                         <td>
                             <button type="submit" class="btn lib_btn-save">Update</button>
-                            <button type="button" class="btn lib_btn-delete" th:id="${trainingType.getId}">Delete
+                            <button type="button" class="btn lib_btn-delete delete-trainingtype" th:id="${trainingType.getId}">Delete
                             </button>
                         </td>
                     </tr>
@@ -193,7 +193,7 @@
     if (successParam) {
         Swal.fire(
             'Success!',
-            'Update training type successful!',
+            successParam,
             'success'
         );
     }
@@ -202,7 +202,7 @@
     if (errorParam) {
         Swal.fire(
             'Error!',
-            'Please check information again!',
+            errorParam,
             'error'
         );
     }

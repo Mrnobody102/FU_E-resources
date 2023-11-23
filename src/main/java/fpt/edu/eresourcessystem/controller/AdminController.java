@@ -459,6 +459,49 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/update")
+    public String updateTrainingType(@ModelAttribute TrainingType trainingType,
+                                     RedirectAttributes redirectAttributes) {
+        try {
+            trainingTypeService.updateTrainingType(trainingType);
+            redirectAttributes.addFlashAttribute("success", "Training type updated successfully");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error updating training type: " + e.getMessage());
+        }
+        return "redirect:/admin/trainingtypes/list";
+    }
+
+
+    //
+    @PostMapping("/delete/{id}")
+    public String deleteTrainingType(@PathVariable("id") Long id,
+                                     RedirectAttributes redirectAttributes) {
+        try {
+            trainingTypeService.deleteById(String.valueOf(id));
+            redirectAttributes.addFlashAttribute("success", "Training type deleted successfully");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error deleting training type: " + e.getMessage());
+        }
+        return "redirect:/admin/trainingtypes/list";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String softDeleteTrainingType(@PathVariable("id") Long id,
+                                         RedirectAttributes redirectAttributes) {
+        Optional<TrainingType> trainingType = trainingTypeService.findById(String.valueOf(id));
+        if (trainingType.isPresent()) {
+            boolean isDeleted = trainingTypeService.softDelete(trainingType.get());
+            if (isDeleted) {
+                redirectAttributes.addFlashAttribute("success", "Training type was successfully deleted.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Failed to delete training type.");
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Training type not found.");
+        }
+        return "redirect:/admin/trainingtypes/list";
+    }
+
     @GetMapping("/document_log/tracking")
     public String documentLogManage() {
         return "admin/system_log/admin_document_logs";
