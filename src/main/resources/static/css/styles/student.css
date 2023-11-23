@@ -238,7 +238,7 @@ stu__navbar-view-doc-item:hover a{
 .stu__answer-lecturer
 {
     font-size: var(--normal-font-size);
-    padding: 0.2rem;
+    /*padding: 0.2rem;*/
     margin: 0;
 }
 .view-note-link-item,
@@ -265,6 +265,7 @@ stu__navbar-view-doc-item:hover a{
 }
 .stu__save-question{
     text-align: right;
+    margin-bottom: 1rem;
 }
 .view-note-list{
     width: 90%;
@@ -287,9 +288,21 @@ stu__navbar-view-doc-item:hover a{
     cursor: pointer;
 }
 .stu__question-content{
-    padding: 0.2rem 0.2rem 0.2rem 1.5rem;
-    margin: 0;
+    padding: 0rem 0rem 0rem 1.5rem;
+    margin: 0rem;
 }
+.stu__question-content-wrapper{
+    margin: 0.2rem 0.2rem 0.5rem 1.5rem;
+    padding: 0.9rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .16);
+}
+.stu__question-creater-name{
+    align-items: center;
+    color: #4b69e7;
+    font-size: var(--medium-font-size);
+}
+
 .form-student-add-doc-new-question{
     margin-top: 0.2rem;
     border-radius: 2rem;
@@ -314,14 +327,13 @@ stu__navbar-view-doc-item:hover a{
 .submit-question-button button{
     border: none;
     display: inline;
-    background: white;
 }
-.submit-question-button button i{
-    color: #888888;
-}
-.submit-question-button button i:hover{
-    color: black;
-}
+/*.submit-question-button button i{*/
+/*    color: #888888;*/
+/*}*/
+/*.submit-question-button button i:hover{*/
+/*    color: black;*/
+/*}*/
 .stu__question-in-doc-content{
     margin-top: 1rem;
 }
@@ -370,14 +382,13 @@ stu__navbar-view-doc-item:hover a{
 .submit-reply-button button{
     border: none;
     display: inline;
-    background: white;
 }
-.submit-reply-button button i{
-    color: #888888;
-}
-.submit-reply-button button i:hover{
-    color: black;
-}
+/*.submit-reply-button button i{*/
+/*    color: #888888;*/
+/*}*/
+/*.submit-reply-button button i:hover{*/
+/*    color: black;*/
+/*}*/
 .reply-content{
     /*display: none;*/
 }
@@ -411,4 +422,7 @@ stu__navbar-view-doc-item:hover a{
 }
 .doc-info-rating i{
     color: #0a58ca;
+}
+.question-content{
+    font-size: 1.8rem;
 }

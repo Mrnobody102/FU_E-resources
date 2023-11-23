@@ -2,7 +2,6 @@ package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 
 import fpt.edu.eresourcessystem.dto.AnswerDTO;
-import fpt.edu.eresourcessystem.dto.DocumentNoteDTO;
 import fpt.edu.eresourcessystem.dto.QuestionDTO;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.model.*;
@@ -16,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeTypeUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -68,6 +66,8 @@ public class StudentRestController {
         if (null != documentService.findById(documentId)) {
             boolean result = studentService.saveADoc(student.getId(), documentId);
             if (result) {
+                // add log
+                addUserLog("/student/documents/" + documentId+ "/save_document");
                 return "saved";
             } else {
                 return "unsaved";
@@ -87,6 +87,8 @@ public class StudentRestController {
         if (null != documentService.findById(documentId)) {
             boolean result =  studentService.unsavedADoc(student.getId(), documentId);
             if (result) {
+                // add log
+                addUserLog("/student/documents/" + documentId+ "/unsaved_document");
                 return "unsaved";
             } else {
                 return "saved";

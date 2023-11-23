@@ -57,7 +57,7 @@ $(document).ready(function () {
         const filter = $("#filter").val();
         let pageIndex = $(this).html();
 
-        window.location = "/student/search_course/" + pageIndex + "?search=" + search + "&filter=" +filter;
+        window.location = "/student/search_course/" + pageIndex + "?search=" + search;
     });
 
     $(".previous-page-stu-course-number").click(function () {
@@ -66,7 +66,7 @@ $(document).ready(function () {
         const pageIndex = $(".pagination-item--active .page-stu-course-number").text();
         const currentPage = parseInt(pageIndex);
         if (currentPage > 1) {
-            window.location.href = "/student/search_course/" + (currentPage - 1) + "?search=" + search + "&filter=" + filter;
+            window.location.href = "/student/search_course/" + (currentPage - 1) + "?search=" + search;
         }
     });
 
@@ -75,7 +75,7 @@ $(document).ready(function () {
         const filter = $("#filter").val();
         const pageIndex = $(".pagination-item--active .page-stu-course-number").text();
         const currentPage = parseInt(pageIndex);
-        window.location.href = "/student/search_course/" + (currentPage + 1) + "?search=" + search+ "&filter=" + filter;
+        window.location.href = "/student/search_course/" + (currentPage + 1) + "?search=" + search;
     });
 
 

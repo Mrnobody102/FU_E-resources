@@ -6,12 +6,14 @@ import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.Librarian;
 import fpt.edu.eresourcessystem.model.Topic;
+import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
-import org.bson.types.ObjectId;
+import fpt.edu.eresourcessystem.repository.elasticsearch.EsCourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -30,12 +32,13 @@ public class CourseServiceImpl implements CourseService{
 
     private final MongoTemplate mongoTemplate;
 
-
+    private final EsCourseRepository esCourseRepository;
     @Autowired
-    public CourseServiceImpl(CourseRepository courseRepository, TopicService topicService, MongoTemplate mongoTemplate) {
+    public CourseServiceImpl(CourseRepository courseRepository, TopicService topicService, MongoTemplate mongoTemplate, EsCourseRepository esCourseRepository) {
         this.courseRepository = courseRepository;
         this.topicService = topicService;
         this.mongoTemplate = mongoTemplate;
+        this.esCourseRepository = esCourseRepository;
     }
 
     @Override
@@ -314,6 +317,11 @@ public class CourseServiceImpl implements CourseService{
         return true;
     }
 
+    @Override
+    public SearchPage<EsCourse> searchCourse(String search, int pageIndex, int pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex,pageSize);
+        return esCourseRepository.customSearch(search, pageable);
+    }
 
 
 }

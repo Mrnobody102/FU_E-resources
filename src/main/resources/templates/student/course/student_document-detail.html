@@ -220,20 +220,20 @@
                                             </div>
                                         </div>
                                         <div class="submit-question-button">
-                                            <button type="button" title="exist" th:id="exist-new-question-form-button" onclick="existFormAddQuestion()"><i class="fa-solid fa-xmark"></i></button>
+                                            <button type="button" title="exist" th:id="exist-new-question-form-button" onclick="existFormAddQuestion()" class="btn-danger"><i class="fa-solid fa-xmark"></i> Close</button>
                                             <a type="button" title="Sending" style="display:none;"  th:id="sending-new-question"><i class="fas fa-spinner fa-spin"></i> Sending...</a>
-                                            <button type="button" title="Send" th:id="send-new-question-button" onclick="submitFormAddQuestion()"><i class="fa-solid fa-paper-plane"></i></button>
+                                            <button type="button" title="Send" th:id="send-new-question-button" onclick="submitFormAddQuestion()" class="btn-save"><i class="fa-solid fa-paper-plane"></i> Send</button>
                                         </div>
                                     </form>
 
                                     <div class="stu__question-in-doc-content">
 <!--                                        <h5 class="my-question-header">My questions</h5>-->
                                         <div class="stu__my-question-content" id="my-questions">
-                                            <div class="stu__question-content"  th:if="${myQuestions ne null} AND ${myQuestions.size} > 0" th:each="myQuestion : ${myQuestions}">
+                                            <div class="stu__question-content-wrapper"  th:if="${myQuestions ne null} AND ${myQuestions.size} > 0" th:each="myQuestion : ${myQuestions}">
                                                 <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${myQuestion.studentName}"></span>(You)</h6>
-                                                <p class="stu__question-content" th:text="${myQuestion.questionContent}"></p>
+                                                <p class="stu__question-content question-content" th:text="${myQuestion.questionContent}"></p>
                                                 <div class="justify-content-end link-view-question stu__question-content" th:if="${myQuestion.lastModifiedDate}">
-                                                    <span class="stu__note-date" th:text="${myQuestion.lastModifiedDate}"></span> <a class="view-note-link-item ">Edit</a>  <a class="view-note-link-item">Delete</a><a class="lec__add-reply view-question-link-item" th:question-id="${myQuestion.questionId}" onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>
+                                                    <span class="stu__note-date" th:text="${myQuestion.lastModifiedDate}"></span> <a class="view-note-link-item ">Edit</a> | <a class="view-note-link-item">Delete</a> | <a class="lec__add-reply view-question-link-item" th:question-id="${myQuestion.questionId}" onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>
                                                 </div>
 
                                                 <!-- view reply -->
@@ -259,9 +259,9 @@
                                                             </div>
                                                         </div>
                                                         <div class="submit-reply-button">
-                                                            <button type="button" title="exist" th:id="'exist-reply-form-button-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="existFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-xmark"></i></button>
+                                                            <button type="button" title="exist" th:id="'exist-reply-form-button-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="existFormReplyQuestion(this.getAttribute('question-id'))" class="btn-danger"><i class="fa-solid fa-xmark"></i> Close</button>
                                                             <a type="button" title="Sending" style="display:none;"  th:id="'sending-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}"><i class="fas fa-spinner fa-spin"></i> Sending...</a>
-                                                            <button type="button" title="Send" th:id="'send-reply-button-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="submitFormReplyQuestion(this.getAttribute('question-id'))"><i class="fa-solid fa-paper-plane"></i></button>
+                                                            <button type="button" title="Send" th:id="'send-reply-button-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="submitFormReplyQuestion(this.getAttribute('question-id'))" class="btn-save"><i class="fa-solid fa-paper-plane"></i> Reply</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -272,9 +272,9 @@
 
                                     <div class="stu__question-in-doc-content" th:if="${questions ne null } AND ${questions.size} > 0">
                                         <h5 class="others-question-header">Others' questions</h5>
-                                        <div class="stu__question-content" th:each="question : ${questions}">
+                                        <div class="stu__question-content-wrapper" th:each="question : ${questions}">
                                             <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${question.studentName}"></span></h6>
-                                            <p class="stu__question-content" th:utext="${question.questionContent}"></p>
+                                            <p class="stu__question-content question-content" th:utext="${question.questionContent}"></p>
                                             <p class="stu__answer-date stu__question-content" th:text="${question.lastModifiedDate}">Lecturer: <span class="stu__answer-lecturer" th:if="${question.lecturerName ne null}" th:text="${question.lecturerName}"></span></p>
                                             <p  th:if="${question.totalAnswers} > 0" th:id="'view-more-reply-'+${question.questionId}" th:question-id="${question.questionId}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">View <span th:text="${question.totalAnswers}"></span> reply</p>
                                             <p style="display:none;"  th:if="${question.totalAnswers} > 0" th:id="'see-less-reply-'+${question.questionId}" th:question-id="${question.questionId}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">See less</p>

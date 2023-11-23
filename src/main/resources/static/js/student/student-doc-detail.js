@@ -88,10 +88,10 @@ function submitFormAddQuestion(param) {
                 $('#exist-new-question-form-button').css("display", "inline");
                 $('#sending-new-question').css("display", "none");
                 $(".form-student-add-doc-new-question").css("display", "none");
-                var html = "<div class=\"stu__question-content\">\n" +
+                var html = "<div class=\"stu__question-content-wrapper\">\n" +
                     "                                                <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span> " + data.studentName + "(You)</span></h6>\n" +
-                    "                                                <p class=\"stu__question-content\">" + data.questionContent + "</p>\n" +
-                    "                                                <span class=\"stu__question-date stu__question-content\">" + data.lastModifiedDate + "</span> <a class=\"view-note-link-item \">Edit</a><a class=\"view-note-link-item\">Delete</a>" +
+                    "                                                <p class=\"stu__question-content question-content\">" + data.questionContent + "</p>\n" +
+                    "                                                <span class=\"stu__question-date stu__question-content\">" + data.lastModifiedDate + "</span> <a class=\"view-note-link-item \">Edit</a> | <a class=\"view-note-link-item\">Delete</a>" +
                     "                                                </div>\n";
 
 
@@ -232,8 +232,8 @@ function viewMoreReply(param) {
                 if (data[i].studentName == null) {
                     html += "<div class=\"reply-content\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].lecturerName + "</span></h6>\n" +
-                        "                     <p class=\"lec__question-content\">" + data[i].answerContent + "</p>\n" +
-                        "                     <p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
+                        "                     <p class=\"stu__question-content\">" + data[i].answerContent + "</p>\n" +
+                        "                     <p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
                         "                     <a class=\"stu__like-reply view-question-link-item\" reply-id=\"" + data[i].answerId + "\"onclick=\"likeReply(" + data[i].answerId + ")\"><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
 
                         "                     </div>";
@@ -241,7 +241,7 @@ function viewMoreReply(param) {
                     html += "<div class=\"reply-content\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].studentName + "(You)</span></h6>\n" +
                         "                     <p class=\"stu__question-content\">" + data[i].answerContent + "</p>\n" +
-                        "                     <p class=\"stu__question-content\" ><span class=\"lec__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
+                        "                     <p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
                         "                     <a class=\"stu__edit-reply view-reply-link-item\" reply-id=\"" + data[i].answerId + "\"onclick=\"likeReply(" + data[i].answerId + ")\">Edit</a> | <a class=\"stu__delete-reply view-reply-link-item\" reply-id=\"" + data[i].answerId + "\"onclick=\"deleteReply(" + data[i].answerId + ")\">Delete</a>\n" +
                         "                     </div>";
                 }
