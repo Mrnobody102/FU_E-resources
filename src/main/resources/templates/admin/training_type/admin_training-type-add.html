@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Librarian | Add Training Type</title>
 
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 
     <!-- Bootstrap core CSS -->
@@ -13,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css">
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
 
@@ -25,15 +26,24 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 
-    <!--    <style>-->
-    <!--        label.error {-->
-    <!--            margin-top: 5px;-->
-    <!--            margin-left: 5px;-->
-    <!--            display: block;-->
-    <!--            color: red;-->
-    <!--            /*font-size: smaller;*/-->
-    <!--        }-->
-    <!--    </style>-->
+        <style>
+            label.error {
+                margin-top: 5px;
+                margin-left: 5px;
+                display: block;
+                color: red;
+                /*font-size: smaller;*/
+            }
+            body {
+                font-size: 1.3rem;
+            }
+            .bootstrap-select .dropdown-toggle .filter-option-inner-inner {
+                font-size: 1.3rem;
+            }
+            .btn {
+                font-size: 1.3rem;
+            }
+        </style>
 </head>
 <body class="app_container">
 
@@ -95,7 +105,6 @@
                                                 </select>
                                             </td>
                                         </tr>
-
 
                                         <tr>
                                             <td></td>

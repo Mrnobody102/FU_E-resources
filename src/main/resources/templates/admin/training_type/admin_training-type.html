@@ -27,19 +27,23 @@
             display: none;
             float: right;
         }
-        #filterTable_filter{
+
+        #filterTable_filter {
             float: left;
             padding-bottom: 25px;
         }
-        select.lib_show-all-btn{
+
+        select.lib_show-all-btn {
             display: inline;
             width: 200px;
             margin-left: 25px;
             padding: 5px;
         }
+
         .dataTables_info {
             display: none;
         }
+
         .dataTables_wrapper .dataTables_paginate {
             text-align: center;
             float: none;
@@ -69,14 +73,14 @@
                 <div class="lib_data-list-wrapper">
                     <div class="lib_search-container">
 <!--                        <form class="d-flex" th:action="@{/admin/trainingtypes/list/1}" method="get" th:id="search-form">-->
-<!--                            <div class="d-flex">-->
-<!--                                <input class="lib_search-content" type="text" placeholder="Search user.."-->
-<!--                                       th:name="search" th:id="search-text" th:value="${search}"/>-->
-<!--                                <button type="submit" class="lib_search-btn-wrapper lib_search-btn">-->
-<!--                                    <i class="lib_search-btn-icon fas fa-search"></i>-->
-<!--                                </button>-->
-<!--                                <a class="btn lib_show-all-btn" th:href="@{/admin/trainingtypes/list/1}">Show AlL</a>-->
-<!--                            </div>-->
+                            <div class="d-flex">
+                                <input class="lib_search-content" type="text" placeholder="Search training type.."
+                                       th:name="search" th:id="search-text" th:value="${search}"/>
+                                <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
+                                    <i class="lib_search-btn-icon fas fa-search"></i>
+                                </button>
+                                <a class="btn lib_show-all-btn" th:href="@{/admin/trainingtypes/list}">Show AlL</a>
+                            </div>
 <!--                        </form>-->
                         <div>
                             <a class="lib_btn-add" type="button" th:href="@{/admin/trainingtypes/add}">
@@ -84,6 +88,7 @@
                                 <span>New</span>
                             </a>
                         </div>
+
 
                     </div>
 
@@ -127,12 +132,33 @@
     $("document").ready(function () {
 
         $("#filterTable-training").dataTable({
-            "searching": true
+            "searching": true,
+            "ordering": false,
+            "pagingType": "simple_numbers", // Choose a paging type that fits your needs
+            "pageLength": 3, // Set the number of rows per page
+            // "displayStart": 4, // Set the initial offset (e.g., start at the third page for 10 rows per page)
+            // "lengthMenu": [5, 10, 15, 20], // Set the options for "number of rows per page" dropdown
+            "language": {
+                "paginate": {
+                    "first": "<<",
+                    "last": ">>",
+                    "next": ">>",
+                    "previous": "<<"
+                }
+            }
         });
 
-        //Get a reference to the new datatable
         var table = $('#filterTable-training').DataTable();
 
+        $('#search-text').on('keyup', function() {
+            table.search(this.value).draw();
+        });
+
+        $("label").each(function() {
+            if ($(this).text().indexOf('Search:') >= 0) {
+                $(this).css('display', 'none');
+            }
+        });
         table.draw();
     });
 </script>
