@@ -339,8 +339,12 @@ public class LibrarianController {
      * @param model    model attribute
      * @return
      */
+
     @PostMapping({"/courses/{courseId}/add-lecture"})
-    public String addLecturer(@PathVariable String courseId, @RequestParam String lecturerId, final Model model) {
+    public String addLecturer(@PathVariable String courseId,
+                              @RequestParam String lecturerId,
+                              final Model model,
+                              RedirectAttributes redirectAttributes) {
         Account account = accountService.findById(lecturerId);
         Lecturer lecturer = lecturerService.findByAccountId(account.getId());
 
@@ -353,16 +357,14 @@ public class LibrarianController {
             lecturerService.addCourseToLecturer(lecturer.getId(), new ObjectId(courseId));
 
             SimpleMailMessage message = new SimpleMailMessage();
-
             message.setFrom("maihoa362001@gmail.com");
-            // Change to lecturer mail
-            message.setTo("huypq1801@gmail.com");
+            message.setTo("huypq1801@gmail.com"); // Change to lecturer mail
             message.setSubject("Subject : Thông báo quản lý môn học " + course.getCourseCode());
-            message.setText("Body : " +
-                    "Tên môn học: " + course.getCourseName());
-
+            message.setText("Body : Tên môn học: " + course.getCourseName());
             javaMailSender.send(message);
-            return "redirect:/librarian/courses/{courseId}";
+
+//            redirectAttributes.addFlashAttribute("successMessage", "Lecturer added successfully to the course!");
+            return "redirect:/librarian/courses/"+courseId +"?success";
         }
     }
 

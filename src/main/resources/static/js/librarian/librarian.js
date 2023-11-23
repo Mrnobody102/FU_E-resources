@@ -126,3 +126,21 @@ $(document).on("click", ".remove-lecturer", function(e) {
         }
     });
 });
+function confirmAddLecturer() {
+    const lecturerEmail = document.getElementById('select-account').options[document.getElementById('select-account').selectedIndex].text;
+    const courseName = document.getElementById('courseName').value; // Get the course name from the hidden input field
+
+    Swal.fire({
+        title: 'Are you sure?',
+        html: `Do you want to assign <b>${lecturerEmail}</b> to the course <b>${courseName}</b>?<br><br>This action will send an email to the lecturer.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, assign it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('addLecturerForm').submit();
+        }
+    });
+}
