@@ -43,4 +43,6 @@ public interface LecturerService {
 
     boolean update(Lecturer lecturer);
 
+    public boolean softDelete(Lecturer lecturer);
+
 }

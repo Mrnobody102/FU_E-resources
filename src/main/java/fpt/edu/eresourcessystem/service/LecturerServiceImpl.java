@@ -163,5 +163,17 @@ public class LecturerServiceImpl implements LecturerService {
         return true; // Update successful
     }
 
+    @Override
+    public boolean softDelete(Lecturer lecturer) {
+        Optional<Lecturer> existingLecturer = lecturerRepository.findById(lecturer.getId());
+        if (existingLecturer.isPresent()) {
+            Lecturer toDelete = existingLecturer.get();
+            toDelete.setDeleteFlg(CommonEnum.DeleteFlg.DELETED); // Mark as deleted
+            lecturerRepository.save(toDelete);
+            return true;
+        }
+        return false;
+    }
+
 
 }

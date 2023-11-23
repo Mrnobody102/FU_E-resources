@@ -60,7 +60,7 @@
                                     <td class="lib_input-label"><label for="name">Name:</label></td>
                                     <td>
                                         <input type="text" id="name" name="name" class="lib_input form-control"
-                                               th:value="${lecturer.account.name}" placeholder="Enter name" required>
+                                               th:value="${lecturer.account.name}" placeholder="Enter name" readonly>
                                     </td>
                                 </tr>
 
@@ -70,7 +70,7 @@
                                     <td>
                                         <input type="text" id="campus" name="campus" class="lib_input form-control"
                                                th:value="${lecturer.account.campus}" placeholder="Enter campus"
-                                               required>
+                                               readonly>
                                     </td>
                                 </tr>
 
@@ -79,7 +79,7 @@
                                     <td>
                                         <!-- You can replace the input type and values with appropriate Thymeleaf expressions -->
                                         <input type="text" id="role" name="role" class="lib_input form-control"
-                                               th:value="${lecturer.account.role}" placeholder="Enter role" required>
+                                               th:value="${lecturer.account.role}" placeholder="Enter role" readonly>
                                     </td>
                                 </tr>
 

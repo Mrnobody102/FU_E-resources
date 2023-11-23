@@ -77,7 +77,10 @@
                         </th>
                         <td th:if="${checkLecturerCourse}">
                            <p th:text="${course.getLecturer().getAccount().getName()} + ' - ' + ${course.getLecturer().getAccount().getEmail()} "></p>
-                            <p><a class="btn-info" th:href="@{'/librarian/courses/'+${course.getId()}+'/remove-lecture'}">Remove</a>
+                            <p> <a href="#"
+                                   class="btn-info remove-lecturer"
+                                   data-course-id="${course.getId()}"
+                                   th:data-course-id="${course.getId()}">Remove</a>
                             </p>
                         </td>
                         <td th:unless="${checkLecturerCourse}">
