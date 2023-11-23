@@ -23,11 +23,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -208,10 +210,7 @@ public class LibrarianController {
                     !checkExist.getCourseCode().equalsIgnoreCase(course.getCourseCode())) {
                 return "redirect:/librarian/courses/" + course.getId() + "/update?error";
             }
-//            checkExist.setCourseCode(course.getCourseCode());
-//            checkExist.setCourseName(course.getCourseName());
-//            checkExist.setDescription(course.getDescription());
-            courseService.updateCourse(checkExist);
+            courseService.updateCourse(course);
             return "redirect:/librarian/courses/" + course.getId() + "/update?success";
         }
     }
@@ -248,7 +247,7 @@ public class LibrarianController {
     public String showCourseDetail(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
         List<Account> accounts = accountService.findAllLecturer();
-        boolean checkLecturerCourse = course.getLecturer().getId() != null ? true : false;
+        boolean checkLecturerCourse = course.getLecturer().getId() != null;
 
         model.addAttribute("course", course);
         model.addAttribute("checkLecturerCourse", checkLecturerCourse);
@@ -316,9 +315,9 @@ public class LibrarianController {
     @GetMapping({"/courses/{courseId}/remove-lecture"})
     public String removeLecture(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
-      //  boolean removed = lecturerService.removeCourse(course.getLecturer(), course);
+        boolean removed = lecturerService.removeCourse(course.getLecturer().getId(), course);
         boolean removed1 = courseService.removeLecture(courseId);
-        if (removed1 == true) {
+        if (removed1 && removed) {
             return "redirect:/librarian/courses/{courseId}/add-lecture?success";
         } else return "redirect:/librarian/courses/{courseId}/add-lecture?error";
     }
@@ -335,7 +334,7 @@ public class LibrarianController {
 
         Course course = courseService.updateLectureId(courseId, lecturer);
 
-        if (course == null) {
+        if (course == null || lecturer == null) {
             return "redirect:/courses/"+courseId+"/add-lecture?error";
         }
         else {
@@ -443,4 +442,46 @@ public class LibrarianController {
             return "redirect:/lectures/error"; // Redirect to an error page if the update fails
         }
     }
+
+//    @GetMapping({"/lectures/{courseId}"})
+//    public String showCourseOfLecturer(@PathVariable String courseId, final Model model) {
+//        Course course = courseService.findByCourseId(courseId);
+//        List<Account> accounts = accountService.findAllLecturer();
+//        boolean checkLecturerCourse = course.getLecturer().getId() != null;
+//
+//        model.addAttribute("course", course);
+//        model.addAttribute("checkLecturerCourse", checkLecturerCourse);
+//        model.addAttribute("accounts", accounts);
+//        return "librarian/lecture/librarian_lecture-course-detail";
+//    }
+    @GetMapping("/lectures/delete/{id}")
+    public String softDeleteLecturer(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
+        Optional<Lecturer> lecturer = Optional.ofNullable(lecturerService.findLecturerById(id));
+        if (lecturer.isPresent()) {
+            boolean isDeleted = lecturerService.softDelete(lecturer.get());
+            if (isDeleted) {
+                redirectAttributes.addFlashAttribute("success", "Lecturer was successfully deleted.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Failed to delete lecturer.");
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Lecturer not found.");
+        }
+        return "redirect:/admin/lectures/list";
+    }
+
+    @PostMapping("/lectures/delete/{id}")
+    public String deleteLecturer(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
+        try {
+            lecturerService.softDelete(lecturerService.findLecturerById(id));
+            redirectAttributes.addFlashAttribute("success", "Lecturer deleted successfully");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error deleting lecturer: " + e.getMessage());
+        }
+        return "redirect:/admin/lecturers/list";
+    }
+
+
+
+
 }

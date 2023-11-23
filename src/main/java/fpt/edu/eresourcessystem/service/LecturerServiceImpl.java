@@ -107,7 +107,7 @@ public class LecturerServiceImpl implements LecturerService {
 
 
     @Override
-    public boolean removeCourse(String lecturerId, ObjectId courseId) {
+    public boolean removeCourse(String lecturerId, Course courseId) {
         if (lecturerId != null || courseId != null) {
             Query query = new Query(Criteria.where("id").is(lecturerId));
             Update update = new Update().pull("courses", courseId);
@@ -175,6 +175,18 @@ public class LecturerServiceImpl implements LecturerService {
         lecturerRepository.save(lecturerToUpdate);
 
         return true; // Update successful
+    }
+
+    @Override
+    public boolean softDelete(Lecturer lecturer) {
+        Optional<Lecturer> existingLecturer = lecturerRepository.findById(lecturer.getId());
+        if (existingLecturer.isPresent()) {
+            Lecturer toDelete = existingLecturer.get();
+            toDelete.setDeleteFlg(CommonEnum.DeleteFlg.DELETED); // Mark as deleted
+            lecturerRepository.save(toDelete);
+            return true;
+        }
+        return false;
     }
 
 

@@ -73,7 +73,7 @@
 
 
                                         <tr class="lib_input-wrapper">
-                                            <td class="lib_input-label"><label th:for="trainingTypeName">Training Type Name</label>
+                                            <td class="lib_input-label"><label th:for="trainingTypeName">Training Type Name*</label>
                                             </td>
                                             <td><input type="text"  th:id="trainingTypeName"
                                                        class="lib_input form-control" th:field="*{trainingTypeName}"
@@ -83,11 +83,13 @@
                                         </tr>
                                         <tr class="lib_input-wrapper">
                                             <td class="lib_input-label"><label th:for="trainingTypeDescription">
-                                                Training Type Description</label>
+                                                Training Type Description*</label>
                                             </td>
-                                            <td><input type="text" th:id="trainingTypeDescription"
-                                                       class="lib_input form-control" th:field="*{trainingTypeDescription}"
-                                                       placeholder="Enter Training Type Description" required>
+                                            <td><textarea class="lib_textarea form-control paragraph"
+                                                          th:id="trainingTypeDescription"
+                                                          th:field="*{trainingTypeDescription}"
+                                                       placeholder="Enter Training Type Description" required >
+                                                </textarea>
 
                                             </td>
                                         </tr>
@@ -133,33 +135,34 @@
 
 
 <!--Custom script-->
-<script th:src="@{/js/librarian/librarian.js}"></script>
-
 
 <!--Validate-->
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
 <script th:src="@{/js/validation.js}"></script>
 
 <script th:inline="javascript">
-    validate_addAccount();
+    var successMessage = /*[[${success}]]*/ null;
+    var errorMessage = /*[[${error}]]*/ null;
 
-    var successParam = [[${param.success}]];
-    if (successParam) {
-        Swal.fire(
-            'Success!',
-            'Save training type successful!',
-            'success'
-        );
-    }
+    document.addEventListener('DOMContentLoaded', function () {
+        if (successMessage) {
+            Swal.fire({
+                title: 'Success',
+                text: successMessage,
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            });
+        }
 
-    var errorParam = [[${param.error}]];
-    if (errorParam) {
-        Swal.fire(
-            'Error!',
-            'Please check training type information again!',
-            'error'
-        );
-    }
+        if (errorMessage) {
+            Swal.fire({
+                title: 'Error',
+                text: errorMessage,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        }
+    });
 </script>
 </body>
 </html>

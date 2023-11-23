@@ -38,6 +38,7 @@ public class Course {
     @NotEmpty(message = "course.validation.courseName.required")
     private String courseName;
     private String description;
+
     @DocumentReference(lazy = true)
     private TrainingType trainingType;
 

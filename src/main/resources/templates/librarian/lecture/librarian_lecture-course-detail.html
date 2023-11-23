@@ -37,8 +37,8 @@
         <div class="app__container-content">
             <div class="course-details-head">
                 <a th:href="@{/librarian}">Home</a>
-                <span> &gt; <a th:href="@{/librarian/courses/list}"> Courses management</a> </span>
-                <span> &gt; <a th:href="@{'/librarian/courses/' + ${course.getId}}"
+                <span> &gt; <a th:href="@{/librarian/lectures/list}"> Lecturer management</a> </span>
+                <span> &gt; <a th:href="@{'/librarian/lectures/' + ${course.getId}}"
                                th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
             </div>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
