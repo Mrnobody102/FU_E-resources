@@ -86,8 +86,9 @@ public class LibrarianController {
      */
     @GetMapping({"/courses/add"})
     public String addCourse(final Model model) {
+        List<TrainingType> trainingTypes = trainingTypeService.findAll();
+        model.addAttribute("trainingTypes",trainingTypes);
         model.addAttribute("course", new Course());
-//        model.addAttribute("statuses", CourseEnum.Status.values());
         return "librarian/course/librarian_add-course";
     }
 
@@ -195,6 +196,8 @@ public class LibrarianController {
             List<Account> lecturers = accountService.findAllLecturer();
             model.addAttribute("lecturers", lecturers);
             model.addAttribute("course", course);
+            List<TrainingType> trainingTypes = trainingTypeService.findAll();
+            model.addAttribute("trainingTypes",trainingTypes);
             model.addAttribute("statuses", CourseEnum.Status.values());
             return "librarian/course/librarian_update-course";
         }
@@ -217,9 +220,9 @@ public class LibrarianController {
                     !checkExist.getCourseCode().equalsIgnoreCase(course.getCourseCode())) {
                 return "redirect:/librarian/courses/" + course.getId() + "/update?error";
             }
-            checkExist.setCourseCode(course.getCourseCode());
-            checkExist.setCourseName(course.getCourseName());
-            checkExist.setDescription(course.getDescription());
+//            checkExist.setCourseCode(course.getCourseCode());
+//            checkExist.setCourseName(course.getCourseName());
+//            checkExist.setDescription(course.getDescription());
             courseService.updateCourse(checkExist);
             return "redirect:/librarian/courses/" + course.getId() + "/update?success";
         }

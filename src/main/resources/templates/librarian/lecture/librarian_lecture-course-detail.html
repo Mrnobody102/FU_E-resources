@@ -26,17 +26,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 
-    <style>
-        body {
-            font-size: 1.3rem;
-        }
-        .bootstrap-select .dropdown-toggle .filter-option-inner-inner {
-            font-size: 1.3rem;
-        }
-        .btn {
-            font-size: 1.3rem;
-        }
-    </style>
 
 </head>
 
@@ -68,21 +57,21 @@
                     </tr>
                     <tr>
                         <th>Description</th>
-                        <td class="paragraph" th:text="${course.description}"  > </td>
+                        <td class="paragraph" th:text="${course.description}"> </td>
                     </tr>
                     <tr>
                         <th>Lecturer
-<!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>-->
-<!--                            </p>-->
+                            <!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>-->
+                            <!--                            </p>-->
                         </th>
                         <td th:if="${checkLecturerCourse}">
-                           <p th:text="${course.getLecturer().getAccount().getName()} + ' - ' + ${course.getLecturer().getAccount().getEmail()} "></p>
+                            <p th:text="${course.getLecturer().getAccount().getName()} + ' - ' + ${course.getLecturer().getAccount().getEmail()} "></p>
                             <p><a class="btn-info" th:href="@{'/librarian/courses/'+${course.getId()}+'/remove-lecture'}">Remove</a>
                             </p>
                         </td>
                         <td th:unless="${checkLecturerCourse}">
                             <form method="post" th:field="*{accounts}" th:action="@{'/librarian/courses/' + ${course.getId()} + '/add-lecture'}">
-<!--                                <input type="text" id="lecturerEmail" name="lecturerEmail"  placeholder="Email" />-->
+                                <!--                                <input type="text" id="lecturerEmail" name="lecturerEmail"  placeholder="Email" />-->
                                 <select id="select-multiple-account" class=" wia-filter-value selectpicker show-tick"  data-style="btn-white" name="lecturerId"  data-live-search="true"  >
                                     <option selected disabled th:value="0">Choose a lecturer</option>
                                     <option th:each="account : ${accounts}" th:value="${account.getId()}"
@@ -96,9 +85,9 @@
                     <tr>
                         <th></th>
                         <td>
-                            <button type="button" class="btn lib_btn-save"> <a class="link-light" th:href="@{'/librarian/courses/'+${course.getId}+'/update'}">Edit course information</a>
-                            </button>
-                            <button type="button" class="btn lib_btn-delete delete-course" th:id="${course.getId}">Delete</button>
+                            <a class="update-course" th:href="@{'/librarian/courses/'+${course.getId}+'/update'}">Edit course information</a>
+                            | <a class="delete-course" th:id="${course.getId}" style="cursor: pointer">Delete</a>
+
                         </td>
                     </tr>
                 </table>

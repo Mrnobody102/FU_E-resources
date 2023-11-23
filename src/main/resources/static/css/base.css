@@ -1,4 +1,5 @@
 /*===== COMMON =====*/
+/*===== COMMON =====*/
 :root {
     /* Color */
     --white-color: #fff;
@@ -482,7 +483,7 @@ li {
     padding: 0.5rem 1rem;
 }
 .table-view tr td:first-child{
-    width: 15%;
+    width: 5%;
 }
 .table-view tr td:last-child{
     width: 55%;
@@ -541,3 +542,8 @@ li {
     margin-left: 1rem;
     padding: 1rem;
 }
+
+.paragraph {
+    white-space: pre-wrap;
+}
+
