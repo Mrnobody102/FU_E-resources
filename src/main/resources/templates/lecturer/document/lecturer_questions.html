@@ -1,45 +1,46 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      lang="en">
+>
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Personal question&answer</title>
+    <title>Lecturer | lecdent questions </title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
 <body class="app_container">
 <!-- Header -->
-<div th:replace="~{fragments/header::studentHeaderSection}"></div>
+<div th:replace="~{fragments/header::headerLecturerSection}"></div>
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
         <div class="container-content">
-            <div class="main-content stu_course-saved">
-                <div class="stu_course-saved-content d-flex">
-                    <div class="stu_sidebar">
-                        <div th:replace="~{fragments/sidebar:: studentSidebar('my-question')}"></div>
+            <div class="main-content lec__course">
+                <div class="lec__course-content d-flex">
+                    <div class="lec__sidebar">
+                        <div th:replace="~{fragments/sidebar:: lecturerSidebar('question-answer')}"></div>
                     </div>
 
-                    <div class="stu_courses-content main" id="main">
+                    <div class="lec__courses-content main" id="main-lecturer">
+
                         <div class="header__search">
                             <!--Label-->
                             <div class="search-label">
-                                <label th:for="search">Search questions, answers</label>
+                                <label th:for="search">Search documents</label>
                             </div>
                             <!-- Input  -->
                             <div class="header__search-input-wrap">
                                 <input type="text" class="header__search-input"
                                        placeholder="Enter course ..."
                                        name="search"
-                                       th:id="search-text" th:value="${search}">
+                                       th:id="search" th:value="${search}">
                                 <!-- Header-search-history -->
                                 <div class="header__search-history">
                                     <h3 class="header__search-history-heading">
@@ -54,49 +55,48 @@
                                 </div>
                             </div>
                             <!-- Select-find-scope -->
-                            <!--                            <div class="header__search-select">-->
-                            <!--                                <span class="header__search-select-label">By date</span>-->
-                            <!--                                <i class="header__search-select-icon fas fa-angle-down"></i>-->
-                            <!--                                <ul class="header__search-option">-->
-                            <!--                                    <li class="header__search-option-item header__search-option-item&#45;&#45;active">-->
-                            <!--                                        <span class="">Unread</span>-->
-                            <!--                                        <i class="fas fa-check"></i>-->
-                            <!--                                    </li>-->
-                            <!--                                </ul>-->
-                            <!--                            </div>-->
+                            <div class="header__search-select">
+                                <span class="header__search-select-label">All results</span>
+                                <i class="header__search-select-icon fas fa-angle-down"></i>
+                                <ul class="header__search-option">
+                                    <li class="header__search-option-item header__search-option-item--active">
+                                        <span class="">By Name</span>
+                                        <i class="fas fa-check"></i>
+                                    </li>
+                                    <li class="header__search-option-item">
+                                        <span class="">By Code</span>
+                                        <i class="fas fa-check"></i>
+                                    </li>
+                                </ul>
+                            </div>
                             <button class="header__search-btn">
                                 <i class="header__search-btn-icon fas fa-search"></i>
                             </button>
                         </div>
-                        <div class="stu__navbar-favourite">
-                            <ul class="stu__navbar-favourite-list border-bottom">
-                                <li class="stu__navbar-favourite-item stu__navbar-active">
-                                    <a th:href="@{/student/my_library/my_questions/1}">
-                                        My question & answer history
+                        <div class="lec__navbar-favourite">
+                            <ul class="lec__navbar-list border-bottom">
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status == 'all' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{/lecturer/questions/list/all/1}">
+                                        All
                                     </a>
                                 </li>
-                                <!--                <li class="stu__navbar-favourite-item">-->
-                                <!--                  <a href="">-->
-                                <!--                    My documents-->
-                                <!--                  </a>-->
-                                <!--                </li>-->
-                                <li class="stu__navbar-favourite-item ">
-                                    <a href="">
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status == 'new' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{/lecturer/questions/list/new/1}">
                                         Waiting for reply
                                     </a>
                                 </li>
-                                <li class="stu__navbar-favourite-item ">
-                                    <a href="">
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status == 'publish' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{/lecturer/questions/list/publish/1}">
                                         Has been replied
-                                    </a>
-                                </li>
-                                <li class="stu__navbar-favourite-item ">
-                                    <a href="">
-                                        New replies
                                     </a>
                                 </li>
                             </ul>
                         </div>
+
+
                         <div class="stu__courses-list-view">
                             <div class="stu__view-my-notes">
                                 <div th:if="${param.search} AND ${studentQuestions == null} OR ${studentQuestions.size()} == 0"
@@ -114,20 +114,11 @@
                                                     <!--                              href=""></h2>-->
                                                     <a class="stu__question-title"
                                                        th:text="'Ask on '+${studentQuestion.documentId.title}"
-                                                       th:href="@{'/student/documents/' + ${studentQuestion.documentId.id}+'#question'}">
+                                                       th:href="@{'/lecturer/documents/' + ${studentQuestion.documentId.id}+'#question'}">
                                                     </a><span class="home__note-date"
                                                               th:text="${studentQuestion.lastModifiedDate}"></span>
                                                     <p class="home__note-description"
                                                        th:text="${studentQuestion.content}"></p>
-                                                    <div class="home__note-item stu__list-answers"
-                                                         th:each="answer : ${studentQuestion.answers}">
-                                                        <a class="stu__question-title"
-                                                           th:text="${answer.student.account.name}"
-                                                           th:href="@{'/student/documents/' + ${answer.documentId.id}+ '#question'}">
-                                                        </a><span class="home__note-date" th:text="${answer.lastModifiedDate}"></span>
-                                                        <p class="home__note-description"
-                                                           th:text="${answer.answer}"></p>
-                                                    </div>
                                                 </div>
                                             </li>
                                         </ul>
@@ -168,17 +159,18 @@
         </div>
     </div>
 </div>
+
 <!-- Footer -->
-<div th:replace="~{fragments/footer :: footerSection}"></div>
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 
-
-<!--jquery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Bootstrap script-->
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/student/student.js}"></script>
+<script th:src="@{/js/lecturer/lecturer.js}"></script>
 </body>
 </html>
+
+

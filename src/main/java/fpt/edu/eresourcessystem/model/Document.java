@@ -23,7 +23,6 @@ public class Document {
 
     @NotEmpty(message = "course.validation.resourceType.required")
     @DocumentReference(lazy = true)
-    @ReadOnlyProperty
     private Topic topic;
     @DocumentReference(lazy = true)
     private ResourceType resourceType;

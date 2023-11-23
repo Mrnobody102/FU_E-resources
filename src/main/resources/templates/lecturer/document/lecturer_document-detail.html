@@ -34,6 +34,16 @@
                     </div>
 
                     <div class="stu_course-content main" id="main">
+                        <div class="document-details-head">
+                            <a th:href="@{/lecturer}">Home</a>
+                            <span> &gt; <a th:href="@{/lecturer/courses/list/all/1}">Courses management</a></span>
+                            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${topic.course.id}}"
+                                           th:text="${topic.course.courseCode}"></a></span>
+                            <span> &gt; <a th:href="@{'/lecturer/topics/' + ${topic.id}}"
+                                           th:text="${topic.topicTitle}"></a></span>
+
+                            <span> &gt; <span th:text="${document.title}"></span></span>
+                        </div>
                         <div style="width: 100%">
                             <div class="document-details-info border-bottom">
                                 <div>

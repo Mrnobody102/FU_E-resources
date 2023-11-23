@@ -101,6 +101,7 @@ public class AuthenticationController {
 
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
 //        System.out.println(authentication.getAuthorities());
         // log user action
 //        UserLogDto userLogDto = new UserLogDto("/login");

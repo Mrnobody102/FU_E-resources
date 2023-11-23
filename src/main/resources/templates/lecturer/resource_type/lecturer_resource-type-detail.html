@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Lecturer | Topic details</title>
+    <title>Lecturer | Resource details</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -36,22 +36,22 @@
                             <span> &gt; <a th:href="@{/lecturer/courses/list/all/1}"> Courses management</a> </span>
                             <span> &gt; <a th:href="@{'/lecturer/courses/' + ${course.id}}"
                                            th:text="${course.courseCode}"></a> </span>
-                            <span> &gt; <a th:href="@{'/lecturer/topics/' + ${topic.id}}"
-                                           th:text="${topic.topicTitle}"></a> </span>
+                            <span> &gt; <a th:href="@{'/lecturer/resource_types/' + ${resourceType.id}}"
+                                           th:text="${resourceType.resourceTypeName}"></a> </span>
                         </div>
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <div style="flex: 3">
-                                <h1 class="h2" th:text="${topic.topicTitle}"></h1>
+                                <h1 class="h2" th:text="${resourceType.resourceTypeName}"></h1>
                                 <p th:text="${course.courseCode} + ' - ' + ${course.courseName}"></p>
                             </div>
                             <div style="flex: 1; display: flex; justify-content: center">
                                 <div style="width: 60%; display: flex; justify-content: center; flex-direction: column">
                                     <a class="btn btn--hover mb-2 mt-2"
-                                       th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}">
-                                         <span><i class="fa-regular fa-edit"></i>  Edit topic</span>
+                                       th:href="@{'/lecturer/resource_types/' + ${resourceType.id} +'/update'}">
+                                         <span><i class="fa-regular fa-edit"></i>  Edit resource type name</span>
                                     </a>
                                     <a class="btn btn--hover"
-                                       th:href="@{'/lecturer/topics/' + ${topic.id} +'/documents/add'}">
+                                       th:href="@{'/lecturer/resource_types/' + ${resourceType.id} +'/documents/add'}">
                                         + Add document
                                     </a>
                                 </div>
@@ -61,7 +61,7 @@
                         <div>
                             <!--Document view list-->
                             <div class="d-flex align-items-center document-view-info border-bottom"
-                                 th:each="document : ${topic.getDocuments()}">
+                                 th:each="document : ${resourceType.getDocuments()}">
                                 <div class="doc-info-head" style="max-width: 75%">
                                     <p class="doc-info-title"><a th:href="@{'/lecturer/documents/' + ${document.id}}">
                                         <span th:text="${document.title}"></span></a>
@@ -71,16 +71,15 @@
                                     </p>
                                 </div>
                                 <div style="margin-left: 5%">
-                                    <a th:href="@{'/lecturer/documents/' + ${document.getId()} + '/update'}" class="lec__edit-topic-icon">
+                                    <a href="#" class="lec__edit-topic-icon">
                                         <i class="fa-regular fa-edit"></i>
                                     </a>
-                                    <a th:href="@{'/lecturer/documents/' + ${document.getId()} + '/delete'}" class="lec__edit-topic-icon">
+                                    <a href="#" class="lec__edit-topic-icon">
                                         <i class="fa-solid fa-trash"></i>
                                     </a>
                                 </div>
                             </div>
                             <!--End Document view-->
-
                         </div>
                     </div>
                 </div>

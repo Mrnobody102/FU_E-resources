@@ -38,7 +38,7 @@ public class LibrarianController {
     private final  JavaMailSender javaMailSender;
 
 //    @Value("${page-size}")
-    private static final Integer pageSize = 2;
+    private static final Integer pageSize = 5;
     private final AccountService accountService;
     private final LibrarianService librarianService;
     private final LecturerService lecturerService;
@@ -51,18 +51,6 @@ public class LibrarianController {
     private final LecturerCourseService lecturerCourseService;
 
     private final TrainingTypeService trainingTypeService;
-
-//    public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, LecturerCourseService lecturerCourseService) {
-//        this.accountService = accountService;
-//        this.librarianService = librarianService;
-//        this.lecturerService = lecturerService;
-//        this.studentService = studentService;
-//        this.courseService = courseService;
-//        this.topicService = topicService;
-//        this.resourceTypeService = resourceTypeService;
-//        this.documentService = documentService;
-//        this.lecturerCourseService = lecturerCourseService;
-//    }
 
     /*
     DASHBOARD

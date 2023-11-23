@@ -132,6 +132,10 @@
                                                             <th:block th:if="${status == 'all'}">
                                                                 Status:
                                                                 <th:block
+                                                                        th:if="${course.status.toString().equals('NEW')}">
+                                                                    <span class="text-info fw-bold">New</span>
+                                                                </th:block>
+                                                                <th:block
                                                                         th:if="${course.status.toString().equals('PUBLISH')}">
                                         <span class="text-success fw-bold">Publish</span>
                                                                 </th:block>

@@ -2,10 +2,7 @@ package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
-import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Lecturer;
-import fpt.edu.eresourcessystem.model.Librarian;
-import fpt.edu.eresourcessystem.model.Topic;
+import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsCourseRepository;
@@ -210,6 +207,41 @@ public class CourseServiceImpl implements CourseService{
             }
         }
         return null;
+    }
+
+    // Resource type
+    @Override
+    public boolean addResourceType(ResourceType resourceType) {
+        // check course exist
+        Optional<Course> course = courseRepository.findById(resourceType.getCourse().getId());
+        if(course.isPresent()) {
+            Course courseExisted = course.get();
+
+            // get resourceTypes of course
+            if (null == resourceType.getId()) {
+                return false;
+            }
+            List<ResourceType> resourceTypes = courseExisted.getResourceTypes();
+            if (null == courseExisted.getResourceTypes()) {
+                resourceTypes = new ArrayList<>();
+            }
+
+            // check topic existed in course
+            boolean checkTopicExist = false;
+            for (int i = 0; i < resourceTypes.size(); i++) {
+                if (resourceTypes.get(i).equals(resourceType.getId())) {
+                    checkTopicExist = true;
+                }
+            }
+            // check topic not existed in course
+            if (!checkTopicExist) {
+                // add topic to course
+                resourceTypes.add(resourceType);
+                courseExisted.setResourceTypes(resourceTypes);
+                courseRepository.save(courseExisted);
+            }
+        }
+        return false;
     }
 
     @Override

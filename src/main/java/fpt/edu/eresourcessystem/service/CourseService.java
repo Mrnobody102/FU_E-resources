@@ -42,6 +42,9 @@ public interface CourseService {
 
     Course removeTopic(Topic topic);
 
+    // Resource type
+    boolean addResourceType(ResourceType resourceType);
+
     List<Course> findByListId(List<String> courseIds);
 
     Page<Course> findByCodeOrNameOrDescription(String code, String name, String description, int pageIndex, int pageSize);

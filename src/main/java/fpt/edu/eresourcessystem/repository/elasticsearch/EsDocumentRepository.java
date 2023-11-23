@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface EsDocumentRepository extends ElasticsearchRepository<EsDocument, String> {
     @Query("{\"bool\": {\"should\": [" +
-            "{\"wildcard\": {\"title\": {\"value\": \"*?0*\",\"case_insensitive\": true,\"boost\": 2}}}," +
-            "{\"wildcard\": {\"description\": {\"value\": \"*?0*\",\"case_insensitive\": true}}}," +
-            "{\"wildcard\": {\"docType\": {\"value\": \"*?0*\",\"case_insensitive\": true}}}," +
-            "{\"wildcard\": {\"editorContent\": {\"value\": \"*?0*\",\"case_insensitive\": true}}}" +
+            "{\"match_phrase\": {\"title\": {\"value\": \"*?0*\",\"case_insensitive\": true,\"boost\": 2}}}," +
+            "{\"match_phrase\": {\"description\": {\"value\": \"*?0*\",\"case_insensitive\": true}}}," +
+            "{\"match_phrase\": {\"docType\": {\"value\": \"*?0*\",\"case_insensitive\": true}}}," +
+            "{\"match_phrase\": {\"editorContent\": {\"value\": \"*?0*\",\"case_insensitive\": true}}}" +
             "], \"minimum_should_match\": 1}}")
     Iterable<EsDocument> findByTitleContainingOrDescriptionContainingOrDocTypeLikeOrEditorContentContainingIgnoreCase(String search);
 }

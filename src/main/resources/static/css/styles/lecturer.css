@@ -177,7 +177,7 @@
 /*Course*/
 
 .course-detail-info-title {
-    border-bottom: var(--disable-link-text-color) 2px solid;
+    /*border-bottom: var(--disable-link-text-color) 2px solid;*/
     margin-bottom: 1rem;
 }
 

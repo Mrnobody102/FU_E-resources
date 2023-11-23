@@ -314,3 +314,57 @@ $(document).ready(function () {
     });
 
 });
+
+
+// Note with bôi đen
+var isHighlighting = false;
+
+$(document).ready(function() {
+    $('#editor').on('mouseup', function(e) {
+        var selectedText = $('#editor').getSelection().toString();
+
+        if (selectedText !== '') {
+            isHighlighting = true;
+            var noteSticker = $('.note-sticker');
+            noteSticker.css({ top: e.pageY, left: e.pageX });
+            noteSticker.fadeIn();
+
+            $('#noteText').val('');
+        }
+    });
+
+    $('#editor').on('click', function(e) {
+        var noteSticker = $('.note-sticker');
+
+        if (noteSticker.is(':visible')) {
+            if (!noteSticker.is(e.target) && noteSticker.has(e.target).length === 0 && !isHighlighting) {
+                noteSticker.fadeOut(); // Ẩn khung note
+            }
+        }
+
+        isHighlighting = false;
+    });
+});
+
+function saveNote() {
+    var selectedText = $('#editor').getSelection().toString();
+    var noteText = $('#noteText').val();
+
+    $.ajax({
+        url: '/',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ text: noteText }),
+        success: function(response) {
+            if (response.success) {
+                var highlightedText = $('<span>').addClass('highlight').text(selectedText);
+                ('#editor').getSelection().getRangeAt(0).surroundContents(highlightedText);
+            } else {
+            }
+        },
+        error: function(xhr, textStatus, errorThrown) {
+        }
+    });
+
+    $('.note-sticker').fadeOut();
+}

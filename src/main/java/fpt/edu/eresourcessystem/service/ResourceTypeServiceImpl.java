@@ -2,10 +2,12 @@ package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.model.ResourceType;
 import fpt.edu.eresourcessystem.repository.ResourceTypeRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,7 +37,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     }
 
     @Override
-    public ResourceType addResourceType(String ResourceType) {
+    public ResourceType addResourceType(ResourceType ResourceType) {
         ResourceType resourceType = new ResourceType(ResourceType);
         if (null == resourceType.getId()) {
             ResourceType result = resourceTypeRepository.save(resourceType);
@@ -77,7 +79,9 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     }
 
     @Override
-    public ResourceType addDocument(ResourceType ResourceType) {
-        return null;
+    public void addDocumentToResourceType(String resourceTypeId, ObjectId documentId) {
+        Query query = new Query(Criteria.where("id").is(resourceTypeId));
+        Update update = new Update().push("documents", documentId);
+        mongoTemplate.updateFirst(query, update, ResourceType.class);
     }
 }

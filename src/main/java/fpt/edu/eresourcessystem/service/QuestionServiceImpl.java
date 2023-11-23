@@ -5,18 +5,20 @@ import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.repository.QuestionRepository;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service("questionService")
 public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
+    private final DocumentService documentService; // just for lecturer question, need to be change soon
     private final  StudentService studentService;
     private final AnswerService answerService;
 
-    public QuestionServiceImpl(QuestionRepository questionRepository, StudentService studentService, AnswerService answerService) {
+    public QuestionServiceImpl(QuestionRepository questionRepository, DocumentService documentService, StudentService studentService, AnswerService answerService) {
         this.questionRepository = questionRepository;
+        this.documentService = documentService;
         this.studentService = studentService;
         this.answerService = answerService;
     }
@@ -30,14 +32,24 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> findByDocIdAndStudentId(Document document, Student student) {
         List<Question> questions = questionRepository.findByDocumentIdAndStudent(document, student);
-        System.out.println(questions.size());
         return questions;
     }
 
     @Override
     public List<Question> findByStudent(Student student) {
         List<Question> questions = questionRepository.findByStudent(student);
-        System.out.println(questions.size());
+        return questions;
+    }
+
+    @Override
+    public List<Question> findByLecturer(Lecturer lecturer) {
+        List<Document> documents = documentService.findByLecturer(lecturer);
+        List<Question> questions = new ArrayList<>();
+        for(Document document : documents) {
+            List<Question> questionDocs = questionRepository.findByDocumentId(document);
+            for(Question question:questionDocs)
+            questions.add(question);
+        }
         return questions;
     }
 

@@ -1,7 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.DocumentDTO;
-import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -19,9 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/lecturer")
@@ -39,8 +37,10 @@ public class LecturerController {
     private final CourseLogService courseLogService;
 
     private final QuestionService questionService;
+    private final AnswerService answerService;
+    
 
-    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, CourseLogService courseLogService, QuestionService questionService) {
+    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, CourseLogService courseLogService, QuestionService questionService, AnswerService answerService) {
         this.courseService = courseService;
         this.accountService = accountService;
         this.lecturerService = lecturerService;
@@ -49,6 +49,7 @@ public class LecturerController {
         this.documentService = documentService;
         this.courseLogService = courseLogService;
         this.questionService = questionService;
+        this.answerService = answerService;
     }
 
 
@@ -121,8 +122,8 @@ public class LecturerController {
         return "redirect:/lecturer/courses/" + courseID;
     }
 
-    @GetMapping({"/courses/{courseId}"})
-    public String showCourseDetail(@PathVariable String courseId, final Model model) {
+    @GetMapping({"/courses/{courseId}/{getBy}", "/courses/{courseId}"})
+    public String showCourseDetail(@PathVariable String courseId, final Model model, @PathVariable(required = false) String getBy) {
         Lecturer lecturer = getLoggedInLecturer();
         Course course = courseService.findByCourseId(courseId);
         if (null == course || null == lecturer) {
@@ -130,13 +131,19 @@ public class LecturerController {
         }
 
         // add course log
-        CourseLog courseLog = new CourseLog(course, CommonEnum.Action.VIEW);
-        courseLogService.addCourseLog(courseLog);
-
-        List<Topic> topics = course.getTopics();
+//        CourseLog courseLog = new CourseLog(course, CommonEnum.Action.VIEW);
+//        courseLogService.addCourseLog(courseLog);
         model.addAttribute("course", course);
-        model.addAttribute("topics", topics);
         model.addAttribute("courseStatus", CourseEnum.ChangeableStatus.values());
+        if(getBy == null || getBy.equalsIgnoreCase("topics")) {
+            List<Topic> topics = course.getTopics();
+            model.addAttribute("topics", topics);
+        } else {
+            List<ResourceType> resourceTypes = course.getResourceTypes();
+            model.addAttribute("resourceTypes", resourceTypes);
+        }
+        model.addAttribute("getBy", getBy);
+
         return "lecturer/course/lecturer_course-detail";
     }
 
@@ -180,7 +187,7 @@ public class LecturerController {
         return "lecturer/topic/lecturer_add-topic-to-course";
     }
 
-    @GetMapping({"topics/{topicId}/update"})
+    @GetMapping({"/topics/{topicId}/update"})
     public String editTopicProcess(@PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
         Course course = courseService.findByCourseId(topic.getCourse().getId());
@@ -193,7 +200,7 @@ public class LecturerController {
     }
 
 
-    @PostMapping({"topics/{topicId}/update"})
+    @PostMapping({"/topics/{topicId}/update"})
     public String editTopic(@PathVariable String topicId, @ModelAttribute Topic topic) {
         Topic checkTopicExist = topicService.findById(topicId);
         if (null != checkTopicExist) {
@@ -206,7 +213,7 @@ public class LecturerController {
 
     }
 
-    @GetMapping({"topics/{topicId}/delete_topic/"})
+    @GetMapping({"/topics/{topicId}/delete_topic/"})
     public String deleteTopic(@PathVariable String courseId, @PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
         if (null != topic) {
@@ -219,10 +226,88 @@ public class LecturerController {
     @GetMapping("/topics/{topicId}")
     public String viewTopicDetail(@PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
-        Course course = courseService.findByCourseId(topic.getCourse().getId());
-        model.addAttribute("course", course);
+        model.addAttribute("course", topic.getCourse());
         model.addAttribute("topic", topic);
         return "lecturer/topic/lecturer_topic-detail";
+    }
+
+    @GetMapping({"/courses/{courseId}/add_resource_type"})
+    public String addResourceTypeProcess(@PathVariable String courseId, final Model model) {
+        Course course = courseService.findByCourseId(courseId);
+        List<ResourceType> resourceTypes = course.getResourceTypes();
+        ResourceType modelResourceType = new ResourceType();
+        modelResourceType.setCourse(course);
+        model.addAttribute("course", course);
+        model.addAttribute("resourceTypes", resourceTypes);
+        model.addAttribute("resourceType", modelResourceType);
+        return "lecturer/resource_type/lecturer_add-resource-type-to-course";
+    }
+
+    @PostMapping({"resource_types/add_resource_type"})
+    public String addResourceType(ResourceType resourceType, final Model model) {
+        ResourceType resourcetype = resourceTypeService.addResourceType(resourceType);
+        courseService.addResourceType(resourcetype);
+        Course course = courseService.findByCourseId(resourcetype.getCourse().getId());
+        List<ResourceType> resourceTypes = course.getResourceTypes();
+        ResourceType modelResourceType = new ResourceType();
+        modelResourceType.setCourse(course);
+        model.addAttribute("course", course);
+        model.addAttribute("resourceTypes", resourceTypes);
+        model.addAttribute("resourceType", modelResourceType);
+        model.addAttribute("success", "success");
+        return "lecturer/resource_type/lecturer_add-resource-type-to-course";
+    }
+
+    @GetMapping({"/resource_types/{resourceTypeId}/update"})
+    public String editResourceTypeProcess(@PathVariable String resourceTypeId, final Model model) {
+        ResourceType resourcetype = resourceTypeService.findById(resourceTypeId);
+        Course course = resourcetype.getCourse();
+        List<ResourceType> resourceTypes = course.getResourceTypes();
+        model.addAttribute("course", course);
+        model.addAttribute("resourceTypes", resourceTypes);
+        model.addAttribute("resourceType", resourcetype);
+        return "lecturer/resource_type/lecturer_update-resource-type-of-course";
+    }
+
+
+    @PostMapping({"/resource_types/{resourceTypeId}/update"})
+    public String editResourceType(@PathVariable String resourceTypeId, @ModelAttribute ResourceType resourcetype) {
+        ResourceType checkResourceTypeExist = resourceTypeService.findById(resourceTypeId);
+        if (null != checkResourceTypeExist) {
+            checkResourceTypeExist.setResourceTypeName(resourcetype.getResourceTypeName());
+            resourceTypeService.updateResourceType(checkResourceTypeExist);
+            return "redirect:/lecturer/resource_types/" + resourceTypeId + "/update?success";
+        }
+        return "redirect:/lecturer/resource_types/" + resourceTypeId + "/update?error";
+
+    }
+//
+//    @GetMapping({"resourcetypes/{resourcetypeId}/delete_resourcetype/"})
+//    public String deleteResourceType(@PathVariable String courseId, @PathVariable String resourcetypeId, final Model model) {
+//        ResourceType resourcetype = resourceTypeService.findById(resourcetypeId);
+//        if (null != resourcetype) {
+//            courseService.removeResourceType(resourcetype);
+//            resourceTypeService.softDelete(resourcetype);
+//        }
+//        return "redirect:/lecturer/" + resourcetype.getCourse().getId();
+//    }
+//
+//    @GetMapping({"resourcetypes/{resourcetypeId}/delete_resourcetype/"})
+//    public String deleteResourceType(@PathVariable String courseId, @PathVariable String resourcetypeId, final Model model) {
+//        ResourceType resourcetype = resourceTypeService.findById(resourcetypeId);
+//        if (null != resourcetype) {
+//            courseService.removeResourceType(resourcetype);
+//            resourceTypeService.softDelete(resourcetype);
+//        }
+//        return "redirect:/lecturer/" + resourcetype.getCourse().getId();
+//    }
+
+    @GetMapping("/resource_types/{resourceTypeId}")
+    public String viewResourceTypeDetail(@PathVariable String resourceTypeId, final Model model) {
+        ResourceType resourcetype = resourceTypeService.findById(resourceTypeId);
+        model.addAttribute("course", resourcetype.getCourse());
+        model.addAttribute("resourceType", resourcetype);
+        return "lecturer/resource_type/lecturer_resource-type-detail";
     }
 
     /*
@@ -274,6 +359,7 @@ public class LecturerController {
             }
             model.addAttribute("newAnswer", new Answer());
             model.addAttribute("document", document);
+            model.addAttribute("topic", document.getTopic());
             model.addAttribute("questions", questions);
             return "lecturer/document/lecturer_document-detail";
         }
@@ -285,9 +371,36 @@ public class LecturerController {
         Topic topic = topicService.findById(topicId);
         model.addAttribute("document", new Document());
         model.addAttribute("topic", topic);
+//        List<String> defaultRt = Arrays.stream(DocumentEnum.DefaultTopicResourceTypes.values())
+//                .map(DocumentEnum.DefaultTopicResourceTypes::getDisplayValue)
+//                .collect(Collectors.toList());
+//
+//        List<ResourceType> resourceTypesByCourse = topic.getCourse().getResourceTypes();
+//        List<String> resourceTypes = new ArrayList<>();
+//
+//        if (resourceTypesByCourse != null) {
+//            resourceTypes = resourceTypesByCourse.stream()
+//                    .map(ResourceType::getResourceTypeName)
+//                    .collect(Collectors.toList());
+//        } else {
+//            resourceTypes = new ArrayList<>();
+//        }
+//
+//        resourceTypes.addAll(defaultRt);
         model.addAttribute("resourceTypes", DocumentEnum.DefaultTopicResourceTypes.values());
 //        System.out.println(DocumentEnum.DefaultTopicResourceTypes.values());
         return "lecturer/document/lecturer_add-document";
+    }
+
+    @GetMapping({"resource_types/{resourceTypeId}/documents/add"})
+    public String addDocumentInResourceType(@PathVariable String resourceTypeId, final Model model) {
+        ResourceType resourceType = resourceTypeService.findById(resourceTypeId);
+        model.addAttribute("document", new Document());
+        model.addAttribute("resourceType", resourceType);
+        List<Topic> topics = resourceType.getCourse().getTopics();
+        model.addAttribute("topics", topics);
+//        System.out.println(DocumentEnum.DefaultTopicResourceTypes.values());
+        return "lecturer/document/lecturer_add-document-to-resource-type";
     }
 
     @PostMapping("/documents/add")
@@ -296,13 +409,30 @@ public class LecturerController {
                                      @RequestParam(value = "topicId") String topicId,
                                      @RequestParam(value = "respondResourceType") String respondResourceType,
                                      @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-        // Thêm resource type
-        ResourceType resourceType = resourceTypeService.addResourceType(respondResourceType);
-        // set resource type vào document
-        documentDTO.setResourceType(resourceType);
         // set topic vào document
         Topic topic = topicService.findById(topicId);
         documentDTO.setTopic(topic);
+        ResourceType resourceType = new ResourceType(respondResourceType, topic.getCourse());
+
+        // Thêm resource type
+        List<ResourceType> resourceTypesInCourse = topic.getCourse().getResourceTypes();
+        boolean checkResourceTypeExist = true;
+        ResourceType existedResourceType = null;
+        for(ResourceType resourceType1 : resourceTypesInCourse) {
+            if(resourceType1.getResourceTypeName().equalsIgnoreCase(respondResourceType)) {
+                checkResourceTypeExist = false;
+                existedResourceType = resourceType1;
+                break;
+            }
+        }
+        if(checkResourceTypeExist == true) {
+            ResourceType addedResourceType = resourceTypeService.addResourceType(resourceType);
+            documentDTO.setResourceType(addedResourceType);
+        } else {
+            documentDTO.setResourceType(existedResourceType);
+        }
+        // set resource type vào document
+        
 
         // Xử lý file
         // thêm check file trước khi add
@@ -312,17 +442,10 @@ public class LecturerController {
         }
         Document document = documentService.addDocument(documentDTO, id);
         // Xử lý sau khi add document
-        List<Document> resourceTypeDocuments = resourceType.getDocuments();
-        if (resourceTypeDocuments == null) {
-            resourceTypeDocuments = new ArrayList<>();
-        }
-        resourceTypeDocuments.add(document);
-        // Thêm document vào resource type
-        resourceType.setDocuments(resourceTypeDocuments);
-        resourceTypeService.updateResourceType(resourceType);
+
+        resourceTypeService.addDocumentToResourceType(document.getResourceType().getId(), new ObjectId(document.getId()));
 
         // Thêm document vào topic
-        // Sử dụng $push để thêm document vào topic mà không cần lấy toàn bộ documents
         topicService.addDocumentToTopic(topicId, new ObjectId(document.getId()));
 
         return "redirect:/lecturer/topics/" + topicId + "/documents/add?success";
@@ -344,7 +467,7 @@ public class LecturerController {
     }
 
     @PostMapping("/documents/update")
-    public String updateCourse(@ModelAttribute Document document, final Model model) throws IOException {
+    public String updateCourse(@ModelAttribute DocumentDTO document, final Model model) throws IOException {
         Document checkExist = documentService.findById(document.getId());
 
         if (null == checkExist) {
@@ -368,6 +491,53 @@ public class LecturerController {
             return "redirect:/librarian/courses/list/1?success";
         }
         return "redirect:/librarian/courses/list/1?error";
+    }
+
+    /*
+        My document
+    */
+    @GetMapping({"/my_documents/list/{status}/{pageIndex}"})
+    public String viewUploadedDocuments(@PathVariable(required = false) Integer pageIndex, final Model model, @PathVariable String status) {
+        // get account authorized
+        Lecturer lecturer = getLoggedInLecturer();
+        if (null == lecturer || "".equalsIgnoreCase(status)) {
+            return "common/login";
+        }
+        Page<Document> page = lecturerService.findListDocuments(lecturer, status, pageIndex, pageSize);
+        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+        model.addAttribute("pages", pages);
+        model.addAttribute("totalPage", page.getTotalPages());
+        model.addAttribute("documents", page.getContent());
+        model.addAttribute("status", status);
+
+        return "lecturer/document/lecturer_my-documents";
+    }
+
+    /*
+        Question ans
+    */
+    @GetMapping({"/questions/list/{status}/{pageIndex}"})
+    public String viewListOfQuestions(@PathVariable(required = false) Integer pageIndex, final Model model, @PathVariable String status) {
+        // get account authorized
+        Lecturer lecturer = getLoggedInLecturer();
+        List<Question> questions = questionService.findByLecturer(lecturer);
+        for (Question q: questions) {
+            q.setAnswers(new HashSet<>(answerService.findByQuestion(q)));
+        }
+        model.addAttribute("studentQuestions", questions);
+        // add log
+//        addUserLog("/my_library/my_questions/history");
+        model.addAttribute("status", status);
+
+        return "lecturer/document/lecturer_questions";
+    }
+
+    /*
+        Feedback
+    */
+    @GetMapping({"/feedback"})
+    public String feedback(@PathVariable(required = false) Integer pageIndex, final Model model, @PathVariable String status) {
+        return "";
     }
 
 }
