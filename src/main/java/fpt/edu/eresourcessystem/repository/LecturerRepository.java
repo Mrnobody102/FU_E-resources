@@ -19,6 +19,7 @@ public interface LecturerRepository extends MongoRepository<Lecturer, String> {
     Optional<Lecturer> findById(@NonNull String id);
 
     @NonNull
+    @Query("{ 'deleteFlg' : 'PRESERVED' }")
     List<Lecturer> findAll();
 
     Lecturer findByAccountId(String accountId);

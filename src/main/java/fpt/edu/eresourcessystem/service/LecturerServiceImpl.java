@@ -108,7 +108,7 @@ public class LecturerServiceImpl implements LecturerService {
 
 
     @Override
-    public boolean removeCourse(String lecturerId, ObjectId courseId) {
+    public boolean removeCourse(String lecturerId, Course courseId) {
         if (lecturerId != null || courseId != null) {
             Query query = new Query(Criteria.where("id").is(lecturerId));
             Update update = new Update().pull("courses", courseId);

@@ -220,10 +220,7 @@ public class LibrarianController {
                     !checkExist.getCourseCode().equalsIgnoreCase(course.getCourseCode())) {
                 return "redirect:/librarian/courses/" + course.getId() + "/update?error";
             }
-//            checkExist.setCourseCode(course.getCourseCode());
-//            checkExist.setCourseName(course.getCourseName());
-//            checkExist.setDescription(course.getDescription());
-            courseService.updateCourse(checkExist);
+            courseService.updateCourse(course);
             return "redirect:/librarian/courses/" + course.getId() + "/update?success";
         }
     }
@@ -260,7 +257,7 @@ public class LibrarianController {
     public String showCourseDetail(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
         List<Account> accounts = accountService.findAllLecturer();
-        boolean checkLecturerCourse = course.getLecturer().getId() != null ? true : false;
+        boolean checkLecturerCourse = course.getLecturer().getId() != null;
 
         model.addAttribute("course", course);
         model.addAttribute("checkLecturerCourse", checkLecturerCourse);
@@ -328,9 +325,9 @@ public class LibrarianController {
     @GetMapping({"/courses/{courseId}/remove-lecture"})
     public String removeLecture(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
-      //  boolean removed = lecturerService.removeCourse(course.getLecturer(), course);
+        boolean removed = lecturerService.removeCourse(course.getLecturer().getId(), course);
         boolean removed1 = courseService.removeLecture(courseId);
-        if (removed1 == true) {
+        if (removed1 && removed) {
             return "redirect:/librarian/courses/{courseId}/add-lecture?success";
         } else return "redirect:/librarian/courses/{courseId}/add-lecture?error";
     }

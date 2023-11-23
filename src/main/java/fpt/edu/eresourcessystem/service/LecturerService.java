@@ -31,7 +31,7 @@ public interface LecturerService {
     void addCourseToLecturer(String lecturerId, ObjectId courseId);
 
 
-    boolean removeCourse(String lecturerId, ObjectId courseId);
+    boolean removeCourse(String lecturerId, Course courseId);
 
     Page<Course> findListManagingCourse(Lecturer lecturer, String status, int pageIndex, int pageSize);
 

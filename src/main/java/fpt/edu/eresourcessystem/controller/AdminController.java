@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.AccountDTO;
+import fpt.edu.eresourcessystem.dto.TrainingTypeDTO;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -425,18 +426,22 @@ public class AdminController {
     }
 
     @PostMapping("/trainingtypes/add")
-    public String addTrainingType(@ModelAttribute("trainingtype") @Valid TrainingType trainingType,
-                                  BindingResult result) {
+    public String addTrainingType(@ModelAttribute("trainingtype") @Valid TrainingTypeDTO trainingType,
+                                  BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            return "admin/training_type/admin_training-type-add?error";
+            redirectAttributes.addFlashAttribute("error", "Validation failed. Please check your input.");
+            return "redirect:/admin/trainingtypes/add";
         }
         try {
-            trainingTypeService.save(trainingType);
-            return "admin/training_type/admin_training-type-add?success";
+            TrainingType trainingType1 =  new TrainingType(trainingType);
+            TrainingType save = trainingTypeService.save(trainingType1);
+            redirectAttributes.addFlashAttribute("success", "Training Type added successfully.");
         } catch (Exception e) {
-            return "admin/training_type/admin_training-type-add?error";
+            redirectAttributes.addFlashAttribute("error", "Error occurred while adding Training Type.");
         }
+        return "redirect:/admin/trainingtypes/add";
     }
+
 
     @GetMapping("/trainingtypes/list")
     public String listTrainingTypes(Model model) {
@@ -456,7 +461,7 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/update")
+    @PostMapping("/trainingtypes/update")
     public String updateTrainingType(@ModelAttribute TrainingType trainingType,
                                      RedirectAttributes redirectAttributes) {
         try {
@@ -465,13 +470,13 @@ public class AdminController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error updating training type: " + e.getMessage());
         }
-        return "redirect:/admin/trainingtypes/list";
+        return "redirect:/admin/trainingtypes/"+trainingType.getId();
     }
 
 
     //
-    @PostMapping("/delete/{id}")
-    public String deleteTrainingType(@PathVariable("id") Long id,
+    @PostMapping("/trainingtypes/delete/{id}")
+    public String deleteTrainingType(@PathVariable("id") String  id,
                                      RedirectAttributes redirectAttributes) {
         try {
             trainingTypeService.deleteById(String.valueOf(id));
@@ -482,8 +487,8 @@ public class AdminController {
         return "redirect:/admin/trainingtypes/list";
     }
 
-    @GetMapping("/delete/{id}")
-    public String softDeleteTrainingType(@PathVariable("id") Long id,
+    @GetMapping("/trainingtypes/delete/{id}")
+    public String softDeleteTrainingType(@PathVariable("id") String id,
                                          RedirectAttributes redirectAttributes) {
         Optional<TrainingType> trainingType = trainingTypeService.findById(String.valueOf(id));
         if (trainingType.isPresent()) {

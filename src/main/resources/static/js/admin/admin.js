@@ -28,34 +28,41 @@ $(".next-page-account").click(function () {
 
 // DELETE
 // Function to handle deletion with Swal alert
-function handleDeletion(url, successMessage) {
-    var currentPage = window.location.href;
-    var currentPageWithoutSuccess = currentPage.replace(/[?&]success(=[^&]*)?(&|$)/, '');
-
+function handleDeletion(url, successRedirectUrl, successMessage) {
     Swal.fire({
         title: 'Do you want to delete this item?',
         showCancelButton: true,
-        showDenyButton: true,
         confirmButtonText: 'Delete',
+        icon: 'warning',
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                type: "GET",
-                url: url + "?currentPage=" + encodeURIComponent(currentPageWithoutSuccess),
+                type: "POST", // or "DELETE"
+                url: url,
+                // include CSRF token if necessary
                 success: function () {
-                    window.location.href = currentPageWithoutSuccess + "?success";
-                    Swal.fire('Deleted!', successMessage, 'success');
+                    Swal.fire('Deleted!', successMessage, 'success').then(() => {
+                        window.location.href = successRedirectUrl;
+                    });
                 },
                 error: function () {
                     Swal.fire('Error', 'Failed to delete the item.', 'error');
                 }
             });
-        } else if (result.isDenied) {
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('Cancelled', 'Deletion was canceled.', 'info');
         }
     });
 }
+
+// Usage example
 $("body").on("click", ".delete-account", function () {
     var accountId = $(this).attr("id");
-    handleDeletion("/admin/accounts/" + accountId + "/delete", 'Account is deleted');
+    handleDeletion("/admin/accounts/" + accountId + "/delete", '/admin/accounts/list', 'Account is deleted');
 });
+
+$("body").on("click", ".delete-training-type", function () {
+    var tid = $(this).attr("id");
+    handleDeletion("/admin/trainingtypes/delete/" + tid, '/admin/trainingtypes/list', 'Training type is deleted');
+});
+

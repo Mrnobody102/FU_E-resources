@@ -107,7 +107,7 @@
                                 <td th:text="${iterStat.index+1}">1</td>
                                 <td><a th:href="@{'/admin/trainingtypes/' + ${trainingType.id}}"
                                        th:text="${trainingType.trainingTypeName}"></a></td>
-                                <td th:text="${trainingType.trainingTypeDescription}"></td>
+                                <td><span class="code-archive-except" th:text="${trainingType.trainingTypeDescription}"> </span></td>
                                 <td th:text="${trainingType.getCourses().size()}">
 <!--                                            <button th:each="course : ${trainingType.getCourses()}" class="button-a-background"-->
 <!--                                                    th:text="${course.getCourseCode()}"></button>-->
@@ -171,29 +171,29 @@
 <!--        crossorigin="anonymous"></script>-->
 <!--Custom script-->
 <script th:src="@{/js/admin/admin.js}"></script>
-<script>
-    $('form select').on('change', function () {
-        $(this).closest('form').submit();
-    });
+<!--<script>-->
+<!--    $('form select').on('change', function () {-->
+<!--        $(this).closest('form').submit();-->
+<!--    });-->
 
-    var successParam = [[${param.success}]];
-    if (successParam) {
-        Swal.fire(
-            'Success!',
-            successParam,
-            'success'
-        );
-    }
+<!--    var successParam = [[${param.success}]];-->
+<!--    if (successParam) {-->
+<!--        Swal.fire(-->
+<!--            'Success!',-->
+<!--            successParam,-->
+<!--            'success'-->
+<!--        );-->
+<!--    }-->
 
-    var errorParam = [[${param.error}]];
-    if (errorParam) {
-        Swal.fire(
-            'Error!',
-            errorParam,
-            'error'
-        );
-    }
-</script>
+<!--    var errorParam = [[${param.error}]];-->
+<!--    if (errorParam) {-->
+<!--        Swal.fire(-->
+<!--            'Error!',-->
+<!--            errorParam,-->
+<!--            'error'-->
+<!--        );-->
+<!--    }-->
+<!--</script>-->
 
 </body>
 </html>
