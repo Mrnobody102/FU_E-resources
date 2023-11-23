@@ -1,3 +1,74 @@
+function viewAllQuestion() {
+    $(".stu__questions-list-view").css("display", "none");
+    $("#stu__view-question-history").css("display", "block");
+}
+function viewQuestionWaiting() {
+    $(".stu__questions-list-view").css("display", "none");
+    var divContent = $("#stu__view-waiting-for-reply-question").text().trim();
+    if (divContent.length == 0) {
+        $("#loading").css("display", "block");
+        $.ajax({
+            type: 'GET',
+            url: '/api/student/my_question/new_question',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.length)
+                var html = "";
+                for (let i = 0; i < data.length; i++) {
+                    html += "   <div class=\"stu__question-content-wrapper\">\n" +
+                        "                                            <a class=\"stu__question-title\"\n" +
+                        "                                               href=\"/student/documents/" + data[i].documentId + "#question\">Ask on "+ data[i].documentTitle +"</a>\n" +
+                        "                                            <p class=\"stu__question-content question-content\"> "+data[i].questionContent +"</p>\n" +
+                        "                                            <span class=\"stu__question-content stu__question-date\"> "+data[i].lastModifiedDate+"</span>\n" +
+                        "                                        </div>"
+
+                }
+                $("#stu__view-waiting-for-reply-question").html(html);
+                $("#loading").css("display", "none");
+                $("#stu__view-waiting-for-reply-question").css("display", "block");
+            },
+            error: function (xhr) {
+                // Handle errors
+            }
+        });
+    } else $("#stu__view-waiting-for-reply-question").css("display", "block");
+
+}
+
+function viewNewReplyQuestion() {
+
+    $(".stu__questions-list-view").css("display", "none");
+    var divContent = $("#stu__view-new-reply-question").text().trim();
+    if (divContent.length == 0) {
+        $("#loading").css("display", "block");
+        $.ajax({
+            type: 'GET',
+            url: '/api/student/my_question/new_replies',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.length)
+                var html = "";
+                for (let i = 0; i < data.length; i++) {
+                    html += "   <div class=\"stu__question-content-wrapper\">\n" +
+                        "                                            <a class=\"stu__question-title\"\n" +
+                        "                                               href=\"/student/documents/" + data[i].documentId + "#question\">Ask on "+ data[i].documentTitle +"</a>\n" +
+                        "                                            <p class=\"stu__question-content question-content\"> "+data[i].questionContent +"</p>\n" +
+                        "                                            <span class=\"stu__question-content stu__question-date\"> "+data[i].lastModifiedDate+"</span>\n" +
+                        "                                        </div>"
+
+                }
+                $("#stu__view-new-reply-question").html(html);
+                $("#loading").css("display", "none");
+                $("#stu__view-new-reply-question").css("display", "block");
+            },
+            error: function (xhr) {
+                // Handle errors
+            }
+        });
+    } else $("#stu__view-new-reply-question").css("display", "block");
+
+}
+
 function viewTopicDocument(param) {
     if ($("#list-doc-of-topic-" + param).css('display') !== 'none') {
         $("#view-less-" + param).css("display", "none");
@@ -271,6 +342,10 @@ $(document).ready(function () {
             error: function (errorData) {
             }
         })
+    })
+    $("body").on("click", ".stu__navbar-favourite-item", function () {
+        $(".stu__navbar-favourite-item").removeClass("stu__navbar-active");
+        $(this).addClass("stu__navbar-active");
     })
 
 });

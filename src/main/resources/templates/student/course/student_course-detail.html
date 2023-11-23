@@ -139,8 +139,10 @@
                                            th:text="|${course.courseCode} - ${course.courseName}|"></a></p>
                                     <p class="course-info-lecturer">
                                         <a href="" th:if="${course.lecturer ne null}">Lecturer: <span
-                                                class="lecturer-name"
-                                                th:text="${course.lecturer.account.name}"></span>
+                                                class="lecturer-name">
+<!--                                                th:text="${course.lecturer.account.name}"-->
+
+                                        </span>
                                         </a></p>
                                     <div class="stu_save-course-link">
                                         <p><a class="unsaved-course" th:if="${saved ne null} AND ${saved} == true"
