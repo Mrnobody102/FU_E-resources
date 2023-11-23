@@ -76,14 +76,16 @@ public class StudentController {
         Student loggedInStudent = studentService.findByAccountId(loggedInAccount.getId());
         return loggedInStudent;
     }
+
     /*
         HOME
      */
-    private UserLog addUserLog(String url){
+    private UserLog addUserLog(String url) {
         UserLog userLog = new UserLog(new UserLogDto(url));
         userLog = userLogService.addUserLog(userLog);
         return userLog;
     }
+
     @GetMapping({"", "/home"})
     public String getStudentHome(@ModelAttribute Account account, final Model model) {
         Student student = getLoggedInStudent();
@@ -115,21 +117,23 @@ public class StudentController {
         // auth
         Student student = getLoggedInStudent();
         Course course = courseService.findByCourseId(courseId);
-        if(null == course || null == student){
+        if (null == student) {
+            return "common/login";
+        } else if (null == course) {
             return "exception/404";
-        }else if(null == course.getStatus() || CourseEnum.Status.PUBLISH!= course.getStatus()){
+        } else if (null == course.getStatus() || CourseEnum.Status.PUBLISH != course.getStatus()) {
             return "exception/404";
         }
+
         // add course log
         CourseLog courseLog = new CourseLog(course, CommonEnum.Action.VIEW);
         courseLog = courseLogService.addCourseLog(courseLog);
-        System.out.println(courseLog);
         model.addAttribute("course", course);
         if (studentService.checkCourseSaved(student.getId(), courseId)) {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);
         // add log
-        addUserLog("/student/course/"+ courseId);
+        addUserLog("/student/course/" + courseId);
         return "student/course/student_course-detail";
     }
 
@@ -141,14 +145,14 @@ public class StudentController {
         // auth
         Student student = getLoggedInStudent();
         Document document = documentService.findById(docId);
-        if(null == student){
+        if (null == student) {
             return "common/login";
-        }else if(null == document){
+        } else if (null == document) {
             return "exception/404";
-        }else if(DocumentEnum.DocumentStatusEnum.HIDE == document.getDocStatus()){
+        } else if (DocumentEnum.DocumentStatusEnum.HIDE == document.getDocStatus()) {
             return "exception/404";
         }
-        if(!document.getDocType().toString().equalsIgnoreCase("UNKNOWN")){
+        if (!document.getDocType().toString().equalsIgnoreCase("UNKNOWN")) {
             String base64EncodedData = Base64.getEncoder().encodeToString(document.getContent());
             model.addAttribute("data", base64EncodedData);
         }
@@ -156,8 +160,8 @@ public class StudentController {
         // Need to optimize
         Account account = accountService.findByEmail(document.getCreatedBy());
 
-        DocumentNote documentNote = documentNoteService.findByDocIdAndStudentId(docId,student.getId());
-        if(null!= documentNote){
+        DocumentNote documentNote = documentNoteService.findByDocIdAndStudentId(docId, student.getId());
+        if (null != documentNote) {
             model.addAttribute("note", documentNote);
         }
         model.addAttribute("documentNote", new DocumentNote());
@@ -167,10 +171,10 @@ public class StudentController {
         List<QuestionResponseDto> myQuestionResponseDtos = new ArrayList<>();
 
         // Need to optimize - dùng AJAX ik =)))))))))))))))))))))))))))))))))))))))))))))))))))
-        for (Question q: questions) {
-            if(!q.getStudent().getId().equals(student.getId())){
+        for (Question q : questions) {
+            if (!q.getStudent().getId().equals(student.getId())) {
                 questionResponseDtos.add(new QuestionResponseDto(q));
-            }else {
+            } else {
                 myQuestionResponseDtos.add(new QuestionResponseDto(q));
             }
         }
@@ -256,7 +260,7 @@ public class StudentController {
         model.addAttribute("currentPage", pageIndex);
         model.addAttribute("search", search);
         // add log
-        addUserLog("/student/search_course/" + pageIndex+ "?search=" + search);
+        addUserLog("/student/search_course/" + pageIndex + "?search=" + search);
         return "student/course/student_courses";
     }
 
@@ -284,7 +288,7 @@ public class StudentController {
 
 
     @GetMapping("/my_note/student_notes/add")
-    public String addMyNoteProcess(final Model model){
+    public String addMyNoteProcess(final Model model) {
         model.addAttribute("studentNote", new StudentNote());
         return "student/library/student_add-student-note";
     }
@@ -292,31 +296,31 @@ public class StudentController {
     @PostMapping("/my_note/student_notes/add")
     @Transactional
     public String addMyNote(@ModelAttribute StudentNoteDTO studentNoteDTO,
-                            BindingResult result ){
+                            BindingResult result) {
         Student student = getLoggedInStudent();
-        if(null == student){
+        if (null == student) {
             return "common/login";
-        }else if(null==studentNoteDTO || result.hasErrors()){
+        } else if (null == studentNoteDTO || result.hasErrors()) {
             return "redirect:/student/my_note/student_notes/add?error";
         }
         studentNoteDTO.setStudentId(student.getId());
         StudentNote studentNote = studentNoteService.addStudentNote(studentNoteDTO);
-        if(null!= studentNote){
+        if (null != studentNote) {
             // add log
-            addUserLog("/student/my_note/student_notes/add/" +studentNote);
+            addUserLog("/student/my_note/student_notes/add/" + studentNote);
             return "redirect:/student/my_note/student_notes/add?success";
-        }else {
+        } else {
             return "redirect:/student/my_note/student_notes/add?error";
         }
     }
 
     // tối ưu
     @GetMapping("/my_library/my_questions/history")
-    public String viewMyQuestions(final Model model){
+    public String viewMyQuestions(final Model model) {
         Student student = getLoggedInStudent();
         List<Question> questions = questionService.findByStudent(student);
-        for (Question q: questions) {
-            q.setAnswers(new HashSet<>(answerService.findByStudentAnsQuestion(student,q)));
+        for (Question q : questions) {
+            q.setAnswers(new HashSet<>(answerService.findByStudentAnsQuestion(student, q)));
         }
         model.addAttribute("studentQuestions", questions);
         // add log
@@ -331,8 +335,8 @@ public class StudentController {
 
     @GetMapping({"/search"})
     public String getSearchResults(@RequestParam(required = false, value = "search") String search,
-                         @RequestParam(required = false, defaultValue = "all") String filter,
-                         final Model model) {
+                                   @RequestParam(required = false, defaultValue = "all") String filter,
+                                   final Model model) {
         Iterable<EsDocument> esDocuments;
         esDocuments = documentService.searchDocument(search.trim());
 //        if (null == filter || "all".equals(filter)) {

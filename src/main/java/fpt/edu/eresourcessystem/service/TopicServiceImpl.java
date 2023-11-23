@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Topic;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("topicService")
 public class TopicServiceImpl implements TopicService {
@@ -111,5 +113,20 @@ public class TopicServiceImpl implements TopicService {
         Update update = new Update().push("documents", documentId);
         mongoTemplate.updateFirst(query, update, Topic.class);
     }
+    @Override
+    public List<DocumentResponseDto> findByTopic(String topicId) {
+//        Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+////                .and("docStatus").is(DocumentEnum.DocumentStatusEnum.DISPLAY)
+//                .and("topic.id").is(topicId));
+//        List<Document> documents = mongoTemplate.find(query, Document.class);
+        Optional<Topic> topic = topicRepository.findById(topicId);
+        if(topic.isPresent()){
+            List<DocumentResponseDto> responseList = topic.get().getDocuments().stream()
+                    .filter(entity -> CommonEnum.DeleteFlg.PRESERVED.equals(entity.getDeleteFlg()))
+                    .map(entity -> new DocumentResponseDto(entity))
+                    .collect(Collectors.toList());
+            return responseList;
+        }else return null;
 
+    }
 }

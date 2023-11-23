@@ -1,6 +1,8 @@
 package fpt.edu.eresourcessystem.repository;
 
 import com.mongodb.lang.NonNull;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.Document;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,4 +40,6 @@ public interface DocumentRepository extends
             + "]}")
     Page<Document> filterAndSearchDocument(String course, String topic, String title, String description,
                                          Pageable pageable);
+
+    List<Document> findByTopic_IdAndDocStatus(String topicId, CommonEnum.DeleteFlg status);
 }
