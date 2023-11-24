@@ -451,3 +451,7 @@ stu__navbar-view-doc-item:hover a{
     margin: 0.2rem 0.2rem 0.5rem 1.5rem;
     width: 90%;
 }
+.loading{
+    font-size: var(--font-normal);
+    font-weight: var(--normal-font-size);
+}

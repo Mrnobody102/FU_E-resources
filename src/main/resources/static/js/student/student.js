@@ -78,8 +78,9 @@ function viewTopicDocument(param) {
         $("#view-more-" + param).css("display", "inline");
         $("#list-doc-of-topic-" + param).css("display", "none");
     } else {
-        $("#view-less-" + param).css("display", "inline");
+        $("#view-less-" + param).css("display", "none");
         $("#view-more-" + param).css("display", "none");
+        $("#loading-more-document-" + param).css("display", "inline");
         var divContent = $("#list-doc-of-topic-" + param).text().trim();
         console.log(divContent)
         if (divContent.length == 0) {
@@ -108,6 +109,8 @@ function viewTopicDocument(param) {
 
                     }
                     $("#list-doc-of-topic-" + param).html(html);
+                    $("#view-less-" + param).css("display", "inline");
+                    $("#loading-more-document-" + param).css("display", "none");
                     $("#list-doc-of-topic-" + param).css("display", "block");
                 },
                 error: function (xhr) {

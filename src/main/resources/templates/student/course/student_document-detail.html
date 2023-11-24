@@ -113,7 +113,7 @@
                                             </div>
                                             <form action="" method="" class="form-chose-doc-type" th:if="${relevantDocuments ne null}">
                                                 <p th:each="relevantDocument : ${relevantDocuments}">
-                                                    <input name="docId" type="radio" th:id="'doc-relevant-'+ ${relevantDocument.docId}" value="Hello World">
+                                                    <input name="docId" type="radio" th:id="'doc-relevant-'+ ${relevantDocument.docId}" th:value="${relevantDocument.docId}">
                                                     <label th:for="'doc-relevant-'+ ${relevantDocument.docId}" th:text="${relevantDocument.docTitle}"
                                                            th:doc-id="${relevantDocument.docId}" onclick="viewOtherDocument(this.getAttribute('doc-id'))"></label>
                                                 </p>
