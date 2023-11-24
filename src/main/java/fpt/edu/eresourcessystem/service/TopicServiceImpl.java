@@ -118,6 +118,7 @@ public class TopicServiceImpl implements TopicService {
 //        Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
 ////                .and("docStatus").is(DocumentEnum.DocumentStatusEnum.DISPLAY)
 //                .and("topic.id").is(topicId));
+//        query.fields().include("id", "topic", "title", "description", "lastModifiedDate");
 //        List<Document> documents = mongoTemplate.find(query, Document.class);
         Optional<Topic> topic = topicRepository.findById(topicId);
         if(topic.isPresent()){

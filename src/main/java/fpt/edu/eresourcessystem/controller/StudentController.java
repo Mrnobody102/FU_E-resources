@@ -90,6 +90,9 @@ public class StudentController {
     @GetMapping({"", "/home"})
     public String getStudentHome(@ModelAttribute Account account, final Model model) {
         Student student = getLoggedInStudent();
+        if(null == student){
+            return "common/login";
+        }
         List<Course> recentCourses = courseLogService.findStudentRecentView(student.getAccount().getEmail());
 //        System.out.println(courseLogs);
 //        List<Course> recentCourses = courseService.findByListId(courseLogs);
