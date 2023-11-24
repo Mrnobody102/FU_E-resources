@@ -39,6 +39,15 @@ public class AuthenticationController {
         this.googleUtils = googleUtils;
     }
 
+
+    @GetMapping({"/contactUs"})
+    public String viewContactUs(final Model model){
+        return "guest/guest_contact-us.html";
+    }
+    @GetMapping({"/fAQ"})
+    public String viewFAQ(final Model model){
+        return "guest/guest_help-faqs.html";
+    }
     @GetMapping({"/login"})
     public String loginView(final Model model, Authentication authentication) {
         model.addAttribute("campuses", AccountEnum.getListCampus());
@@ -93,5 +102,6 @@ public class AuthenticationController {
 //        System.out.println(authentication.getAuthorities());
         return "redirect:" +RedirectUtil.getRedirectUrl(authentication);
     }
+
 
 }
