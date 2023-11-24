@@ -90,6 +90,11 @@ $("body").on("click", ".delete-topic", function () {
     handleDeletion("/librarian/courses/deleteTopic/" + topicId, 'Topic is deleted');
 });
 
+$("body").on("click", ".delete-lecturer", function () {
+    var topicId = $(this).attr("id");
+    handleDeletion("/librarian/lectures/delete/" + topicId, 'Lecturer is deleted');
+});
+
 
 $(document).on("click", ".remove-lecturer", function(e) {
     e.preventDefault();  // Prevent the default link behavior

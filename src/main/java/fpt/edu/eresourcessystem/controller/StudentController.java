@@ -57,7 +57,13 @@ public class StudentController {
     private final AnswerService answerService;
     private final UserLogService userLogService;
 
-    public StudentController(AccountService accountService, CourseService courseService, StudentService studentService, TopicService topicService, CourseLogService courseLogService, DocumentService documentService, StudentNoteService studentNoteService, DocumentNoteService documentNoteService, QuestionService questionService, AnswerService answerService, UserLogService userLogService) {
+    private final FeedbackService feedbackService;
+
+    public StudentController(AccountService accountService, CourseService courseService, StudentService studentService, TopicService topicService,
+                             CourseLogService courseLogService, DocumentService documentService,
+                             StudentNoteService studentNoteService, DocumentNoteService documentNoteService,
+                             QuestionService questionService, AnswerService answerService,
+                             UserLogService userLogService, FeedbackService feedbackService) {
         this.accountService = accountService;
         this.courseService = courseService;
         this.studentService = studentService;
@@ -69,6 +75,7 @@ public class StudentController {
         this.questionService = questionService;
         this.answerService = answerService;
         this.userLogService = userLogService;
+        this.feedbackService = feedbackService;
     }
 
     private Student getLoggedInStudent() {
@@ -365,5 +372,20 @@ public class StudentController {
         model.addAttribute("foundDocuments", esDocuments);
         model.addAttribute("search", search);
         return "student/student_search-results";
+    }
+
+    @GetMapping("/feedbacks/add")
+    public String showFeedbackForm(Model model) {
+        model.addAttribute("feedback", new Feedback());
+        return "student/feedback/student_feedback-add";
+    }
+
+    // Method to handle the form submission
+    @PostMapping("/feedbacks/add")
+    public String submitFeedback(@ModelAttribute Feedback feedback, Model model) {
+        // Process the feedback data
+        feedbackService.saveFeedback(feedback); // Save or process the feedback
+
+        return "student/feedback/student_feedback-add"; // Redirect to a success page or back to form
     }
 }
