@@ -101,18 +101,10 @@ public class LibrarianController {
         String currentPrincipalName = authentication.getName();
         Librarian librarian = librarianService.findByAccountId(accountService.findByEmail(currentPrincipalName).getId());
         course.setLibrarian(librarian);
-        List<ResourceType> resourceTypes = new ArrayList<>();
-        List<String> defaultRt = Arrays.stream(DocumentEnum.DefaultTopicResourceTypes.values())
-                .map(DocumentEnum.DefaultTopicResourceTypes::getDisplayValue)
-                .collect(Collectors.toList());
-        for(String rt : defaultRt) {
-            ResourceType resourceType = new ResourceType(rt, course);
-            ResourceType addedResourceType = resourceTypeService.addResourceType(resourceType);
-            resourceTypes.add(addedResourceType);
-        }
-        course.setResourceTypes(resourceTypes);
+
         // check course code duplicate
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
+
         if (null == checkExist) {
             // check lecturer param exist
             if (lecturer != null && !"".equals(lecturer.trim())) {
@@ -170,6 +162,7 @@ public class LibrarianController {
 
             } else {
                 Course addedCourse = courseService.addCourse(course);
+
                 librarian.getCreatedCourses().add(course);
                 librarianService.updateLibrarian(librarian);
                 if (null != addedCourse) {

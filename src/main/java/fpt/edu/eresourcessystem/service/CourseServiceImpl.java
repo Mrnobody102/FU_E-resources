@@ -2,11 +2,11 @@ package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
+import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsCourseRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +20,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,14 +29,16 @@ import java.util.stream.Collectors;
 public class CourseServiceImpl implements CourseService{
     private final CourseRepository courseRepository;
     private final TopicService topicService;
+    private final ResourceTypeService resourceTypeService;
 
     private final MongoTemplate mongoTemplate;
 
     private final EsCourseRepository esCourseRepository;
     @Autowired
-    public CourseServiceImpl(CourseRepository courseRepository, TopicService topicService, MongoTemplate mongoTemplate, EsCourseRepository esCourseRepository) {
+    public CourseServiceImpl(CourseRepository courseRepository, TopicService topicService, ResourceTypeService resourceTypeService, MongoTemplate mongoTemplate, EsCourseRepository esCourseRepository) {
         this.courseRepository = courseRepository;
         this.topicService = topicService;
+        this.resourceTypeService = resourceTypeService;
         this.mongoTemplate = mongoTemplate;
         this.esCourseRepository = esCourseRepository;
     }
@@ -47,6 +50,17 @@ public class CourseServiceImpl implements CourseService{
                 return null;
             }else {
                 Course result = courseRepository.save(course);
+                List<ResourceType> resourceTypes = new ArrayList<>();
+                List<String> defaultRt = Arrays.stream(DocumentEnum.DefaultTopicResourceTypes.values())
+                        .map(DocumentEnum.DefaultTopicResourceTypes::getDisplayValue)
+                        .collect(Collectors.toList());
+                for(String rt : defaultRt) {
+                    ResourceType resourceType = new ResourceType(rt, result);
+                    ResourceType addedResourceType = resourceTypeService.addResourceType(resourceType);
+                    resourceTypes.add(addedResourceType);
+                }
+                result.setResourceTypes(resourceTypes);
+                courseRepository.save(result);
                 return result;
             }
         }
@@ -63,6 +77,7 @@ public class CourseServiceImpl implements CourseService{
             savedCourse.setCourseName(course.getCourseName());
             savedCourse.setDescription(course.getDescription());
             savedCourse.setTrainingType(course.getTrainingType());
+            savedCourse.setStatus(course.getStatus());
             return courseRepository.save(savedCourse);
         }
         return null;
