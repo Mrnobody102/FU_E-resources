@@ -44,25 +44,11 @@
 
                             <div class="student__document-type-list">
                                 <div class="list-view-inline top-doctype-list">
-                                    <form action="" method="" class="form-chose-doc-type">
-
-                                        <input name="docType" type="radio" id="radio1" value="Info">
-                                        <label for="radio1">Course Information</label>
-
-                                        <input name="docType" type="radio" id="radio2" value="Reading">
-                                        <label for="radio2">Reading</label>
-
-                                        <input name="docType" type="radio" id="radio3" value="Lecturer Notes">
-                                        <label for="radio3">Lecturer Notes</label>
-
-                                        <input name="docType" type="radio" id="radio4" value="Reading">
-                                        <label for="radio4">Reading</label>
-
-                                        <input name="docType" type="radio" id="radio5" value="Reading">
-                                        <label for="radio5">Reading</label>
-
-                                        <input name="docType" type="radio" id="radio6" value="Reading">
-                                        <label for="radio6">Reading</label>
+                                    <form action="" method="" class="form-chose-doc-type" >
+                                        <th:block th:each="resourceType : ${course.resourceTypes}">
+                                            <input th:name="${resourceType.resourceTypeName}" type="radio" th:id="${resourceType.resourceTypeName}" th:value="${resourceType.id}">
+                                            <label th:for="${resourceType.resourceTypeName}" th:text="${resourceType.resourceTypeName}"></label>
+                                        </th:block>
                                     </form>
                                 </div>
                             </div>
@@ -110,23 +96,10 @@
                             </div>
                             <div class="list-view-inline bot-doctype-list">
                                 <form action="" method="" class="form-chose-doc-type">
-                                    <input name="docType" type="radio" id="radio-bot-1" value="All">
-                                    <label for="radio-bot-1">Course Information</label>
-
-                                    <input name="docType" type="radio" id="radio-bot-2" value="Reading">
-                                    <label for="radio-bot-2">Reading</label>
-
-                                    <input name="docType" type="radio" id="radio-bot-3" value="Lecturer Notes">
-                                    <label for="radio-bot-3">Lecturer Notes</label>
-
-                                    <input name="docType" type="radio" id="radio-bot-4" value="Reading">
-                                    <label for="radio-bot-4">Reading</label>
-
-                                    <input name="docType" type="radio" id="radio-bot-5" value="Reading">
-                                    <label for="radio-bot-5">Reading</label>
-
-                                    <input name="docType" type="radio" id="radio-bot-6" value="Reading">
-                                    <label for="radio-bot-6">Reading</label>
+                                    <th:block th:each="resourceType : ${course.resourceTypes}">
+                                        <input th:name="${resourceType.resourceTypeName}" type="radio" th:id="${resourceType.resourceTypeName}" th:value="${resourceType.id}">
+                                        <label th:for="${resourceType.resourceTypeName}" th:text="${resourceType.resourceTypeName}"></label>
+                                    </th:block>
                                 </form>
                             </div>
                         </div>

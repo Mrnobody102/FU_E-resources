@@ -40,7 +40,7 @@
                                 <h1 class="h2" th:text="${course.courseCode} + ' - ' + ${course.courseName}"></h1>
                                 <p id="content" class="doc-info-description"
                                    style="text-align: justify; margin-bottom: 0" th:text="${course.description}"></p>
-                                <span id="readMoreBtn" class="read-more" onclick="toggleContent()">Readmore</span>
+                                <span id="readMoreBtn" class="read-more" onclick="toggleContent()">Read more</span>
 
 
 
@@ -93,13 +93,13 @@
                         </p>
                         <div class="border-bottom">
                             <ul class="mt-4">
-                                <li class="lec__navbar-item"
+                                <li class="lec__navbar-item" id="topicSelection"
                                     th:classappend="${getBy == 'topics' || getBy == null ? 'lec__navbar-active' : ''}">
                                     <a th:href="@{'/lecturer/courses/' + ${course.id} + '/topics'}">
                                         Topics
                                     </a>
                                 </li>
-                                <li class="lec__navbar-item"
+                                <li class="lec__navbar-item" id="resourceTypeSelection"
                                     th:classappend="${getBy == 'resourcetypes' ? 'lec__navbar-active' : ''}">
                                     <a th:href="@{'/lecturer/courses/' + ${course.id} + '/resourcetypes'}">
                                         Resource types
@@ -112,7 +112,7 @@
                                 <div class="topic-list-content">
                                     <div class="topic-view-list">
                                         <!--Topic view-->
-                                        <div class="topic-item pt-2 pb-3 border-bottom" th:each="topic : ${topics}">
+                                        <div id="topics" class="topic-item pt-2 pb-3 border-bottom" th:each="topic : ${topics}">
                                             <div class="topic-title">
                                                 <h3 class="topic-info-title d-flex justify-content-between">
                                                     <a th:href="@{'/lecturer/topics/' + ${topic.id}}"
@@ -157,7 +157,7 @@
                                         </div>
                                         <!--End Topic view-->
                                         <!--Rs type view-->
-                                        <div class="topic-item pt-2 pb-3 border-bottom" th:each="rtype : ${resourceTypes}">
+                                        <div id="resourceTypes" class="topic-item pt-2 pb-3 border-bottom" th:each="rtype : ${resourceTypes}">
                                             <div class="topic-title">
                                                 <h3 class="topic-info-title d-flex justify-content-between">
                                                     <a th:href="@{'/lecturer/resource_types/' + ${rtype.id}}"
@@ -251,6 +251,12 @@
         // Toggle the visibility of the select element
         select.style.display = select.style.display === 'none' ? 'block' : 'none';
     });
+
+    // $('#topicSelection').addEventListener('click', function () {
+    //         $('#topics').show();
+    //         $('#resourceTypes').hide();
+    //     }
+    // )
 
 </script>
 </body>

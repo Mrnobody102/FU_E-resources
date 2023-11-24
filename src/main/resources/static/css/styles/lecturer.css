@@ -233,12 +233,17 @@
 
 .lecturer_textarea {
     font-size: 1.3rem;
-    height: 150px;
+    height: fit-content;
 }
 
 .lecturer__input-doc {
-    width: 60%;
+    width: 100%;
 }
+
+#editorWrapper {
+    margin-top: 2rem;
+}
+
 .lec__edit-topic-icon{
     font-size: var(--medium-font-size);
     border-radius: 0.2rem;

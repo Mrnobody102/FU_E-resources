@@ -43,6 +43,8 @@
                             <div style="flex: 3">
                                 <h1 class="h2" th:text="${topic.topicTitle}"></h1>
                                 <p th:text="${course.courseCode} + ' - ' + ${course.courseName}"></p>
+                                <p id="content" class="doc-info-description"
+                                   style="text-align: justify; margin-bottom: 0" th:text="'Topic description: ' + ${topic.topicDescription}"></p>
                             </div>
                             <div style="flex: 1; display: flex; justify-content: center">
                                 <div style="width: 60%; display: flex; justify-content: center; flex-direction: column">
@@ -61,7 +63,7 @@
                         <div>
                             <!--Document view list-->
                             <div class="d-flex align-items-center document-view-info border-bottom"
-                                 th:each="document : ${topic.getDocuments()}">
+                                 th:each="document : ${documents}">
                                 <div class="doc-info-head" style="max-width: 75%">
                                     <p class="doc-info-title"><a th:href="@{'/lecturer/documents/' + ${document.id}}">
                                         <span th:text="${document.title}"></span></a>

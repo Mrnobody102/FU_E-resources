@@ -6,10 +6,12 @@ import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsCourseRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -153,6 +155,23 @@ public class CourseServiceImpl implements CourseService{
         return null;
     }
 
+    @Override
+    public List<Course> findNewCoursesByLecturer(Lecturer lecturer) {
+        Criteria criteria = new Criteria();
+
+        // Sort by the "time" in descending order to get the most recent documents
+        criteria.and("createdDate").exists(true);
+        criteria.and("lecturer.id").is(lecturer.getId());
+        criteria.and("status").is("NEW");
+
+        Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("createdDate")));
+        // Use a Pageable to limit the result set to 5 documents
+        PageRequest pageable = PageRequest.of(0, 5);
+        query.with(pageable);
+        List<Course> results = mongoTemplate.find(query, Course.class);
+        return results;
+    }
+
     /*
         TOPIC
      */
@@ -287,7 +306,6 @@ public class CourseServiceImpl implements CourseService{
         List<Course> results = mongoTemplate.find(query, Course.class);
         Page<Course> page =  PageableExecutionUtils.getPage(results, pageable,
                 () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Course.class));
-        System.out.println(page.getTotalPages());
         return page;
     }
 

@@ -4,6 +4,7 @@
 
 <head>
     <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="'Lecturer | ' + ${document.getTitle()}"></title>
     <!-- Bootstrap core CSS -->
@@ -89,14 +90,68 @@
                                              style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
                                         </div>
                                     </th:block>
-                                    <!--                                    <th:block th:if="${document.docType.toString().equals('TXT')}">-->
-                                    <!--                                        <embed th:attr="src=@{'data:text/plain;base64,' + ${data}}" type="text/plain" width="100%" height="600px">-->
-                                    <!--                                    </th:block>-->
-                                    <th:block th:if="${document.docType.toString().equals('PDF')}">
+                                    <th:block th:if="${document.docType.toString().equals('TXT')}">
+                                        <iframe class="doc-content-view"
+                                                th:src="'data:text/html;base64,' + ${data}"
+                                                width="100%" height="600px"></iframe>
+                                    </th:block>
+                                    <th:block th:if="${document.docType.toString() eq 'HTML'}">
+                                        <iframe class="doc-content-view"
+                                                th:src="'data:text/html;base64,' + ${data}"
+                                                width="100%" height="600px"></iframe>
+                                    </th:block>
+                                    <th:block th:if="${document.docType.toString() eq 'PDF'}">
                                         <embed class="doc-content-view"
                                                th:attr="src='data:application/pdf;base64,' + ${data}"
                                                type="application/pdf" width="100%" height="600px">
                                     </th:block>
+                                    <!-- Word -->
+                                    <a th:if="${document.docType.toString() eq 'DOCX'}" th:href="'data:application/msword;base64,' + ${data}" download="document.doc">Download Word</a>
+
+                                    <!-- Excel -->
+                                    <a th:if="${document.docType.toString() eq 'EXCEL'}" th:href="'data:application/vnd.ms-excel;base64,' + ${data}" download="spreadsheet.xls">Download Excel</a>
+
+                                    <!-- PowerPoint -->
+                                    <a th:if="${document.docType.toString() eq 'POWERPOINT'}" th:href="'data:application/vnd.ms-powerpoint;base64,' + ${data}" download="presentation.ppt">Download PowerPoint</a>
+
+                                    <!-- Video -->
+                                    <th:block th:if="${document.docType.toString() eq 'VIDEO'}">
+                                        <video controls class="doc-content-view" width="100%" height="100%">
+                                            <th:block th:if="${document.suffix eq 'webm'}">
+                                                <source type="video/webm"
+                                                        th:src="'data:video/webm;base64,' + ${data}"
+                                                        >
+                                            </th:block>
+                                            <th:block th:if="${document.suffix eq 'mp4'}">
+                                                <source type="video/mp4"
+                                                        th:src="'data:video/mp4;base64,' + ${data}"
+                                                >
+                                            </th:block>
+                                        </video>
+                                    </th:block>
+
+
+                                    <!-- Image -->
+                                    <th:block th:if="${document.docType.toString() eq 'PNG'}" >
+                                        <img th:src="'data:${document.contentType};base64,' + ${data}" alt="Image"/>
+                                    </th:block>
+
+                                    <!-- Audio -->
+                                    <th:block th:if="${document.docType.toString() eq 'AUDIO'}">
+                                        <video controls class="doc-content-view" width="100%" height="100%">
+                                            <th:block th:if="${document.suffix eq 'webm'}">
+                                                <source type="video/webm"
+                                                        th:src="'data:video/webm;base64,' + ${data}"
+                                                >
+                                            </th:block>
+                                            <th:block th:if="${document.suffix eq 'mp4'}">
+                                                <source type="video/mp4"
+                                                        th:src="'data:video/mp4;base64,' + ${data}"
+                                                >
+                                            </th:block>
+                                        </video>
+                                    </th:block>
+                                    <audio th:if="${document.docType.toString() eq 'MP3'}" th:attr="src='data:${document.contentType};base64,' + ${data}" controls></audio>
                                 </div>
 
 

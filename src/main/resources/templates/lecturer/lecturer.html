@@ -27,6 +27,49 @@
                     <div class="lec__sidebar">
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar('home')}"></div>
                     </div>
+                    <div class="lec__courses-content main" id="main-lecturer">
+
+                        <div class="stu__recent-course-content">
+                            <div class="stu__div-content-recent-title">
+                                <h2 class="p border-bottom">
+                                    Recent new courses
+                                </h2>
+                            </div>
+                            <div class="stu__courses-list-recent home-courses">
+                                <div class="stu__view-recent-courses">
+                                    <div class="stu__view-list-course-content">
+                                        <div class="view-inline-list">
+                                            <ul class="home__course-list  d-flex">
+                                                <li class="home__course-item grid__column-2"
+                                                    th:each="course : ${recentCourses}">
+                                                    <div class="home__course-wrapper-inline">
+                                                        <h2 class="home__course-code" th:text="${course.courseCode}"
+                                                            href=""></h2>
+                                                        <a class="home__course-name-inline"
+                                                           th:text="${course.courseName}"
+                                                           th:href="@{'/lecturer/courses/' + ${course.id}}"></a>
+                                                        <p class="home__course-description"
+                                                           th:text="${course.description}"></p>
+                                                        <ul class="home__course-lecturer-list">
+                                                            <li class="home__course-lecturer-item"
+                                                                th:if="${course.lecturer ne null}">
+                                                                <a class="home__course-lecturer-link"
+                                                                   href="">
+                                                                    <span>Lecturer: </span>
+                                                                    <span th:text="${course.lecturer.account.name}"></span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -58,7 +58,11 @@ public class LecturerController {
     }
 
     @GetMapping
-    public String getLibraryManageDashboard(@ModelAttribute Account account) {
+    public String getLecturerHome(@ModelAttribute Account account, final Model model) {
+        Lecturer lecturer = getLoggedInLecturer();
+        List<Course> recentCourses = courseService.findNewCoursesByLecturer(lecturer);
+//        List<Course> recentCourses = courseService.findByListId(courseLogs);
+        model.addAttribute("recentCourses", recentCourses);
         return "lecturer/lecturer";
     }
 
@@ -227,6 +231,7 @@ public class LecturerController {
     public String viewTopicDetail(@PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
         model.addAttribute("course", topic.getCourse());
+        model.addAttribute("documents", topic.getDocuments());
         model.addAttribute("topic", topic);
         return "lecturer/topic/lecturer_topic-detail";
     }
@@ -281,26 +286,16 @@ public class LecturerController {
         return "redirect:/lecturer/resource_types/" + resourceTypeId + "/update?error";
 
     }
-//
-//    @GetMapping({"resourcetypes/{resourcetypeId}/delete_resourcetype/"})
-//    public String deleteResourceType(@PathVariable String courseId, @PathVariable String resourcetypeId, final Model model) {
-//        ResourceType resourcetype = resourceTypeService.findById(resourcetypeId);
-//        if (null != resourcetype) {
+
+    @GetMapping({"resource_types/{resourceTypeId}/delete_resource_type/"})
+    public String deleteResourceType(@PathVariable String courseId, @PathVariable String resourceTypeId, final Model model) {
+        ResourceType resourcetype = resourceTypeService.findById(resourceTypeId);
+        if (null != resourcetype) {
 //            courseService.removeResourceType(resourcetype);
 //            resourceTypeService.softDelete(resourcetype);
-//        }
-//        return "redirect:/lecturer/" + resourcetype.getCourse().getId();
-//    }
-//
-//    @GetMapping({"resourcetypes/{resourcetypeId}/delete_resourcetype/"})
-//    public String deleteResourceType(@PathVariable String courseId, @PathVariable String resourcetypeId, final Model model) {
-//        ResourceType resourcetype = resourceTypeService.findById(resourcetypeId);
-//        if (null != resourcetype) {
-//            courseService.removeResourceType(resourcetype);
-//            resourceTypeService.softDelete(resourcetype);
-//        }
-//        return "redirect:/lecturer/" + resourcetype.getCourse().getId();
-//    }
+        }
+        return "redirect:/lecturer/courses/" + resourcetype.getCourse().getId();
+    }
 
     @GetMapping("/resource_types/{resourceTypeId}")
     public String viewResourceTypeDetail(@PathVariable String resourceTypeId, final Model model) {
@@ -371,23 +366,21 @@ public class LecturerController {
         Topic topic = topicService.findById(topicId);
         model.addAttribute("document", new Document());
         model.addAttribute("topic", topic);
-//        List<String> defaultRt = Arrays.stream(DocumentEnum.DefaultTopicResourceTypes.values())
-//                .map(DocumentEnum.DefaultTopicResourceTypes::getDisplayValue)
-//                .collect(Collectors.toList());
-//
-//        List<ResourceType> resourceTypesByCourse = topic.getCourse().getResourceTypes();
-//        List<String> resourceTypes = new ArrayList<>();
-//
-//        if (resourceTypesByCourse != null) {
-//            resourceTypes = resourceTypesByCourse.stream()
-//                    .map(ResourceType::getResourceTypeName)
-//                    .collect(Collectors.toList());
-//        } else {
-//            resourceTypes = new ArrayList<>();
-//        }
-//
-//        resourceTypes.addAll(defaultRt);
-        model.addAttribute("resourceTypes", DocumentEnum.DefaultTopicResourceTypes.values());
+        List<String> defaultRt = Arrays.stream(DocumentEnum.DefaultTopicResourceTypes.values())
+                .map(DocumentEnum.DefaultTopicResourceTypes::getDisplayValue)
+                .collect(Collectors.toList());
+
+        List<ResourceType> resourceTypesByCourse = topic.getCourse().getResourceTypes();
+        List<String> resourceTypes = new ArrayList<>();
+
+        if (resourceTypesByCourse != null) {
+            resourceTypes = resourceTypesByCourse.stream()
+                    .map(ResourceType::getResourceTypeName)
+                    .collect(Collectors.toList());
+        }
+
+        resourceTypes.addAll(defaultRt);
+        model.addAttribute("resourceTypes", resourceTypes);
 //        System.out.println(DocumentEnum.DefaultTopicResourceTypes.values());
         return "lecturer/document/lecturer_add-document";
     }
