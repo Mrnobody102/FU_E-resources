@@ -112,9 +112,10 @@
                                         <a class="course-info-name" th:href="@{'/student/courses/' + ${course.getId}}"
                                            th:text="|${course.courseCode} - ${course.courseName}|"></a></p>
                                     <p class="course-info-lecturer">
-                                        <a href="" th:if="${course.lecturer ne null}">Lecturer: <span
-                                                class="lecturer-name">
-<!--                                                th:text="${course.lecturer.account.name}"-->
+                                        <a href="" th:if="${course.lecturer ne null}">Lecturer:
+                                            <span
+                                                class="lecturer-name"
+                                                th:text="${course.lecturer.account.name}">
 
                                         </span>
                                         </a></p>

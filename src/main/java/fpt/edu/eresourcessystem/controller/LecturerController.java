@@ -366,20 +366,11 @@ public class LecturerController {
         Topic topic = topicService.findById(topicId);
         model.addAttribute("document", new Document());
         model.addAttribute("topic", topic);
-        List<String> defaultRt = Arrays.stream(DocumentEnum.DefaultTopicResourceTypes.values())
-                .map(DocumentEnum.DefaultTopicResourceTypes::getDisplayValue)
-                .collect(Collectors.toList());
 
         List<ResourceType> resourceTypesByCourse = topic.getCourse().getResourceTypes();
-        List<String> resourceTypes = new ArrayList<>();
-
-        if (resourceTypesByCourse != null) {
-            resourceTypes = resourceTypesByCourse.stream()
-                    .map(ResourceType::getResourceTypeName)
-                    .collect(Collectors.toList());
-        }
-
-        resourceTypes.addAll(defaultRt);
+        List<String> resourceTypes = resourceTypesByCourse.stream()
+                .map(ResourceType::getResourceTypeName)
+                .collect(Collectors.toList());
         model.addAttribute("resourceTypes", resourceTypes);
 //        System.out.println(DocumentEnum.DefaultTopicResourceTypes.values());
         return "lecturer/document/lecturer_add-document";

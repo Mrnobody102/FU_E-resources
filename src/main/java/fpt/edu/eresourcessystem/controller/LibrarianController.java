@@ -5,6 +5,7 @@ import fpt.edu.eresourcessystem.dto.DocumentDTO;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
+import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
@@ -28,8 +29,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -98,6 +101,16 @@ public class LibrarianController {
         String currentPrincipalName = authentication.getName();
         Librarian librarian = librarianService.findByAccountId(accountService.findByEmail(currentPrincipalName).getId());
         course.setLibrarian(librarian);
+        List<ResourceType> resourceTypes = new ArrayList<>();
+        List<String> defaultRt = Arrays.stream(DocumentEnum.DefaultTopicResourceTypes.values())
+                .map(DocumentEnum.DefaultTopicResourceTypes::getDisplayValue)
+                .collect(Collectors.toList());
+        for(String rt : defaultRt) {
+            ResourceType resourceType = new ResourceType(rt, course);
+            ResourceType addedResourceType = resourceTypeService.addResourceType(resourceType);
+            resourceTypes.add(addedResourceType);
+        }
+        course.setResourceTypes(resourceTypes);
         // check course code duplicate
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
         if (null == checkExist) {
@@ -201,7 +214,6 @@ public class LibrarianController {
     @PostMapping("/courses/update")
     public String updateCourse(@ModelAttribute Course course, final Model model) {
         Course checkExist = courseService.findByCourseId(course.getId());
-
         if (null == checkExist) {
             return "redirect:/librarian/courses/" + course.getId() + "/update?error";
         } else {

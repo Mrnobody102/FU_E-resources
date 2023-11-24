@@ -113,7 +113,9 @@
                 <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                     <div class="header__navbar-user-wrap">
                         <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span class="header__navbar-user-role">(Admin)</span>
+                        <th:block th:if="${loggedInUser ne null}">
+                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span class="header__navbar-user-role">(Admin)</span>
+                        </th:block>
                     </div>
                 </li>
                 <li class="header__navbar-item">

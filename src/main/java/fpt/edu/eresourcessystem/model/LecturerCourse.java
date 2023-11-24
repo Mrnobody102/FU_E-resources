@@ -3,12 +3,13 @@ package fpt.edu.eresourcessystem.model;
 
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Document("lecturer_course")

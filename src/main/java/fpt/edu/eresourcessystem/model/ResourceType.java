@@ -5,7 +5,7 @@ import fpt.edu.eresourcessystem.dto.ResourceTypeDTO;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,7 +14,8 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Document("resource_types")
 @NoArgsConstructor
 @AllArgsConstructor

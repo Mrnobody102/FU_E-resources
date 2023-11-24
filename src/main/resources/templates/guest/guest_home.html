@@ -2,42 +2,42 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FPT University E-Resources</title>
-  <!-- CSS -->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>FPT University E-Resources</title>
+    <!-- CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
-    <link rel="stylesheet" th:href="@{/css/base.css}"/>
-    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-  <link rel="stylesheet" th:href="@{/css/styles/guest.css}">
 
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/guest.css}">
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
 
 
     <!--    <style th:inline="text">-->
-<!--        body{-->
-<!--            background: url([[@{/static/images/sample_guest/background_library.JPG}]])-->
-<!--            no-repeat center center fixed;-->
-<!--        }-->
-<!--    </style>-->
+    <!--        body{-->
+    <!--            background: url([[@{/static/images/sample_guest/background_library.JPG}]])-->
+    <!--            no-repeat center center fixed;-->
+    <!--        }-->
+    <!--    </style>-->
 </head>
 <body>
 
 <div class="app_container">
     <div class="header" th:replace="~{fragments/header::guestHeaderSection}"></div>
-<!--    <div class="main" >-->
-<!--        <div id="slider">-->
-<!--            <div class="text-content" >-->
+    <!--    <div class="main" >-->
+    <!--        <div id="slider">-->
+    <!--            <div class="text-content" >-->
 
-<!--                &lt;!&ndash;            <body th:style="'background-image:url(' + @{/images/background.jpg} + '); background-repeat: no-repeat, repeat; background-size: cover;'">&ndash;&gt;-->
-<!--                &lt;!&ndash;            </body>&ndash;&gt;-->
-<!--                <img class="text-img" th:src="@{/images/sample_guest/library_design1.png}" alt="library1" style="width:100%">-->
-<!--                <h2 class="text-heading">   FPT University E-resources System </h2>-->
-<!--                &lt;!&ndash;            <div class="text-des"></div>&ndash;&gt;-->
-<!--            </div>-->
-<!--            -->
-<!--        </div>-->
+    <!--                &lt;!&ndash;            <body th:style="'background-image:url(' + @{/images/background.jpg} + '); background-repeat: no-repeat, repeat; background-size: cover;'">&ndash;&gt;-->
+    <!--                &lt;!&ndash;            </body>&ndash;&gt;-->
+    <!--                <img class="text-img" th:src="@{/images/sample_guest/library_design1.png}" alt="library1" style="width:100%">-->
+    <!--                <h2 class="text-heading">   FPT University E-resources System </h2>-->
+    <!--                &lt;!&ndash;            <div class="text-des"></div>&ndash;&gt;-->
+    <!--            </div>-->
+    <!--            -->
+    <!--        </div>-->
     <div class="mySlides w3-display-container w3-center ">
         <img th:src="@{/images/sample_guest/library_design1.png}" alt="library1" style="width:100%">
         <div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 w3-hide-small">
@@ -45,131 +45,144 @@
         </div>
     </div>
 
-        <div id="content">
-            <div class="content-section">
-                <h2 class="section-heading">Hệ thống tài nguyên học tập số Trường đại học FPT </h2>
-                <p class="section-sub-heading">Nơi cung cấp và tìm kiếm các tài liệu học tập số</p>
-                <p class="about-text">
-                    Thư viện Đại học FPT là một phần quan trọng không thể thiếu trong cơ sở hạ tầng học thuật của trường Đại học FPT, nằm ẩn mình giữa khuôn viên đẹp và hiện đại của trường. Được xây dựng với mục tiêu tạo ra một môi trường học tập và nghiên cứu lý tưởng, thư viện Đại học FPT đã nhanh chóng trở thành một trung tâm tri thức đa dạng, nơi tập trung mọi nguồn tài liệu và dịch vụ hỗ trợ học tập cho cộng đồng sinh viên và giảng viên.
+    <div id="content">
+        <div class="content-section">
+            <h2 class="section-heading">Hệ thống tài nguyên học tập số Trường đại học FPT </h2>
+            <p class="section-sub-heading">Nơi cung cấp và tìm kiếm các tài liệu học tập số</p>
+            <p class="about-text">
+                Thư viện Đại học FPT là một phần quan trọng không thể thiếu trong cơ sở hạ tầng học thuật của trường Đại
+                học FPT, nằm ẩn mình giữa khuôn viên đẹp và hiện đại của trường. Được xây dựng với mục tiêu tạo ra một
+                môi trường học tập và nghiên cứu lý tưởng, thư viện Đại học FPT đã nhanh chóng trở thành một trung tâm
+                tri thức đa dạng, nơi tập trung mọi nguồn tài liệu và dịch vụ hỗ trợ học tập cho cộng đồng sinh viên và
+                giảng viên.
 
-                    Thư viện Đại học FPT với kiến trúc hiện đại và tiện nghi không chỉ là nơi lưu trữ hàng ngàn cuốn sách, tạp chí, báo cáo nghiên cứu, mà còn là một không gian thú vị và sáng tạo. Sinh viên tại đây có cơ hội tiếp cận vào thế giới tri thức thông qua các máy tính, phòng đọc, khu vực tự học, phòng thảo luận, và khu vườn đọc ngoài trời. Thư viện còn cung cấp dịch vụ thư mục, in ấn, và hỗ trợ nghiên cứu cho tất cả những ai cần.
+                Thư viện Đại học FPT với kiến trúc hiện đại và tiện nghi không chỉ là nơi lưu trữ hàng ngàn cuốn sách,
+                tạp chí, báo cáo nghiên cứu, mà còn là một không gian thú vị và sáng tạo. Sinh viên tại đây có cơ hội
+                tiếp cận vào thế giới tri thức thông qua các máy tính, phòng đọc, khu vực tự học, phòng thảo luận, và
+                khu vườn đọc ngoài trời. Thư viện còn cung cấp dịch vụ thư mục, in ấn, và hỗ trợ nghiên cứu cho tất cả
+                những ai cần.
 
-                </p>
+            </p>
 
-                <div class="member-list">
-                    <div class="member-item">
-                        <p class="member-name">Nhanh chóng</p>
-                        <img class="member-img" th:src="@{/images/sample_guest/library1.jpg}" alt="library1" style="width:100%">
-                    </div>
-                    <div class="member-item">
-                        <p class="member-name">Tiện lợi</p>
-                        <img class="member-img" th:src="@{/images/sample_guest/library2.jpg}" alt="library2" style="width:100%">
+            <div class="member-list">
+                <div class="member-item">
+                    <p class="member-name">Nhanh chóng</p>
+                    <img class="member-img" th:src="@{/images/sample_guest/library1.jpg}" alt="library1"
+                         style="width:100%">
+                </div>
+                <div class="member-item">
+                    <p class="member-name">Tiện lợi</p>
+                    <img class="member-img" th:src="@{/images/sample_guest/library2.jpg}" alt="library2"
+                         style="width:100%">
 
-                        <!--                    <img src="./images/bandmember.jpg" alt="Name" class="member-img">-->
-                    </div>
-                    <div class="member-item">
-                        <p class="member-name">Dễ dàng</p>
-                        <img class="member-img" th:src="@{/images/sample_guest/library3.jpg}" alt="library3" style="width:100%">
+                    <!--                    <img src="./images/bandmember.jpg" alt="Name" class="member-img">-->
+                </div>
+                <div class="member-item">
+                    <p class="member-name">Dễ dàng</p>
+                    <img class="member-img" th:src="@{/images/sample_guest/library3.jpg}" alt="library3"
+                         style="width:100%">
 
-                        <!--                    <img src="./images/bandmember.jpg" alt="Name" class="member-img">-->
-                    </div>
+                    <!--                    <img src="./images/bandmember.jpg" alt="Name" class="member-img">-->
                 </div>
             </div>
         </div>
-<!--    </div>-->
-
-
-
-<!--FE cũ-->
-
-  <!--  Main-->
-<!--  slide-->
-<!--  <section>-->
-<!--    <div class="slideshow-container">-->
-<!--      <div class="mySlides fade">-->
-<!--&lt;!&ndash;        <div class="numbertext">1 / 3</div>&ndash;&gt;-->
-<!--        <img th:src="@{/images/sample_guest/library_design1.png}" alt="library1" style="width:100%">-->
-<!--        <div class="text">Yên tĩnh</div>-->
-<!--      </div>-->
-
-<!--      <div class="mySlides fade">-->
-<!--&lt;!&ndash;        <div class="numbertext">2 / 3</div>&ndash;&gt;-->
-<!--        <img th:src="@{/images/sample_guest/library2.jpg}" alt="library2" style="width:100%">-->
-<!--        <div class="text">Tập trung</div>-->
-<!--      </div>-->
-
-<!--      <div class="mySlides fade">-->
-<!--&lt;!&ndash;        <div class="numbertext">3 / 3</div>&ndash;&gt;-->
-<!--        <img th:src="@{/images/sample_guest/library3.jpg}" alt="library3" style="width:100%">-->
-<!--        <div class="text">Học tập</div>-->
-<!--      </div>-->
-
-<!--      <a class="prev" onclick="plusSlides(-1)">❮</a>-->
-<!--      <a class="next" onclick="plusSlides(1)">❯</a>-->
-
-<!--    </div>-->
-<!--    <br>-->
-
-<!--  </section>-->
-<!--&lt;!&ndash;background&ndash;&gt;-->
-<!--    <section>-->
-<!--        <div class="image-container">-->
-<!--            <img th:src="@{/images/sample_guest/background_library.jpg}" alt="background_library" style="width: 1200px; height: auto;">-->
-<!--            <div class="text-overlay">-->
-<!--                <p class="p-inside-img">Kênh thông tin</p>-->
-<!--                <p class="p-inside-img">Thư viện Đại Học FPT</p>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </section>-->
-<!--&lt;!&ndash;information&ndash;&gt;-->
-<!--    <section class="information">-->
-<!--        <div class="information-content">-->
-<!--            <p> <strong> Thư viện Đại học FPT - Kho tàng tri thức vững chắc của sự phát triển </strong><br>    </p>-->
-
-<!--            <p>  Thư viện Đại học FPT là một phần quan trọng không thể thiếu trong cơ sở hạ tầng học thuật của trường Đại học FPT, nằm ẩn mình giữa khuôn viên đẹp và hiện đại của trường. Được xây dựng với mục tiêu tạo ra một môi trường học tập và nghiên cứu lý tưởng, thư viện Đại học FPT đã nhanh chóng trở thành một trung tâm tri thức đa dạng, nơi tập trung mọi nguồn tài liệu và dịch vụ hỗ trợ học tập cho cộng đồng sinh viên và giảng viên.-->
-
-<!--                Thư viện Đại học FPT với kiến trúc hiện đại và tiện nghi không chỉ là nơi lưu trữ hàng ngàn cuốn sách, tạp chí, báo cáo nghiên cứu, mà còn là một không gian thú vị và sáng tạo. Sinh viên tại đây có cơ hội tiếp cận vào thế giới tri thức thông qua các máy tính, phòng đọc, khu vực tự học, phòng thảo luận, và khu vườn đọc ngoài trời. Thư viện còn cung cấp dịch vụ thư mục, in ấn, và hỗ trợ nghiên cứu cho tất cả những ai cần.-->
-<!--            </p>-->
-<!--        </div>-->
-<!--        <div class="information-img">-->
-<!--            <img th:src="@{/images/sample_guest/library4.jpg}" alt="library4" style="height: 800px">-->
-<!--        </div>-->
-<!--    </section>-->
-
-  <!-- Footer -->
-  <div th:replace="~{fragments/footer :: footerSection}"></div>
-
-
-
-<script>
-  let slideIndex = 1;
-  showSlides(slideIndex);
-
-  function plusSlides(n) {
-    showSlides(slideIndex += n);
-  }
-
-  function currentSlide(n) {
-    showSlides(slideIndex = n);
-  }
-
-  function showSlides(n) {
-    let i;
-    let slides = document.getElementsByClassName("mySlides");
-    let dots = document.getElementsByClassName("dot");
-    if (n > slides.length) {slideIndex = 1}
-    if (n < 1) {slideIndex = slides.length}
-    for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-    }
-    for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-    }
-    slides[slideIndex-1].style.display = "block";
-    dots[slideIndex-1].className += " active";
-  }
-</script>
-
     </div>
+    <!--    </div>-->
+
+
+    <!--FE cũ-->
+
+    <!--  Main-->
+    <!--  slide-->
+    <!--  <section>-->
+    <!--    <div class="slideshow-container">-->
+    <!--      <div class="mySlides fade">-->
+    <!--&lt;!&ndash;        <div class="numbertext">1 / 3</div>&ndash;&gt;-->
+    <!--        <img th:src="@{/images/sample_guest/library_design1.png}" alt="library1" style="width:100%">-->
+    <!--        <div class="text">Yên tĩnh</div>-->
+    <!--      </div>-->
+
+    <!--      <div class="mySlides fade">-->
+    <!--&lt;!&ndash;        <div class="numbertext">2 / 3</div>&ndash;&gt;-->
+    <!--        <img th:src="@{/images/sample_guest/library2.jpg}" alt="library2" style="width:100%">-->
+    <!--        <div class="text">Tập trung</div>-->
+    <!--      </div>-->
+
+    <!--      <div class="mySlides fade">-->
+    <!--&lt;!&ndash;        <div class="numbertext">3 / 3</div>&ndash;&gt;-->
+    <!--        <img th:src="@{/images/sample_guest/library3.jpg}" alt="library3" style="width:100%">-->
+    <!--        <div class="text">Học tập</div>-->
+    <!--      </div>-->
+
+    <!--      <a class="prev" onclick="plusSlides(-1)">❮</a>-->
+    <!--      <a class="next" onclick="plusSlides(1)">❯</a>-->
+
+    <!--    </div>-->
+    <!--    <br>-->
+
+    <!--  </section>-->
+    <!--&lt;!&ndash;background&ndash;&gt;-->
+    <!--    <section>-->
+    <!--        <div class="image-container">-->
+    <!--            <img th:src="@{/images/sample_guest/background_library.jpg}" alt="background_library" style="width: 1200px; height: auto;">-->
+    <!--            <div class="text-overlay">-->
+    <!--                <p class="p-inside-img">Kênh thông tin</p>-->
+    <!--                <p class="p-inside-img">Thư viện Đại Học FPT</p>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </section>-->
+    <!--&lt;!&ndash;information&ndash;&gt;-->
+    <!--    <section class="information">-->
+    <!--        <div class="information-content">-->
+    <!--            <p> <strong> Thư viện Đại học FPT - Kho tàng tri thức vững chắc của sự phát triển </strong><br>    </p>-->
+
+    <!--            <p>  Thư viện Đại học FPT là một phần quan trọng không thể thiếu trong cơ sở hạ tầng học thuật của trường Đại học FPT, nằm ẩn mình giữa khuôn viên đẹp và hiện đại của trường. Được xây dựng với mục tiêu tạo ra một môi trường học tập và nghiên cứu lý tưởng, thư viện Đại học FPT đã nhanh chóng trở thành một trung tâm tri thức đa dạng, nơi tập trung mọi nguồn tài liệu và dịch vụ hỗ trợ học tập cho cộng đồng sinh viên và giảng viên.-->
+
+    <!--                Thư viện Đại học FPT với kiến trúc hiện đại và tiện nghi không chỉ là nơi lưu trữ hàng ngàn cuốn sách, tạp chí, báo cáo nghiên cứu, mà còn là một không gian thú vị và sáng tạo. Sinh viên tại đây có cơ hội tiếp cận vào thế giới tri thức thông qua các máy tính, phòng đọc, khu vực tự học, phòng thảo luận, và khu vườn đọc ngoài trời. Thư viện còn cung cấp dịch vụ thư mục, in ấn, và hỗ trợ nghiên cứu cho tất cả những ai cần.-->
+    <!--            </p>-->
+    <!--        </div>-->
+    <!--        <div class="information-img">-->
+    <!--            <img th:src="@{/images/sample_guest/library4.jpg}" alt="library4" style="height: 800px">-->
+    <!--        </div>-->
+    <!--    </section>-->
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footerSection}"></div>
+
+
+    <script>
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = slides.length
+            }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+    </script>
+
+</div>
 </body>
 </html>

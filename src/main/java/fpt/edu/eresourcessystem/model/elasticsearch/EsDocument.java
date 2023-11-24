@@ -1,7 +1,7 @@
 package fpt.edu.eresourcessystem.model.elasticsearch;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedBy;
@@ -14,7 +14,8 @@ import java.io.Serializable;
 @Document(indexName = "documents")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @ToString
 public class EsDocument implements Serializable {
     @Id
