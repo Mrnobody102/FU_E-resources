@@ -21,7 +21,7 @@ public class Feedback {
     private String id;
     @NotNull
     @DocumentReference(lazy = true)
-    private Student student;
+    private Account account;
 
     private String feedbackEmotion;
     @NotEmpty(message = "feedback.validation.content.required")

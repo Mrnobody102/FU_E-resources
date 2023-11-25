@@ -15,10 +15,12 @@ import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.elasticsearch.core.SearchPage;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -385,10 +387,29 @@ public class StudentController {
 
     // Method to handle the form submission
     @PostMapping("/feedbacks/add")
-    public String submitFeedback(@ModelAttribute Feedback feedback, Model model) {
-        // Process the feedback data
-        feedbackService.saveFeedback(feedback); // Save or process the feedback
+    public String processFeedbackForm(@ModelAttribute("feedback") @Valid Feedback feedback,
+                                      BindingResult result) {
+        if (result.hasErrors()) {
+            return "student/feedback/student_feedback-add"; // Return to the form with validation errors
+        }
 
-        return "student/feedback/student_feedback-add"; // Redirect to a success page or back to form
+        // Get the logged-in user (you need to implement your user authentication mechanism)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return "exception/404";
+        }
+        String currentPrincipalName = authentication.getName();
+        Account loggedInUser = accountService.findByEmail(currentPrincipalName);
+        //  User loggedInUser = getCurrentLoggedInUser(); // Replace with your authentication logic
+
+        if (loggedInUser != null) {
+            feedback.setAccount(loggedInUser);
+            // Save the feedback to the database
+            Feedback feedback1 = feedbackService.saveFeedback(feedback);
+
+            return "redirect:/admin/feedbacks/list"; // Redirect to a success page
+        } else {
+            return "redirect:/login"; // Redirect to the login page if the user is not logged in
+        }
     }
 }
