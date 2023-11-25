@@ -35,14 +35,14 @@
                     <span class="sidebar__link-floating">My courses management</span>
                 </a>
 
-                <a href="#" class="sidebar__link"
+                <a th:href="@{/lecturer/my_documents/list/all/1}" class="sidebar__link"
                    th:classappend="${#strings.equals(activeLink, 'my-document')} ? 'active-link' : ''">
                     <i class="fa-solid fa-file"></i>
                     <span class="sidebar__link-name">My documents</span>
                     <span class="sidebar__link-floating">My documents</span>
                 </a>
 
-                <a href="#" class="sidebar__link"
+                <a th:href="@{/lecturer/questions/list/all/1}" class="sidebar__link"
                    th:classappend="${#strings.equals(activeLink, 'question-answer')} ? 'active-link' : ''">
                     <i class="fa-solid fa-question"></i>
                     <span class="sidebar__link-name">Question & Answer</span>
@@ -55,7 +55,7 @@
             <div class="sidebar__list">
                 <a href="@{/student/feedbacks/add}" class="sidebar__link"
                    th:classappend="${#strings.equals(activeLink, 'feedback')} ? 'active-link' : ''">
-                    <i class="fa-solid fa-comment"></i>
+                    <i title="Feedback" class="fa-solid fa-comment"></i>
                     <span class="sidebar__link-name">Feedback</span>
                     <span class="sidebar__link-floating">Feedback</span>
                 </a>
@@ -155,7 +155,7 @@
                 <!--                </a>-->
                 <a href="#" class="sidebar__link"
                    th:classappend="${#strings.equals(activeLink, 'feedback')} ? 'active-link' : ''">
-                    <i class="fa-solid fa-comment"></i>
+                    <i title="Feedback" class="fa-solid fa-comment"></i>
                     <span class="sidebar__link-name">Feedback</span>
                     <span class="sidebar__link-floating">Feedback</span>
                 </a>

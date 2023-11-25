@@ -1,8 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.model.Account;
-import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Lecturer;
+import fpt.edu.eresourcessystem.model.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 
@@ -35,6 +33,7 @@ public interface LecturerService {
 
     Page<Course> findListManagingCourse(Lecturer lecturer, String status, int pageIndex, int pageSize);
 
+    Page<Document> findListDocuments(Lecturer lecturer, String status, int pageIndex, int pageSize);
 
     Lecturer findLecturerByAccount(Account account);
 

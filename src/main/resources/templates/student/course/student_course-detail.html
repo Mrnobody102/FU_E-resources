@@ -40,29 +40,15 @@
                         <div th:replace="~{fragments/sidebar:: studentSidebar(${sidebarParam})}"></div>
                     </div>
                     <div class="stu_course-content main d-flex" id="main">
-                        <div class="student__course-document-view border-end" style="flex: 3">
+                        <div class="student__course-document-view" style="flex: 4">
 
                             <div class="student__document-type-list">
                                 <div class="list-view-inline top-doctype-list">
-                                    <form action="" method="" class="form-chose-doc-type">
-
-                                        <input name="docType" type="radio" id="radio1" value="Info">
-                                        <label for="radio1">Course Information</label>
-
-                                        <input name="docType" type="radio" id="radio2" value="Reading">
-                                        <label for="radio2">Reading</label>
-
-                                        <input name="docType" type="radio" id="radio3" value="Lecturer Notes">
-                                        <label for="radio3">Lecturer Notes</label>
-
-                                        <input name="docType" type="radio" id="radio4" value="Reading">
-                                        <label for="radio4">Reading</label>
-
-                                        <input name="docType" type="radio" id="radio5" value="Reading">
-                                        <label for="radio5">Reading</label>
-
-                                        <input name="docType" type="radio" id="radio6" value="Reading">
-                                        <label for="radio6">Reading</label>
+                                    <form action="" method="" class="form-chose-doc-type" >
+                                        <th:block th:each="resourceType : ${course.resourceTypes}">
+                                            <input th:name="${resourceType.resourceTypeName}" type="radio" th:id="${resourceType.resourceTypeName}" th:value="${resourceType.id}">
+                                            <label th:for="${resourceType.resourceTypeName}" th:text="${resourceType.resourceTypeName}"></label>
+                                        </th:block>
                                     </form>
                                 </div>
                             </div>
@@ -72,33 +58,37 @@
                                         <!--Topic view-->
                                         <div class="topic-item">
                                             <div class="topic-title">
-                                                <h3 class="topic-info-title">
+                                                <h3 class="topic-info-title" th:topic-id="${topic.id}"
+                                                    onclick="viewTopicDocument(this.getAttribute('topic-id'))">
                                                     <span th:text="${topic.topicTitle}"></span>
+                                                    <i th:id="'view-less-' + ${topic.id}" class="fa-solid fa-chevron-up"
+                                                       style="display: none"></i>
+                                                    <i th:id="'view-more-' + ${topic.id}"
+                                                       class="fa-solid fa-chevron-down"></i>
+                                                    <span style="display: none" class="loading" th:id="'loading-more-document-' + ${topic.id}"><i class="fas fa-spinner fa-spin"></i></span>
                                                 </h3>
                                             </div>
-                                            <!--Document view list-->
-                                            <div class="d-flex document-view-info border-bottom" th:each="document : ${topic.getDocuments()}">
-                                                <div class="doc-info-head grid__column-7">
-                                                    <p class="doc-info-title"><a th:href="@{'/student/documents/' + ${document.id}}">
-                                                        <span th:text="${document.title}"></span></a>
-                                                    </p>
-                                                    <p class="doc-info-description">
-                                                        <span th:text="${document.description}"></span>
-                                                    </p>
-                                                </div>
-                                                <div class="doc-info grid__column-2">
-                                                    <p><span class="doc-info-date" th:text="${document.lastModifiedDate}"></span>
-                                                        <span class="doc-info-rating">| Rating: 5</span><i class="fa-solid fa-star"></i></p>
-                                                </div>
-                                                <div class="grid__column-1">
-                                                    <form action="" method="">
-                                                        <input type="text" value="docId" hidden>
-                                                        <button class="stu__btn_save-doc" type="submit">
-                                                            <i class="fa-regular fa-bookmark"></i></button>
-                                                    </form>
-                                                </div>
+                                            <div class="doc-in-topic" th:id="'list-doc-of-topic-' + ${topic.id}" style="display: none">
+                                                <!--Document view list-->
+<!--                                                <div class="d-flex document-view-info border-bottom"-->
+<!--                                                     th:each="document : ${topic.getDocuments()}">-->
+<!--                                                    <div class="doc-info-head grid__column-8">-->
+<!--                                                        <p class="doc-info-title"><a-->
+<!--                                                                th:href="@{'/student/documents/' + ${document.id}}">-->
+<!--                                                            <span th:text="${document.title}"></span></a>-->
+<!--                                                        </p>-->
+<!--                                                        <p class="doc-info-description">-->
+<!--                                                            <span th:text="${document.description}"></span>-->
+<!--                                                        </p>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="doc-info grid__column-2">-->
+<!--                                                        <p><span class="doc-info-date"-->
+<!--                                                                 th:text="${document.lastModifiedDate}"></span></p>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+                                                <!--End Document view-->
                                             </div>
-                                            <!--End Document view-->
+
                                         </div>
                                         <!--End Topic view-->
 
@@ -107,23 +97,10 @@
                             </div>
                             <div class="list-view-inline bot-doctype-list">
                                 <form action="" method="" class="form-chose-doc-type">
-                                    <input name="docType" type="radio" id="radio-bot-1" value="All">
-                                    <label for="radio-bot-1">Course Information</label>
-
-                                    <input name="docType" type="radio" id="radio-bot-2" value="Reading">
-                                    <label for="radio-bot-2">Reading</label>
-
-                                    <input name="docType" type="radio" id="radio-bot-3" value="Lecturer Notes">
-                                    <label for="radio-bot-3">Lecturer Notes</label>
-
-                                    <input name="docType" type="radio" id="radio-bot-4" value="Reading">
-                                    <label for="radio-bot-4">Reading</label>
-
-                                    <input name="docType" type="radio" id="radio-bot-5" value="Reading">
-                                    <label for="radio-bot-5">Reading</label>
-
-                                    <input name="docType" type="radio" id="radio-bot-6" value="Reading">
-                                    <label for="radio-bot-6">Reading</label>
+                                    <th:block th:each="resourceType : ${course.resourceTypes}">
+                                        <input th:name="${resourceType.resourceTypeName}" type="radio" th:id="${resourceType.resourceTypeName}" th:value="${resourceType.id}">
+                                        <label th:for="${resourceType.resourceTypeName}" th:text="${resourceType.resourceTypeName}"></label>
+                                    </th:block>
                                 </form>
                             </div>
                         </div>
@@ -135,17 +112,21 @@
                                         <a class="course-info-name" th:href="@{'/student/courses/' + ${course.getId}}"
                                            th:text="|${course.courseCode} - ${course.courseName}|"></a></p>
                                     <p class="course-info-lecturer">
-                                        <a href="" th:if="${course.lecturer ne null}">Lecturer: <span class="lecturer-name"
-                                                                   th:text="${course.lecturer.account.name}"></span>
+                                        <a href="" th:if="${course.lecturer ne null}">Lecturer:
+                                            <span
+                                                class="lecturer-name"
+                                                th:text="${course.lecturer.account.name}">
+
+                                        </span>
                                         </a></p>
                                     <div class="stu_save-course-link">
-                                        <p><a class="unsaved-course" th:if="${saved} == true"
-                                              th:href="@{'/student/courses/'+ ${course.getId} + '/save_course'}">
+                                        <p><a class="unsaved-course" th:if="${saved ne null} AND ${saved} == true"
+                                              th:attr="courseId=${course.getId}">
                                             <i class="fa-solid fa-bookmark"></i>
                                             Unbookmark</a>
                                         </p>
-                                        <p><a class="saved-course" th:if="${saved} == false"
-                                              th:href="@{'/student/courses/'+ ${course.getId} + '/unsaved_course'}">
+                                        <p><a class="saved-course" th:if="${saved ne null} AND ${saved} == false"
+                                              th:attr="courseId=${course.getId}">
                                             <i class="fa-regular fa-bookmark"></i>
                                             Bookmark</a></p>
                                     </div>
@@ -163,7 +144,6 @@
 <!-- Footer -->
 <div th:replace="~{fragments/footer :: footerSection}"></div>
 
-<!--jquery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Bootstrap script-->
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"

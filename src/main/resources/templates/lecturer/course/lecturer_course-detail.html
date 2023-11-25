@@ -25,7 +25,7 @@
         <div class="container-content">
             <div class="main-content lec__course">
                 <div class="lec__course-content d-flex">
-                    <div class="lec__sidebar">
+                    <div class="stu_sidebar">
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar('my-courses-management')}"></div>
                     </div>
 
@@ -40,52 +40,79 @@
                                 <h1 class="h2" th:text="${course.courseCode} + ' - ' + ${course.courseName}"></h1>
                                 <p id="content" class="doc-info-description"
                                    style="text-align: justify; margin-bottom: 0" th:text="${course.description}"></p>
-                                <span id="readMoreBtn" class="read-more" onclick="toggleContent()">Xem thêm</span>
+                                <span id="readMoreBtn" class="read-more" onclick="toggleContent()">Read more</span>
 
-                                <p class="mt-2">Course status:
-                                    <th:block th:if="${course.status.toString().equals('PUBLISH')}">
+
+
+                            </div>
+                            <div style="flex: 1; display: flex; justify-content: center;">
+                                <div style="width: 60%; display: flex; justify-content: center; flex-direction: column">
+                                    <a class="btn btn--hover mt-2 mb-2"
+                                       th:href="@{'/lecturer/courses/' + ${course.id} + '/add_topic'}">
+                                        + Add topic
+                                    </a>
+                                    <a class="btn btn--hover"
+                                       th:href="@{'/lecturer/courses/' + ${course.id} + '/add_resource_type'}">
+                                        + Add resource type
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <p>Course status:
+                            <th:block th:if="${course.status.toString().equals('NEW')}">
+                                        <span class="text-info fw-bold"
+                                              th:text="${course.status.getDisplayValue()}"></span>
+                            </th:block>
+                            <th:block th:if="${course.status.toString().equals('PUBLISH')}">
                                         <span class="text-success fw-bold"
                                               th:text="${course.status.getDisplayValue()}"></span>
-                                    </th:block>
-                                    <th:block th:if="${course.status.toString().equals('DRAFT')}">
+                            </th:block>
+                            <th:block th:if="${course.status.toString().equals('DRAFT')}">
                                         <span class="text-warning fw-bold"
                                               th:text="${course.status.getDisplayValue()}"></span>
-                                    </th:block>
-                                    <th:block th:if="${course.status.toString().equals('HIDE')}">
+                            </th:block>
+                            <th:block th:if="${course.status.toString().equals('HIDE')}">
                                         <span class="text-secondary fw-bold"
                                               th:text="${course.status.getDisplayValue()}"></span>
-                                    </th:block>
+                            </th:block>
 
 
-                                    <button type="button" id="changeCourseStatus" class="border-0 ms-3">Change</button>
-                                <form method="post" th:action="@{'/lecturer/courses/' + ${course.id} + '/changeStatus'}" style="display:none;" id="courseStatusSelect">
-                                    <select th:name="status">
-                                        <option
-                                                th:each="status:${courseStatus}"
-                                                th:value="${status}"
-                                                th:text="${status.getDisplayValue()}"></option>
-                                    </select>
-                                    <button type="submit" class="border-0 ms-3">Save</button>
-                                </form>
+                            <button type="button" id="changeCourseStatus" class="border-0 ms-3">Change</button>
+                        <form method="post" th:action="@{'/lecturer/courses/' + ${course.id} + '/changeStatus'}"
+                              style="display:none;" id="courseStatusSelect">
+                            <select th:name="status">
+                                <option
+                                        th:each="status:${courseStatus}"
+                                        th:value="${status}"
+                                        th:text="${status.getDisplayValue()}"></option>
+                            </select>
+                            <button type="submit" class="border-0 ms-3">Save</button>
+                        </form>
 
 
-
-                                </p>
-
-                            </div>
-                            <div style="flex: 1; display: flex; justify-content: center; padding: 8px">
-                                <a class="btn btn--hover"
-                                   th:href="@{'/lecturer/courses/' + ${course.id} + '/add_topic'}">
-                                    + Add topic
-                                </a>
-                            </div>
+                        </p>
+                        <div class="border-bottom">
+                            <ul class="mt-4">
+                                <li class="lec__navbar-item" id="topicSelection"
+                                    th:classappend="${getBy == 'topics' || getBy == null ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{'/lecturer/courses/' + ${course.id} + '/topics'}">
+                                        Topics
+                                    </a>
+                                </li>
+                                <li class="lec__navbar-item" id="resourceTypeSelection"
+                                    th:classappend="${getBy == 'resourcetypes' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{'/lecturer/courses/' + ${course.id} + '/resourcetypes'}">
+                                        Resource types
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                         <div>
                             <div class="doc-content-list">
                                 <div class="topic-list-content">
                                     <div class="topic-view-list">
                                         <!--Topic view-->
-                                        <div class="topic-item pt-2 pb-3 border-bottom" th:each="topic : ${course.topics}">
+                                        <div id="topics" class="topic-item pt-2 pb-3 border-bottom" th:each="topic : ${topics}">
                                             <div class="topic-title">
                                                 <h3 class="topic-info-title d-flex justify-content-between">
                                                     <a th:href="@{'/lecturer/topics/' + ${topic.id}}"
@@ -105,27 +132,75 @@
                                                 </h3>
                                             </div>
                                             <!--Document view list-->
-                                            <div class="d-flex align-items-center document-view-info border-bottom"
-                                                 th:each="document : ${topic.getDocuments()}">
-                                                <div class="doc-info-head" style="max-width: 75%">
-                                                    <p class="doc-info-title"><a
-                                                            th:href="@{'/lecturer/documents/' + ${document.id}}">
-                                                        <span th:text="${document.title}"></span></a>
-                                                    </p>
-                                                    <p class="doc-info-description">
-                                                        <span th:text="${document.description}"></span>
-                                                    </p>
-                                                </div>
-                                                <div style="margin-left: 5%">
-                                                    <a class="lec__edit-topic-icon"
-                                                       th:href="@{'/lecturer/documents/' + ${document.id} +'/update'}">
-                                                        <i
-                                                                class="fa-regular fa-edit"></i> </a>
-                                                </div>
-                                            </div>
+<!--                                            <div class="lecturer__list-">-->
+
+<!--                                            </div>-->
+<!--                                            <div class="d-flex align-items-center document-view-info border-bottom"-->
+<!--                                                 th:each="document : ${topic.getDocuments()}">-->
+<!--                                                <div class="doc-info-head" style="max-width: 75%">-->
+<!--                                                    <p class="doc-info-title"><a-->
+<!--                                                            th:href="@{'/lecturer/documents/' + ${document.id}}">-->
+<!--                                                        <span th:text="${document.title}"></span></a>-->
+<!--                                                    </p>-->
+<!--                                                    <p class="doc-info-description">-->
+<!--                                                        <span th:text="${document.description}"></span>-->
+<!--                                                    </p>-->
+<!--                                                </div>-->
+<!--                                                <div style="margin-left: 5%">-->
+<!--                                                    <a class="lec__edit-topic-icon"-->
+<!--                                                       th:href="@{'/lecturer/documents/' + ${document.id} +'/update'}">-->
+<!--                                                        <i-->
+<!--                                                                class="fa-regular fa-edit"></i> </a>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
                                             <!--End Document view-->
                                         </div>
                                         <!--End Topic view-->
+                                        <!--Rs type view-->
+                                        <div id="resourceTypes" class="topic-item pt-2 pb-3 border-bottom" th:each="rtype : ${resourceTypes}">
+                                            <div class="topic-title">
+                                                <h3 class="topic-info-title d-flex justify-content-between">
+                                                    <a th:href="@{'/lecturer/resource_types/' + ${rtype.id}}"
+                                                       th:text="${rtype.resourceTypeName}" style="flex: 3"></a>
+                                                    <div style="flex: 1; display: flex; justify-content: center; min-width: fit-content">
+                                                        <div>
+                                                            <a class="lec__edit-topic-icon"
+                                                               th:href="@{'/lecturer/resource_types/' + ${rtype.id} +'/update'}">
+                                                                <i class="fa-regular fa-edit"></i><span> Update resource type</span>
+                                                            </a>
+                                                            <a class="lec__add-doc-icon"
+                                                               th:href="@{'/lecturer/resource_types/' + ${rtype.id} +'/documents/add'}">
+                                                                + <span>Add
+                                                                document </span></a>
+                                                        </div>
+                                                    </div>
+                                                </h3>
+                                            </div>
+                                            <!--Document view list-->
+                                            <!--                                            <div class="lecturer__list-">-->
+
+                                            <!--                                            </div>-->
+                                            <!--                                            <div class="d-flex align-items-center document-view-info border-bottom"-->
+                                            <!--                                                 th:each="document : ${topic.getDocuments()}">-->
+                                            <!--                                                <div class="doc-info-head" style="max-width: 75%">-->
+                                            <!--                                                    <p class="doc-info-title"><a-->
+                                            <!--                                                            th:href="@{'/lecturer/documents/' + ${document.id}}">-->
+                                            <!--                                                        <span th:text="${document.title}"></span></a>-->
+                                            <!--                                                    </p>-->
+                                            <!--                                                    <p class="doc-info-description">-->
+                                            <!--                                                        <span th:text="${document.description}"></span>-->
+                                            <!--                                                    </p>-->
+                                            <!--                                                </div>-->
+                                            <!--                                                <div style="margin-left: 5%">-->
+                                            <!--                                                    <a class="lec__edit-topic-icon"-->
+                                            <!--                                                       th:href="@{'/lecturer/documents/' + ${document.id} +'/update'}">-->
+                                            <!--                                                        <i-->
+                                            <!--                                                                class="fa-regular fa-edit"></i> </a>-->
+                                            <!--                                                </div>-->
+                                            <!--                                            </div>-->
+                                            <!--End Document view-->
+                                        </div>
+                                        <!--End Rs type view-->
                                     </div>
                                 </div>
                             </div>
@@ -176,6 +251,12 @@
         // Toggle the visibility of the select element
         select.style.display = select.style.display === 'none' ? 'block' : 'none';
     });
+
+    // $('#topicSelection').addEventListener('click', function () {
+    //         $('#topics').show();
+    //         $('#resourceTypes').hide();
+    //     }
+    // )
 
 </script>
 </body>

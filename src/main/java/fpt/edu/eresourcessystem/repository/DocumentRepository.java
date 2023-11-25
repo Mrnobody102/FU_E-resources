@@ -1,6 +1,8 @@
 package fpt.edu.eresourcessystem.repository;
 
 import com.mongodb.lang.NonNull;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.Document;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +17,9 @@ import java.util.Optional;
 public interface DocumentRepository extends
         MongoRepository<Document, String> {
     Optional<Document> findById(String id);
+
+    @Query("{ 'createdBy' : ?0, 'deleteFlg' : 'PRESERVED' }")
+    List<Document> findByCreatedBy(String createdBy);
 
     @Query("{$and: ["
             + "{$or: ["
@@ -35,4 +40,6 @@ public interface DocumentRepository extends
             + "]}")
     Page<Document> filterAndSearchDocument(String course, String topic, String title, String description,
                                          Pageable pageable);
+
+    List<Document> findByTopic_IdAndDocStatus(String topicId, CommonEnum.DeleteFlg status);
 }

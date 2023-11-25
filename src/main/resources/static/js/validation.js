@@ -99,8 +99,8 @@ function validate_addAccount() {
                 maxlength: 50
             },
             password: {
-                required: true,
-                minlength: 8, // Stronger password requirement
+                // required: true,
+                // minlength: 8, // Stronger password requirement
                 maxlength: 30
             },
             email: {

@@ -5,6 +5,7 @@ import fpt.edu.eresourcessystem.dto.DocumentDTO;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
+import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
@@ -28,8 +29,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -40,7 +43,7 @@ public class LibrarianController {
     private final  JavaMailSender javaMailSender;
 
 //    @Value("${page-size}")
-    private static final Integer pageSize = 2;
+    private static final Integer pageSize = 5;
     private final AccountService accountService;
     private final LibrarianService librarianService;
     private final LecturerService lecturerService;
@@ -53,18 +56,6 @@ public class LibrarianController {
     private final LecturerCourseService lecturerCourseService;
 
     private final TrainingTypeService trainingTypeService;
-
-//    public LibrarianController(AccountService accountService, LibrarianService librarianService, LecturerService lecturerService, StudentService studentService, CourseService courseService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, LecturerCourseService lecturerCourseService) {
-//        this.accountService = accountService;
-//        this.librarianService = librarianService;
-//        this.lecturerService = lecturerService;
-//        this.studentService = studentService;
-//        this.courseService = courseService;
-//        this.topicService = topicService;
-//        this.resourceTypeService = resourceTypeService;
-//        this.documentService = documentService;
-//        this.lecturerCourseService = lecturerCourseService;
-//    }
 
     /*
     DASHBOARD
@@ -110,8 +101,10 @@ public class LibrarianController {
         String currentPrincipalName = authentication.getName();
         Librarian librarian = librarianService.findByAccountId(accountService.findByEmail(currentPrincipalName).getId());
         course.setLibrarian(librarian);
+
         // check course code duplicate
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
+
         if (null == checkExist) {
             // check lecturer param exist
             if (lecturer != null && !"".equals(lecturer.trim())) {
@@ -169,6 +162,7 @@ public class LibrarianController {
 
             } else {
                 Course addedCourse = courseService.addCourse(course);
+
                 librarian.getCreatedCourses().add(course);
                 librarianService.updateLibrarian(librarian);
                 if (null != addedCourse) {
@@ -213,7 +207,6 @@ public class LibrarianController {
     @PostMapping("/courses/update")
     public String updateCourse(@ModelAttribute Course course, final Model model) {
         Course checkExist = courseService.findByCourseId(course.getId());
-
         if (null == checkExist) {
             return "redirect:/librarian/courses/" + course.getId() + "/update?error";
         } else {

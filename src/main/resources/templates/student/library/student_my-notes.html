@@ -111,7 +111,7 @@
 <!--                          <h2 class="home__note-title" th:text="${studentNote.title}"-->
 <!--                              href=""></h2>-->
                           <a class="home__note-title" th:text="${studentNote.title}"
-                             th:href="@{'/student/my_note/student_note' + ${studentNote.id}}"></a>
+                             th:href="@{'/student/my_note/student_note/' + ${studentNote.id}}"></a>
                           <p class="home__note-description"
                              th:text="${studentNote.description}"></p>
                           <p class="home__note-date">

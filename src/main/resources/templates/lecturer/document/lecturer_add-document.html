@@ -4,6 +4,7 @@
 
 <head>
     <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Lecturer | Add document</title>
     <!-- Bootstrap core CSS -->
@@ -75,8 +76,8 @@
                                             style="font-size: 1.3rem"
                                             id="resourceType">
                                         <option th:each="resourceType : ${resourceTypes}"
-                                                th:text="${resourceType.getDisplayValue()}"
-                                                th:value="${resourceType.getDisplayValue()}">
+                                                th:text="${resourceType}"
+                                                th:value="${resourceType}">
                                         </option>
                                     </select>
                                     <button type="button" id="defineResourceType"

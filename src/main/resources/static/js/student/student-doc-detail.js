@@ -1,3 +1,36 @@
+let newEditor;
+// CK editor
+ClassicEditor
+    .create(document.querySelector('#editor'), {
+        ckfinder: {
+            uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
+        },
+    })
+    .then(editor => {
+        newEditor = editor;
+        editor.editing.view.change(writer => {
+            writer.setStyle('height', '200px', editor.editing.view.document.getRoot());
+        });
+        console.log(Array.from(editor.ui.componentFactory.names()));
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+// Xử lý fragment identifier nếu có trong URL
+document.addEventListener("DOMContentLoaded", function () {
+    var hash = window.location.hash;
+    if (hash) {
+        var element = document.querySelector(hash);
+        if (element) {
+            var sectionId = hash.substring(1); // Loại bỏ dấu '#'
+            showSection(sectionId);
+
+        }
+    }
+});
+
+
 function viewQuestion() {
     $("#note").css("display", "none");
     $("#question").css("display", "block");
@@ -10,6 +43,24 @@ function viewNote() {
     $("#question").css("display", "none");
     $("#link-view-questions").removeClass("stu__navbar-active")
     $("#link-view-notes").addClass("stu__navbar-active");
+}
+function viewSection(sectionId){
+    // Ẩn tất cả các phần
+    $('.stu__navbar-view-doc-item').each(function() {
+        $(this).removeClass('stu__navbar-active');
+    });
+    $(".section-view").each(function (){
+        $(this).css("display", "none");
+    })
+
+    var selectedSection = $("#link-view-" + sectionId);
+    if (selectedSection.length) {
+        selectedSection.addClass('stu__navbar-active');
+    }
+    var selectedSection = $("#" + sectionId);
+    if (selectedSection.length) {
+        selectedSection.css("display", "block");
+    }
 }
 
 function submitFormAddQuestion(param) {
@@ -37,9 +88,9 @@ function submitFormAddQuestion(param) {
                 $('#exist-new-question-form-button').css("display", "inline");
                 $('#sending-new-question').css("display", "none");
                 $(".form-student-add-doc-new-question").css("display", "none");
-                var html = "<div class=\"stu__question-content\">\n" +
+                var html = "<div class=\"stu__question-content-wrapper\">\n" +
                     "                                                <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span> " + data.studentName + "(You)</span></h6>\n" +
-                    "                                                <p class=\"stu__question-content\">" + data.questionContent + "</p>\n" +
+                    "                                                <p class=\"stu__question-content question-content\">" + data.questionContent + "</p>\n" +
                     "                                                <span class=\"stu__question-date stu__question-content\">" + data.lastModifiedDate + "</span> <a class=\"view-note-link-item \">Edit</a> | <a class=\"view-note-link-item\">Delete</a>" +
                     "                                                </div>\n";
 
@@ -49,6 +100,44 @@ function submitFormAddQuestion(param) {
             },
             error: function (xhr) {
                 // Handle errors
+            }
+        });
+    }
+}
+
+function submitFormAddNote(param) {
+    // var content = $('#editor').val();
+    var content = newEditor.getData();
+    var trimmedString = $.trim(content);
+    console.log(newEditor.getData())
+    if (trimmedString == '') {
+        $('#error-input-new-note').css("display", "block");
+    } else {
+        $('#send-new-note-button').css("display", "none");
+        $('#sending-new-note').css("display", "block");
+        $('#error-input-new-note').css("display", "none");
+        // newEditor.updateElement();
+        //
+        // var data = $('#myForm').serializeArray();
+        // var formData = $('#add-note-form').serialize();
+        // formData.set('noteContent', editorContent);
+        console.log(content);
+        $.ajax({
+            type: 'POST',
+            url: '/api/student/document_note/add/'+param,
+            data: {'noteContent': content},
+            dataType: 'json',
+            success: function (data) {
+                console.log("success: " + data.noteContent)
+                var html = data.noteContent;
+                $("#new-note-content").html(html);
+                $('#stu__note-in-doc-content-new').css("display", "block");
+                $('#sending-new-note').css("display", "none");
+                $('#add-note-form').css("display", "none");
+            },
+            error: function (xhr) {
+                // Handle errors
+                console.log("error")
             }
         });
     }
@@ -143,8 +232,8 @@ function viewMoreReply(param) {
                 if (data[i].studentName == null) {
                     html += "<div class=\"reply-content\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].lecturerName + "</span></h6>\n" +
-                        "                     <p class=\"lec__question-content\">" + data[i].answerContent + "</p>\n" +
-                        "                     <p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
+                        "                     <p class=\"stu__question-content\">" + data[i].answerContent + "</p>\n" +
+                        "                     <p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
                         "                     <a class=\"stu__like-reply view-question-link-item\" reply-id=\"" + data[i].answerId + "\"onclick=\"likeReply(" + data[i].answerId + ")\"><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
 
                         "                     </div>";
@@ -152,7 +241,7 @@ function viewMoreReply(param) {
                     html += "<div class=\"reply-content\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].studentName + "(You)</span></h6>\n" +
                         "                     <p class=\"stu__question-content\">" + data[i].answerContent + "</p>\n" +
-                        "                     <p class=\"stu__question-content\" ><span class=\"lec__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
+                        "                     <p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
                         "                     <a class=\"stu__edit-reply view-reply-link-item\" reply-id=\"" + data[i].answerId + "\"onclick=\"likeReply(" + data[i].answerId + ")\">Edit</a> | <a class=\"stu__delete-reply view-reply-link-item\" reply-id=\"" + data[i].answerId + "\"onclick=\"deleteReply(" + data[i].answerId + ")\">Delete</a>\n" +
                         "                     </div>";
                 }
@@ -187,6 +276,16 @@ function showReplyForm(questionId) {
 }
 
 $(document).ready(function () {
+    // add scroll to fragment identifier if id exist in URL
+    var hash = window.location.hash;
+    if (hash) {
+        var element = document.querySelector(hash);
+        if(element){
+            var sectionId = hash.substring(1); // exclude '#'
+            viewSection(sectionId);
+            element.scrollIntoView();
+        }
+    }
 
     $("body").on("click", ".add-note", function () {
         var contextPath = $(this).attr("contextPath");
@@ -215,3 +314,57 @@ $(document).ready(function () {
     });
 
 });
+
+
+// Note with bôi đen
+var isHighlighting = false;
+
+$(document).ready(function() {
+    $('#editor').on('mouseup', function(e) {
+        var selectedText = $('#editor').getSelection().toString();
+
+        if (selectedText !== '') {
+            isHighlighting = true;
+            var noteSticker = $('.note-sticker');
+            noteSticker.css({ top: e.pageY, left: e.pageX });
+            noteSticker.fadeIn();
+
+            $('#noteText').val('');
+        }
+    });
+
+    $('#editor').on('click', function(e) {
+        var noteSticker = $('.note-sticker');
+
+        if (noteSticker.is(':visible')) {
+            if (!noteSticker.is(e.target) && noteSticker.has(e.target).length === 0 && !isHighlighting) {
+                noteSticker.fadeOut(); // Ẩn khung note
+            }
+        }
+
+        isHighlighting = false;
+    });
+});
+
+function saveNote() {
+    var selectedText = $('#editor').getSelection().toString();
+    var noteText = $('#noteText').val();
+
+    $.ajax({
+        url: '/',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ text: noteText }),
+        success: function(response) {
+            if (response.success) {
+                var highlightedText = $('<span>').addClass('highlight').text(selectedText);
+                ('#editor').getSelection().getRangeAt(0).surroundContents(highlightedText);
+            } else {
+            }
+        },
+        error: function(xhr, textStatus, errorThrown) {
+        }
+    });
+
+    $('.note-sticker').fadeOut();
+}

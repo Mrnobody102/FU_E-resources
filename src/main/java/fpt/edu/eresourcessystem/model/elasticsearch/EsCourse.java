@@ -2,7 +2,7 @@ package fpt.edu.eresourcessystem.model.elasticsearch;
 
 import fpt.edu.eresourcessystem.model.Course;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
@@ -14,7 +14,8 @@ import java.io.Serializable;
 @Document(indexName = "documents")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @ToString
 public class EsCourse implements Serializable {
     @Id

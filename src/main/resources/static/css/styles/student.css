@@ -13,6 +13,7 @@
 }
 .student__course-document-view{
     /*padding: 0.7rem;*/
+    min-height: 100%;
 }
 
 .student__course-document-list,
@@ -23,6 +24,9 @@
     margin-top: 2rem;
     margin-left: 2rem;
     border-left: 1px solid var(--second-back-ground);
+}
+.student__course-document-list label{
+    cursor: pointer;
 }
 .list-view-block a, .list-view-block input{
     display: block;
@@ -45,6 +49,7 @@
     display: inline;
     justify-content: right;
     margin-top: 2rem;
+    cursor: pointer;
 }
 .stu_save-doc-link{
     cursor: pointer;
@@ -94,7 +99,19 @@
     margin: 0;
     padding: 0;
     line-height: 1.5rem;
-    font-size: var(--medium-font-size);
+    font-size: var(--large-font-size);
+    cursor: pointer;
+    align-items: center;
+}
+.topic-info-title:hover{
+    text-decoration: underline;
+    color: var(--link-color);
+}
+.topic-info-title i{
+    font-size: 1rem;
+}
+.doc-in-topic{
+    padding: 0rem 0rem 0rem 1rem;
 }
 .form-chose-doc-type input{
     display: none;
@@ -183,6 +200,7 @@
     padding: 1rem 1.5rem;
     font-weight: var(--font-medium);
     border-radius: 0.3rem;
+    cursor: pointer;
 
 }
 .stu__navbar-favourite-item:hover a,
@@ -237,7 +255,7 @@ stu__navbar-view-doc-item:hover a{
 .stu__answer-lecturer
 {
     font-size: var(--normal-font-size);
-    padding: 0.2rem;
+    /*padding: 0.2rem;*/
     margin: 0;
 }
 .view-note-link-item,
@@ -264,6 +282,7 @@ stu__navbar-view-doc-item:hover a{
 }
 .stu__save-question{
     text-align: right;
+    margin-bottom: 1rem;
 }
 .view-note-list{
     width: 90%;
@@ -286,9 +305,21 @@ stu__navbar-view-doc-item:hover a{
     cursor: pointer;
 }
 .stu__question-content{
-    padding: 0.2rem 0.2rem 0.2rem 1.5rem;
-    margin: 0;
+    padding: 0rem 0rem 0rem 1.5rem;
+    margin: 0rem;
 }
+.stu__question-content-wrapper{
+    margin: 0.2rem 0.2rem 0.5rem 1.5rem;
+    padding: 0.9rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .16);
+}
+.stu__question-creater-name{
+    align-items: center;
+    color: #4b69e7;
+    font-size: var(--medium-font-size);
+}
+
 .form-student-add-doc-new-question{
     margin-top: 0.2rem;
     border-radius: 2rem;
@@ -313,14 +344,13 @@ stu__navbar-view-doc-item:hover a{
 .submit-question-button button{
     border: none;
     display: inline;
-    background: white;
 }
-.submit-question-button button i{
-    color: #888888;
-}
-.submit-question-button button i:hover{
-    color: black;
-}
+/*.submit-question-button button i{*/
+/*    color: #888888;*/
+/*}*/
+/*.submit-question-button button i:hover{*/
+/*    color: black;*/
+/*}*/
 .stu__question-in-doc-content{
     margin-top: 1rem;
 }
@@ -369,14 +399,13 @@ stu__navbar-view-doc-item:hover a{
 .submit-reply-button button{
     border: none;
     display: inline;
-    background: white;
 }
-.submit-reply-button button i{
-    color: #888888;
-}
-.submit-reply-button button i:hover{
-    color: black;
-}
+/*.submit-reply-button button i{*/
+/*    color: #888888;*/
+/*}*/
+/*.submit-reply-button button i:hover{*/
+/*    color: black;*/
+/*}*/
 .reply-content{
     /*display: none;*/
 }
@@ -398,4 +427,31 @@ stu__navbar-view-doc-item:hover a{
 .reply-content{
     padding-top: 0.5rem;
     padding-bottom: 0.2rem;
+}
+.student_input-label {
+    padding-top: 8px;
+    padding-bottom: 4px;
+    font-weight: var(--font-medium);
+}
+.doc-info-rating{
+    margin-left: 0.7rem;
+    margin-right: 0.7rem;
+}
+.doc-info-rating i{
+    color: #0a58ca;
+}
+.question-content{
+    font-size: 1.8rem;
+}
+.view-question-list{
+    width: 90%;
+    padding: 0rem 1.3rem 0rem 0rem;
+}
+.view-list{
+    margin: 0.2rem 0.2rem 0.5rem 1.5rem;
+    width: 90%;
+}
+.loading{
+    font-size: var(--font-normal);
+    font-weight: var(--normal-font-size);
 }

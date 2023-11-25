@@ -19,9 +19,6 @@ public class StudentNoteDTO {
     private DocumentEnum.DocumentStatusEnum status;
 
     private DocumentEnum.DocumentFormat docType;
-    private String suffix;
-
-    private byte[] content;
 
     private String editorContent;
 

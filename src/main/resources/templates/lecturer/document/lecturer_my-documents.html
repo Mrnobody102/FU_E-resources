@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      lang="en">
+>
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Lecturer | Uploaded documents | FPT University E-resources</title>
+    <title>Lecturer | Uploaded documents </title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-    <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 </head>
 <body class="app_container">
 <!-- Header -->
-<div th:replace="~{fragments/header::studentHeaderSection}"></div>
+<div th:replace="~{fragments/header::headerLecturerSection}"></div>
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
         <div class="container-content">
-            <div class="main-content stu_course-saved">
-                <div class="stu_course-saved-content d-flex">
-                    <div class="stu_sidebar">
-                        <div th:replace="~{fragments/sidebar:: studentSidebar('my-favourite')}"></div>
+            <div class="main-content lec__course">
+                <div class="lec__course-content d-flex">
+                    <div class="lec__sidebar">
+                        <div th:replace="~{fragments/sidebar:: lecturerSidebar('my-document')}"></div>
                     </div>
 
-                    <div class="stu_courses-content main" id="main">
+                    <div class="lec__courses-content main" id="main-lecturer">
+
                         <div class="header__search">
                             <!--Label-->
                             <div class="search-label">
-                                <label th:for="search">Search course</label>
+                                <label th:for="search">Search documents</label>
                             </div>
                             <!-- Input  -->
                             <div class="header__search-input-wrap">
                                 <input type="text" class="header__search-input"
-                                       placeholder="Enter course ..."
+                                       placeholder="Enter document ..."
                                        name="search"
-                                       th:id="search-text" th:value="${search}">
+                                       th:id="search" th:value="${search}">
                                 <!-- Header-search-history -->
                                 <div class="header__search-history">
                                     <h3 class="header__search-history-heading">
@@ -72,59 +72,73 @@
                                 <i class="header__search-btn-icon fas fa-search"></i>
                             </button>
                         </div>
-                        <div class="stu__navbar-favourite">
-                            <ul class="stu__navbar-favourite-list border-bottom">
-                                <li class="stu__navbar-favourite-item">
-                                    <!--                                    th:classappend="${param.course_save ne null} ? 'stu__navbar-active'">-->
-                                    <a th:href="@{/student/my_library/saved_courses}">
-                                        Courses
-                                    </a>
-                                </li>
-                                <li class="stu__navbar-favourite-item stu__navbar-active">
-                                    <a th:href="@{/student/my_library/saved_documents}">
-                                        Documents
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="stu__courses-list-view">
-                            <div class="stu__view-saved-courses">
-                                <div th:if="${documentsSaved == null} OR ${documentsSaved.size()} == 0 AND ${param.search}"
-                                     class="list-content-not-found">
-                                    <p class="h3">No document bookmarked.</p>
-                                </div>
-                                <div class="stu__view-list-course-content">
-                                    <!--                                     th:if="${documentsSaved ne null} AND ${documentsSaved.size()} > 0">-->
 
-                                    <!--Document view list-->
-                                    <div class="d-flex justify-content-between document-view-info border-bottom"
-                                         th:each="doc: ${documentsSaved}">
+                        <div class="lec__courses-list-view">
+                            <div class="lec__view-saved-courses">
+                                <div class="lec__view-list-course-content">
+                                    <div class="view-block-list">
+                                        <ul class="home__course-list">
+                                            <li class="home__course-item">
+                                                <div class="home__course-wrapper" th:each="document : ${documents}">
+                                                    <a class="home__course-name" th:text="${document.title}"
+                                                       th:href="@{'/lecturer/documents/' + ${document.id}}"></a>
+                                                    <p class="home__course-description"
+                                                       th:text="${document.description}"></p>
+                                                    <ul class="home__course-lecturer-list">
+                                                        <li class="home__course-lecturer-item"
+                                                            th:if="${document.topic ne null}">
+                                                            Topic:
+                                                            <a class="home__course-lecturer-link"
+                                                               href="" th:text="${document.topic.topicTitle}">
+                                                            </a>
+                                                        </li>
+                                                        <li class="home__course-lecturer-item"
+                                                            th:if="${document.resourceType ne null}">
+                                                            Type:
+                                                            <a class="home__course-lecturer-link"
+                                                               href="" th:text="${document.resourceType.resourceTypeName}">
+                                                            </a>
+                                                        </li>
 
-                                        <div class="doc-info-head grid__column-7">
-                                            <p class="doc-info-title"><a th:href="@{'/student/documents/' + ${doc.id}}">
-                                                <span th:text="${doc.title}"></span></a>
-                                            </p>
-                                            <p class="doc-info-description-brief">
-                                                <span th:text="${doc.description}"></span>
-                                            </p>
-
-                                            <p class="doc-info-resource-type list-inline-item">
-                                                <th:block th:each="resource : ${doc.resourceType}">
-                                                    <a th:href="@{'/student/courses/'+${resource.course.id}}"
-                                                       th:text="${resource.course.courseCode}"></a>
-                                                </th:block>
-                                            </p>
-                                        </div>
-                                        <div class="stu_save-course-link stu_save-doc-link grid__column-3">
-                                            <p><a class="unsaved-doc"
-                                                  th:attr="docId=${doc.getId}">
-                                                <i class="fa-solid fa-bookmark"></i>
-                                                Unbookmark</a>
-                                            </p>
-                                        </div>
+<!--                                                        <li class="home__course-lecturer-item">-->
+<!--                                                            <th:block th:if="${status == 'all'}">-->
+<!--                                                                Status:-->
+<!--                                                                <th:block-->
+<!--                                                                        th:if="${course.status.toString().equals('PUBLISH')}">-->
+<!--                                                                    <span class="text-success fw-bold">Publish</span>-->
+<!--                                                                </th:block>-->
+<!--                                                                <th:block-->
+<!--                                                                        th:if="${course.status.toString().equals('DRAFT')}">-->
+<!--                                                                    <span class="text-warning fw-bold">Draft</span>-->
+<!--                                                                </th:block>-->
+<!--                                                                <th:block-->
+<!--                                                                        th:if="${course.status.toString().equals('HIDE')}">-->
+<!--                                                                    <span class="text-secondary fw-bold">Hidden</span>-->
+<!--                                                                </th:block>-->
+<!--                                                            </th:block>-->
+<!--                                                        </li>-->
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
+                                    <ul class="pagination home-courses__pagination-distance">
+                                        <li class="pagination-item">
+                                            <a href="" class="pagination-item__link">
+                                                <i class="pagination-item__icon fas fa-angle-left"></i>
+                                            </a>
+                                        </li>
+                                        <li class="pagination-item pagination-item--active">
+                                            <a href="" class="pagination-item__link">1</a>
+                                        </li>
+
+                                        <li class="pagination-item">
+                                            <a href="" class="pagination-item__link">
+                                                <i class="pagination-item__icon fas fa-angle-right"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <!--End list doc-->
                             </div>
                         </div>
                     </div>
@@ -133,17 +147,18 @@
         </div>
     </div>
 </div>
+
 <!-- Footer -->
-<div th:replace="~{fragments/footer :: footerSection}"></div>
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 
-
-<!--jquery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Bootstrap script-->
 <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 <!--Custom script-->
-<script th:src="@{/js/student/student.js}"></script>
+<script th:src="@{/js/lecturer/lecturer.js}"></script>
 </body>
 </html>
+
+

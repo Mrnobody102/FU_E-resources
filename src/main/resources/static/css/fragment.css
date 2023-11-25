@@ -55,9 +55,9 @@
     padding:0;
     margin: 0;
 }
-.header__system-name:hover{
-    text-decoration: underline;
-}
+/*.header__system-name:hover{*/
+/*    text-decoration: underline;*/
+/*}*/
 .header__system-name i{
     color: white;
     font-size: 2rem;
@@ -471,6 +471,7 @@
 
 .auth-form__socials--feid:hover {
     background-color: #1e3a72;
+    color: white;
 }
 
 .auth-form__socials-feid-icon {
@@ -486,12 +487,12 @@
 
 .auth-form__socials--google:hover {
     background-color: #9f1717;
+    color: white;
 }
 
 .auth-form__socials-google-icon {
     margin-right: 30px;
     padding: 10px;
-    color: white;
     font-size: 1.5rem;
 }
 
@@ -1262,6 +1263,10 @@
         padding-inline: 0.5rem;
         column-gap: 1.4rem;
     }
+    .sidebar__link[title]:hover::after {
+        content: attr(title);
+        display: none;
+    }
     .sidebar__link i {
         font-size: 2rem;
     }
@@ -1375,4 +1380,8 @@
     .sidebar-icon{
         font-size: 1.5rem;
     }
+}
+
+.sidebar__link-floating{
+    display: none;
 }

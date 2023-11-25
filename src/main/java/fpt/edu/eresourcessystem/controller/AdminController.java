@@ -371,9 +371,10 @@ public class AdminController {
             foundAccount.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
             accountService.updateAccount(foundAccount);
 
-            return "redirect:/admin/accounts/list/1?success";
+            return "redirect: /admin/accounts/list?success";
+        } else {
+            return "redirect:/admin/accounts/" + accountId + "/update?error";
         }
-        return "redirect:/admin/accounts" + accountId + "/update";
     }
 
     @GetMapping({"/user_log/tracking"})

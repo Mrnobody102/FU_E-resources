@@ -458,7 +458,7 @@ li {
     padding: 0.3rem;
 }
 .topic-title{
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     margin: 1rem 1rem 0.5rem 0;
 }
 
@@ -535,6 +535,7 @@ li {
 .view-question-reply:hover{
     text-decoration: underline;
     color:var(--link-color) ;
+    font-size: var(--medium-font-size);
 }
 
 .reply-content{

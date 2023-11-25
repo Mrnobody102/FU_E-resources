@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Lecturer | lecdent questions </title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+
+</head>
+<body class="app_container">
+<!-- Header -->
+<div th:replace="~{fragments/header::headerLecturerSection}"></div>
+<div class="main_content">
+    <div class="container-content-wrapper">
+        <!--  Main-->
+        <div class="container-content">
+            <div class="main-content lec__course">
+                <div class="lec__course-content d-flex">
+                    <div class="lec__sidebar">
+                        <div th:replace="~{fragments/sidebar:: lecturerSidebar('question-answer')}"></div>
+                    </div>
+
+                    <div class="lec__courses-content main" id="main-lecturer">
+
+                        <div class="header__search">
+                            <!--Label-->
+                            <div class="search-label">
+                                <label th:for="search">Search documents</label>
+                            </div>
+                            <!-- Input  -->
+                            <div class="header__search-input-wrap">
+                                <input type="text" class="header__search-input"
+                                       placeholder="Enter course ..."
+                                       name="search"
+                                       th:id="search" th:value="${search}">
+                                <!-- Header-search-history -->
+                                <div class="header__search-history">
+                                    <h3 class="header__search-history-heading">
+                                        Search history
+                                    </h3>
+                                    <ul class="header__search-history-list">
+
+                                        <li class="header__search-history-item">
+                                            <a href="">Software</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Select-find-scope -->
+                            <div class="header__search-select">
+                                <span class="header__search-select-label">All results</span>
+                                <i class="header__search-select-icon fas fa-angle-down"></i>
+                                <ul class="header__search-option">
+                                    <li class="header__search-option-item header__search-option-item--active">
+                                        <span class="">By Name</span>
+                                        <i class="fas fa-check"></i>
+                                    </li>
+                                    <li class="header__search-option-item">
+                                        <span class="">By Code</span>
+                                        <i class="fas fa-check"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button class="header__search-btn">
+                                <i class="header__search-btn-icon fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="lec__navbar-favourite">
+                            <ul class="lec__navbar-list border-bottom">
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status == 'all' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{/lecturer/questions/list/all/1}">
+                                        All
+                                    </a>
+                                </li>
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status == 'new' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{/lecturer/questions/list/new/1}">
+                                        Waiting for reply
+                                    </a>
+                                </li>
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status == 'publish' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{/lecturer/questions/list/publish/1}">
+                                        Has been replied
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+
+                        <div class="stu__courses-list-view">
+                            <div class="stu__view-my-notes">
+                                <div th:if="${param.search} AND ${studentQuestions == null} OR ${studentQuestions.size()} == 0"
+                                     class="list-content-not-found">
+                                    <p class="h3">You didn't ask any question.</p>
+                                </div>
+                                <div class="stu__view-list-note-content"
+                                     th:if="${studentQuestions ne null} AND ${studentQuestions.size()} > 0">
+                                    <div class="view-note-list">
+                                        <ul class="home__note-list">
+                                            <li class="home__note-item">
+                                                <div class="stu__question-view-wrapper"
+                                                     th:each="studentQuestion : ${studentQuestions}">
+                                                    <!--                          <h2 class="home__note-title" th:text="${studentNote.title}"-->
+                                                    <!--                              href=""></h2>-->
+                                                    <a class="stu__question-title"
+                                                       th:text="'Ask on '+${studentQuestion.documentId.title}"
+                                                       th:href="@{'/lecturer/documents/' + ${studentQuestion.documentId.id}+'#question'}">
+                                                    </a><span class="home__note-date"
+                                                              th:text="${studentQuestion.lastModifiedDate}"></span>
+                                                    <p class="home__note-description"
+                                                       th:text="${studentQuestion.content}"></p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!--                                    <nav th:if="${totalPage ne null} AND ${totalPage} >1" aria-label="Page navigation example">-->
+                                    <!--                                        <ul class="pagination home-courses__pagination-distance">-->
+                                    <!--                                            <li class="pagination-item"-->
+                                    <!--                                                th:classappend=" ${currentPage == 1} ? 'disabled' : ''">-->
+                                    <!--                                                <a class="pagination-item__link previous-page-stu-note-number" style="cursor: pointer">-->
+                                    <!--                                                    <i class="pagination-item__icon fas fa-angle-left"></i>-->
+                                    <!--                                                </a>-->
+                                    <!--                                            </li>-->
+
+                                    <!--                                            <li th:each="pageIndex: ${pages}" class="pagination-item"-->
+                                    <!--                                                th:classappend=" (${currentPage == pageIndex}) ? 'pagination-item&#45;&#45;active' : '' ">-->
+                                    <!--                                                <th:block th:if="${pageIndex == -1}">-->
+                                    <!--                                                    <span class="pagination-item__link">...</span>-->
+                                    <!--                                                </th:block>-->
+                                    <!--                                                <th:block th:if="${pageIndex != -1}">-->
+                                    <!--                                                    <a th:text="${pageIndex}" th:value="${pageIndex}"-->
+                                    <!--                                                       class="pagination-item__link page-stu-note-number" style="cursor: pointer"></a>-->
+                                    <!--                                                </th:block>-->
+                                    <!--                                            </li>-->
+                                    <!--                                            <li  class="pagination-item"-->
+                                    <!--                                                 th:classappend="${currentPage == totalPage} ? 'disabled' : ''">-->
+                                    <!--                                                <a class="pagination-item__link next-page-stu-note-number" style="cursor: pointer">-->
+                                    <!--                                                    <i class="pagination-item__icon fas fa-angle-right"></i>-->
+                                    <!--                                                </a>-->
+                                    <!--                                            </li>-->
+                                    <!--                                        </ul>-->
+                                    <!--                                    </nav>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--Bootstrap script-->
+<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<!--Custom script-->
+<script th:src="@{/js/lecturer/lecturer.js}"></script>
+</body>
+</html>
+
+

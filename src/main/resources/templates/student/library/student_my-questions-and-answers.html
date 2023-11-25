@@ -54,16 +54,16 @@
                                 </div>
                             </div>
                             <!-- Select-find-scope -->
-<!--                            <div class="header__search-select">-->
-<!--                                <span class="header__search-select-label">By date</span>-->
-<!--                                <i class="header__search-select-icon fas fa-angle-down"></i>-->
-<!--                                <ul class="header__search-option">-->
-<!--                                    <li class="header__search-option-item header__search-option-item&#45;&#45;active">-->
-<!--                                        <span class="">Unread</span>-->
-<!--                                        <i class="fas fa-check"></i>-->
-<!--                                    </li>-->
-<!--                                </ul>-->
-<!--                            </div>-->
+                            <!--                            <div class="header__search-select">-->
+                            <!--                                <span class="header__search-select-label">By date</span>-->
+                            <!--                                <i class="header__search-select-icon fas fa-angle-down"></i>-->
+                            <!--                                <ul class="header__search-option">-->
+                            <!--                                    <li class="header__search-option-item header__search-option-item&#45;&#45;active">-->
+                            <!--                                        <span class="">Unread</span>-->
+                            <!--                                        <i class="fas fa-check"></i>-->
+                            <!--                                    </li>-->
+                            <!--                                </ul>-->
+                            <!--                            </div>-->
                             <button class="header__search-btn">
                                 <i class="header__search-btn-icon fas fa-search"></i>
                             </button>
@@ -72,92 +72,89 @@
                             <ul class="stu__navbar-favourite-list border-bottom">
                                 <li class="stu__navbar-favourite-item stu__navbar-active">
                                     <a th:href="@{/student/my_library/my_questions/1}">
-                                        My Question&Answer History
+                                        My question & answer history
                                     </a>
                                 </li>
-                                <!--                <li class="stu__navbar-favourite-item">-->
-                                <!--                  <a href="">-->
-                                <!--                    My documents-->
-                                <!--                  </a>-->
-                                <!--                </li>-->
-                                <li class="stu__navbar-favourite-item ">
-                                    <a href="">
+                                <li class="stu__navbar-favourite-item" onclick="viewQuestionWaiting(this)">
+                                    <a>
                                         Waiting for reply
                                     </a>
                                 </li>
-                                <li class="stu__navbar-favourite-item ">
-                                    <a href="">
-                                        Has been replied
-                                    </a>
-                                </li>
-                                <li class="stu__navbar-favourite-item ">
-                                    <a href="">
+                                <!--                                <li class="stu__navbar-favourite-item ">-->
+                                <!--                                    <a>-->
+                                <!--                                        Has been replied-->
+                                <!--                                    </a>-->
+                                <!--                                </li>-->
+                                <li class="stu__navbar-favourite-item" onclick="viewNewReplyQuestion(this)">
+                                    <a>
                                         New replies
                                     </a>
                                 </li>
                             </ul>
                         </div>
-                        <div class="stu__courses-list-view">
-                            <div class="stu__view-my-notes">
+                        <div class="view-question-list view-list" id="loading"  style="display:none;">
+                            <p th:id="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</p>
+                        </div>
+                        <div th:id="stu__view-waiting-for-reply-question" style="display: none" class="view-list stu__questions-list-view">
+                        </div>
+                        <div th:id="stu__view-new-reply-question" style="display: none" class="view-list stu__questions-list-view">
+                        </div>
+                        <div th:id="stu__view-question-history" class="stu__questions-list-view">
+                            <div class="stu__question-content">
                                 <div th:if="${param.search} AND ${studentQuestions == null} OR ${studentQuestions.size()} == 0"
                                      class="list-content-not-found">
-                                    <p class="h3">No note found.</p>
+                                    <p class="h3">You didn't ask any question.</p>
                                 </div>
-                                <div class="stu__view-list-note-content"
+                                <div class="stu__view-list-question-content"
                                      th:if="${studentQuestions ne null} AND ${studentQuestions.size()} > 0">
-                                    <div class="view-note-list">
-                                        <ul class="home__note-list">
-                                            <li class="home__note-item">
-                                                <div class="stu__question-view-wrapper" th:each="studentQuestion : ${studentQuestions}">
-                                                    <!--                          <h2 class="home__note-title" th:text="${studentNote.title}"-->
-                                                    <!--                              href=""></h2>-->
-                                                    <a class="stu__question-title" th:text="${studentQuestion.documentId.title}"
-                                                       th:href="@{'/student/documents/' + ${studentQuestion.documentId.id}}"></a>
-                                                    <p class="home__note-description"
-                                                       th:text="${studentQuestion.content}"></p>
-                                                    <p class="home__note-date">
-                                                        <span th:text="${studentQuestion.lastModifiedDate}"></span>
-                                                    </p>
-                                                    <div class="home__note-item stu__list-answers" th:each="answer : ${studentQuestion.answers}">
-                                                        <a class="stu__question-title" th:text="${answer.documentId.title}"
-                                                           th:href="@{'/student/documents/' + ${answer.documentId.id}}"></a>
-                                                        <p class="home__note-description"
-                                                           th:text="${answer.answer}"></p>
-                                                        <p class="home__note-date">
-                                                            <span th:text="${answer.lastModifiedDate}"></span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                    <div class="view-question-list">
+                                        <div class="stu__question-content-wrapper"
+                                             th:each="studentQuestion : ${studentQuestions}">
+                                            <a class="stu__question-title"
+                                               th:text="'Ask on '+${studentQuestion.documentId.title}"
+                                               th:href="@{'/student/documents/' + ${studentQuestion.documentId.id}+'#question'}"></a>
+                                            <p class="stu__question-content question-content"
+                                               th:text="${studentQuestion.content}"></p>
+                                            <span class="stu__question-content stu__question-date"
+                                                      th:text="${studentQuestion.lastModifiedDate}"></span>
+                                            <!--                                                    <div class="home__note-item stu__list-answers"-->
+                                            <!--                                                         th:each="answer : ${studentQuestion.answers}">-->
+                                            <!--                                                        <a class="stu__question-title"-->
+                                            <!--                                                           th:text="${answer.student.account.name}"-->
+                                            <!--                                                           th:href="@{'/student/documents/' + ${answer.documentId.id}+ '#question'}">-->
+                                            <!--                                                        </a><span class="home__note-date" th:text="${answer.lastModifiedDate}"></span>-->
+                                            <!--                                                        <p class="home__note-description"-->
+                                            <!--                                                           th:text="${answer.answer}"></p>-->
+                                            <!--                                                    </div>-->
+                                        </div>
                                     </div>
-<!--                                    <nav th:if="${totalPage ne null} AND ${totalPage} >1" aria-label="Page navigation example">-->
-<!--                                        <ul class="pagination home-courses__pagination-distance">-->
-<!--                                            <li class="pagination-item"-->
-<!--                                                th:classappend=" ${currentPage == 1} ? 'disabled' : ''">-->
-<!--                                                <a class="pagination-item__link previous-page-stu-note-number" style="cursor: pointer">-->
-<!--                                                    <i class="pagination-item__icon fas fa-angle-left"></i>-->
-<!--                                                </a>-->
-<!--                                            </li>-->
+                                    <!--                                    <nav th:if="${totalPage ne null} AND ${totalPage} >1" aria-label="Page navigation example">-->
+                                    <!--                                        <ul class="pagination home-courses__pagination-distance">-->
+                                    <!--                                            <li class="pagination-item"-->
+                                    <!--                                                th:classappend=" ${currentPage == 1} ? 'disabled' : ''">-->
+                                    <!--                                                <a class="pagination-item__link previous-page-stu-note-number" style="cursor: pointer">-->
+                                    <!--                                                    <i class="pagination-item__icon fas fa-angle-left"></i>-->
+                                    <!--                                                </a>-->
+                                    <!--                                            </li>-->
 
-<!--                                            <li th:each="pageIndex: ${pages}" class="pagination-item"-->
-<!--                                                th:classappend=" (${currentPage == pageIndex}) ? 'pagination-item&#45;&#45;active' : '' ">-->
-<!--                                                <th:block th:if="${pageIndex == -1}">-->
-<!--                                                    <span class="pagination-item__link">...</span>-->
-<!--                                                </th:block>-->
-<!--                                                <th:block th:if="${pageIndex != -1}">-->
-<!--                                                    <a th:text="${pageIndex}" th:value="${pageIndex}"-->
-<!--                                                       class="pagination-item__link page-stu-note-number" style="cursor: pointer"></a>-->
-<!--                                                </th:block>-->
-<!--                                            </li>-->
-<!--                                            <li  class="pagination-item"-->
-<!--                                                 th:classappend="${currentPage == totalPage} ? 'disabled' : ''">-->
-<!--                                                <a class="pagination-item__link next-page-stu-note-number" style="cursor: pointer">-->
-<!--                                                    <i class="pagination-item__icon fas fa-angle-right"></i>-->
-<!--                                                </a>-->
-<!--                                            </li>-->
-<!--                                        </ul>-->
-<!--                                    </nav>-->
+                                    <!--                                            <li th:each="pageIndex: ${pages}" class="pagination-item"-->
+                                    <!--                                                th:classappend=" (${currentPage == pageIndex}) ? 'pagination-item&#45;&#45;active' : '' ">-->
+                                    <!--                                                <th:block th:if="${pageIndex == -1}">-->
+                                    <!--                                                    <span class="pagination-item__link">...</span>-->
+                                    <!--                                                </th:block>-->
+                                    <!--                                                <th:block th:if="${pageIndex != -1}">-->
+                                    <!--                                                    <a th:text="${pageIndex}" th:value="${pageIndex}"-->
+                                    <!--                                                       class="pagination-item__link page-stu-note-number" style="cursor: pointer"></a>-->
+                                    <!--                                                </th:block>-->
+                                    <!--                                            </li>-->
+                                    <!--                                            <li  class="pagination-item"-->
+                                    <!--                                                 th:classappend="${currentPage == totalPage} ? 'disabled' : ''">-->
+                                    <!--                                                <a class="pagination-item__link next-page-stu-note-number" style="cursor: pointer">-->
+                                    <!--                                                    <i class="pagination-item__icon fas fa-angle-right"></i>-->
+                                    <!--                                                </a>-->
+                                    <!--                                            </li>-->
+                                    <!--                                        </ul>-->
+                                    <!--                                    </nav>-->
                                 </div>
                             </div>
                         </div>

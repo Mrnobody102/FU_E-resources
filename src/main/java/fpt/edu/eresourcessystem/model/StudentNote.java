@@ -6,12 +6,13 @@ import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Document("student_notes")
@@ -25,9 +26,6 @@ public class StudentNote {
     private DocumentEnum.DocumentStatusEnum status;
 
     private DocumentEnum.DocumentFormat docType;
-    private String suffix;
-
-    private byte[] content;
 
     private String editorContent;
 
@@ -51,11 +49,8 @@ public class StudentNote {
         this.studentId = studentNoteDTO.getStudentId();
         this.title = studentNoteDTO.getTitle();
         this.description = studentNoteDTO.getDescription();
-        this.content = studentNoteDTO.getContent();
         this.editorContent = studentNoteDTO.getEditorContent();
         this.status = studentNoteDTO.getStatus();
-        this.suffix = studentNoteDTO.getSuffix();
-        this.docType = DocumentEnum.DocumentFormat.getDocType(studentNoteDTO.getSuffix());
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
 
     }
