@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -416,6 +417,14 @@ public class AdminController {
 //        return  "librarian/course/detailCourseTest";
     }
 
+    @GetMapping("/feedbacks/{id}")
+    public String showFeedbackDetail(@PathVariable("id") String id, Model model) {
+        Feedback feedback = feedbackService.getFeedbackById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Feedback not found for this id :: " + id));
+        model.addAttribute("feedback", feedback);
+        return "feedback-detail"; // Name of your Thymeleaf template for feedback detail
+    }
+
 
     @GetMapping("/trainingtypes/add")
     public String showAddForm(Model model) {
@@ -508,4 +517,6 @@ public class AdminController {
     public String documentLogManage() {
         return "admin/system_log/admin_document_logs";
     }
+
+
 }

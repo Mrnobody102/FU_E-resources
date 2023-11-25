@@ -59,10 +59,10 @@
         <div class="app__container-content">
             <div class="course-details-head">
                 <a th:href="@{/admin}">Home</a>
-                <span> &gt; Training Type management</span>
+                <span> &gt; Training type management</span>
             </div>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Training Type management</h1>
+                <h1 class="h2">Training type management</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
@@ -99,7 +99,7 @@
                                 <th>STT</th>
                                 <th>Name</th>
                                 <th>Description</th>
-                                <th>List Courses</th>
+                                <th>Number of courses</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -109,9 +109,6 @@
                                        th:text="${trainingType.trainingTypeName}"></a></td>
                                 <td><span class="code-archive-except" th:text="${trainingType.trainingTypeDescription}"> </span></td>
                                 <td th:text="${trainingType.getCourses().size()}">
-<!--                                            <button th:each="course : ${trainingType.getCourses()}" class="button-a-background"-->
-<!--                                                    th:text="${course.getCourseCode()}"></button>-->
-
                                 </td>
 
                             </tr>
