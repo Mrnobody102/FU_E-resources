@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.dto.FeedbackDTO;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
@@ -387,11 +388,11 @@ public class StudentController {
 
     // Method to handle the form submission
     @PostMapping("/feedbacks/add")
-    public String processFeedbackForm(@ModelAttribute("feedback") @Valid Feedback feedback,
+    public String processFeedbackForm(@ModelAttribute("feedback") @Valid FeedbackDTO feedback,
                                       BindingResult result) {
-        if (result.hasErrors()) {
-            return "student/feedback/student_feedback-add"; // Return to the form with validation errors
-        }
+//        if (result.hasErrors()) {
+//            return "student/feedback/student_feedback-add"; // Return to the form with validation errors
+//        }
 
         // Get the logged-in user (you need to implement your user authentication mechanism)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -405,7 +406,7 @@ public class StudentController {
         if (loggedInUser != null) {
             feedback.setAccount(loggedInUser);
             // Save the feedback to the database
-            Feedback feedback1 = feedbackService.saveFeedback(feedback);
+            Feedback feedback1 = feedbackService.saveFeedback(new Feedback(feedback));
 
             return "redirect:/admin/feedbacks/list"; // Redirect to a success page
         } else {

@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.dto;
 
 
+import fpt.edu.eresourcessystem.model.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class FeedbackDTO {
     @Id
     private String id;
-    private String studentId;
+    private Account account;
     private String feedbackEmotion;
     private String feedbackContent;
 

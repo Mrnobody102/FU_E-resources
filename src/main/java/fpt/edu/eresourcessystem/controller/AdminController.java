@@ -412,6 +412,14 @@ public class AdminController {
 
     @GetMapping({"/feedbacks"})
     public String showFeedbacks(final Model model) {
+//        List<Feedback> feedbacks = feedbackService.findAll();
+//        model.addAttribute("feedbacks", feedbacks);
+        return "admin/feedback/admin_feedbacks";
+//        return  "librarian/course/detailCourseTest";
+    }
+
+    @GetMapping({"/feedbacks/list"})
+    public String showFeedbacksList(final Model model) {
         List<Feedback> feedbacks = feedbackService.findAll();
         model.addAttribute("feedbacks", feedbacks);
         return "admin/feedback/admin_feedbacks";
@@ -423,7 +431,7 @@ public class AdminController {
         Feedback feedback = feedbackService.getFeedbackById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Feedback not found for this id :: " + id));
         model.addAttribute("feedback", feedback);
-        return "feedback-detail"; // Name of your Thymeleaf template for feedback detail
+        return "admin/feedback/admin_feedback-detail"; // Name of your Thymeleaf template for feedback detail
     }
 
 
@@ -457,6 +465,11 @@ public class AdminController {
     public String listTrainingTypes(Model model) {
         model.addAttribute("trainingTypes", trainingTypeService.findAll());
         return "admin/training_type/admin_training-type"; // Thymeleaf template for listing training types
+    }
+
+    @GetMapping("/trainingtypes")
+    public String listTrainingTypesNone(Model model) {
+        return "admin/training_type/admin_training-type";
     }
 
     @GetMapping("/trainingtypes/{id}")
