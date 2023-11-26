@@ -391,4 +391,9 @@ public class StudentController {
 
         return "student/feedback/student_feedback-add"; // Redirect to a success page or back to form
     }
+
+    @GetMapping({"/chat"})
+    public String goHomePage() {
+        return "student/test_notification";
+    }
 }
