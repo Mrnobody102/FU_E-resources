@@ -12,6 +12,8 @@ public interface AccountService {
     List<Account> searchLecturer(String search);
     List<Account> findAllLibrarian();
     Account addAccount(AccountDTO accountDTO);
+
+    Account saveAccount(Account account);
     Account updateAccount(Account account);
     Account findByUsername(String username) ;
     Account findById(String id);

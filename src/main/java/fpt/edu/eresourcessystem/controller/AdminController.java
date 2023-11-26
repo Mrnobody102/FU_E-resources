@@ -126,8 +126,8 @@ public class AdminController {
     /*
     This function to display librarians and created course by that librarians
      */
-    @GetMapping("/course_creator")
-    String findCourseByLibrarian(final Model model) {
+    @GetMapping("/course_creator/list")
+    String findCourseByLibrarianList(final Model model) {
 
         List<Account> librarianList = accountService.findAllLibrarian();
         for (int i = 0; i < librarianList.size(); i++) {
@@ -147,6 +147,12 @@ public class AdminController {
 
         return "admin/course_creator/admin_course_creators";
     }
+
+    @GetMapping("/course_creator")
+    String findCourseByLibrarian(final Model model) {
+        return "admin/course_creator/admin_course_creators";
+    }
+
 
 
     @GetMapping("/accounts/list/{pageIndex}")

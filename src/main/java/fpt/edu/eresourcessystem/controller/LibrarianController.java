@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.dto.AccountDTO;
 import fpt.edu.eresourcessystem.dto.CourseDTO;
 import fpt.edu.eresourcessystem.dto.DocumentDTO;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
@@ -40,9 +41,9 @@ import java.util.stream.Collectors;
 @PropertySource("web-setting.properties")
 public class LibrarianController {
 
-    private final  JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
-//    @Value("${page-size}")
+    //    @Value("${page-size}")
     private static final Integer pageSize = 5;
     private final AccountService accountService;
     private final LibrarianService librarianService;
@@ -80,7 +81,7 @@ public class LibrarianController {
     @GetMapping({"/courses/add"})
     public String addCourse(final Model model) {
         List<TrainingType> trainingTypes = trainingTypeService.findAll();
-        model.addAttribute("trainingTypes",trainingTypes);
+        model.addAttribute("trainingTypes", trainingTypes);
         model.addAttribute("course", new Course());
         return "librarian/course/librarian_add-course";
     }
@@ -193,7 +194,7 @@ public class LibrarianController {
             model.addAttribute("lecturers", lecturers);
             model.addAttribute("course", course);
             List<TrainingType> trainingTypes = trainingTypeService.findAll();
-            model.addAttribute("trainingTypes",trainingTypes);
+            model.addAttribute("trainingTypes", trainingTypes);
             model.addAttribute("statuses", CourseEnum.Status.values());
             return "librarian/course/librarian_update-course";
         }
@@ -329,35 +330,49 @@ public class LibrarianController {
 
     /**
      * @param courseId course id
-     * @param model    model attribute
      * @return
      */
 
     @PostMapping({"/courses/{courseId}/add-lecture"})
     public String addLecturer(@PathVariable String courseId,
-                              @RequestParam String lecturerId,
-                              final Model model,
-                              RedirectAttributes redirectAttributes) {
-        Account account = accountService.findById(lecturerId);
-        Lecturer lecturer = lecturerService.findByAccountId(account.getId());
+                              @RequestParam String lecturerEmail) {
+        Account account = accountService.findByEmail(lecturerEmail);
 
-        Course course = courseService.updateLectureId(courseId, lecturer);
-
-        if (course == null || lecturer == null) {
-            return "redirect:/courses/"+courseId+"/add-lecture?error";
+        Lecturer savedLecturer = null;
+        if (account == null) {
+            Account a = new Account();
+            a.setEmail(lecturerEmail);
+            Account account1 = accountService.saveAccount(a);
+            // save account
+            Lecturer lecturer = new Lecturer();
+            lecturer.setAccount(account1);
+            savedLecturer = lecturerService.addLecturer(lecturer);
+            // save lecturer
+        } else {
+            Lecturer lecturer = lecturerService.findByAccountId(account.getId());
+            if (lecturer == null) {
+                Lecturer lecturer1 = new Lecturer();
+                lecturer1.setAccount(account);
+                savedLecturer = lecturerService.addLecturer(lecturer1);
+            }
+        }
+        if (savedLecturer != null) {
+            Course course = courseService.updateLectureId(courseId, savedLecturer);
+            if (course == null) {
+                return "redirect:/courses/" + courseId + "/add-lecture?error";
+            } else {
+                lecturerService.addCourseToLecturer(savedLecturer.getId(), new ObjectId(courseId));
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setFrom("maihoa362001@gmail.com");
+                message.setTo("ngaydoidemcho93@gmail.com"); // Change to lecturer mail
+                message.setSubject("Subject : Thông báo quản lý môn học " + course.getCourseCode());
+                message.setText("Body : Tên môn học: " + course.getCourseName());
+                javaMailSender.send(message);
+                return "redirect:/librarian/courses/" + courseId + "?success";
+            }
         }
         else {
-            lecturerService.addCourseToLecturer(lecturer.getId(), new ObjectId(courseId));
-
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("maihoa362001@gmail.com");
-            message.setTo("huypq1801@gmail.com"); // Change to lecturer mail
-            message.setSubject("Subject : Thông báo quản lý môn học " + course.getCourseCode());
-            message.setText("Body : Tên môn học: " + course.getCourseName());
-            javaMailSender.send(message);
-
-//            redirectAttributes.addFlashAttribute("successMessage", "Lecturer added successfully to the course!");
-            return "redirect:/librarian/courses/"+courseId +"?success";
+            return "redirect:/courses/" + courseId + "/add-lecture?error";
         }
     }
 
@@ -408,7 +423,7 @@ public class LibrarianController {
         List<Course> allCourses = courseService.findAll();
         List<TrainingType> trainingTypes = trainingTypeService.findAll();
         model.addAttribute("allCourses", allCourses);
-        model.addAttribute("trainingTypes",trainingTypes);
+        model.addAttribute("trainingTypes", trainingTypes);
         model.addAttribute("lecture", new Lecturer());
         return "librarian/lecture/librarian_add-lecture";
     }
@@ -435,22 +450,22 @@ public class LibrarianController {
     }
 
     @PostMapping("/lectures/update")
-    public String updateLecture( @ModelAttribute("lecturer") Lecturer updatedLecture, final Model model) {
+    public String updateLecture(@ModelAttribute("lecturer") Lecturer updatedLecture, final Model model) {
         // Check if the lectureId is valid (you can add additional validation)
-        if (updatedLecture == null ) {
+        if (updatedLecture == null) {
             return "redirect:/error"; // Redirect to an error page or handle invalid ID
         }
         // Call the service to update the lecture
         boolean updateSuccess = lecturerService.update(updatedLecture);
 
         if (updateSuccess) {
-            return "redirect:/lectures/" + updatedLecture.getId() +"/success";
+            return "redirect:/lectures/" + updatedLecture.getId() + "/success";
         } else {
             return "redirect:/lectures/error"; // Redirect to an error page if the update fails
         }
     }
 
-//    @GetMapping({"/lectures/{courseId}"})
+    //    @GetMapping({"/lectures/{courseId}"})
 //    public String showCourseOfLecturer(@PathVariable String courseId, final Model model) {
 //        Course course = courseService.findByCourseId(courseId);
 //        List<Account> accounts = accountService.findAllLecturer();
@@ -487,8 +502,6 @@ public class LibrarianController {
         }
         return "redirect:/admin/lecturers/list";
     }
-
-
 
 
 }

@@ -89,15 +89,9 @@
                         <td th:unless="${checkLecturerCourse}">
                             <form id="addLecturerForm" method="post" th:field="*{accounts}"
                                   th:action="@{'/librarian/courses/' + ${course.getId()} + '/add-lecture'}">
-                                <!--                                <input type="text" id="lecturerEmail" name="lecturerEmail"  placeholder="Email" />-->
-                                <select id="select-account" class=" wia-filter-value selectpicker show-tick"
-                                        data-style="btn-white" name="lecturerId" data-live-search="true">
-                                    <option selected disabled th:value="0">Choose a lecturer</option>
-                                    <option th:each="account : ${accounts}" th:value="${account.getId()}"
-                                            th:text="${account.getEmail()}"></option>
-                                </select>
-                                <input type="hidden" id="courseName" th:value="${course.getCourseName()}" />
-                                <input type="hidden" id="courseID" th:value="${course.getId()}" />
+                                <input type="text" id="lecturerEmail" name="lecturerEmail" placeholder="Email"/>
+                                <input type="hidden" id="courseName" th:value="${course.getCourseName()}"/>
+                                <input type="hidden" id="courseID" th:value="${course.getId()}"/>
                                 <button type="button" onclick="confirmAddLecturer()" class="btn-info">Add</button>
                             </form>
                         </td>
