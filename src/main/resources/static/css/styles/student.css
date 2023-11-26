@@ -308,6 +308,13 @@ stu__navbar-view-doc-item:hover a{
     padding: 0rem 0rem 0rem 1.5rem;
     margin: 0rem;
 }
+.student-content-view-brief{
+    font-size: var(--medium-font-size);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    margin-left: 2rem;
+}
 .stu__question-content-wrapper{
     margin: 0.2rem 0.2rem 0.5rem 1.5rem;
     padding: 0.9rem;
@@ -364,9 +371,6 @@ stu__navbar-view-doc-item:hover a{
 .stu__question-title{
     font-size: var(--medium-font-size);
     font-weight: bold;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
     overflow: hidden;
 }
 .stu__question-title:hover{
@@ -454,4 +458,14 @@ stu__navbar-view-doc-item:hover a{
 .loading{
     font-size: var(--font-normal);
     font-weight: var(--normal-font-size);
+}
+.link-view-detailed{
+    color: #0a58ca;
+    cursor: pointer;
+}
+.link-view-detailed i{
+    font-size: var(--small-font-size);
+}
+.link-view-detailed:hover{
+    text-decoration: underline;
 }

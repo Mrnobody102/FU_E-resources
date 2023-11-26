@@ -70,7 +70,8 @@
                         </div>
                         <div class="stu__navbar-favourite">
                             <ul class="stu__navbar-favourite-list border-bottom">
-                                <li class="stu__navbar-favourite-item stu__navbar-active" onclick="viewAllQuestion(this)">
+                                <li class="stu__navbar-favourite-item stu__navbar-active"
+                                    onclick="viewAllQuestion(this)">
                                     <a>
                                         My Question&Answer History
                                     </a>
@@ -92,12 +93,14 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="view-question-list view-list" id="loading"  style="display:none;">
+                        <div class="view-question-list view-list" id="loading" style="display:none;">
                             <p th:id="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</p>
                         </div>
-                        <div th:id="stu__view-waiting-for-reply-question" style="display: none" class="view-list stu__questions-list-view">
+                        <div th:id="stu__view-waiting-for-reply-question" style="display: none"
+                             class="view-list stu__questions-list-view">
                         </div>
-                        <div th:id="stu__view-new-reply-question" style="display: none" class="view-list stu__questions-list-view">
+                        <div th:id="stu__view-new-reply-question" style="display: none"
+                             class="view-list stu__questions-list-view">
                         </div>
                         <div th:id="stu__view-question-history" class="stu__questions-list-view">
                             <div class="stu__question-content">
@@ -110,13 +113,17 @@
                                     <div class="view-question-list">
                                         <div class="stu__question-content-wrapper"
                                              th:each="studentQuestion : ${studentQuestions}">
-                                            <a class="stu__question-title"
-                                               th:text="'Ask on '+${studentQuestion.documentId.title}"
-                                               th:href="@{'/student/documents/' + ${studentQuestion.documentId.id}+'#question'}"></a>
-                                            <p class="stu__question-content question-content"
-                                               th:text="${studentQuestion.content}"></p>
                                             <span class="stu__question-content stu__question-date"
-                                                      th:text="${studentQuestion.lastModifiedDate}"></span>
+                                                  th:text="${studentQuestion.lastModifiedDate}"></span>
+                                            <a class="stu__question-title"
+                                               th:text="'You asked on '+${studentQuestion.documentId.title}"></a>
+
+                                            <p class="student-content-view-brief"><span
+                                                    th:text="${studentQuestion.content}"></span>
+                                                <a class="link-view-detailed"
+                                                      th:href="@{'/student/documents/' + ${studentQuestion.documentId.id}+'#question'}">view <i
+                                                        class="fa-solid fa-arrow-right"></i></a></p>
+
                                             <!--                                                    <div class="home__note-item stu__list-answers"-->
                                             <!--                                                         th:each="answer : ${studentQuestion.answers}">-->
                                             <!--                                                        <a class="stu__question-title"-->

@@ -20,12 +20,14 @@ function viewQuestionWaiting() {
                 console.log(data.length)
                 var html = "";
                 for (let i = 0; i < data.length; i++) {
-                    html += "   <div class=\"stu__question-content-wrapper\">\n" +
-                        "                                            <a class=\"stu__question-title\"\n" +
-                        "                                               href=\"/student/documents/" + data[i].documentId + "#question\">Ask on " + data[i].documentTitle + "</a>\n" +
-                        "                                            <p class=\"stu__question-content question-content\"> " + data[i].questionContent + "</p>\n" +
-                        "                                            <span class=\"stu__question-content stu__question-date\"> " + data[i].lastModifiedDate + "</span>\n" +
-                        "                                        </div>"
+                    html +="<div class=stu__question-content-wrapper>\n" +
+                        "                        <span class=\"stu__question-content stu__question-date\">"+data[i].lastModifiedDate+"</span>\n" +
+                        "                    <a class=\"stu__question-title\">You asked on"+ data[i].documentTitle+"</a>\n" +
+                        "                    <p class=\"student-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
+                        "                        <a class=\"link-view-detailed\"\n" +
+                        "                              href=\"/student/documents/" + data[i].documentId + "#question\">view <i\n" +
+                        "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
+                        "                    </div>";
 
                 }
                 $("#stu__view-waiting-for-reply-question").html(html);
@@ -54,13 +56,14 @@ function viewNewReplyQuestion() {
                 console.log(data.length)
                 var html = "";
                 for (let i = 0; i < data.length; i++) {
-                    html += "   <div class=\"stu__question-content-wrapper\">\n" +
-                        "                                            <a class=\"stu__question-title\"\n" +
-                        "                                               href=\"/student/documents/" + data[i].documentId + "#question\">Ask on " + data[i].documentTitle + "</a>\n" +
-                        "                                            <p class=\"stu__question-content question-content\"> " + data[i].questionContent + "</p>\n" +
-                        "                                            <span class=\"stu__question-content stu__question-date\"> " + data[i].lastModifiedDate + "</span>\n" +
-                        "                                        </div>"
-
+                    html +="<div class=stu__question-content-wrapper>\n" +
+                        "                        <span class=\"stu__question-content stu__question-date\">"+data[i].lastModifiedDate+"</span>\n" +
+                        "                    <a class=\"stu__question-title\">You asked on"+ data[i].documentTitle+"</a>\n" +
+                        "                    <p class=\"student-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
+                        "                        <a class=\"link-view-detailed\"\n" +
+                        "                              href=\"/student/documents/" + data[i].documentId + "#question\">view <i\n" +
+                        "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
+                        "                    </div>";
                 }
                 $("#stu__view-new-reply-question").html(html);
                 $("#loading").css("display", "none");
