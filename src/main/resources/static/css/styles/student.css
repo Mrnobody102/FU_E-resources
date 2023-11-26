@@ -45,7 +45,7 @@
     color: var(--background-btn-color-hover);
     font-size: 2rem;
 }
-.stu_save-course-link{
+.stu_save-course-link a{
     display: inline;
     justify-content: right;
     margin-top: 2rem;

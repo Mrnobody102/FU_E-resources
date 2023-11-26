@@ -292,6 +292,7 @@ $(document).ready(function () {
     });
     $("body").on("click", ".save-course", function () {
         var courseId = $(this).attr("courseId");
+        console.log(courseId)
         var loading = "<p><a th:attr=\"courseId=${courseId}\">\n" +
             "                                        <i class=\"fas fa-spinner fa-spin\"></i>\n" +
             "                                        Bookmarking</a></p>"
@@ -315,6 +316,7 @@ $(document).ready(function () {
                 }
             },
             error: function (errorData) {
+                console.log(errorData)
             }
         })
     })
