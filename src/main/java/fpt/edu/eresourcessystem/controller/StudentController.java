@@ -80,6 +80,10 @@ public class StudentController {
 
     private Student getLoggedInStudent() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println(loggedInEmail);
+        if(null==loggedInEmail || "anonymousUser".equals(loggedInEmail)){
+            return null;
+        }
         Account loggedInAccount = accountService.findByEmail(loggedInEmail);
         Student loggedInStudent = studentService.findByAccountId(loggedInAccount.getId());
         return loggedInStudent;
@@ -98,7 +102,7 @@ public class StudentController {
     public String getStudentHome(@ModelAttribute Account account, final Model model) {
         Student student = getLoggedInStudent();
         if(null == student){
-            return "common/login";
+            return "redirect:/login";
         }
         List<Course> recentCourses = courseLogService.findStudentRecentView(student.getAccount().getEmail());
 //        System.out.println(courseLogs);
@@ -129,7 +133,7 @@ public class StudentController {
         Student student = getLoggedInStudent();
         Course course = courseService.findByCourseId(courseId);
         if (null == student) {
-            return "common/login";
+            return "redirect:/login";
         } else if (null == course) {
             return "exception/404";
         } else if (null == course.getStatus() || CourseEnum.Status.PUBLISH != course.getStatus()) {
@@ -157,7 +161,7 @@ public class StudentController {
         Student student = getLoggedInStudent();
         Document document = documentService.findById(docId);
         if (null == student) {
-            return "common/login";
+            return "redirect:/login";
         } else if (null == document) {
             return "exception/404";
         } else if (DocumentEnum.DocumentStatusEnum.HIDE == document.getDocStatus()) {
@@ -323,7 +327,7 @@ public class StudentController {
                             BindingResult result) {
         Student student = getLoggedInStudent();
         if (null == student) {
-            return "common/login";
+            return "redirect:/login";
         } else if (null == studentNoteDTO || result.hasErrors()) {
             return "redirect:/student/my_note/student_notes/add?error";
         }
