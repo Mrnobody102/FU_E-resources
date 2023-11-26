@@ -29,6 +29,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -349,31 +351,40 @@ public class LibrarianController {
             savedLecturer = lecturerService.addLecturer(lecturer);
             // save lecturer
         } else {
-            Lecturer lecturer = lecturerService.findByAccountId(account.getId());
-            if (lecturer == null) {
-                Lecturer lecturer1 = new Lecturer();
-                lecturer1.setAccount(account);
-                savedLecturer = lecturerService.addLecturer(lecturer1);
+            savedLecturer = lecturerService.findByAccountId(account.getId());
+            if (savedLecturer == null) {
+                Lecturer lecturer = new Lecturer();
+                lecturer.setAccount(account);
+                savedLecturer = lecturerService.addLecturer(lecturer);
             }
         }
-        if (savedLecturer != null) {
-            Course course = courseService.updateLectureId(courseId, savedLecturer);
-            if (course == null) {
-                return "redirect:/courses/" + courseId + "/add-lecture?error";
-            } else {
-                lecturerService.addCourseToLecturer(savedLecturer.getId(), new ObjectId(courseId));
-                SimpleMailMessage message = new SimpleMailMessage();
-                message.setFrom("maihoa362001@gmail.com");
-                message.setTo("ngaydoidemcho93@gmail.com"); // Change to lecturer mail
-                message.setSubject("Subject : Thông báo quản lý môn học " + course.getCourseCode());
-                message.setText("Body : Tên môn học: " + course.getCourseName());
-                javaMailSender.send(message);
-                return "redirect:/librarian/courses/" + courseId + "?success";
-            }
-        }
-        else {
+        Course course = courseService.updateLectureId(courseId, savedLecturer);
+        if (course == null) {
             return "redirect:/courses/" + courseId + "/add-lecture?error";
+        } else {
+            lecturerService.addCourseToLecturer(savedLecturer.getId(), new ObjectId(courseId));
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("maihoa362001@gmail.com");
+            message.setTo("ngaydoidemcho93@gmail.com"); // Change to lecturer mail
+            String subject = "Notification: Course Management Assignment";
+            message.setSubject(subject);
+
+            // Compose the body of the email
+            String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+            String body = String.format(
+                    "Kính gửi Giảng viên,\n\n" +
+                            "Chúng tôi xin thông báo bạn đã được phân công quản lý khóa học '%s' từ thời điểm %s. " +
+                            "Đây là một cơ hội tuyệt vời để bạn thể hiện khả năng và đóng góp vào sự phát triển của khóa học.\n\n" +
+                            "Vui lòng đăng nhập vào hệ thống quản lý khóa học để cập nhật nội dung, tài liệu và thông tin liên quan đến khóa học. " +
+                            "Nếu bạn có bất kỳ thắc mắc hoặc cần sự hỗ trợ, đừng ngần ngại liên hệ với chúng tôi.\n\n" +
+                            "Chúc bạn một ngày làm việc hiệu quả và nhiều niềm vui!\n\n" +
+                            "Trân trọng,\n Thư viện FPT",
+                    course.getCourseName(), dateTime);
+            message.setText(body);
+            javaMailSender.send(message);
+            return "redirect:/librarian/courses/" + courseId + "?success";
         }
+
     }
 
     @GetMapping({"/lectures"})
