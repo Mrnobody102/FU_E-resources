@@ -84,6 +84,12 @@
                                                     <td></td>
                                                     <td>
                                                         <button type="submit" class="btn btn-save">Save</button>
+                                                        <th:block th:if="${param.success}">
+                                                            <a class="btn btn--back" href="javascript:void(0);" onclick="history.go(-2);">Back</a>
+                                                        </th:block>
+                                                        <th:block th:unless="${param.success}">
+                                                            <a class="btn btn--back" href="javascript:void(0);" onclick="history.go(-1);">Back</a>
+                                                        </th:block>
                                                     </td>
                                                 </tr>
                                             </table>

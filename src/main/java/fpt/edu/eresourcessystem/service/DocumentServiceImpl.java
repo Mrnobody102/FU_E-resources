@@ -7,6 +7,7 @@ import fpt.edu.eresourcessystem.dto.DocumentDTO;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Document;
+import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import fpt.edu.eresourcessystem.repository.DocumentRepository;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsDocumentRepository;
@@ -100,6 +101,12 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public List<Document> findAll() {
         List<Document> documents = documentRepository.findAll();
+        return documents;
+    }
+
+    @Override
+    public List<Document> findByLecturer(Lecturer lecturer) {
+        List<Document> documents = documentRepository.findByCreatedBy(lecturer.getAccount().getEmail());
         return documents;
     }
 

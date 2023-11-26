@@ -8,7 +8,8 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" /><link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
 
     <!-- Custom styles for this template -->
@@ -27,19 +28,23 @@
             display: none;
             float: right;
         }
-        #filterTable_filter{
+
+        #filterTable_filter {
             float: left;
             padding-bottom: 25px;
         }
-        select.lib_show-all-btn{
+
+        select.lib_show-all-btn {
             display: inline;
             width: 200px;
             margin-left: 25px;
             padding: 5px;
         }
+
         .dataTables_info {
             display: none;
         }
+
         .dataTables_wrapper .dataTables_paginate {
             text-align: center;
             float: none;
@@ -49,7 +54,7 @@
 
 </head>
 <body class="app_container">
-<header th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<header th:replace="~{fragments/header::headerAdminSection}"></header>
 <div class="main_content">
     <div class="grid app__container-content-wrapper">
         <div class="app__container-content">
@@ -69,14 +74,14 @@
                 <div class="lib_data-list-wrapper">
                     <div class="lib_search-container">
 <!--                        <form class="d-flex" th:action="@{/admin/trainingtypes/list/1}" method="get" th:id="search-form">-->
-<!--                            <div class="d-flex">-->
-<!--                                <input class="lib_search-content" type="text" placeholder="Search user.."-->
-<!--                                       th:name="search" th:id="search-text" th:value="${search}"/>-->
-<!--                                <button type="submit" class="lib_search-btn-wrapper lib_search-btn">-->
-<!--                                    <i class="lib_search-btn-icon fas fa-search"></i>-->
-<!--                                </button>-->
-<!--                                <a class="btn lib_show-all-btn" th:href="@{/admin/trainingtypes/list/1}">Show AlL</a>-->
-<!--                            </div>-->
+                            <div class="d-flex">
+                                <input class="lib_search-content" type="text" placeholder="Search training type.."
+                                       th:name="search" th:id="search-text" th:value="${search}"/>
+                                <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
+                                    <i class="lib_search-btn-icon fas fa-search"></i>
+                                </button>
+                                <a class="btn lib_show-all-btn" th:href="@{/admin/trainingtypes/list}">Show AlL</a>
+                            </div>
 <!--                        </form>-->
                         <div>
                             <a class="lib_btn-add" type="button" th:href="@{/admin/trainingtypes/add}">
@@ -85,10 +90,11 @@
                             </a>
                         </div>
 
+
                     </div>
 
                     <div class="table-responsive" th:if="${trainingTypes ne null}">
-                        <table class="table table-striped table-sm" id="filterTable">
+                        <table class="table table-striped table-sm" id="filterTable-training">
                             <thead>
                             <tr>
                                 <th>STT</th>
@@ -102,7 +108,7 @@
                                 <td th:text="${iterStat.index+1}">1</td>
                                 <td><a th:href="@{'/admin/trainingtypes/' + ${trainingType.id}}"
                                        th:text="${trainingType.trainingTypeName}"></a></td>
-                                <td th:text="${trainingType.trainingTypeDescription}"></td>
+                                <td><span class="code-archive-except" th:text="${trainingType.trainingTypeDescription}"> </span></td>
                                 <td th:text="${trainingType.getCourses().size()}">
 <!--                                            <button th:each="course : ${trainingType.getCourses()}" class="button-a-background"-->
 <!--                                                    th:text="${course.getCourseCode()}"></button>-->
@@ -126,46 +132,34 @@
 <script>
     $("document").ready(function () {
 
-        $("#filterTable").dataTable({
-            "searching": true
+        $("#filterTable-training").dataTable({
+            "searching": true,
+            "ordering": false,
+            "pagingType": "simple_numbers", // Choose a paging type that fits your needs
+            "pageLength": 3, // Set the number of rows per page
+            // "displayStart": 4, // Set the initial offset (e.g., start at the third page for 10 rows per page)
+            // "lengthMenu": [5, 10, 15, 20], // Set the options for "number of rows per page" dropdown
+            "language": {
+                "paginate": {
+                    "first": "<<",
+                    "last": ">>",
+                    "next": ">>",
+                    "previous": "<<"
+                }
+            }
         });
 
-        //Get a reference to the new datatable
-        var table = $('#filterTable').DataTable();
+        var table = $('#filterTable-training').DataTable();
 
-        //Take the category filter drop down and append it to the datatables_filter div.
-        //You can use this same idea to move the filter anywhere withing the datatable that you want.
-        // $("#filterTable_filter.dataTables_filter").append($("#select-training-type"));
+        $('#search-text').on('keyup', function() {
+            table.search(this.value).draw();
+        });
 
-        //Get the column index for the Category column to be used in the method below ($.fn.dataTable.ext.search.push)
-        //This tells datatables what column to filter on when a user selects a value from the dropdown.
-        //It's important that the text used here (Category) is the same for used in the header of the column to filter
-        // var categoryIndex = 0;
-        // $("#filterTable th").each(function (i) {
-        //     if ($($(this)).html() == "TrainingType") {
-        //         categoryIndex = i;
-        //         return false;
-        //     }
-        // });
-        //
-        // //Use the built in datatables API to filter the existing rows by the Category column
-        // $.fn.dataTable.ext.search.push(
-        //     function (settings, data, dataIndex) {
-        //         var selectedItem = $('#select-training-type').val()
-        //         var category = data[categoryIndex];
-        //         if (selectedItem === "" || category.includes(selectedItem)) {
-        //             return true;
-        //         }
-        //         return false;
-        //     }
-        // );
-
-        //Set the change event for the Category Filter dropdown to redraw the datatable each time
-        //a user selects a new filter.
-        // $("#select-training-type").change(function (e) {
-        //     table.draw();
-        // });
-
+        $("label").each(function() {
+            if ($(this).text().indexOf('Search:') >= 0) {
+                $(this).css('display', 'none');
+            }
+        });
         table.draw();
     });
 </script>
@@ -178,11 +172,29 @@
 <!--        crossorigin="anonymous"></script>-->
 <!--Custom script-->
 <script th:src="@{/js/admin/admin.js}"></script>
-<script>
-    $('form select').on('change', function () {
-        $(this).closest('form').submit();
-    });
-</script>
+<!--<script>-->
+<!--    $('form select').on('change', function () {-->
+<!--        $(this).closest('form').submit();-->
+<!--    });-->
+
+<!--    var successParam = [[${param.success}]];-->
+<!--    if (successParam) {-->
+<!--        Swal.fire(-->
+<!--            'Success!',-->
+<!--            successParam,-->
+<!--            'success'-->
+<!--        );-->
+<!--    }-->
+
+<!--    var errorParam = [[${param.error}]];-->
+<!--    if (errorParam) {-->
+<!--        Swal.fire(-->
+<!--            'Error!',-->
+<!--            errorParam,-->
+<!--            'error'-->
+<!--        );-->
+<!--    }-->
+<!--</script>-->
 
 </body>
 </html>

@@ -6,14 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Librarian | Add Training Type</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css">
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
 
@@ -25,19 +27,28 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 
-    <!--    <style>-->
-    <!--        label.error {-->
-    <!--            margin-top: 5px;-->
-    <!--            margin-left: 5px;-->
-    <!--            display: block;-->
-    <!--            color: red;-->
-    <!--            /*font-size: smaller;*/-->
-    <!--        }-->
-    <!--    </style>-->
+        <style>
+            label.error {
+                margin-top: 5px;
+                margin-left: 5px;
+                display: block;
+                color: red;
+                /*font-size: smaller;*/
+            }
+            body {
+                font-size: 1.3rem;
+            }
+            .bootstrap-select .dropdown-toggle .filter-option-inner-inner {
+                font-size: 1.3rem;
+            }
+            .btn {
+                font-size: 1.3rem;
+            }
+        </style>
 </head>
 <body class="app_container">
 
-<header th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<header th:replace="~{fragments/header::headerAdminSection}"></header>
 <div class="main_content">
     <div class="grid app__container-content-wrapper">
         <div class="app__container-content">
@@ -63,7 +74,7 @@
 
 
                                         <tr class="lib_input-wrapper">
-                                            <td class="lib_input-label"><label th:for="trainingTypeName">Training Type Name</label>
+                                            <td class="lib_input-label"><label th:for="trainingTypeName">Training Type Name*</label>
                                             </td>
                                             <td><input type="text"  th:id="trainingTypeName"
                                                        class="lib_input form-control" th:field="*{trainingTypeName}"
@@ -73,11 +84,13 @@
                                         </tr>
                                         <tr class="lib_input-wrapper">
                                             <td class="lib_input-label"><label th:for="trainingTypeDescription">
-                                                Training Type Description</label>
+                                                Training Type Description*</label>
                                             </td>
-                                            <td><input type="text" th:id="trainingTypeDescription"
-                                                       class="lib_input form-control" th:field="*{trainingTypeDescription}"
-                                                       placeholder="Enter Training Type Description" required>
+                                            <td><textarea class="lib_textarea form-control paragraph"
+                                                          th:id="trainingTypeDescription"
+                                                          th:field="*{trainingTypeDescription}"
+                                                       placeholder="Enter Training Type Description" required >
+                                                </textarea>
 
                                             </td>
                                         </tr>
@@ -95,7 +108,6 @@
                                                 </select>
                                             </td>
                                         </tr>
-
 
                                         <tr>
                                             <td></td>
@@ -124,33 +136,34 @@
 
 
 <!--Custom script-->
-<script th:src="@{/js/librarian/librarian.js}"></script>
-
 
 <!--Validate-->
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
 <script th:src="@{/js/validation.js}"></script>
 
 <script th:inline="javascript">
-    validate_addAccount();
+    var successMessage = /*[[${success}]]*/ null;
+    var errorMessage = /*[[${error}]]*/ null;
 
-    var successParam = [[${param.success}]];
-    if (successParam) {
-        Swal.fire(
-            'Success!',
-            'Save account successful!',
-            'success'
-        );
-    }
+    document.addEventListener('DOMContentLoaded', function () {
+        if (successMessage) {
+            Swal.fire({
+                title: 'Success',
+                text: successMessage,
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            });
+        }
 
-    var errorParam = [[${param.error}]];
-    if (errorParam) {
-        Swal.fire(
-            'Error!',
-            'Please check account information again!',
-            'error'
-        );
-    }
+        if (errorMessage) {
+            Swal.fire({
+                title: 'Error',
+                text: errorMessage,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        }
+    });
 </script>
 </body>
 </html>

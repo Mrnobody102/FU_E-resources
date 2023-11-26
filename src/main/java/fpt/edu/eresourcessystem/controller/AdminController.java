@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.AccountDTO;
+import fpt.edu.eresourcessystem.dto.TrainingTypeDTO;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -369,9 +370,10 @@ public class AdminController {
             foundAccount.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
             accountService.updateAccount(foundAccount);
 
-            return "redirect:/admin/accounts/list/1?success";
+            return "redirect: /admin/accounts/list?success";
+        } else {
+            return "redirect:/admin/accounts/" + accountId + "/update?error";
         }
-        return "redirect:/admin/accounts" + accountId + "/update";
     }
 
     @GetMapping({"/user_log/tracking"})
@@ -425,21 +427,22 @@ public class AdminController {
     }
 
     @PostMapping("/trainingtypes/add")
-    public String addTrainingType(@ModelAttribute("trainingtype") @Valid TrainingType trainingType,
+    public String addTrainingType(@ModelAttribute("trainingtype") @Valid TrainingTypeDTO trainingType,
                                   BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            return "admin/training_type/admin_training-type-add";
+            redirectAttributes.addFlashAttribute("error", "Validation failed. Please check your input.");
+            return "redirect:/admin/trainingtypes/add";
         }
         try {
-            // Save the new training type using the service layer
-            trainingTypeService.save(trainingType);
-            redirectAttributes.addFlashAttribute("success", "Training type saved successfully.");
+            TrainingType trainingType1 =  new TrainingType(trainingType);
+            TrainingType save = trainingTypeService.save(trainingType1);
+            redirectAttributes.addFlashAttribute("success", "Training Type added successfully.");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "There was an error saving the training type.");
+            redirectAttributes.addFlashAttribute("error", "Error occurred while adding Training Type.");
         }
-
-        return "redirect:/admin/trainingtypes/list";
+        return "redirect:/admin/trainingtypes/add";
     }
+
 
     @GetMapping("/trainingtypes/list")
     public String listTrainingTypes(Model model) {
@@ -457,6 +460,49 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("error", "Training type not found!");
             return "redirect:/admin/trainingtypes/list";
         }
+    }
+
+    @PostMapping("/trainingtypes/update")
+    public String updateTrainingType(@ModelAttribute TrainingType trainingType,
+                                     RedirectAttributes redirectAttributes) {
+        try {
+            trainingTypeService.updateTrainingType(trainingType);
+            redirectAttributes.addFlashAttribute("success", "Training type updated successfully");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error updating training type: " + e.getMessage());
+        }
+        return "redirect:/admin/trainingtypes/"+trainingType.getId();
+    }
+
+
+    //
+    @PostMapping("/trainingtypes/delete/{id}")
+    public String deleteTrainingType(@PathVariable("id") String  id,
+                                     RedirectAttributes redirectAttributes) {
+        try {
+            trainingTypeService.deleteById(String.valueOf(id));
+            redirectAttributes.addFlashAttribute("success", "Training type deleted successfully");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error deleting training type: " + e.getMessage());
+        }
+        return "redirect:/admin/trainingtypes/list";
+    }
+
+    @GetMapping("/trainingtypes/delete/{id}")
+    public String softDeleteTrainingType(@PathVariable("id") String id,
+                                         RedirectAttributes redirectAttributes) {
+        Optional<TrainingType> trainingType = trainingTypeService.findById(String.valueOf(id));
+        if (trainingType.isPresent()) {
+            boolean isDeleted = trainingTypeService.softDelete(trainingType.get());
+            if (isDeleted) {
+                redirectAttributes.addFlashAttribute("success", "Training type was successfully deleted.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Failed to delete training type.");
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Training type not found.");
+        }
+        return "redirect:/admin/trainingtypes/list";
     }
 
     @GetMapping("/document_log/tracking")

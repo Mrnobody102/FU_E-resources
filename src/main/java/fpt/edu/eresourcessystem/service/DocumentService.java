@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.service;
 import fpt.edu.eresourcessystem.dto.DocumentDTO;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.model.Document;
+import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,8 @@ import java.util.Map;
 
 public interface DocumentService {
     List<Document> findAll();
+
+    List<Document> findByLecturer(Lecturer lecturer);
 
     Page<Document> filterAndSearchDocument(String course, String topic, String title, String description, int pageIndex, int pageSize);
 

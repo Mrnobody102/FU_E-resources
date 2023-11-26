@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.model.ResourceType;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface ResourceTypeService {
 
     List<ResourceType> findByCourseId(String courseId);
 
-    ResourceType addResourceType(String ResourceType);
+    ResourceType addResourceType(ResourceType ResourceType);
 
     ResourceType findById(String ResourceTypeId);
 
@@ -17,5 +18,5 @@ public interface ResourceTypeService {
 
     boolean delete(String ResourceTypeId);
 
-    ResourceType addDocument(ResourceType ResourceType);
+    void addDocumentToResourceType(String resourceTypeId, ObjectId documentId);
 }

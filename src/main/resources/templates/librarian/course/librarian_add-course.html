@@ -10,7 +10,9 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <!-- Bootstrap core CSS -->
+    <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
@@ -60,8 +62,6 @@
                                     <td><input type="text" th:id="courseCode"
                                                class="lib_input form-control" th:field="*{courseCode}"
                                                placeholder="Enter course code" required>
-                                        <p class="text-danger" th:errors="*{courseCode}"
-                                           th:if="${#fields.hasErrors('courseCode')}"></p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -69,29 +69,29 @@
                                     <td><input type="text" th:id="courseName"
                                                class="lib_input form-control" th:field="*{courseName}"
                                                placeholder="Enter course name" required>
-                                        <p class="text-danger" th:errors="*{courseName}"
-                                           th:if="${#fields.hasErrors('courseName')}"></p>
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td class="lib_input-label"><label for="description">Description: </label></td>
-                                    <td><textarea class="lib_textarea form-control" id="description" th:field="*{description}"></textarea>
+                                    <td><textarea class="lib_textarea form-control" placeholder="Enter course description"
+                                                  id="description" th:field="*{description}"></textarea>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="lib_input-label"><label th:for="lecturer">Lecturers: </label></td>
-                                    <td><input type="text"
+                                    <td class="lib_input-label"><label th:for="lecturer">Lecturer: </label></td>
+                                    <td><input type="text" placeholder="Enter lecturer to manage course"
                                                class="lib_input form-control" th:name="lecturer" th:id="lecturer"
                                     />
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="lib_input-label"><label th:for="statusSelection">Training type:</label></td>
-                                    <td><select th:field="*{status}" name="status" th:id="statusSelection">
-                                        <option th:each="status : ${statuses}"
-                                                th:text="${status.getDisplayValue()}"
-                                                th:value="${status}">
+                                    <td><select class="" th:field="*{trainingType}" name="status" th:id="statusSelection">
+                                        <option disabled value="">-- Select Training Type --</option>
+                                        <option th:each="trainingType : ${trainingTypes}"
+                                                th:text="${trainingType.getTrainingTypeName()}"
+                                                th:value="${trainingType.getId()}">
                                         </option>
                                     </select>
                                     </td>

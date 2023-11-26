@@ -43,9 +43,11 @@
                             <div style="flex: 3">
                                 <h1 class="h2" th:text="${topic.topicTitle}"></h1>
                                 <p th:text="${course.courseCode} + ' - ' + ${course.courseName}"></p>
+                                <p id="content" class="doc-info-description"
+                                   style="text-align: justify; margin-bottom: 0" th:text="'Topic description: ' + ${topic.topicDescription}"></p>
                             </div>
                             <div style="flex: 1; display: flex; justify-content: center">
-                                <div>
+                                <div style="width: 60%; display: flex; justify-content: center; flex-direction: column">
                                     <a class="btn btn--hover mb-2 mt-2"
                                        th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}">
                                          <span><i class="fa-regular fa-edit"></i>  Edit topic</span>
@@ -61,7 +63,7 @@
                         <div>
                             <!--Document view list-->
                             <div class="d-flex align-items-center document-view-info border-bottom"
-                                 th:each="document : ${topic.getDocuments()}">
+                                 th:each="document : ${documents}">
                                 <div class="doc-info-head" style="max-width: 75%">
                                     <p class="doc-info-title"><a th:href="@{'/lecturer/documents/' + ${document.id}}">
                                         <span th:text="${document.title}"></span></a>
@@ -71,19 +73,16 @@
                                     </p>
                                 </div>
                                 <div style="margin-left: 5%">
-                                    <a href="#" class="lec__edit-topic-icon">
+                                    <a th:href="@{'/lecturer/documents/' + ${document.getId()} + '/update'}" class="lec__edit-topic-icon">
                                         <i class="fa-regular fa-edit"></i>
+                                    </a>
+                                    <a th:href="@{'/lecturer/documents/' + ${document.getId()} + '/delete'}" class="lec__edit-topic-icon">
+                                        <i class="fa-solid fa-trash"></i>
                                     </a>
                                 </div>
                             </div>
                             <!--End Document view-->
-                            <ul class="list-group" th:each="document : ${documents}">
-                                <li class="list-group-item">
-                                    <a th:href="@{'/lecturer/documents/' + ${document.getId()}}"
-                                       th:text="${document.title}">
-                                    </a>
-                                </li>
-                            </ul>
+
                         </div>
                     </div>
                 </div>

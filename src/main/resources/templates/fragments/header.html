@@ -68,7 +68,7 @@
 <!--ADMIN HEADER-->
 <!--Copy from Librarian header and change name-->
 <body th:fragment="headerAdminSection">
-<header class="header-librarian">
+<header class="header header-librarian">
     <div class="">
         <!-- Header navbar -->
         <nav class="header__navbar grid">
@@ -113,7 +113,9 @@
                 <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                     <div class="header__navbar-user-wrap">
                         <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span class="header__navbar-user-role">(Admin)</span>
+                        <th:block th:if="${loggedInUser ne null}">
+                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span class="header__navbar-user-role">(Admin)</span>
+                        </th:block>
                     </div>
                 </li>
                 <li class="header__navbar-item">
@@ -338,13 +340,13 @@
             </a>
             <ul class="header__navbar-list">
                 <li class="header__navbar-item">
-                    <a href="" class="header__navbar-item-link">
+                    <a th:href="@{contactUs}" class="header__navbar-item-link">
                         <i class="header__navbar-icon fas fa-phone"></i>
                         <span class="header__label" >Contact us</span>
                     </a>
                 </li>
                 <li class="header__navbar-item">
-                    <a href="" class="header__navbar-item-link">
+                    <a th:href="@{/fAQ}" class="header__navbar-item-link">
                         <i class="header__navbar-icon far fa-question-circle"></i>
                         <span class="header__label" >Help & FAQs</span></a>
                 </li>

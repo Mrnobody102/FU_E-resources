@@ -22,7 +22,7 @@
 
 </head>
 <body class="app_container">
-<header th:replace="~{fragments/header::headerLibrarianSection}"></header>
+<header th:replace="~{fragments/header::headerAdminSection}"></header>
 <div class="main_content">
   <div class="grid app__container-content-wrapper">
     <div class="app__container-content">
@@ -49,7 +49,7 @@
                 <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
                   <i class="lib_search-btn-icon fas fa-search"></i>
                 </button>
-                <a class="btn lib_show-all-btn" th:href="@{/admin/feedbacks/list/1}">Show AlL</a>
+                <a class="btn lib_show-all-btn" th:href="@{/admin/feedbacks/list}">Show AlL</a>
               </div>
               <!--                            <div>-->
               <!--                                <a class="btn lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">-->

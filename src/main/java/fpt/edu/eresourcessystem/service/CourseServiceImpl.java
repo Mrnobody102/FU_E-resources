@@ -2,10 +2,8 @@ package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
-import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Lecturer;
-import fpt.edu.eresourcessystem.model.Librarian;
-import fpt.edu.eresourcessystem.model.Topic;
+import fpt.edu.eresourcessystem.enums.DocumentEnum;
+import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsCourseRepository;
@@ -13,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -21,6 +20,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,14 +29,16 @@ import java.util.stream.Collectors;
 public class CourseServiceImpl implements CourseService{
     private final CourseRepository courseRepository;
     private final TopicService topicService;
+    private final ResourceTypeService resourceTypeService;
 
     private final MongoTemplate mongoTemplate;
 
     private final EsCourseRepository esCourseRepository;
     @Autowired
-    public CourseServiceImpl(CourseRepository courseRepository, TopicService topicService, MongoTemplate mongoTemplate, EsCourseRepository esCourseRepository) {
+    public CourseServiceImpl(CourseRepository courseRepository, TopicService topicService, ResourceTypeService resourceTypeService, MongoTemplate mongoTemplate, EsCourseRepository esCourseRepository) {
         this.courseRepository = courseRepository;
         this.topicService = topicService;
+        this.resourceTypeService = resourceTypeService;
         this.mongoTemplate = mongoTemplate;
         this.esCourseRepository = esCourseRepository;
     }
@@ -48,6 +50,17 @@ public class CourseServiceImpl implements CourseService{
                 return null;
             }else {
                 Course result = courseRepository.save(course);
+                List<ResourceType> resourceTypes = new ArrayList<>();
+                List<String> defaultRt = Arrays.stream(DocumentEnum.DefaultTopicResourceTypes.values())
+                        .map(DocumentEnum.DefaultTopicResourceTypes::getDisplayValue)
+                        .collect(Collectors.toList());
+                for(String rt : defaultRt) {
+                    ResourceType resourceType = new ResourceType(rt, result);
+                    ResourceType addedResourceType = resourceTypeService.addResourceType(resourceType);
+                    resourceTypes.add(addedResourceType);
+                }
+                result.setResourceTypes(resourceTypes);
+                courseRepository.save(result);
                 return result;
             }
         }
@@ -56,10 +69,16 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public Course updateCourse(Course course){
-        Optional<Course> savedCourse = courseRepository.findById(course.getId());
-        if(savedCourse.isPresent()){
-           Course result =  courseRepository.save(course);
-           return result;
+        Optional<Course> savedCourseOpt = courseRepository.findById(course.getId());
+
+        if (savedCourseOpt.isPresent()) {
+            Course savedCourse = savedCourseOpt.get();
+            savedCourse.setCourseCode(course.getCourseCode());
+            savedCourse.setCourseName(course.getCourseName());
+            savedCourse.setDescription(course.getDescription());
+            savedCourse.setTrainingType(course.getTrainingType());
+            savedCourse.setStatus(course.getStatus());
+            return courseRepository.save(savedCourse);
         }
         return null;
     }
@@ -151,6 +170,23 @@ public class CourseServiceImpl implements CourseService{
         return null;
     }
 
+    @Override
+    public List<Course> findNewCoursesByLecturer(Lecturer lecturer) {
+        Criteria criteria = new Criteria();
+
+        // Sort by the "time" in descending order to get the most recent documents
+        criteria.and("createdDate").exists(true);
+        criteria.and("lecturer.id").is(lecturer.getId());
+        criteria.and("status").is("NEW");
+
+        Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("createdDate")));
+        // Use a Pageable to limit the result set to 5 documents
+        PageRequest pageable = PageRequest.of(0, 5);
+        query.with(pageable);
+        List<Course> results = mongoTemplate.find(query, Course.class);
+        return results;
+    }
+
     /*
         TOPIC
      */
@@ -207,6 +243,41 @@ public class CourseServiceImpl implements CourseService{
         return null;
     }
 
+    // Resource type
+    @Override
+    public boolean addResourceType(ResourceType resourceType) {
+        // check course exist
+        Optional<Course> course = courseRepository.findById(resourceType.getCourse().getId());
+        if(course.isPresent()) {
+            Course courseExisted = course.get();
+
+            // get resourceTypes of course
+            if (null == resourceType.getId()) {
+                return false;
+            }
+            List<ResourceType> resourceTypes = courseExisted.getResourceTypes();
+            if (null == courseExisted.getResourceTypes()) {
+                resourceTypes = new ArrayList<>();
+            }
+
+            // check topic existed in course
+            boolean checkTopicExist = false;
+            for (int i = 0; i < resourceTypes.size(); i++) {
+                if (resourceTypes.get(i).equals(resourceType.getId())) {
+                    checkTopicExist = true;
+                }
+            }
+            // check topic not existed in course
+            if (!checkTopicExist) {
+                // add topic to course
+                resourceTypes.add(resourceType);
+                courseExisted.setResourceTypes(resourceTypes);
+                courseRepository.save(courseExisted);
+            }
+        }
+        return false;
+    }
+
     @Override
     public List<Course> findByListId(List<String> courseIds) {
         Query query = new Query(Criteria.where("id").in(courseIds));
@@ -250,7 +321,6 @@ public class CourseServiceImpl implements CourseService{
         List<Course> results = mongoTemplate.find(query, Course.class);
         Page<Course> page =  PageableExecutionUtils.getPage(results, pageable,
                 () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Course.class));
-        System.out.println(page.getTotalPages());
         return page;
     }
 

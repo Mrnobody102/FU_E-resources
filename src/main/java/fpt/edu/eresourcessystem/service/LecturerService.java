@@ -1,8 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.model.Account;
-import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Lecturer;
+import fpt.edu.eresourcessystem.model.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 
@@ -31,10 +29,11 @@ public interface LecturerService {
     void addCourseToLecturer(String lecturerId, ObjectId courseId);
 
 
-    boolean removeCourse(String lecturerId, ObjectId courseId);
+    boolean removeCourse(String lecturerId, Course courseId);
 
     Page<Course> findListManagingCourse(Lecturer lecturer, String status, int pageIndex, int pageSize);
 
+    Page<Document> findListDocuments(Lecturer lecturer, String status, int pageIndex, int pageSize);
 
     Lecturer findLecturerByAccount(Account account);
 
@@ -42,5 +41,7 @@ public interface LecturerService {
     Lecturer findLecturerById(String lectureId);
 
     boolean update(Lecturer lecturer);
+
+    public boolean softDelete(Lecturer lecturer);
 
 }

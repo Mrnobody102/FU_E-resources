@@ -5,7 +5,7 @@ import fpt.edu.eresourcessystem.dto.TopicDTO;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.*;
@@ -15,7 +15,8 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Document("topics")
 @NoArgsConstructor
 @AllArgsConstructor

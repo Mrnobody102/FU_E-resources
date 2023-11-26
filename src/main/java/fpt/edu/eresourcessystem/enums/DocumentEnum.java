@@ -59,6 +59,14 @@ public class DocumentEnum {
         MD,
         HTML,
         TXT,
+
+        VIDEO,
+
+        AUDIO,
+
+        IMAGE,
+
+
         UNKNOWN;
 
         public static DocumentFormat getDocType(String suffixName) {
@@ -73,53 +81,14 @@ public class DocumentEnum {
                 case "md" -> DocumentFormat.MD;
                 case "html" -> DocumentFormat.HTML;
                 case "txt" -> DocumentFormat.TXT;
+
+                case "m4a", "flac", "mp3", "wav", "wma", "aac" -> AUDIO;
+
+                case "mp4", "mov", "avi", "flv", "mkv", "webm" -> VIDEO;
+
+                case "jpg", "jpeg", "gif", "png", "svg" -> IMAGE;
+
                 default -> DocumentFormat.UNKNOWN;
-            };
-        }
-    }
-
-    // ADD IMAGES + COMMON FILE ZIP, EXE...
-
-    public enum AudioFileFormat {
-        M4A,
-        FLAC,
-        MP3,
-        MP4,
-        WAV,
-        WMA,
-        AAC;
-
-        public static AudioFileFormat getAudioType(String suffixName) {
-            return switch (suffixName) {
-                case ".m4a" -> M4A;
-                case ".flac" -> FLAC;
-                case ".mp3" -> MP3;
-                case ".mp4" -> MP4;
-                case ".wav" -> WAV;
-                case ".wma" -> WMA;
-                case ".aac" -> AAC;
-                default -> throw new IllegalStateException("Unexpected audio suffix name: " + suffixName);
-            };
-        }
-    }
-
-    public enum VideoFileFormat {
-        MP4,
-        MOV,
-        AVI,
-        FLV,
-        MKV,
-        WEBM;
-
-        public static VideoFileFormat getVideoType(String suffixName) {
-            return switch (suffixName) {
-                case ".mp4" -> MP4;
-                case ".mov" -> MOV;
-                case ".avi" -> AVI;
-                case ".flv" -> FLV;
-                case ".mkv" -> MKV;
-                case ".webm" -> WEBM;
-                default -> throw new IllegalStateException("Unexpected video suffix name: " + suffixName);
             };
         }
     }

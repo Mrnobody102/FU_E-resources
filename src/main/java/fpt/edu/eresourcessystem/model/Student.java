@@ -3,7 +3,7 @@ package fpt.edu.eresourcessystem.model;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.*;
@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Document("students")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString

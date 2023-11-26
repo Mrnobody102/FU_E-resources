@@ -18,6 +18,9 @@ public interface DocumentRepository extends
         MongoRepository<Document, String> {
     Optional<Document> findById(String id);
 
+    @Query("{ 'createdBy' : ?0, 'deleteFlg' : 'PRESERVED' }")
+    List<Document> findByCreatedBy(String createdBy);
+
     @Query("{$and: ["
             + "{$or: ["
             + "    {id: {$regex: ?1}},"

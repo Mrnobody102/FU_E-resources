@@ -38,9 +38,14 @@ public interface CourseService {
 
     List<Course> findCoursesByLibrarian(Librarian librarian);
 
+    List<Course> findNewCoursesByLecturer(Lecturer lecturer);
+
     boolean addTopic(Topic topic);
 
     Course removeTopic(Topic topic);
+
+    // Resource type
+    boolean addResourceType(ResourceType resourceType);
 
     List<Course> findByListId(List<String> courseIds);
 

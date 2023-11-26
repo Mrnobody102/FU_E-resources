@@ -5,8 +5,11 @@ import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,7 +26,6 @@ public class Document {
 
     @NotEmpty(message = "course.validation.resourceType.required")
     @DocumentReference(lazy = true)
-    @ReadOnlyProperty
     private Topic topic;
     @DocumentReference(lazy = true)
     private ResourceType resourceType;
@@ -37,8 +39,9 @@ public class Document {
     private String suffix;
 
     // thay bằng grid fs id
+    @Lazy
     private byte[] content;
-
+    @Lazy
     private String editorContent; //link video, audio - cloud
 
     private List<String> notes;

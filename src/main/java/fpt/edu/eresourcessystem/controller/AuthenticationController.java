@@ -41,9 +41,19 @@ public class AuthenticationController {
         this.userLogService = userLogService;
     }
 
+
+    @GetMapping({"/contactUs"})
+    public String viewContactUs(final Model model){
+        return "guest/guest_contact-us.html";
+    }
+    @GetMapping({"/fAQ"})
+    public String viewFAQ(final Model model){
+        return "guest/guest_help-faqs.html";
+    }
     @GetMapping({"/login"})
     public String loginView(final Model model, Authentication authentication) {
-        model.addAttribute("campuses", AccountEnum.getListCampus());
+
+
         String redirect = getAuthenticatedUserRedirectUrl(authentication);
         if (redirect != null) {
             // log user action
@@ -72,7 +82,7 @@ public class AuthenticationController {
         return null;
     }
 
-    @RequestMapping("/login-google")
+    @GetMapping("/login-google")
     public String loginGoogle(HttpServletRequest request) throws ClientProtocolException, IOException, ParseException {
         String code = request.getParameter("code");
 
@@ -100,11 +110,13 @@ public class AuthenticationController {
 
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
 //        System.out.println(authentication.getAuthorities());
         // log user action
 //        UserLogDto userLogDto = new UserLogDto("/login");
 //        UserLog userLog = userLogService.addUserLog(new UserLog(userLogDto));
         return "redirect:" +RedirectUtil.getRedirectUrl(authentication);
     }
+
 
 }

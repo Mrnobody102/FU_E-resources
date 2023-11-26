@@ -7,15 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Librarian | Course detail</title>
 
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css">
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
 
@@ -26,32 +28,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 
     <style>
-        /*.bootstrap-select {*/
-        /*    max-width: 200px;*/
-        /*}*/
-        /*.bootstrap-select .btn {*/
-        /*    border-style: solid;*/
-        /*    border-left-width: 3px;*/
-        /*    border-left-color: #00DDDD;*/
-        /*    border-top: none;*/
-        /*    border-bottom: none;*/
-        /*    border-right: none;*/
-        /*    color: black;*/
-        /*    font-weight: 200;*/
-        /*    padding: 12px 12px;*/
-        /*    font-size: 16px;*/
-        /*    margin-bottom: 10px;*/
-        /*    -webkit-appearance: none;*/
-        /*    -moz-appearance: none;*/
-        /*    appearance: none;*/
-        /*}*/
-        /*.bootstrap-select .dropdown-menu {*/
-        /*    margin: 15px 0 0;*/
-        /*}*/
-        /*select::-ms-expand {*/
-        /*    !* for IE 11 *!*/
-        /*    display: none;*/
-        /*}*/
+        body {
+            font-size: 1.3rem;
+        }
+
+        .bootstrap-select .dropdown-toggle .filter-option-inner-inner {
+            font-size: 1.3rem;
+        }
+
+        .btn {
+            font-size: 1.3rem;
+        }
     </style>
 
 </head>
@@ -84,27 +71,34 @@
                     </tr>
                     <tr>
                         <th>Description</th>
-                        <td th:text="${course.description}"> </td>
+                        <td class="paragraph" th:text="${course.description}"></td>
                     </tr>
                     <tr>
                         <th>Lecturer
-<!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>-->
-<!--                            </p>-->
+                            <!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>-->
+                            <!--                            </p>-->
                         </th>
                         <td th:if="${checkLecturerCourse}">
-                           <p th:text="${course.getLecturer().getAccount().getName()} + ' - ' + ${course.getLecturer().getAccount().getEmail()} "></p>
-                            <p><a class="btn-info" th:href="@{'/librarian/courses/'+${course.getId()}+'/remove-lecture'}">Remove</a>
+                            <p th:text="${course.getLecturer().getAccount().getName()} + ' - ' + ${course.getLecturer().getAccount().getEmail()} "></p>
+                            <p><a href="#"
+                                  class="btn-info remove-lecturer"
+                                  data-course-id="${course.getId()}"
+                                  th:data-course-id="${course.getId()}">Remove</a>
                             </p>
                         </td>
                         <td th:unless="${checkLecturerCourse}">
-                            <form method="post" th:field="*{accounts}" th:action="@{'/librarian/courses/' + ${course.getId()} + '/add-lecture'}">
-<!--                                <input type="text" id="lecturerEmail" name="lecturerEmail"  placeholder="Email" />-->
-                                <select id="select-multiple-account" class=" wia-filter-value selectpicker show-tick"  data-style="btn-white" name="lecturerId"  data-live-search="true"  >
+                            <form id="addLecturerForm" method="post" th:field="*{accounts}"
+                                  th:action="@{'/librarian/courses/' + ${course.getId()} + '/add-lecture'}">
+                                <!--                                <input type="text" id="lecturerEmail" name="lecturerEmail"  placeholder="Email" />-->
+                                <select id="select-account" class=" wia-filter-value selectpicker show-tick"
+                                        data-style="btn-white" name="lecturerId" data-live-search="true">
                                     <option selected disabled th:value="0">Choose a lecturer</option>
                                     <option th:each="account : ${accounts}" th:value="${account.getId()}"
                                             th:text="${account.getEmail()}"></option>
                                 </select>
-                                <button type="submit" class="btn-info">Add </button>
+                                <input type="hidden" id="courseName" th:value="${course.getCourseName()}" />
+                                <input type="hidden" id="courseID" th:value="${course.getId()}" />
+                                <button type="button" onclick="confirmAddLecturer()" class="btn-info">Add</button>
                             </form>
                         </td>
 
@@ -112,9 +106,13 @@
                     <tr>
                         <th></th>
                         <td>
-                            <a class="update-course" th:href="@{'/librarian/courses/'+${course.getId}+'/update'}">Edit course information</a>
-                            | <a class="delete-course" th:id="${course.getId}" style="cursor: pointer">Delete</a>
-
+                            <button type="button" class="btn lib_btn-save"><a class="link-light"
+                                                                              th:href="@{'/librarian/courses/'+${course.getId}+'/update'}">Edit
+                                course information</a>
+                            </button>
+                            <button type="button" class="btn lib_btn-delete delete-course" th:id="${course.getId}">
+                                Delete
+                            </button>
                         </td>
                     </tr>
                 </table>
@@ -139,11 +137,12 @@
 
 <script th:inline="javascript">
 
+
     var successParam = [[${param.success}]];
     if (successParam) {
         Swal.fire(
             'Success!',
-            'Delete course successful!',
+            'Add lecturer successful!',
             'success'
         );
     }
