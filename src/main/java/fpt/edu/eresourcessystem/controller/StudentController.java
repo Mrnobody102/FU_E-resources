@@ -81,12 +81,14 @@ public class StudentController {
     private Student getLoggedInStudent() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         System.out.println(loggedInEmail);
-        if(null==loggedInEmail || "anonymousUser".equals(loggedInEmail)){
+        if (null == loggedInEmail || "anonymousUser".equals(loggedInEmail)) {
             return null;
         }
         Account loggedInAccount = accountService.findByEmail(loggedInEmail);
-        Student loggedInStudent = studentService.findByAccountId(loggedInAccount.getId());
-        return loggedInStudent;
+        if (loggedInAccount != null) {
+            Student loggedInStudent = studentService.findByAccountId(loggedInAccount.getId());
+            return loggedInStudent;
+        } else return null;
     }
 
     /*
@@ -101,7 +103,7 @@ public class StudentController {
     @GetMapping({"", "/home"})
     public String getStudentHome(@ModelAttribute Account account, final Model model) {
         Student student = getLoggedInStudent();
-        if(null == student){
+        if (null == student) {
             return "redirect:/login";
         }
         List<Course> recentCourses = courseLogService.findStudentRecentView(student.getAccount().getEmail());
@@ -195,12 +197,12 @@ public class StudentController {
         }
 
         // get others doc
-        if(null!= document.getTopic()){
+        if (null != document.getTopic()) {
             List<DocumentResponseDto> relevantDocuments = documentService
-                    .findRelevantDocument(document.getTopic().getId(),docId);
-            if(null!= relevantDocuments && relevantDocuments.size()> 0){
+                    .findRelevantDocument(document.getTopic().getId(), docId);
+            if (null != relevantDocuments && relevantDocuments.size() > 0) {
                 model.addAttribute("relevantDocuments", relevantDocuments);
-            }else {
+            } else {
                 relevantDocuments = new ArrayList<>();
                 relevantDocuments.add(new DocumentResponseDto(document));
                 model.addAttribute("relevantDocuments", relevantDocuments);

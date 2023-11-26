@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -53,8 +54,17 @@ public class LecturerController {
     }
 
 
-    public Lecturer getLoggedInLecturer() {
-        return lecturerService.findAll().get(0);
+    private Lecturer getLoggedInLecturer() {
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        if(null==loggedInEmail || "anonymousUser".equals(loggedInEmail)){
+            return null;
+        }
+        Account loggedInAccount = accountService.findByEmail(loggedInEmail);
+        if(loggedInAccount != null){
+            Lecturer loggedInLecturer = lecturerService.findByAccountId(loggedInAccount.getId());
+            return loggedInLecturer;
+        }else return null;
+
     }
 
     @GetMapping

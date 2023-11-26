@@ -79,7 +79,8 @@ public class SecurityConfig implements WebMvcConfigurer {
         // Authorization
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/**", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
+                        .requestMatchers( "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
+                        .requestMatchers("/admin/**").hasAnyRole(AccountEnum.Role.ADMIN.name())
                         .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
                         .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.LECTURER.name())
                         .requestMatchers("/student/**").hasAnyRole(AccountEnum.Role.STUDENT.name())
@@ -88,8 +89,8 @@ public class SecurityConfig implements WebMvcConfigurer {
         ;
 
         // Exception Handling
-        http.exceptionHandling(auth -> auth.accessDeniedPage("/access_denied"));
-        
+//        http.exceptionHandling(auth -> auth.accessDeniedPage("/access_denied"));
+        http.exceptionHandling(auth -> auth.accessDeniedPage("/login"));
 
         return http.build();
     }
