@@ -369,4 +369,9 @@ public class StudentController {
         model.addAttribute("search", search);
         return "student/student_search-results";
     }
+
+    @GetMapping({"/chat"})
+    public String goHomePage() {
+        return "student/test_notification";
+    }
 }
