@@ -12,6 +12,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -22,10 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -472,6 +471,28 @@ public class AdminController {
         model.addAttribute("trainingTypes", trainingTypeService.findAll());
         return "admin/training_type/admin_training-type"; // Thymeleaf template for listing training types
     }
+
+
+//    @GetMapping("/trainingtypes/list")
+//    public DataTableResponse listTrainingTypes(
+//            @RequestParam int draw,
+//            @RequestParam int start,
+//            @RequestParam int length,
+//            @RequestParam(required = false) String search
+//    ) {
+//        Pageable pageable = PageRequest.of(start / length, length);
+//
+//        Page<TrainingType> page = trainingTypeService.findAllWithFilter(search, pageable);
+//
+//        DataTableResponse response = new DataTableResponse();
+//        response.setDraw(draw);
+//        response.setRecordsTotal(page.getTotalElements());
+//        response.setRecordsFiltered(page.getTotalElements());
+//        response.setData(page.getContent());
+//
+//        return response;
+//    }
+
 
     @GetMapping("/trainingtypes")
     public String listTrainingTypesNone(Model model) {

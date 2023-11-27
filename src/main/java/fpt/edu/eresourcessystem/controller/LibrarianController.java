@@ -389,16 +389,12 @@ public class LibrarianController {
 
     @GetMapping({"/lectures"})
     public String showLectures(final Model model) {
-        List<TrainingType> trainingTypes = trainingTypeService.findAll();
-        model.addAttribute("trainingTypes", trainingTypes);
         return "librarian/lecture/librarian_lectures";
     }
 
     @GetMapping({"/lectures/list"})
     public String showLecture(final Model model) {
         List<Lecturer> lecturers = lecturerService.findAll();
-        List<TrainingType> trainingTypes = trainingTypeService.findAll();
-        model.addAttribute("trainingTypes", trainingTypes);
         model.addAttribute("lecturers", lecturers);
         return "librarian/lecture/librarian_lectures";
     }
