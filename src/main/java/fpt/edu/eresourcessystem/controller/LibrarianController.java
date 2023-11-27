@@ -1,6 +1,8 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.CourseDto;
+import fpt.edu.eresourcessystem.dto.AccountDto;
+import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -330,49 +334,69 @@ public class LibrarianController {
 
     /**
      * @param courseId course id
-     * @param model    model attribute
      * @return
      */
 
     @PostMapping({"/courses/{courseId}/add-lecture"})
     public String addLecturer(@PathVariable String courseId,
-                              @RequestParam String lecturerId,
-                              final Model model,
-                              RedirectAttributes redirectAttributes) {
-        Account account = accountService.findById(lecturerId);
-        Lecturer lecturer = lecturerService.findByAccountId(account.getId());
+                              @RequestParam String lecturerEmail) {
+        Account account = accountService.findByEmail(lecturerEmail);
 
-        Course course = courseService.updateLectureId(courseId, lecturer);
-
-        if (course == null || lecturer == null) {
+        Lecturer savedLecturer = null;
+        if (account == null) {
+            Account a = new Account();
+            a.setEmail(lecturerEmail);
+            Account account1 = accountService.saveAccount(a);
+            // save account
+            Lecturer lecturer = new Lecturer();
+            lecturer.setAccount(account1);
+            savedLecturer = lecturerService.addLecturer(lecturer);
+            // save lecturer
+        } else {
+            savedLecturer = lecturerService.findByAccountId(account.getId());
+            if (savedLecturer == null) {
+                Lecturer lecturer = new Lecturer();
+                lecturer.setAccount(account);
+                savedLecturer = lecturerService.addLecturer(lecturer);
+            }
+        }
+        Course course = courseService.updateLectureId(courseId, savedLecturer);
+        if (course == null) {
             return "redirect:/courses/" + courseId + "/add-lecture?error";
         } else {
-            lecturerService.addCourseToLecturer(lecturer.getId(), new ObjectId(courseId));
-
+            lecturerService.addCourseToLecturer(savedLecturer.getId(), new ObjectId(courseId));
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("maihoa362001@gmail.com");
-            message.setTo("huypq1801@gmail.com"); // Change to lecturer mail
-            message.setSubject("Subject : Thông báo quản lý môn học " + course.getCourseCode());
-            message.setText("Body : Tên môn học: " + course.getCourseName());
-            javaMailSender.send(message);
+            message.setTo("ngaydoidemcho93@gmail.com"); // Change to lecturer mail
+            String subject = "Notification: Course Management Assignment";
+            message.setSubject(subject);
 
-//            redirectAttributes.addFlashAttribute("successMessage", "Lecturer added successfully to the course!");
+            // Compose the body of the email
+            String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+            String body = String.format(
+                    "Kính gửi Giảng viên,\n\n" +
+                            "Chúng tôi xin thông báo bạn đã được phân công quản lý khóa học '%s' từ thời điểm %s. " +
+                            "Đây là một cơ hội tuyệt vời để bạn thể hiện khả năng và đóng góp vào sự phát triển của khóa học.\n\n" +
+                            "Vui lòng đăng nhập vào hệ thống quản lý khóa học để cập nhật nội dung, tài liệu và thông tin liên quan đến khóa học. " +
+                            "Nếu bạn có bất kỳ thắc mắc hoặc cần sự hỗ trợ, đừng ngần ngại liên hệ với chúng tôi.\n\n" +
+                            "Chúc bạn một ngày làm việc hiệu quả và nhiều niềm vui!\n\n" +
+                            "Trân trọng,\n Thư viện FPT",
+                    course.getCourseName(), dateTime);
+            message.setText(body);
+            javaMailSender.send(message);
             return "redirect:/librarian/courses/" + courseId + "?success";
         }
+
     }
 
     @GetMapping({"/lectures"})
     public String showLectures(final Model model) {
-        List<TrainingType> trainingTypes = trainingTypeService.findAll();
-        model.addAttribute("trainingTypes", trainingTypes);
         return "librarian/lecture/librarian_lectures";
     }
 
     @GetMapping({"/lectures/list"})
     public String showLecture(final Model model) {
         List<Lecturer> lecturers = lecturerService.findAll();
-        List<TrainingType> trainingTypes = trainingTypeService.findAll();
-        model.addAttribute("trainingTypes", trainingTypes);
         model.addAttribute("lecturers", lecturers);
         return "librarian/lecture/librarian_lectures";
     }

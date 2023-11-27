@@ -12,6 +12,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -125,8 +125,8 @@ public class AdminController {
     /*
     This function to display librarians and created course by that librarians
      */
-    @GetMapping("/course_creator")
-    String findCourseByLibrarian(final Model model) {
+    @GetMapping("/course_creator/list")
+    String findCourseByLibrarianList(final Model model) {
 
         List<Account> librarianList = accountService.findAllLibrarian();
         for (int i = 0; i < librarianList.size(); i++) {
@@ -146,6 +146,12 @@ public class AdminController {
 
         return "admin/course_creator/admin_course_creators";
     }
+
+    @GetMapping("/course_creator")
+    String findCourseByLibrarian(final Model model) {
+        return "admin/course_creator/admin_course_creators";
+    }
+
 
 
     @GetMapping("/accounts/list/{pageIndex}")
@@ -411,10 +417,26 @@ public class AdminController {
 
     @GetMapping({"/feedbacks"})
     public String showFeedbacks(final Model model) {
+//        List<Feedback> feedbacks = feedbackService.findAll();
+//        model.addAttribute("feedbacks", feedbacks);
+        return "admin/feedback/admin_feedbacks";
+//        return  "librarian/course/detailCourseTest";
+    }
+
+    @GetMapping({"/feedbacks/list"})
+    public String showFeedbacksList(final Model model) {
         List<Feedback> feedbacks = feedbackService.findAll();
         model.addAttribute("feedbacks", feedbacks);
         return "admin/feedback/admin_feedbacks";
 //        return  "librarian/course/detailCourseTest";
+    }
+
+    @GetMapping("/feedbacks/{id}")
+    public String showFeedbackDetail(@PathVariable("id") String id, Model model) {
+        Feedback feedback = feedbackService.getFeedbackById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Feedback not found for this id :: " + id));
+        model.addAttribute("feedback", feedback);
+        return "admin/feedback/admin_feedback-detail"; // Name of your Thymeleaf template for feedback detail
     }
 
 
@@ -448,6 +470,33 @@ public class AdminController {
     public String listTrainingTypes(Model model) {
         model.addAttribute("trainingTypes", trainingTypeService.findAll());
         return "admin/training_type/admin_training-type"; // Thymeleaf template for listing training types
+    }
+
+
+//    @GetMapping("/trainingtypes/list")
+//    public DataTableResponse listTrainingTypes(
+//            @RequestParam int draw,
+//            @RequestParam int start,
+//            @RequestParam int length,
+//            @RequestParam(required = false) String search
+//    ) {
+//        Pageable pageable = PageRequest.of(start / length, length);
+//
+//        Page<TrainingType> page = trainingTypeService.findAllWithFilter(search, pageable);
+//
+//        DataTableResponse response = new DataTableResponse();
+//        response.setDraw(draw);
+//        response.setRecordsTotal(page.getTotalElements());
+//        response.setRecordsFiltered(page.getTotalElements());
+//        response.setData(page.getContent());
+//
+//        return response;
+//    }
+
+
+    @GetMapping("/trainingtypes")
+    public String listTrainingTypesNone(Model model) {
+        return "admin/training_type/admin_training-type";
     }
 
     @GetMapping("/trainingtypes/{id}")
@@ -509,4 +558,6 @@ public class AdminController {
     public String documentLogManage() {
         return "admin/system_log/admin_document_logs";
     }
+
+
 }

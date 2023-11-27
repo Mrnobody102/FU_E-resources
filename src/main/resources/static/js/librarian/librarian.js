@@ -132,9 +132,13 @@ $(document).on("click", ".remove-lecturer", function(e) {
     });
 });
 function confirmAddLecturer() {
-    const lecturerEmail = document.getElementById('select-account').options[document.getElementById('select-account').selectedIndex].text;
-    const courseName = document.getElementById('courseName').value; // Get the course name from the hidden input field
+    // Get the selected lecturer's email from the dropdown
+    const lecturerEmail = document.getElementById('lecturerEmail').value;
 
+    // Get the course name from the hidden input field
+    const courseName = document.getElementById('courseName').value;
+
+    // Display confirmation dialog using SweetAlert
     Swal.fire({
         title: 'Are you sure?',
         html: `Do you want to assign <b>${lecturerEmail}</b> to the course <b>${courseName}</b>?<br><br>This action will send an email to the lecturer.`,
@@ -145,6 +149,7 @@ function confirmAddLecturer() {
         confirmButtonText: 'Yes, assign it!'
     }).then((result) => {
         if (result.isConfirmed) {
+            // Submit the form if the user confirms
             document.getElementById('addLecturerForm').submit();
         }
     });

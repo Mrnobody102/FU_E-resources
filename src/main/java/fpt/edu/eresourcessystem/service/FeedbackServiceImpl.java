@@ -1,8 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Feedback;
-import fpt.edu.eresourcessystem.repository.DocumentRepository;
 import fpt.edu.eresourcessystem.repository.FeedbackRepository;
 import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -13,7 +11,12 @@ import java.util.Optional;
 @Service("feedbackService")
 public class FeedbackServiceImpl implements FeedbackService {
 
-    private FeedbackRepository feedbackRepository;
+    private final FeedbackRepository feedbackRepository;
+
+    public FeedbackServiceImpl(FeedbackRepository feedbackRepository) {
+        this.feedbackRepository = feedbackRepository;
+    }
+
     @Override
     public List<Feedback> findAll() {
         List<Feedback> feedbacks = feedbackRepository.findAll();

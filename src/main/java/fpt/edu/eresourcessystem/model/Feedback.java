@@ -1,6 +1,8 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import fpt.edu.eresourcessystem.dto.FeedbackDTO;
+import fpt.edu.eresourcessystem.dto.TrainingTypeDTO;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +23,7 @@ public class Feedback {
     private String id;
     @NotNull
     @DocumentReference(lazy = true)
-    private Student student;
+    private Account account;
 
     private String feedbackEmotion;
     @NotEmpty(message = "feedback.validation.content.required")
@@ -38,8 +40,24 @@ public class Feedback {
     private String createdDate;
     @LastModifiedBy
     private String lastModifiedBy;
+
+    public Feedback(FeedbackDTO feedbackDTO) {
+        this.id = feedbackDTO.getId();
+        this.account = feedbackDTO.getAccount();
+        this.feedbackEmotion = feedbackDTO.getFeedbackEmotion();
+        this.feedbackContent = feedbackDTO.getFeedbackContent();
+        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;;
+//        this.status = status;
+    }
+
     @LastModifiedDate
     private String lastModifiedDate;
 
     // Constructor DTO
+//    public Feedback(FeedbackDTO feedbackDTO) {
+//        this.id = feedbackDTO.getId();
+//        this.feedbackEmotion = feedbackDTO.getFeedbackEmotion();
+//        this.trainingTypeDescription = trainingTypeDTO.getTrainingTypeDescription();
+//        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+//    }
 }

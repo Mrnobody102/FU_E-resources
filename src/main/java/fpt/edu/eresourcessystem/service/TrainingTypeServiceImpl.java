@@ -4,6 +4,9 @@ import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.TrainingType;
 import fpt.edu.eresourcessystem.repository.TrainingTypeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -68,6 +71,26 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<TrainingType> findPaginated(int start, int length) {
+        Pageable pageable = PageRequest.of(start / length, length); // Calculate the page number based on start and length
+        Page<TrainingType> page = trainingTypeRepository.findAll(pageable);
+        return page.getContent();
+    }
+
+    @Override
+    public long getTotalTrainingTypesCount() {
+        return trainingTypeRepository.count();
+    }
+
+    @Override
+    public Page<TrainingType> findAllWithFilter(String search, Pageable pageable) {
+        if (search == null) {
+            search = "";
+        }
+        return trainingTypeRepository.findByTrainingTypeNameContainingIgnoreCase(search, pageable);
     }
 
 }
