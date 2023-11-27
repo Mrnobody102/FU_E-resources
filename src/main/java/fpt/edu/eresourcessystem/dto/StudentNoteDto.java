@@ -10,7 +10,7 @@ import org.springframework.data.annotation.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentNoteDTO {
+public class StudentNoteDto {
     @Id
     private String id;
     private String studentId;

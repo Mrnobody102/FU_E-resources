@@ -16,7 +16,8 @@
                 </div>
 
                 <div class="auth-form__form">
-                    <div th:if="${param.error}" class="alert alert-danger" role="alert">Invalid username or password</div>
+                    <div th:if="${param.error}" class="alert alert-danger" role="alert">Invalid username or password
+                    </div>
 
                     <div class="auth-form__group">
                         <input type="email" name="username" class="auth-form__input" placeholder="Your Email">
@@ -25,15 +26,15 @@
                         <input type="password" name="password" class="auth-form__input" placeholder="Enter Password">
                     </div>
 
-<!--                    <div class="auth-form__select">-->
-<!--                        <label th:for="campus">Select campus</label>-->
-<!--                        <select class="auth-form__select-tag" th:name="campus" th:id="campuses">-->
-<!--                            <option th:each="campus : ${campuses}"-->
-<!--                                    th:text="${campus}"-->
-<!--                                    th:value="${campus}">-->
-<!--                            </option>-->
-<!--                        </select>-->
-<!--                    </div>-->
+                    <!--                    <div class="auth-form__select">-->
+                    <!--                        <label th:for="campus">Select campus</label>-->
+                    <!--                        <select class="auth-form__select-tag" th:name="campus" th:id="campuses">-->
+                    <!--                            <option th:each="campus : ${campuses}"-->
+                    <!--                                    th:text="${campus}"-->
+                    <!--                                    th:value="${campus}">-->
+                    <!--                            </option>-->
+                    <!--                        </select>-->
+                    <!--                    </div>-->
                     <div class="auth-form__aside">
                         <div class="auth-form__help">
                             <a href="" class="auth-form__help-link auth-form__help-forgot-password">Forgot
@@ -51,7 +52,8 @@
             </div>
             <div class="auth-form__socials">
                 <a href="https://accounts.google.com/o/oauth2/auth?scope=profile+https://www.googleapis.com/auth/userinfo.email&redirect_uri=http://localhost:8080/login-google&response_type=code
-    &client_id=618210662213-63n1o3sk8g83utv20j8i5vrdkge0ss94.apps.googleusercontent.com&approval_prompt=force" class="btn btn--size-s btn--with-icon auth-form__socials--google">
+    &client_id=618210662213-63n1o3sk8g83utv20j8i5vrdkge0ss94.apps.googleusercontent.com&approval_prompt=force"
+                        class="btn btn--size-s btn--with-icon auth-form__socials--google">
                     <i class="auth-form__socials-google-icon fab fa-google"></i>
                     <span class="auth-form__socials-title">
                         Login with Google

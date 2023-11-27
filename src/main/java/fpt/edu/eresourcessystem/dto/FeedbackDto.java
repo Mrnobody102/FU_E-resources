@@ -5,17 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DocumentNoteDTO {
+@Document("feedbacks")
+public class FeedbackDto {
     @Id
     private String id;
     private String studentId;
-
-    private String content;
-    private String docId;
+    private String feedbackEmotion;
+    private String feedbackContent;
 
     // Only use when response, no need in requests
     private String createdBy;

@@ -5,20 +5,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("feedbacks")
-public class FeedbackDTO {
+public class RequestDto {
     @Id
     private String id;
     private String studentId;
-    private String feedbackEmotion;
-    private String feedbackContent;
+
+    private String request;
+    private String requestDescription;
+    private String topicId;
+    private String courseId;
 
     // Only use when response, no need in requests
+    private List<String> lecturers;
     private String createdBy;
     private String createdDate;
     private String lastModifiedBy;

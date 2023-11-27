@@ -11,7 +11,6 @@ public class UserAuditing implements AuditorAware<String> {
 
     @Override
     public Optional<String> getCurrentAuditor() {
-
         String uname = SecurityContextHolder.getContext().getAuthentication().getName();
         return Optional.of(uname);
     }

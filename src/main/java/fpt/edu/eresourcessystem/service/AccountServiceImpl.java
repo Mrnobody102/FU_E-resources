@@ -1,6 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.dto.AccountDTO;
+import fpt.edu.eresourcessystem.dto.AccountDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.repository.AccountRepository;
@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account addAccount(AccountDTO accountDTO) {
+    public Account addAccount(AccountDto accountDTO) {
         Account account = new Account(accountDTO);
         account.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
         accountRepository.insert(account);

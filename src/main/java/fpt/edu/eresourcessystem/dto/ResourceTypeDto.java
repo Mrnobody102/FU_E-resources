@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.dto;
 
 
+import fpt.edu.eresourcessystem.model.Course;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,18 +12,14 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestDTO {
+public class ResourceTypeDto {
     @Id
     private String id;
-    private String studentId;
-
-    private String request;
-    private String requestDescription;
-    private String topicId;
-    private String courseId;
+    private String resourceTypeName;
+    private Course course;
 
     // Only use when response, no need in requests
-    private List<String> lecturers;
+    private List<String> documents;
     private String createdBy;
     private String createdDate;
     private String lastModifiedBy;

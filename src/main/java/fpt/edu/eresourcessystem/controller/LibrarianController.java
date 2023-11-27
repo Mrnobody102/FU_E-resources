@@ -1,19 +1,14 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.dto.CourseDTO;
-import fpt.edu.eresourcessystem.dto.DocumentDTO;
+import fpt.edu.eresourcessystem.dto.CourseDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
-import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
-import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.bson.types.ObjectId;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.mail.SimpleMailMessage;
@@ -23,16 +18,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -41,8 +32,6 @@ import java.util.stream.Collectors;
 public class LibrarianController {
 
     private final JavaMailSender javaMailSender;
-
-    //    @Value("${page-size}")
     private static final Integer pageSize = 5;
     private final AccountService accountService;
     private final LibrarianService librarianService;
@@ -103,7 +92,7 @@ public class LibrarianController {
      * @return
      */
     @PostMapping("/courses/add")
-    public String addCourseProcess(@ModelAttribute CourseDTO courseDTO,
+    public String addCourseProcess(@ModelAttribute CourseDto courseDTO,
                                    @RequestParam(value = "lecturer") String lecturer) {
         Course course = new Course(courseDTO, CourseEnum.Status.HIDE);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

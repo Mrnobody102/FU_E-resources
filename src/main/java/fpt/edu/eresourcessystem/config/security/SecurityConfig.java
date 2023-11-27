@@ -62,7 +62,6 @@ public class SecurityConfig implements WebMvcConfigurer {
 //    , HandlerMappingIntrospector introspector
     ) throws Exception {
 
-
         // Disable  csrf
         http.csrf(AbstractHttpConfigurer::disable);
 
@@ -71,15 +70,26 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .loginProcessingUrl("/login")
                 .successHandler(customAuthenticationSuccessHandler)
                 .failureUrl("/login?error"));
+
+//        http.oauth2Login(auth -> auth.loginPage("/login")
+//                .successHandler(customAuthenticationSuccessHandler)
+//                .failureUrl("/login?error"));
+
         http.logout(auth -> auth.logoutUrl("/logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .clearAuthentication(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout"));
+
+
 
 //        MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector).servletPath("/");
 
         // Authorization
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers( "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
+                        .requestMatchers("/","/contact_us", "/faq", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyRole(AccountEnum.Role.ADMIN.name())
                         .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
                         .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.LECTURER.name())

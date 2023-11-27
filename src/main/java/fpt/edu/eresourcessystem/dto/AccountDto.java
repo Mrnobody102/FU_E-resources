@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class AccountDTO {
+public class AccountDto {
 
     @NotNull
     private String id;

@@ -2,11 +2,9 @@ package fpt.edu.eresourcessystem.service;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.mongodb.client.gridfs.model.GridFSFile;
-import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
+import fpt.edu.eresourcessystem.dto.StudentNoteDto;
 import fpt.edu.eresourcessystem.model.StudentNote;
 import fpt.edu.eresourcessystem.repository.StudentNoteRepository;
-import org.apache.commons.io.IOUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +16,6 @@ import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -68,7 +65,7 @@ public class StudentNoteServiceImpl implements StudentNoteService{
     }
 
     @Override
-    public StudentNote addStudentNote(StudentNoteDTO studentNoteDTO){
+    public StudentNote addStudentNote(StudentNoteDto studentNoteDTO){
         //search file
         if (null == studentNoteDTO.getId()) {
                 StudentNote result = studentNoteRepository.save(new StudentNote(studentNoteDTO));

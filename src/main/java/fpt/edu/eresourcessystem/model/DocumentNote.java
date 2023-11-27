@@ -1,7 +1,7 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import fpt.edu.eresourcessystem.dto.DocumentNoteDTO;
+import fpt.edu.eresourcessystem.dto.DocumentNoteDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -41,7 +41,7 @@ public class DocumentNote {
     private String lastModifiedDate;
 
     // Constructor DTO
-    public DocumentNote(DocumentNoteDTO documentNoteDTO) {
+    public DocumentNote(DocumentNoteDto documentNoteDTO) {
         this.id = documentNoteDTO.getId();
         this.studentId = documentNoteDTO.getStudentId();
         this.noteContent = documentNoteDTO.getContent();

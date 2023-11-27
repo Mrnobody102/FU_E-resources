@@ -1,6 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.dto.DocumentDTO;
+import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -399,7 +399,7 @@ public class LecturerController {
 
     @PostMapping("/documents/add")
     @Transactional
-    public String addDocumentProcess(@ModelAttribute DocumentDTO documentDTO,
+    public String addDocumentProcess(@ModelAttribute DocumentDto documentDTO,
                                      @RequestParam(value = "topicId") String topicId,
                                      @RequestParam(value = "respondResourceType") String respondResourceType,
                                      @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
@@ -461,7 +461,7 @@ public class LecturerController {
     }
 
     @PostMapping("/documents/update")
-    public String updateCourse(@ModelAttribute DocumentDTO document, final Model model) throws IOException {
+    public String updateCourse(@ModelAttribute DocumentDto document, final Model model) throws IOException {
         Document checkExist = documentService.findById(document.getId());
 
         if (null == checkExist) {

@@ -1,7 +1,7 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import fpt.edu.eresourcessystem.dto.AccountDTO;
+import fpt.edu.eresourcessystem.dto.AccountDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotEmpty;
@@ -45,6 +45,12 @@ public class Account {
 
     private AccountEnum.AccountType accountType;
 
+    // oauth2
+    private boolean accountNonExpired;
+    private boolean isEnabled;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
 
@@ -59,7 +65,7 @@ public class Account {
     private String lastModifiedDate;
 
     // Constructor DTO
-    public Account(AccountDTO accountDTO) {
+    public Account(AccountDto accountDTO) {
         this.id = accountDTO.getId();
         this.username = accountDTO.getUsername();
         this.password = accountDTO.getPassword();
@@ -73,5 +79,10 @@ public class Account {
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
         // Add - Self system account
         this.accountType = AccountEnum.AccountType.SYSTEM_ACC;
+        // default oauth2
+        this.accountNonExpired = true;
+        this.accountNonLocked = true;
+        this.isEnabled = true;
+        this.credentialsNonExpired = true;
     }
 }

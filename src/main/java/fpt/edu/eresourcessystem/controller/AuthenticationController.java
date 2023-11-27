@@ -41,17 +41,8 @@ public class AuthenticationController {
         this.userLogService = userLogService;
     }
 
-
-    @GetMapping({"/contactUs"})
-    public String viewContactUs(final Model model){
-        return "guest/guest_contact-us.html";
-    }
-    @GetMapping({"/fAQ"})
-    public String viewFAQ(final Model model){
-        return "guest/guest_help-faqs.html";
-    }
     @GetMapping({"/login"})
-    public String loginView(final Model model, Authentication authentication) {
+    public String loginView(Authentication authentication) {
 
 
         String redirect = getAuthenticatedUserRedirectUrl(authentication);
@@ -82,41 +73,41 @@ public class AuthenticationController {
         return null;
     }
 
-    @GetMapping("/login-google")
-    public String loginGoogle(HttpServletRequest request) throws ClientProtocolException, IOException, ParseException {
-        String code = request.getParameter("code");
-
-        if (code == null || code.isEmpty()) {
-            return "redirect:/login?google=error";
-        }
-        String accessToken = googleUtils.getToken(code);
-        GooglePojo googlePojo = googleUtils.getUserInfo(accessToken);
-//        UserDetails userDetail = googleUtils.buildUser(googlePojo);
-
-        Account account = accountService.findByEmail(googlePojo.getEmail());
-
-        if (account == null) {
-            return "redirect:/access_denied";
-        }
-        // Granted Authority
-        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + account.getRole().name());
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(authority);
-
-        UserDetails userDetail = new User(account.getEmail(), "", true, true, true, true, authorities);
-
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail, null,
-                userDetail.getAuthorities());
-
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-//        System.out.println(authentication.getAuthorities());
-        // log user action
-//        UserLogDto userLogDto = new UserLogDto("/login");
-//        UserLog userLog = userLogService.addUserLog(new UserLog(userLogDto));
-        return "redirect:" +RedirectUtil.getRedirectUrl(authentication);
-    }
+//    @GetMapping("/login-google")
+//    public String loginGoogle(HttpServletRequest request) throws ClientProtocolException, IOException, ParseException {
+//        String code = request.getParameter("code");
+//
+//        if (code == null || code.isEmpty()) {
+//            return "redirect:/login?google=error";
+//        }
+//        String accessToken = googleUtils.getToken(code);
+//        GooglePojo googlePojo = googleUtils.getUserInfo(accessToken);
+////        UserDetails userDetail = googleUtils.buildUser(googlePojo);
+//
+//        Account account = accountService.findByEmail(googlePojo.getEmail());
+//
+//        if (account == null) {
+//            return "redirect:/access_denied";
+//        }
+//        // Granted Authority
+//        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + account.getRole().name());
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(authority);
+//
+//        UserDetails userDetail = new User(account.getEmail(), "huy12345", true, true, true, true, authorities);
+//
+//        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail, null,
+//                userDetail.getAuthorities());
+//
+//        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+////        System.out.println(authentication.getAuthorities());
+//        // log user action
+////        UserLogDto userLogDto = new UserLogDto("/login");
+////        UserLog userLog = userLogService.addUserLog(new UserLog(userLogDto));
+//        return "redirect:" +RedirectUtil.getRedirectUrl(authentication);
+//    }
 
 
 }

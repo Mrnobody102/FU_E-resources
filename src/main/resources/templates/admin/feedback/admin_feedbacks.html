@@ -7,7 +7,7 @@
   <title>Admin | Feedbacks </title>
 
   <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
   <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
   <!-- Custom styles for this template -->
@@ -49,7 +49,7 @@
                 <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
                   <i class="lib_search-btn-icon fas fa-search"></i>
                 </button>
-                <a class="btn lib_show-all-btn" th:href="@{/admin/feedbacks/list}">Show AlL</a>
+                <a class="btn lib_show-all-btn" th:href="@{/admin/feedbacks/list}">Show all</a>
               </div>
               <!--                            <div>-->
               <!--                                <a class="btn lib_btn-add" type="button" th:href="@{/librarian/accounts/add}">-->
@@ -101,8 +101,8 @@
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Bootstrap script-->
-<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+<script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"
+
         crossorigin="anonymous"></script>
 <!--Custom script-->
 <script th:src="@{/js/admin/admin.js}"></script>

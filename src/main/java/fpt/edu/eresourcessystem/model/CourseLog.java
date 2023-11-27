@@ -1,6 +1,6 @@
 package fpt.edu.eresourcessystem.model;
 
-import fpt.edu.eresourcessystem.dto.CourseLogDTO;
+import fpt.edu.eresourcessystem.dto.CourseLogDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import lombok.*;
 import org.springframework.data.annotation.*;
@@ -37,7 +37,7 @@ public class CourseLog {
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
     // Constructor DTO
-    public CourseLog(CourseLogDTO courseLogDTO) {
+    public CourseLog(CourseLogDto courseLogDTO) {
         this.id = courseLogDTO.getId();
         this.course = courseLogDTO.getCourse();
         this.action = courseLogDTO.getAction();

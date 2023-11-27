@@ -1,7 +1,7 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.dto.AccountDTO;
-import fpt.edu.eresourcessystem.dto.TrainingTypeDTO;
+import fpt.edu.eresourcessystem.dto.AccountDto;
+import fpt.edu.eresourcessystem.dto.TrainingTypeDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -176,7 +176,7 @@ public class AdminController {
      * @return
      */
     @GetMapping("/accounts/add")
-    public String addAccountProcess(@ModelAttribute AccountDTO accountDTO, final Model model) {
+    public String addAccountProcess(@ModelAttribute AccountDto accountDTO, final Model model) {
         model.addAttribute("account", Objects.requireNonNullElseGet(accountDTO, Account::new));
         model.addAttribute("roles", AccountEnum.Role.values());
         model.addAttribute("campuses", AccountEnum.Campus.values());
@@ -189,7 +189,7 @@ public class AdminController {
      * @return
      */
     @PostMapping("/accounts/add")
-    public String addAccount(@ModelAttribute AccountDTO accountDTO) {
+    public String addAccount(@ModelAttribute AccountDto accountDTO) {
         String email = accountDTO.getEmail();
         String role = String.valueOf(accountDTO.getRole());
         if (accountService.findByEmail(email) != null) {
@@ -257,7 +257,7 @@ public class AdminController {
      * @return
      */
     @PostMapping("/accounts/update")
-    public String updateAccount(@ModelAttribute AccountDTO accountDTO,
+    public String updateAccount(@ModelAttribute AccountDto accountDTO,
                                 final Model model) {
         Account checkExist = accountService.findById(accountDTO.getId());
         if (null == checkExist) {
@@ -427,7 +427,7 @@ public class AdminController {
     }
 
     @PostMapping("/trainingtypes/add")
-    public String addTrainingType(@ModelAttribute("trainingtype") @Valid TrainingTypeDTO trainingType,
+    public String addTrainingType(@ModelAttribute("trainingtype") @Valid TrainingTypeDto trainingType,
                                   BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Validation failed. Please check your input.");
