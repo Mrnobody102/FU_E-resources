@@ -55,7 +55,7 @@ public class AccountServiceImpl implements AccountService {
     public Account saveAccount(Account account) {
 //        Account account = new Account(accountDTO);
 //        account.setPassword(passwordEncoder.encode(account.getPassword()));
-        accountRepository.insert(account);
+        accountRepository.save(account);
         return account;
     }
 

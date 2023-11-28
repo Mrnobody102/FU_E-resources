@@ -6,31 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.CacheControl;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
-import org.springframework.web.servlet.resource.VersionResourceResolver;
-
-import java.time.Duration;
 
 @Configuration
 @EnableWebSecurity
@@ -79,10 +63,10 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .failureUrl("/login?error"));
 
         http.logout(auth -> auth.logoutUrl("/logout")
-//                .invalidateHttpSession(true)
-//                .deleteCookies("JSESSIONID")
-//                .clearAuthentication(true)
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .clearAuthentication(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout"));
 
 
@@ -94,9 +78,9 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/","/contact_us", "/faq", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**", "/oauth2/authorization/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyRole(AccountEnum.Role.ADMIN.name())
-                        .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
-                        .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.LECTURER.name())
-                        .requestMatchers("/student/**").hasAnyRole(AccountEnum.Role.STUDENT.name())
+                        .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.ADMIN.name(), AccountEnum.Role.LIBRARIAN.name())
+                        .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.ADMIN.name(), AccountEnum.Role.LIBRARIAN.name(), AccountEnum.Role.LECTURER.name())
+                        .requestMatchers("/student/**").hasAnyRole(AccountEnum.Role.ADMIN.name(), AccountEnum.Role.LIBRARIAN.name(), AccountEnum.Role.LECTURER.name(), AccountEnum.Role.STUDENT.name())
                         .anyRequest().authenticated())
 //                        .anyRequest().permitAll());
         ;

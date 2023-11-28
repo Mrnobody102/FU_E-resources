@@ -38,6 +38,17 @@
                 <div class="lib_data-list-wrapper">
                     <div class="lib_search-container">
                         <form class="d-flex" method="get" th:action="@{/admin/accounts/list/1}" th:id="search-form">
+                            <div class="d-flex me-2">
+                                <select class="lib_filter" onchange="this.form.submit()" th:id="role" th:name="role">
+                                    <option value="all">All
+                                    </option>
+                                    <option th:each="role : ${roles}"
+                                            th:selected="(${roleSearch} == ${role.getDisplayValue()})"
+                                            th:text="${role}"
+                                            th:value="${role}">
+                                    </option>
+                                </select>
+                            </div>
                             <div class="d-flex">
 
                                 <input class="lib_search-content" placeholder="Search user.." th:id="search-text"
@@ -54,17 +65,7 @@
                             <!--                                </a>-->
                             <!--                            </div>-->
 
-                            <div class="d-flex">
-                                <select class="lib_filter" onchange="this.form.submit()" th:id="role" th:name="role">
-                                    <option value="all">All
-                                    </option>
-                                    <option th:each="role : ${roles}"
-                                            th:selected="(${roleSearch} == ${role.getDisplayValue()})"
-                                            th:text="${role}"
-                                            th:value="${role}">
-                                    </option>
-                                </select>
-                            </div>
+
                         </form>
                         <div>
                             <a class="lib_btn-add" th:href="@{/admin/accounts/add}" type="button">
