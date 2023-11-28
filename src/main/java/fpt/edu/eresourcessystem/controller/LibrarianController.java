@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
 import fpt.edu.eresourcessystem.dto.CourseDto;
 import fpt.edu.eresourcessystem.dto.AccountDto;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
@@ -512,5 +513,35 @@ public class LibrarianController {
         return "redirect:/admin/lecturers/list";
     }
 
+    /*
+        Login as
+     */
+
+    @GetMapping("/login_as_student")
+    public String loginAsStudent() {
+        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+        if (loggedInAccount != null) {
+            Student existStudent = studentService.findByAccountId(loggedInAccount.getId());
+            if(existStudent == null){
+                Student student = new Student();
+                student.setAccount(loggedInAccount);
+                studentService.addStudent(student);
+            }
+        }
+        return "redirect:/student";
+    }
+    @GetMapping("/login_as_lecturer")
+    public String loginAsLecturer() {
+        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+        if (loggedInAccount != null) {
+            Lecturer existLecturer = lecturerService.findByAccountId(loggedInAccount.getId());
+            if(existLecturer == null){
+                Lecturer lecturer = new Lecturer();
+                lecturer.setAccount(loggedInAccount);
+                lecturerService.addLecturer(lecturer);
+            }
+        }
+        return "redirect:/lecturer";
+    }
 
 }

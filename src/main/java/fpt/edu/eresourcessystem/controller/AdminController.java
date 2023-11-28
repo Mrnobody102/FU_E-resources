@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
 import fpt.edu.eresourcessystem.dto.AccountDto;
 import fpt.edu.eresourcessystem.dto.TrainingTypeDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -197,28 +199,28 @@ public class AdminController {
     @PostMapping("/accounts/add")
     public String addAccount(@ModelAttribute AccountDto accountDTO) {
         String email = accountDTO.getEmail();
-        String role = String.valueOf(accountDTO.getRole());
+        AccountEnum.Role role = accountDTO.getRole();
         if (accountService.findByEmail(email) != null) {
             return "redirect:/admin/accounts/add?error";
         }
         Account account = accountService.addAccount(accountDTO);
         switch (role) {
-            case "ADMIN":
+            case ADMIN:
                 Admin admin = new Admin();
                 admin.setAccount(account);
                 adminService.addAdmin(admin);
                 break;
-            case "LIBRARIAN":
+            case LIBRARIAN:
                 Librarian librarian = new Librarian();
                 librarian.setAccount(account);
                 librarianService.addLibrarian(librarian);
                 break;
-            case "STUDENT":
+            case STUDENT:
                 Student student = new Student();
                 student.setAccount(account);
                 studentService.addStudent(student);
                 break;
-            case "LECTURER":
+            case LECTURER:
                 Lecturer lecturer = new Lecturer();
                 lecturer.setAccount(account);
                 lecturerService.addLecturer(lecturer);
@@ -276,18 +278,18 @@ public class AdminController {
                 String result = "redirect:/admin/accounts/updated/" + accountDTO.getId() + "?error";
                 return result;
             }
-            String role = String.valueOf(accountDTO.getRole());
+            AccountEnum.Role role = accountDTO.getRole();
             Account account = new Account(accountDTO);
             System.out.println(role);
             switch (role) {
-                case "ADMIN":
+                case ADMIN:
                     if (null == adminService.findByAccountId(account.getId())) {
                         Admin admin = new Admin();
                         admin.setAccount(account);
                         adminService.updateAdmin(admin);
                     }
                     break;
-                case "LIBRARIAN":
+                case LIBRARIAN:
                     Librarian librarian = librarianService.findByAccountId(accountDTO.getId());
                     if (librarian == null) {
                         librarian = new Librarian();
@@ -297,14 +299,14 @@ public class AdminController {
                         librarianService.updateLibrarian(librarian);
                     }
                     break;
-                case "STUDENT":
+                case STUDENT:
                     if (null == studentService.findByAccountId(account.getId())) {
                         Student student = new Student();
                         student.setAccount(account);
                         studentService.updateStudent(student);
                     }
                     break;
-                case "LECTURER":
+                case LECTURER:
                     if (null == lecturerService.findByAccountId(account.getId())) {
                         Lecturer lecturer = new Lecturer();
                         lecturer.setAccount(account);
@@ -560,4 +562,49 @@ public class AdminController {
     }
 
 
+    /*
+        Login as
+     */
+
+    @GetMapping("/login_as_student")
+    public String loginAsStudent(Model model) {
+        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+        if (loggedInAccount != null) {
+            Student existStudent = studentService.findByAccountId(loggedInAccount.getId());
+            if(existStudent == null){
+                Student student = new Student();
+                student.setAccount(loggedInAccount);
+                studentService.addStudent(student);
+            }
+        }
+        return "redirect:/student";
+    }
+
+    @GetMapping("/login_as_lecturer")
+    public String loginAsLecturer() {
+        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+        if (loggedInAccount != null) {
+            Lecturer existLecturer = lecturerService.findByAccountId(loggedInAccount.getId());
+            if(existLecturer == null){
+                Lecturer lecturer = new Lecturer();
+                lecturer.setAccount(loggedInAccount);
+                lecturerService.addLecturer(lecturer);
+            }
+        }
+        return "redirect:/lecturer";
+    }
+
+    @GetMapping("/login_as_librarian")
+    public String loginAsLibrarian() {
+        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+        if (loggedInAccount != null) {
+            Librarian existLibrarian = librarianService.findByAccountId(loggedInAccount.getId());
+            if(existLibrarian == null){
+                Librarian librarian = new Librarian();
+                librarian.setAccount(loggedInAccount);
+                librarianService.addLibrarian(librarian);
+            }
+        }
+        return "redirect:/librarian";
+    }
 }

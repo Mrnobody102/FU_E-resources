@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
 >
 <body th:fragment="lecturerSidebar(activeLink)">
-<!-- Student Library Sidebar  -->
+<!-- Lecturer Sidebar  -->
 <div class="sidebar" id="sidebar-lecturer">
     <nav class="sidebar__container">
 
@@ -53,7 +53,7 @@
                 <span>Other</span>
             </h3>
             <div class="sidebar__list">
-                <a th:href="@{/feedbacks/add}" class="sidebar__link"
+                <a th:href="@{/lecturer/feedbacks/add}" class="sidebar__link"
                    th:classappend="${#strings.equals(activeLink, 'feedback')} ? 'active-link' : ''">
                     <i title="Feedback" class="fa-solid fa-comment"></i>
                     <span class="sidebar__link-name">Feedback</span>
@@ -65,7 +65,7 @@
                     <span class="sidebar__link-name">Document issue reports</span>
                     <span class="sidebar__link-floating">Document issue reports</span>
                 </a>
-                <a th:href="@{/student}" class="sidebar__link"
+                <a th:href="@{/lecturer/login_as_student}" class="sidebar__link"
                    th:classappend="${#strings.equals(activeLink, 'log-as-student')} ? 'active-link' : ''">
                     <i class="fas fa-chalkboard-teacher"></i>
                     <span class="sidebar__link-name">Login as student</span>
@@ -79,7 +79,7 @@
 
 
 <body th:fragment="studentSidebar(activeLink)">
-<!-- Lecturer Sidebar  -->
+<!-- Student Sidebar  -->
 <div class="sidebar" id="sidebar">
     <nav class="sidebar__container">
 
@@ -158,6 +158,7 @@
                     <i title="Feedback" class="fa-solid fa-comment"></i>
                     <span class="sidebar__link-name">Feedback</span>
                     <span class="sidebar__link-floating">Feedback</span>
+
                 </a>
             </div>
         </div>

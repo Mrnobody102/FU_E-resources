@@ -1,20 +1,25 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
+import fpt.edu.eresourcessystem.dto.FeedbackDto;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +36,7 @@ public class LecturerController {
     private final CourseService courseService;
     private final AccountService accountService;
     private final LecturerService lecturerService;
+    private final StudentService studentService;
     private final TopicService topicService;
     private final ResourceTypeService resourceTypeService;
 
@@ -39,32 +45,35 @@ public class LecturerController {
 
     private final QuestionService questionService;
     private final AnswerService answerService;
-    
 
-    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, CourseLogService courseLogService, QuestionService questionService, AnswerService answerService) {
+    private final FeedbackService feedbackService;
+
+
+    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, StudentService studentService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, CourseLogService courseLogService, QuestionService questionService, AnswerService answerService, FeedbackService feedbackService) {
         this.courseService = courseService;
         this.accountService = accountService;
         this.lecturerService = lecturerService;
+        this.studentService = studentService;
         this.topicService = topicService;
         this.resourceTypeService = resourceTypeService;
         this.documentService = documentService;
         this.courseLogService = courseLogService;
         this.questionService = questionService;
         this.answerService = answerService;
+        this.feedbackService = feedbackService;
     }
 
 
     private Lecturer getLoggedInLecturer() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        if(null==loggedInEmail || "anonymousUser".equals(loggedInEmail)){
+        if (null == loggedInEmail || "anonymousUser".equals(loggedInEmail)) {
             return null;
         }
         Account loggedInAccount = accountService.findByEmail(loggedInEmail);
-        if(loggedInAccount != null){
+        if (loggedInAccount != null) {
             Lecturer loggedInLecturer = lecturerService.findByAccountId(loggedInAccount.getId());
             return loggedInLecturer;
-        }else return null;
-
+        } else return null;
     }
 
     @GetMapping
@@ -121,7 +130,7 @@ public class LecturerController {
     @PostMapping("/courses/{courseID}/changeStatus")
     public String changeCourseStatus(@PathVariable String courseID, @RequestParam String status) {
         Course course = courseService.findByCourseId(courseID);
-        switch (status.toUpperCase()){
+        switch (status.toUpperCase()) {
             case "PUBLISH":
                 course.setStatus(CourseEnum.Status.PUBLISH);
                 break;
@@ -149,7 +158,7 @@ public class LecturerController {
 //        courseLogService.addCourseLog(courseLog);
         model.addAttribute("course", course);
         model.addAttribute("courseStatus", CourseEnum.ChangeableStatus.values());
-        if(getBy == null || getBy.equalsIgnoreCase("topics")) {
+        if (getBy == null || getBy.equalsIgnoreCase("topics")) {
             List<Topic> topics = course.getTopics();
             model.addAttribute("topics", topics);
         } else {
@@ -356,9 +365,9 @@ public class LecturerController {
             return "exception/404";
         } else {
             // get list question
-            List<Question> questions =  questionService.findByDocId(document);
+            List<Question> questions = questionService.findByDocId(document);
 
-            if(!document.getDocType().toString().equalsIgnoreCase("UNKNOWN")){
+            if (!document.getDocType().toString().equalsIgnoreCase("UNKNOWN")) {
                 String base64EncodedData = Base64.getEncoder().encodeToString(document.getContent());
                 model.addAttribute("data", base64EncodedData);
             }
@@ -412,21 +421,21 @@ public class LecturerController {
         List<ResourceType> resourceTypesInCourse = topic.getCourse().getResourceTypes();
         boolean checkResourceTypeExist = true;
         ResourceType existedResourceType = null;
-        for(ResourceType resourceType1 : resourceTypesInCourse) {
-            if(resourceType1.getResourceTypeName().equalsIgnoreCase(respondResourceType)) {
+        for (ResourceType resourceType1 : resourceTypesInCourse) {
+            if (resourceType1.getResourceTypeName().equalsIgnoreCase(respondResourceType)) {
                 checkResourceTypeExist = false;
                 existedResourceType = resourceType1;
                 break;
             }
         }
-        if(checkResourceTypeExist == true) {
+        if (checkResourceTypeExist == true) {
             ResourceType addedResourceType = resourceTypeService.addResourceType(resourceType);
             documentDTO.setResourceType(addedResourceType);
         } else {
             documentDTO.setResourceType(existedResourceType);
         }
         // set resource type vào document
-        
+
 
         // Xử lý file
         // thêm check file trước khi add
@@ -515,7 +524,7 @@ public class LecturerController {
         // get account authorized
         Lecturer lecturer = getLoggedInLecturer();
         List<Question> questions = questionService.findByLecturer(lecturer);
-        for (Question q: questions) {
+        for (Question q : questions) {
             q.setAnswers(new HashSet<>(answerService.findByQuestion(q)));
         }
         model.addAttribute("studentQuestions", questions);
@@ -529,9 +538,56 @@ public class LecturerController {
     /*
         Feedback
     */
-    @GetMapping({"/feedback"})
-    public String feedback(@PathVariable(required = false) Integer pageIndex, final Model model, @PathVariable String status) {
-        return "";
+    @GetMapping("/feedbacks/add")
+    public String showFeedbackForm(Model model) {
+        model.addAttribute("feedback", new Feedback());
+        return "lecturer/feedback/lecturer_feedback-add";
+    }
+
+    // Method to handle the form submission
+    @PostMapping("/feedbacks/add")
+    public String processFeedbackForm(@ModelAttribute("feedback") @Valid FeedbackDto feedback,
+                                      BindingResult result) {
+//        if (result.hasErrors()) {
+//            return "student/feedback/student_feedback-add"; // Return to the form with validation errors
+//        }
+
+        // Get the logged-in user (you need to implement your user authentication mechanism)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return "exception/404";
+        }
+        String currentPrincipalName = authentication.getName();
+        Account loggedInUser = accountService.findByEmail(currentPrincipalName);
+        //  User loggedInUser = getCurrentLoggedInUser(); // Replace with your authentication logic
+
+        if (loggedInUser != null) {
+            feedback.setAccount(loggedInUser);
+            // Save the feedback to the database
+            Feedback feedback1 = feedbackService.saveFeedback(new Feedback(feedback));
+
+            return "redirect:/admin/feedbacks/list"; // Redirect to a success page
+        } else {
+            return "redirect:/login"; // Redirect to the login page if the user is not logged in
+        }
+    }
+
+    /*
+        Login as student
+     */
+
+    @GetMapping("/login_as_student")
+    public String loginAsStudent(Model model) {
+        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+        if (loggedInAccount != null) {
+            Student existStudent = studentService.findByAccountId(loggedInAccount.getId());
+            if(existStudent == null){
+                Student student = new Student();
+                student.setAccount(loggedInAccount);
+                studentService.addStudent(student);
+            }
+        }
+        return "redirect:/student";
     }
 
 }
