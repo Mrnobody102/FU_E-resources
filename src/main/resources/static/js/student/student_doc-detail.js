@@ -14,22 +14,21 @@ ClassicEditor
         console.log(Array.from(editor.ui.componentFactory.names()));
     })
     .catch(error => {
-        console.error(error);
+        // console.error(error);
     });
 
-// Xử lý fragment identifier nếu có trong URL
-document.addEventListener("DOMContentLoaded", function () {
-    var hash = window.location.hash;
-    if (hash) {
-        var element = document.querySelector(hash);
-        if (element) {
-            var sectionId = hash.substring(1); // Loại bỏ dấu '#'
-            showSection(sectionId);
-
-        }
-    }
-});
-
+// // Xử lý fragment identifier nếu có trong URL
+// document.addEventListener("DOMContentLoaded", function () {
+//     var hash = window.location.hash;
+//     if (hash) {
+//         var element = document.querySelector(hash);
+//         if (element) {
+//             var sectionId = hash.substring(1); // Loại bỏ dấu '#'
+//             viewSection(sectionId);
+//             viewMoreReply(sectionId);
+//         }
+//     }
+// });
 
 function viewQuestion() {
     $("#note").css("display", "none");
@@ -53,14 +52,27 @@ function viewSection(sectionId){
         $(this).css("display", "none");
     })
 
-    var selectedSection = $("#link-view-" + sectionId);
-    if (selectedSection.length) {
-        selectedSection.addClass('stu__navbar-active');
+    if(sectionId !== "note"){
+        var selectedSection = $("#link-view-question");
+        if (selectedSection.length) {
+            selectedSection.addClass('stu__navbar-active');
+        }
+        var selectedSection = $("#question");
+        if (selectedSection.length) {
+            selectedSection.css("display", "block");
+        }
+    } else {
+        var selectedSection = $("#link-view-" + sectionId);
+        if (selectedSection.length) {
+            selectedSection.addClass('stu__navbar-active');
+        }
+        var selectedSection = $("#" + sectionId);
+        if (selectedSection.length) {
+            selectedSection.css("display", "block");
+        }
     }
-    var selectedSection = $("#" + sectionId);
-    if (selectedSection.length) {
-        selectedSection.css("display", "block");
-    }
+
+
 }
 
 function submitFormAddQuestion(param) {
@@ -279,9 +291,18 @@ $(document).ready(function () {
     // add scroll to fragment identifier if id exist in URL
     var hash = window.location.hash;
     if (hash) {
-        var element = document.querySelector(hash);
+        var sectionId = hash.substring(1);// exclude '#'
+        if(sectionId!== "note"){
+            var element = document.querySelector("#question");
+            if($("#" + sectionId).length > 0){
+                viewMoreReply(sectionId);
+            }
+        }else{
+            var element = document.querySelector(hash);
+        }
+
         if(element){
-            var sectionId = hash.substring(1); // exclude '#'
+            console.log(sectionId);
             viewSection(sectionId);
             element.scrollIntoView();
         }

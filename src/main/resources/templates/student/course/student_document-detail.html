@@ -291,7 +291,7 @@
                                     <div class="stu__question-in-doc-content">
 <!--                                        <h5 class="my-question-header">My questions</h5>-->
                                         <div class="stu__my-question-content" id="my-questions">
-                                            <div class="stu__question-content-wrapper"  th:if="${myQuestions ne null} AND ${myQuestions.size} > 0" th:each="myQuestion : ${myQuestions}">
+                                            <div class="stu__question-content-wrapper"  th:if="${myQuestions ne null} AND ${myQuestions.size} > 0" th:each="myQuestion : ${myQuestions}" th:id="${myQuestion.questionId}">
                                                 <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${myQuestion.studentName}"></span>(You)</h6>
                                                 <p class="stu__question-content question-content" th:text="${myQuestion.questionContent}"></p>
                                                 <div class="justify-content-end link-view-question stu__question-content" th:if="${myQuestion.lastModifiedDate}">
