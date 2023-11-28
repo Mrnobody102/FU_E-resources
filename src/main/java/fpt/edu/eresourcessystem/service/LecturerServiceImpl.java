@@ -67,6 +67,11 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
+    public Lecturer findByEmail(String email) {
+        return lecturerRepository.findByAccount_Email(email);
+    }
+
+    @Override
     public List<Lecturer> findByListLecturerIds(List<String> ids) {
         List<Lecturer> lecturers = lecturerRepository.findByIds(ids);
         return lecturers;

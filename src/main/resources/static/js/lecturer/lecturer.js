@@ -1,3 +1,75 @@
+function viewQuestionWaiting() {
+    $(".lec__questions-list-view").css("display", "none");
+    var divContent = $("#lec__view-waiting-for-reply-question").text().trim();
+    if (divContent.length == 0) {
+        $("#loading").css("display", "block");
+        $.ajax({
+            type: 'GET',
+            url: '/api/lecturer/my_question/new_question',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.length)
+                var html = "";
+                for (let i = 0; i < data.length; i++) {
+                    html +="<div class=lec__question-content-wrapper>\n" +
+                        "                        <span class=\"lec__question-date\">"+data[i].lastModifiedDate+"</span>\n" +
+                        "                    <a class=\"lec__question-title\">"+ data[i].studentName +" asked on" + data[i].documentTitle+"</a>\n" +
+                        "                    <p class=\"lecturer-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
+                        "                        <a class=\"link-view-detailed\"\n" +
+                        "                              href=\"/lecturer/documents/" + data[i].documentId + "#"+ data[i].questionId+ "\">view <i\n" +
+                        "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
+                        "                    </div>";
+
+                }
+                $("#lec__view-waiting-for-reply-question").html(html);
+                $("#loading").css("display", "none");
+                $("#lec__view-waiting-for-reply-question").css("display", "block");
+            },
+            error: function (xhr) {
+                // Handle errors
+            }
+        });
+    } else $("#stu__view-waiting-for-reply-question").css("display", "block");
+
+}
+function viewQuestionReplied(){
+    $(".lec__questions-list-view").css("display", "none");
+    var divContent = $("#lec__view-replied-question").text().trim();
+    if (divContent.length == 0) {
+        $("#loading").css("display", "block");
+        $.ajax({
+            type: 'GET',
+            url: '/api/lecturer/my_question/replied_question',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.length)
+                var html = "";
+                for (let i = 0; i < data.length; i++) {
+                    html +="<div class=lec__question-content-wrapper>\n" +
+                        "                        <span class=\"lec__question-date\">"+data[i].lastModifiedDate+"</span>\n" +
+                        "                    <a class=\"lec__question-title\">"+ data[i].studentName +" asked on" + data[i].documentTitle+"</a>\n" +
+                        "                    <p class=\"lecturer-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
+                        "                        <a class=\"link-view-detailed\"\n" +
+                        "                              href=\"/lecturer/documents/" + data[i].documentId + "#"+ data[i].questionId+ "\">view <i\n" +
+                        "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
+                        "                    </div>";
+
+                }
+                $("#lec__view-replied-question").html(html);
+                $("#loading").css("display", "none");
+                $("#lec__view-replied-question").css("display", "block");
+            },
+            error: function (xhr) {
+                // Handle errors
+            }
+        });
+    } else $("#lec__view-replied-question").css("display", "block");
+}
+function viewAllQuestion() {
+    $(".view-list").css("display", "none");
+    $("#lec__questions-list-view").css("display", "block");
+}
+
 // Document scope
 $(document).ready(function() {
 
@@ -77,5 +149,8 @@ $(document).ready(function() {
             PAGINATION
          */
 
-
+    $("body").on("click", ".lec__navbar-item", function () {
+        $(".lec__navbar-item").removeClass("lec__navbar-active");
+        $(this).addClass("lec__navbar-active");
+    })
 });

@@ -87,7 +87,7 @@
                             <div class="student__course-document-view">
 
 
-                                <div style="display: flex">
+                                <div class="doc-content" style="display: flex">
                                     <div style="display: flex; flex: 4">
                                         <th:block th:if="${document.docType.toString().equals('UNKNOWN')}">
                                             <div class="doc-content-view" th:utext="${document.editorContent}"
@@ -300,7 +300,7 @@
 
                                                 <!-- view reply -->
                                                 <p  th:if="${myQuestion.totalAnswers} > 0" th:id="'view-more-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">View all <span th:id="'number-reply-'+ ${myQuestion.questionId}" th:text="${myQuestion.totalAnswers}"></span> reply</p>
-                                                <p style="display:none;"  th:if="${myQuestion.totalAnswers} > 0" th:id="'see-less-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">See less</p>
+                                                <p style="display:none;" th:id="'see-less-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">See less</p>
                                                 <p style="display:none;"  th:id="'loading-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" class="view-question-reply lec__question-content see-less"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
                                                 <div class="reply-content" th:id="'list-reply-content-'+${myQuestion.questionId}">
 

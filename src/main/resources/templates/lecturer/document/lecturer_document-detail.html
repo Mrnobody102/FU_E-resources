@@ -23,7 +23,7 @@
 
 <body class="app_container">
 <!-- Header -->
-<div class="row" th:replace="~{fragments/header::headerLecturerSection}"></div>
+<div th:replace="~{fragments/header::headerLecturerSection}"></div>
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
@@ -34,7 +34,7 @@
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar('my-courses-management')}"></div>
                     </div>
 
-                    <div class="stu_course-content main" id="main">
+                    <div class="stu_course-content main" id="main-lecturer">
                         <div class="document-details-head">
                             <a th:href="@{/lecturer}">Home</a>
                             <span> &gt; <a th:href="@{/lecturer/courses/list/all/1}">Courses management</a></span>
@@ -156,16 +156,16 @@
                                 </div>
 
 
-                                <div class="stu__navbar-view-doc">
-                                    <ul class="stu__navbar-view-doc-list border-bottom">
-                                        <li class="stu__navbar-view-doc-item stu__navbar-active">
+                                <div class="lec__navbar-view-doc">
+                                    <ul class="lec__navbar-view-doc-list">
+                                        <li class="lec__navbar-view-doc-item lec__navbar-active">
                                             <a href="#">
                                                 Question & Answer
                                             </a>
                                         </li>
                                     </ul>
                                     <div class="lec__question-in-doc-content" th:if="${questions ne null } AND ${questions.size} > 0">
-                                        <div class="lec__question-content-wrapper" th:each="question : ${questions}">
+                                        <div class="lec__question-content-wrapper" th:each="question : ${questions}" th:id="${question.id}">
                                             <h6 class="lec__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${question.student.account.name}"></span></h6>
                                             <p class="lec__question-content question-content" th:utext="${question.content}"></p>
                                             <p class="lec__question-content" ><span class="lec__answer-date" th:text="${question.lastModifiedDate}"></span> <a class="lec__add-reply view-question-link-item" th:question-id="${question.id}" onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>
@@ -223,8 +223,8 @@
 <script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"
 
         crossorigin="anonymous"></script>
-<script src="/js/lecturer/lecturer.js"></script>
-<script src="/js/lecturer/lecturer_doc-detail.js"></script>
+<script th:src="@{/js/lecturer/lecturer.js}"></script>
+<script th:src="@{/js/lecturer/lecturer_doc-detail.js}"></script>
 <script>
     var content = document.getElementById("content");
     var button = document.getElementById("readMoreBtn");

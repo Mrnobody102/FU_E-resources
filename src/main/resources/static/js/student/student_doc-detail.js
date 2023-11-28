@@ -185,14 +185,14 @@ function submitFormReplyQuestion(param) {
                 $('#reply-form' + param).css("display", "none");
                 var html = "";
                 if (data.studentName == null) {
-                    html = "<div class=\"reply-content\">\n" +
+                    html = "<div class=\"reply-content border-bottom\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data.lecturerName + "</span></h6>\n" +
                         "                     <p class=\"stu__question-content\">" + data.answerContent + "</p>\n" +
                         "                     <p class=\"stu__question-content\" ><span class=\"lec__answer-date\" >" + data.lastModifiedDate + "</span> " +
                         "                     <a class=\"stu__like-reply view-question-link-item\" reply-id=\"" + data.answerId + "\"onclick=\"likeReply(" + data.answerId + ")\"><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
                         "                     </div>";
                 } else {
-                    html = "<div class=\"reply-content\">\n" +
+                    html = "<div class=\"reply-content border-bottom\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data.studentName + "(You)</span></h6>\n" +
                         "                     <p class=\"stu__question-content\">" + data.answerContent + "</p>\n" +
                         "                     <p class=\"stu__question-content\" ><span class=\"lec__answer-date\" >" + data.lastModifiedDate + "</span> " +
@@ -242,7 +242,7 @@ function viewMoreReply(param) {
             var html = "";
             for (let i = 0; i < data.length; i++) {
                 if (data[i].studentName == null) {
-                    html += "<div class=\"reply-content\">\n" +
+                    html += "<div class=\"reply-content border-bottom\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].lecturerName + "</span></h6>\n" +
                         "                     <p class=\"stu__question-content\">" + data[i].answerContent + "</p>\n" +
                         "                     <p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
@@ -250,7 +250,7 @@ function viewMoreReply(param) {
 
                         "                     </div>";
                 } else {
-                    html += "<div class=\"reply-content\">\n" +
+                    html += "<div class=\"reply-content border-bottom\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].studentName + "(You)</span></h6>\n" +
                         "                     <p class=\"stu__question-content\">" + data[i].answerContent + "</p>\n" +
                         "                     <p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
@@ -293,19 +293,14 @@ $(document).ready(function () {
     if (hash) {
         var sectionId = hash.substring(1);// exclude '#'
         if(sectionId!== "note"){
-            var element = document.querySelector("#question");
             if($("#" + sectionId).length > 0){
                 viewMoreReply(sectionId);
             }
-        }else{
-            var element = document.querySelector(hash);
         }
+        console.log(sectionId);
+        viewSection(sectionId);
+        $("#" + sectionId).get(0).scrollIntoView();
 
-        if(element){
-            console.log(sectionId);
-            viewSection(sectionId);
-            element.scrollIntoView();
-        }
     }
 
     $("body").on("click", ".add-note", function () {

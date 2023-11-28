@@ -38,8 +38,7 @@ public class Question {
     @DocumentReference(lazy = true)
     private Set<Answer> answers;
 
-    @DocumentReference(lazy = true)
-    private Lecturer lecturer;
+    private String lecturer;
 
     private QuestionAnswerEnum.Status status;
 

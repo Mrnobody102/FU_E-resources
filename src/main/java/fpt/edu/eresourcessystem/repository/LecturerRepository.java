@@ -40,5 +40,6 @@ public interface LecturerRepository extends MongoRepository<Lecturer, String> {
 
     Lecturer findLecturerById(String lectureId);
 
+    Lecturer findByAccount_Email(String email);
 }
 

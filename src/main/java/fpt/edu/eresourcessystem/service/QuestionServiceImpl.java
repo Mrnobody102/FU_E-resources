@@ -40,7 +40,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionResponseDto> findWaitReplyQuestion(String studentId) {
+    public List<QuestionResponseDto> findWaitReplyQuestionForStudent(String studentId) {
         Query query = new Query(Criteria.where("student.id").is(studentId)
                 .and("status").is(QuestionAnswerEnum.Status.CREATED));
         List<Question> questions = mongoTemplate.find(query, Question.class);
@@ -52,8 +52,32 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionResponseDto> findNewReplyQuestion(String studentId) {
+    public List<QuestionResponseDto> findNewQuestionForLecturer(String lecturerEmail) {
+        Query query = new Query(Criteria.where("lecturer").is(lecturerEmail)
+                .and("status").is(QuestionAnswerEnum.Status.CREATED));
+        List<Question> questions = mongoTemplate.find(query, Question.class);
+        List<QuestionResponseDto> responseList = questions.stream()
+                .filter(entity -> CommonEnum.DeleteFlg.PRESERVED.equals(entity.getDeleteFlg()))
+                .map(entity -> new QuestionResponseDto(entity))
+                .collect(Collectors.toList());
+        return responseList;
+    }
+
+    @Override
+    public List<QuestionResponseDto> findNewReplyQuestionStudent(String studentId) {
         Query query = new Query(Criteria.where("student.id").is(studentId)
+                .and("status").is(QuestionAnswerEnum.Status.REPLIED));
+        List<Question> questions = mongoTemplate.find(query, Question.class);
+        List<QuestionResponseDto> responseList = questions.stream()
+                .filter(entity -> CommonEnum.DeleteFlg.PRESERVED.equals(entity.getDeleteFlg()))
+                .map(entity -> new QuestionResponseDto(entity))
+                .collect(Collectors.toList());
+        return responseList;
+    }
+
+    @Override
+    public List<QuestionResponseDto> findRepliedQuestionForLecturer(String lecturerEmail) {
+        Query query = new Query(Criteria.where("lecturer").is(lecturerEmail)
                 .and("status").is(QuestionAnswerEnum.Status.REPLIED));
         List<Question> questions = mongoTemplate.find(query, Question.class);
         List<QuestionResponseDto> responseList = questions.stream()

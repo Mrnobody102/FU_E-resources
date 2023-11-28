@@ -38,8 +38,9 @@ public class StudentRestController {
     private final AccountService accountService;
 
     private final TopicService topicService;
+    private final LecturerService lecturerService;
 
-    public StudentRestController(StudentService studentService, DocumentService documentService, DocumentNoteService documentNoteService, CourseService courseService, QuestionService questionService, AnswerService answerService, UserLogService userLogService, AccountService accountService, TopicService topicService) {
+    public StudentRestController(StudentService studentService, DocumentService documentService, DocumentNoteService documentNoteService, CourseService courseService, QuestionService questionService, AnswerService answerService, UserLogService userLogService, AccountService accountService, TopicService topicService, LecturerService lecturerService) {
         this.studentService = studentService;
         this.documentService = documentService;
         this.documentNoteService = documentNoteService;
@@ -49,6 +50,7 @@ public class StudentRestController {
         this.userLogService = userLogService;
         this.accountService = accountService;
         this.topicService = topicService;
+        this.lecturerService = lecturerService;
     }
 
     private UserLog addUserLog(String url){
@@ -111,6 +113,7 @@ public class StudentRestController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         questionDTO.setStudent(student);
+        questionDTO.setLecturer(document.getCreatedBy());
         questionDTO.setDocumentId(document);
         Question question = questionService.addQuestion(new Question(questionDTO));
         if(null!= question){
@@ -255,7 +258,7 @@ public class StudentRestController {
         if(null == student){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }else{
-            List<QuestionResponseDto> questionResponseDtos = questionService.findWaitReplyQuestion(student.getId());
+            List<QuestionResponseDto> questionResponseDtos = questionService.findWaitReplyQuestionForStudent(student.getId());
             ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDtos, HttpStatus.OK);
             return responseEntity;
         }
@@ -268,7 +271,7 @@ public class StudentRestController {
         if(null == student){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }else{
-            List<QuestionResponseDto> questionResponseDtos = questionService.findNewReplyQuestion(student.getId());
+            List<QuestionResponseDto> questionResponseDtos = questionService.findNewReplyQuestionStudent(student.getId());
             ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDtos, HttpStatus.OK);
             return responseEntity;
         }

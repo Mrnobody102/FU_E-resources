@@ -25,7 +25,7 @@ public class QuestionDto {
 
     private Set<Answer> answers;
 
-    private Lecturer lecturer;
+    private String lecturer;
 
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
