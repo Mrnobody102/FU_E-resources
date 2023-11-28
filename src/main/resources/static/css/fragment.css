@@ -1385,3 +1385,7 @@
 .sidebar__link-floating{
     display: none;
 }
+.show-sidebar .sidebar__link:hover .sidebar__link-floating {
+    opacity: 1;
+    color: var(--black-color);
+}
