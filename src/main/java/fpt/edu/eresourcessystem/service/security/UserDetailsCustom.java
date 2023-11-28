@@ -14,8 +14,6 @@ public class UserDetailsCustom implements UserDetails {
 
     private String password;
 
-    private List<GrantedAuthority> authorities;
-
     private boolean isEnabled;
 
     private boolean accountNonExpired;
@@ -24,17 +22,19 @@ public class UserDetailsCustom implements UserDetails {
 
     private boolean credentialsNonExpired;
 
+    private List<GrantedAuthority> authorities;
 
-    public UserDetailsCustom(String username, String password, List<GrantedAuthority> authorities,
+
+    public UserDetailsCustom(String username, String password,
                              boolean isEnabled, boolean accountNonExpired, boolean accountNonLocked,
-                             boolean credentialsNonExpired){
+                             boolean credentialsNonExpired, List<GrantedAuthority> authorities){
         this.username = username;
         this.password = password;
-        this.authorities = authorities;
         this.isEnabled = isEnabled;
         this.accountNonExpired = accountNonExpired;
         this.accountNonLocked = accountNonLocked;
         this.credentialsNonExpired = credentialsNonExpired;
+        this.authorities = authorities;
     }
 
 

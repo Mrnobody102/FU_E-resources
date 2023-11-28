@@ -45,12 +45,6 @@ public class Account {
 
     private AccountEnum.AccountType accountType;
 
-    // oauth2
-    private boolean accountNonExpired;
-    private boolean isEnabled;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
 
@@ -79,10 +73,6 @@ public class Account {
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
         // Add - Self system account
         this.accountType = AccountEnum.AccountType.SYSTEM_ACC;
-        // default oauth2
-        this.accountNonExpired = true;
-        this.accountNonLocked = true;
-        this.isEnabled = true;
-        this.credentialsNonExpired = true;
+
     }
 }

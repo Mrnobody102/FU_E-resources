@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -15,6 +16,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -39,10 +42,13 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private CustomizeAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
+    private CustomOAuth2UserService customOAuth2UserService;
+
     @Autowired
-    public SecurityConfig(CustomizeUserDetailsService customizeUserDetailsService, CustomizeAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
+    public SecurityConfig(CustomizeUserDetailsService customizeUserDetailsService, CustomizeAuthenticationSuccessHandler customAuthenticationSuccessHandler, CustomOAuth2UserService customOAuth2UserService) {
         this.customizeUserDetailsService = customizeUserDetailsService;
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+        this.customOAuth2UserService = customOAuth2UserService;
     }
 
     @Bean
@@ -50,17 +56,8 @@ public class SecurityConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(customizeUserDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http
-//    , HandlerMappingIntrospector introspector
-    ) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         // Disable  csrf
         http.csrf(AbstractHttpConfigurer::disable);
@@ -71,15 +68,21 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .successHandler(customAuthenticationSuccessHandler)
                 .failureUrl("/login?error"));
 
-//        http.oauth2Login(auth -> auth.loginPage("/login")
-//                .successHandler(customAuthenticationSuccessHandler)
-//                .failureUrl("/login?error"));
+
+
+        http.oauth2Login(auth -> auth.loginPage("/login")
+                .userInfoEndpoint(userInfo -> userInfo
+                        .userService(customOAuth2UserService)
+			    )
+                .successHandler(customAuthenticationSuccessHandler)
+//                .defaultSuccessUrl("/student", true)
+                .failureUrl("/login?error"));
 
         http.logout(auth -> auth.logoutUrl("/logout")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .clearAuthentication(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                .invalidateHttpSession(true)
+//                .deleteCookies("JSESSIONID")
+//                .clearAuthentication(true)
+//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout"));
 
 
@@ -89,7 +92,7 @@ public class SecurityConfig implements WebMvcConfigurer {
         // Authorization
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/","/contact_us", "/faq", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
+                        .requestMatchers("/","/contact_us", "/faq", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**", "/oauth2/authorization/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyRole(AccountEnum.Role.ADMIN.name())
                         .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
                         .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.LECTURER.name())
@@ -99,19 +102,9 @@ public class SecurityConfig implements WebMvcConfigurer {
         ;
 
         // Exception Handling
-//        http.exceptionHandling(auth -> auth.accessDeniedPage("/access_denied"));
-        http.exceptionHandling(auth -> auth.accessDeniedPage("/login"));
+        http.exceptionHandling(auth -> auth.accessDeniedPage("/access_denied"));
+//        http.exceptionHandling(auth -> auth.accessDeniedPage("/login"));
 
         return http.build();
     }
-
-//    @Bean
-//    public InMemoryUserDetailsManager userDetailsService() {
-//        UserDetails user = User.withDefaultPasswordEncoder()
-//                .username("test")
-//                .password("test")
-//                .roles("USER")
-//                .build();
-//        return new InMemoryUserDetailsManager(user);
-//    }
 }

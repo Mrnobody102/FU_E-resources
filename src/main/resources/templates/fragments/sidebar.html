@@ -53,7 +53,7 @@
                 <span>Other</span>
             </h3>
             <div class="sidebar__list">
-                <a href="@{/admin/feedbacks}" class="sidebar__link"
+                <a th:href="@{/feedbacks/add}" class="sidebar__link"
                    th:classappend="${#strings.equals(activeLink, 'feedback')} ? 'active-link' : ''">
                     <i title="Feedback" class="fa-solid fa-comment"></i>
                     <span class="sidebar__link-name">Feedback</span>
@@ -153,7 +153,7 @@
                 <!--                    <span class="sidebar__link-name">Request documents</span>-->
                 <!--                    <span class="sidebar__link-floating">Request documents</span>-->
                 <!--                </a>-->
-                <a href="student/feedbacks/add" class="sidebar__link"
+                <a th:href="@{/student/feedbacks/add}" class="sidebar__link"
                    th:classappend="${#strings.equals(activeLink, 'feedback')} ? 'active-link' : ''">
                     <i title="Feedback" class="fa-solid fa-comment"></i>
                     <span class="sidebar__link-name">Feedback</span>

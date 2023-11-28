@@ -8,10 +8,10 @@
     <div class="">
         <!-- Header navbar -->
         <nav class="header__navbar grid">
-<!--            <h2 class="header__system-name header__navbar-list grid__column-2">-->
-<!--                <i class="fa-solid fa-house"></i>-->
-<!--                E-Resources-->
-<!--            </h2>-->
+            <!--            <h2 class="header__system-name header__navbar-list grid__column-2">-->
+            <!--                <i class="fa-solid fa-house"></i>-->
+            <!--                E-Resources-->
+            <!--            </h2>-->
             <a href="/" class="header__logo-link grid__column-2">
                 <div class="header__logo">
                     <img alt="" th:src="@{/images/fptUniversityLogo.png}">
@@ -51,13 +51,16 @@
                 <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                     <div class="header__navbar-user-wrap">
                         <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                        <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span class="header__navbar-user-role">(Librarian)</span>
+                        <th:block th:if="${loggedInUser ne null}">
+                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span
+                                class="header__navbar-user-role">(Librarian)</span>
+                        </th:block>
                     </div>
                 </li>
                 <li class="header__navbar-item">
                     <a th:href="@{/logout}" onclick="" class="header__navbar-item-link">
                         <i class="header__navbar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></i>
-                        <span class="header__label" >Logout</span></a>
+                        <span class="header__label">Logout</span></a>
                 </li>
             </ul>
         </nav>
@@ -72,10 +75,10 @@
     <div class="">
         <!-- Header navbar -->
         <nav class="header__navbar grid">
-<!--            <h2 class="header__system-name header__navbar-list  grid__column-2">-->
-<!--                <i class="fa-solid fa-house"></i>-->
-<!--                E-Resources-->
-<!--            </h2>-->
+            <!--            <h2 class="header__system-name header__navbar-list  grid__column-2">-->
+            <!--                <i class="fa-solid fa-house"></i>-->
+            <!--                E-Resources-->
+            <!--            </h2>-->
             <a href="/" class="header__logo-link  grid__column-2">
                 <div class="header__logo">
                     <img alt="" th:src="@{/images/fptUniversityLogo.png}">
@@ -114,14 +117,15 @@
                     <div class="header__navbar-user-wrap">
                         <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
                         <th:block th:if="${loggedInUser ne null}">
-                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span class="header__navbar-user-role">(Admin)</span>
+                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span
+                                class="header__navbar-user-role">(Admin)</span>
                         </th:block>
                     </div>
                 </li>
                 <li class="header__navbar-item">
                     <a th:href="@{/logout}" onclick="" class="header__navbar-item-link" style="font-weight: bold">
                         <i class="header__navbar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></i>
-                        <span class="header__label" >Logout</span></a>
+                        <span class="header__label">Logout</span></a>
                 </li>
             </ul>
         </nav>
@@ -139,10 +143,10 @@
             <div class="sidebar-system col-md-2">
                 <div class="sidebar__arrow row">
                     <i id="toggleIdLecturer" class="fa-solid fa-bars col-md-2 sidebar-icon"></i>
-<!--                    <h2 class="header__system-name col-md-10">-->
-<!--                        &lt;!&ndash; FPT University&ndash;&gt;-->
-<!--                        E-Resources-->
-<!--                    </h2>-->
+                    <!--                    <h2 class="header__system-name col-md-10">-->
+                    <!--                        &lt;!&ndash; FPT University&ndash;&gt;-->
+                    <!--                        E-Resources-->
+                    <!--                    </h2>-->
                 </div>
             </div>
             <a href="/" class="header__logo-link col-md-2">
@@ -181,16 +185,19 @@
                             </footer>
                         </div>
                     </li>
-<!--                    <li class="header__navbar-item">-->
-<!--                        <a href="" class="header__navbar-item-link">-->
-<!--                            <i class="header__navbar-icon far fa-question-circle"></i>-->
-<!--                            &lt;!&ndash;                            Help&ndash;&gt;-->
-<!--                        </a>-->
-<!--                    </li>-->
+                    <!--                    <li class="header__navbar-item">-->
+                    <!--                        <a href="" class="header__navbar-item-link">-->
+                    <!--                            <i class="header__navbar-icon far fa-question-circle"></i>-->
+                    <!--                            &lt;!&ndash;                            Help&ndash;&gt;-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
                     <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                         <div class="header__navbar-user-wrap">
                             <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"></span> <span class="header__navbar-user-role">(Lecturer)</span>
+                            <th:block th:if="${loggedInUser ne null}">
+                                <span class="header__navbar-user-name" th:text="${loggedInUser.name}"></span> <span
+                                    class="header__navbar-user-role">(Lecturer)</span>
+                            </th:block>
                         </div>
                         <div class="header__navbar-user-option-list header__bridge">
                             <div class="header__navbar-user-profile">
@@ -213,7 +220,7 @@
                     <li class="header__navbar-item">
                         <a th:href="@{/logout}" onclick="" class="header__navbar-item-link" style="font-weight: bold">
                             <i class="header__navbar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></i>
-                            <span class="header__label" >Logout</span></a>
+                            <span class="header__label">Logout</span></a>
                     </li>
                     <li class="header__navbar-item">
                         <a href="" class="header__navbar-item-link">
@@ -230,7 +237,7 @@
 
 <!--STUDENT HEADER-->
 
-<body th:fragment="studentHeaderSection" >
+<body th:fragment="studentHeaderSection">
 <!--     Header -->
 <header class="header">
     <div class="stu__header-content">
@@ -239,10 +246,10 @@
             <div class="sidebar-system col-2">
                 <div class="sidebar__arrow row">
                     <i id="toggle" class="fa-solid fa-bars col-2 sidebar-icon"></i>
-<!--                    <h2 class="header__system-name col-10">-->
-<!--                        &lt;!&ndash; FPT University&ndash;&gt;-->
-<!--                        E-Resources-->
-<!--                    </h2>-->
+                    <!--                    <h2 class="header__system-name col-10">-->
+                    <!--                        &lt;!&ndash; FPT University&ndash;&gt;-->
+                    <!--                        E-Resources-->
+                    <!--                    </h2>-->
                 </div>
             </div>
             <a href="/" class="header__logo-link col-2">
@@ -255,7 +262,7 @@
                     <li class="header__navbar-item header__notify-appearance">
                         <a href="" class="header__navbar-item-link">
                             <i class="header__navbar-icon fas fa-bell"></i>
-<!--                            Notifications-->
+                            <!--                            Notifications-->
                         </a>
                         <!--Notifications Header-->
                         <div class="header__notify header__bridge">
@@ -281,38 +288,43 @@
                             </footer>
                         </div>
                     </li>
-                    <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
-                        <div class="header__navbar-user-wrap">
-                            <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
-                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"></span> <span  class="header__navbar-user-role">(Student)</span>
-                        </div>
-                        <div class="header__navbar-user-option-list header__bridge">
-                            <div class="header__navbar-user-profile">
-                                <div class="header__navbar-user-profile-img-wrapper">
-                                    <img th:src="@{/images/sample_account/avt.jpg}" alt=""
-                                         class="header__navbar-user-profile-img">
+                    <th:block th:if="${loggedInUser ne null}">
+                        <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
+                            <div class="header__navbar-user-wrap">
+                                <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
+
+                                <span class="header__navbar-user-name" th:text="${loggedInUser.name}"></span> <span
+                                    class="header__navbar-user-role">(Student)</span>
+
+                            </div>
+                            <div class="header__navbar-user-option-list header__bridge">
+                                <div class="header__navbar-user-profile">
+                                    <div class="header__navbar-user-profile-img-wrapper">
+                                        <img th:src="@{/images/sample_account/avt.jpg}" alt=""
+                                             class="header__navbar-user-profile-img">
+                                    </div>
+                                    <div style="min-width: max-content">
+                                        <p th:text="${loggedInUser.name}"></p>
+                                        <p th:text="${loggedInUser.dateOfBirth}"></p>
+                                    </div>
                                 </div>
-                                <div style="min-width: max-content">
-                                    <p th:text="${loggedInUser.name}"></p>
-                                    <p th:text="${loggedInUser.dateOfBirth}"></p>
+                                <div class="student__log-out">
+                                    <a th:href="@{/logout}">
+                                        Log out
+                                    </a>
                                 </div>
                             </div>
-                            <div class="student__log-out">
-                                <a th:href="@{/logout}">
-                                    Log out
-                                </a>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    </th:block>
                     <li class="header__navbar-item">
                         <a th:href="@{/logout}" onclick="" class="header__navbar-item-link" style="font-weight: bold">
                             <i class="header__navbar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></i>
-                            <span class="header__label" >Logout</span></a>
+                            <span class="header__label">Logout</span></a>
                     </li>
                     <li class="header__navbar-item">
                         <a href="" class="header__navbar-item-link">
                             <i class="header__navbar-icon far fa-question-circle"></i>
-<!--                                                        Help-->
+                            <!--                                                        Help-->
                         </a>
                     </li>
                 </ul>
@@ -330,9 +342,9 @@
     <div class="grid">
         <!-- Header navbar -->
         <nav class="header__navbar">
-<!--            <h2 class="header__system-name header__navbar-list">-->
-<!--               E-Resources-->
-<!--            </h2>-->
+            <!--            <h2 class="header__system-name header__navbar-list">-->
+            <!--               E-Resources-->
+            <!--            </h2>-->
             <a href="/" class="header__logo-link col-md-2">
                 <div class="header__logo">
                     <img alt="" th:src="@{/images/fptUniversityLogo.png}">
@@ -342,13 +354,13 @@
                 <li class="header__navbar-item">
                     <a th:href="@{contact_us}" class="header__navbar-item-link">
                         <i class="header__navbar-icon fas fa-phone"></i>
-                        <span class="header__label" >Contact us</span>
+                        <span class="header__label">Contact us</span>
                     </a>
                 </li>
                 <li class="header__navbar-item">
                     <a th:href="@{/faq}" class="header__navbar-item-link">
                         <i class="header__navbar-icon far fa-question-circle"></i>
-                        <span class="header__label" >Help & FAQs</span></a>
+                        <span class="header__label">Help & FAQs</span></a>
                 </li>
                 <li id="openLoginModal" class="header__navbar-item">
                     <a th:href="@{/login}" class="header__navbar-item-link" style="font-weight: bold">
