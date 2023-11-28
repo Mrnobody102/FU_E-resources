@@ -394,7 +394,7 @@ public class LibrarianController {
 
     @GetMapping({"/lectures/list"})
     public String showLecture(final Model model) {
-        List<Lecturer> lecturers = lecturerService.findAll();
+       List<Lecturer> lecturers = lecturerService.findAll();
         model.addAttribute("lecturers", lecturers);
         return "librarian/lecture/librarian_lectures";
     }
@@ -403,14 +403,6 @@ public class LibrarianController {
     String showLectureByPage(@PathVariable Integer pageIndex,
                              @RequestParam(required = false, defaultValue = "") String search,
                              final Model model, HttpServletRequest request) {
-//        Page<Course> page;
-//        page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
-//        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-//        model.addAttribute("pages", pages);
-//        model.addAttribute("totalPage", page.getTotalPages());
-//        model.addAttribute("courses", page.getContent());
-//        model.addAttribute("search", search);
-//        model.addAttribute("currentPage", pageIndex);
         return "librarian/lecture/librarian_lectures";
     }
 

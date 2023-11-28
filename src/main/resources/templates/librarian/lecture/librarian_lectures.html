@@ -67,7 +67,6 @@
             </div>
             <div class="lib_data-list-wrapper">
                 <div class="lib_search-container">
-                    <form class="d-flex" th:action="@{/librarian/lectures/list/1}" th:method="get">
                         <div class="d-flex">
                             <input class="lib_search-content" type="text" placeholder="Search lecturer.." name="search"
                                    th:value="${search}" id="search-text"/>
@@ -76,18 +75,6 @@
                             </button>
                             <a class="btn lib_show-all-btn" th:href="@{/librarian/lectures/list}">Show AlL</a>
                         </div>
-
-
-                        <!--                        <select id="select-training-type" name="trainingTypeId"-->
-                        <!--                                class="lib_show-all-btn selectpicker show-tick" data-style="btn-white"-->
-                        <!--                                data-live-search="true">-->
-                        <!--                            <option value="">Choose a training type</option>-->
-                        <!--                            <option th:each="trainingType : ${trainingTypes}"-->
-                        <!--                                    th:value="${trainingType.trainingTypeName}"-->
-                        <!--                                    th:text="${trainingType.trainingTypeName}"></option>-->
-                        <!--                        </select>-->
-                    </form>
-
                 </div>
             </div>
             <div class="table-responsive" th:if="${lecturers ne null}">
@@ -131,15 +118,14 @@
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 
 <script>
-    $("document").ready(function () {
-
-        $("#filterTable").dataTable({
-             "searching": true,
-             "ordering": false,
-            "pagingType": "simple_numbers", // Choose a paging type that fits your needs
-            "pageLength": 2, // Set the number of rows per page
-            // "displayStart": 4, // Set the initial offset (e.g., start at the third page for 10 rows per page)
-            // "lengthMenu": [5, 10, 15, 20], // Set the options for "number of rows per page" dropdown
+    $(document).ready(function () {
+        var dataTable = $('#filterTable').DataTable({
+            "searching": true,
+            "processing": true,
+            "serverSide": true,
+            "ordering": false,
+            "pagingType": "simple_numbers",
+            "pageLength": 2,
             "language": {
                 "paginate": {
                     "first": "<<",
@@ -147,70 +133,58 @@
                     "next": ">>",
                     "previous": "<<"
                 }
-            }
+            },
+            "ajax": {
+                "url": "/api/librarian/lectures/list",
+                "dataSrc": "data",
+                "data": function (data) {
+                    // Thêm các tham số cần thiết vào yêu cầu Ajax
+                    data.start = data.start || 0;
+                    data.length = data.length || 2;
+                    data.draw = data.draw || 1;
+                    data.search = $("#search-text").val() || "";
+                    // return JSON.stringify(data);
+                }
+            },
+            "columns": [
+                { "data": null },
+                { "data": "account.name" },
+                { "data": "account.email" },
+                {
+                    "data": "courses",
+                    "render": function (data, type, row) {
+                        var courseList = "";
+                        data.forEach(function (course) {
+                            courseList += '<a href="/librarian/courses/' + course.id + '">' + course.courseCode + '</a>';
+                        });
+                        return courseList;
+                    }
+                }
+            ]
         });
 
-        //Get a reference to the new datatable
-        var table = $('#filterTable').DataTable();
+        // Định dạng số thứ tự STT
+        dataTable.on('order.dt search.dt', function () {
+            dataTable.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
 
-        //Take the category filter drop down and append it to the datatables_filter div.
-        //You can use this same idea to move the filter anywhere withing the datatable that you want.
-        // $("#filterTable_filter.dataTables_filter").append($("#lib_search-content"));
-
-        //Get the column index for the Category column to be used in the method below ($.fn.dataTable.ext.search.push)
-        //This tells datatables what column to filter on when a user selects a value from the dropdown.
-        //It's important that the text used here (Category) is the same for used in the header of the column to filter
-        var categoryIndex = 0;
-        // $("#filterTable th").each(function (i) {
-        //     if ($($(this)).html() == "TrainingType") {
-        //         categoryIndex = i;
-        //         return false;
-        //     }
-        // });
-        //
-        // //Use the built in datatables API to filter the existing rows by the Category column
-        // $.fn.dataTable.ext.search.push(
-        //     function (settings, data, dataIndex) {
-        //         var selectedItem = $('#select-training-type').val()
-        //         var category = data[categoryIndex];
-        //         if (selectedItem === "" || category.includes(selectedItem)) {
-        //             return true;
-        //         }
-        //         return false;
-        //     }
-        // );
-        //
-        // //Set the change event for the Category Filter dropdown to redraw the datatable each time
-        // //a user selects a new filter.
-        // $("#select-training-type").change(function (e) {
-        //     table.draw();
-        // });
-
-        $('#search-text').on('keyup', function() {
-            table.search(this.value).draw();
+        $('#search-text').on('keyup', function () {
+            dataTable.search(this.value).draw();
         });
 
-        // To hide the 'Search:' label if it was automatically generated by DataTables
-        $("label").each(function() {
+        // Ẩn nhãn 'Search:' mà DataTables tự động tạo
+        $("label").each(function () {
             if ($(this).text().indexOf('Search:') >= 0) {
                 $(this).css('display', 'none');
             }
         });
-        // table.page(2).draw('page');
-        table.draw();
-
     });
-
-
 </script>
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
-<!-- Bootstrap script -->
-<!--<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"-->
-<!--        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"-->
-<!--        crossorigin="anonymous"></script>-->
-<!-- Custom script -->
+
 <script th:src="@{/js/librarian/librarian.js}"></script>
 </body>
 

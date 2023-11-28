@@ -1,12 +1,16 @@
 package fpt.edu.eresourcessystem.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.*;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
@@ -18,6 +22,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document("lecturers")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Lecturer {
     @Id
     private String id;
@@ -30,7 +37,8 @@ public class Lecturer {
     private TrainingType trainingType;
 
     private List<String> lecturerCourses;
-    @DocumentReference(lazy = true)
+    @DocumentReference (lazy = true)
+//    @DBRef(lazy = true)
     private List<Course> courses;
     @DocumentReference(lazy = true)
     private List<String> documents;

@@ -40,5 +40,7 @@ public interface LecturerRepository extends MongoRepository<Lecturer, String> {
 
     Lecturer findLecturerById(String lectureId);
 
+//    Page<Lecturer> findListLecturerWithCriteria(String searchValue, Pageable pageable);
+
 }
 

@@ -189,5 +189,39 @@ public class LecturerServiceImpl implements LecturerService {
         return false;
     }
 
+    @Override
+    public List<Lecturer> findLecturers(int start, int length, String searchValue) {
+        // Tính toán trang hiện tại dựa trên start và length
+        int page = start / length;
+        int size = length;
+
+        // Tạo một đối tượng Pageable cho phân trang
+        Pageable pageable = PageRequest.of(page, size);
+
+        Criteria criteria = new Criteria();
+        if (searchValue != null && !searchValue.isEmpty()) {
+            // Nếu có giá trị tìm kiếm, thêm tiêu chí tìm kiếm vào criteria
+            criteria.orOperator(
+                    Criteria.where("account.name").regex(searchValue, "i"), // Tìm kiếm theo tên (không phân biệt hoa thường)
+                    Criteria.where("account.email").regex(searchValue, "i") // Tìm kiếm theo email (không phân biệt hoa thường)
+            );
+        }
+
+        // Tạo truy vấn dựa trên criteria và pageable
+        Query query = new Query(criteria).with(pageable);
+
+        // Thực hiện truy vấn và lấy dữ liệu
+        List<Lecturer> lecturers = mongoTemplate.find(query, Lecturer.class);
+
+        return lecturers;
+    }
+
+    @Override
+    public int getTotalLecturers() {
+        // Thực hiện truy vấn để lấy tổng số hàng trong tập dữ liệu Lecturers
+        return (int) lecturerRepository.count();
+    }
+
+
 
 }

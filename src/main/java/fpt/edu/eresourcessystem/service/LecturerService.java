@@ -44,4 +44,9 @@ public interface LecturerService {
 
     public boolean softDelete(Lecturer lecturer);
 
+    int getTotalLecturers();
+
+
+    List<Lecturer> findLecturers(int start, int length, String searchValue);
+
 }
