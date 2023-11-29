@@ -250,14 +250,29 @@ public class LecturerServiceImpl implements LecturerService {
         return (int) mongoTemplate.count(countQuery, Lecturer.class);
     }
 
-    @Override
     public Page<LecturerDto> findAllLecturersWithSearch(String searchValue, Pageable pageable) {
-        // Giả định bạn đã có một phương thức tìm kiếm tùy chỉnh trong repository của bạn
-        Page<Lecturer> lecturers = lecturerRepository.findByAccountNameContainingIgnoreCase(searchValue, pageable);
+        // Step 1: Query the associated "account" documents based on the email field
+        Query accountQuery = new Query(Criteria.where("email").regex(searchValue, "i"));
+        List<Account> matchingAccounts = mongoTemplate.find(accountQuery, Account.class);
+        List<String> accountIds = matchingAccounts.stream()
+                .map(Account::getId)
+                .collect(Collectors.toList());
 
-        // Chuyển đổi trang của Lecturer thành LecturerDto
-        return lecturers.map(LecturerDto::new);
+        // Step 2: Query the "lecturers" based on the IDs obtained from Step 1
+        Criteria lecturerCriteria = Criteria.where("account.$id").in(accountIds);
+        Query lecturerQuery = new Query(lecturerCriteria).with(pageable);
+
+        List<Lecturer> matchingLecturers = mongoTemplate.find(lecturerQuery, Lecturer.class);
+        List<LecturerDto> lecturerDtos = matchingLecturers.stream()
+                .map(LecturerDto::new)
+                .collect(Collectors.toList());
+
+        long total = mongoTemplate.count(lecturerQuery, Lecturer.class);
+
+        return new PageImpl<>(lecturerDtos, pageable, total);
     }
+
+
 
 
 

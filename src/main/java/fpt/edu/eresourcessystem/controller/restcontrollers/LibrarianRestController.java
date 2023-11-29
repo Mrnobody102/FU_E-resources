@@ -52,7 +52,7 @@ public class LibrarianRestController {
     public ResponseEntity<DataTablesResponse<LecturerDto>> getAllLecturers(
             @RequestParam(value = "draw", defaultValue = "0") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
-            @RequestParam(value = "length", defaultValue = "10") int length,
+            @RequestParam(value = "length", defaultValue = "3") int length,
             @RequestParam(value = "search[value]", defaultValue = "") String searchValue) {
 
         PageRequest pageRequest = PageRequest.of(start / length, length);

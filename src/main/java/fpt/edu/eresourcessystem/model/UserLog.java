@@ -32,6 +32,7 @@ public class UserLog {
     private String account; // email
     @CreatedDate
     private LocalDateTime time; // time
+
     private AccountEnum.Role role;
     public UserLog(UserLogDto userLogDto){
         this.id = userLogDto.getId();

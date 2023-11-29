@@ -125,7 +125,7 @@
            // "processing": true,
             "serverSide": true,
             "ordering": false,
-            "pagingType": "full_numbers",
+            "pagingType": "simple_numbers",
             "pageLength": 2,
             "language": {
                 "paginate": {
@@ -137,6 +137,7 @@
             },
             "ajax": {
                 "url": "/api/librarian/lectures/list",
+                "type": "GET",
                 "dataSrc": "data",
                 "data": function (data) {
                     // Thêm các tham số cần thiết vào yêu cầu Ajax
