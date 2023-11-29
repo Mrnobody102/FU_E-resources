@@ -1,16 +1,14 @@
 package fpt.edu.eresourcessystem.service;
 
 import com.mongodb.client.result.UpdateResult;
+import fpt.edu.eresourcessystem.dto.Response.LecturerDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.repository.LecturerCourseRepository;
 import fpt.edu.eresourcessystem.repository.LecturerRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -20,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 //@AllArgsConstructor
 @Service(value = "lecturerService")
@@ -191,35 +190,73 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public List<Lecturer> findLecturers(int start, int length, String searchValue) {
-        // Tính toán trang hiện tại dựa trên start và length
         int page = start / length;
-        int size = length;
+        Pageable pageable = PageRequest.of(page, length);
+        Query query = new Query().with(pageable);
 
-        // Tạo một đối tượng Pageable cho phân trang
-        Pageable pageable = PageRequest.of(page, size);
-
-        Criteria criteria = new Criteria();
         if (searchValue != null && !searchValue.isEmpty()) {
-            // Nếu có giá trị tìm kiếm, thêm tiêu chí tìm kiếm vào criteria
-            criteria.orOperator(
-                    Criteria.where("account.name").regex(searchValue, "i"), // Tìm kiếm theo tên (không phân biệt hoa thường)
-                    Criteria.where("account.email").regex(searchValue, "i") // Tìm kiếm theo email (không phân biệt hoa thường)
-            );
+            // Tìm các tài khoản phù hợp
+            Query accountQuery = new Query().addCriteria(new Criteria().orOperator(
+                    Criteria.where("name").regex(searchValue, "i"),
+                    Criteria.where("email").regex(searchValue, "i")
+            ));
+            List<Account> matchingAccounts = mongoTemplate.find(accountQuery, Account.class);
+
+            // Chuyển đổi thành danh sách ID tài khoản
+            List<String> accountIds = matchingAccounts.stream()
+                    .map(Account::getId)
+                    .collect(Collectors.toList());
+            // Lọc giảng viên theo ID tài khoản
+            if (!accountIds.isEmpty()) {
+                query.addCriteria(Criteria.where("account.id").in(accountIds));
+            }
         }
+        System.out.println("Query variable: " + query);
 
-        // Tạo truy vấn dựa trên criteria và pageable
-        Query query = new Query(criteria).with(pageable);
-
-        // Thực hiện truy vấn và lấy dữ liệu
-        List<Lecturer> lecturers = mongoTemplate.find(query, Lecturer.class);
-
-        return lecturers;
+        // Truy vấn và trả về danh sách giảng viên
+        List<Lecturer> lecturerList = mongoTemplate.find(query, Lecturer.class);
+        return lecturerList;
     }
+
 
     @Override
     public int getTotalLecturers() {
         // Thực hiện truy vấn để lấy tổng số hàng trong tập dữ liệu Lecturers
         return (int) lecturerRepository.count();
+    }
+
+
+    @Override
+    public int getFilteredCount(String searchValue) {
+        if (searchValue == null || searchValue.isEmpty()) {
+            // Nếu không có giá trị tìm kiếm, trả về tổng số lượng giảng viên
+            return (int) mongoTemplate.count(new Query(), Lecturer.class);
+        }
+
+        // Tìm các tài khoản phù hợp
+        List<Account> matchingAccounts = mongoTemplate.find(
+                Query.query(new Criteria().orOperator(
+                        Criteria.where("name").regex(searchValue, "i"),
+                        Criteria.where("email").regex(searchValue, "i")
+                )), Account.class);
+
+        // Lấy danh sách ID tài khoản
+        List<String> accountIds = matchingAccounts.stream()
+                .map(Account::getId)
+                .collect(Collectors.toList());
+
+        // Đếm số lượng giảng viên có liên kết với các ID tài khoản
+        Query countQuery = Query.query(Criteria.where("account").in(accountIds));
+        return (int) mongoTemplate.count(countQuery, Lecturer.class);
+    }
+
+    @Override
+    public Page<LecturerDto> findAllLecturersWithSearch(String searchValue, Pageable pageable) {
+        // Giả định bạn đã có một phương thức tìm kiếm tùy chỉnh trong repository của bạn
+        Page<Lecturer> lecturers = lecturerRepository.findByAccountNameContainingIgnoreCase(searchValue, pageable);
+
+        // Chuyển đổi trang của Lecturer thành LecturerDto
+        return lecturers.map(LecturerDto::new);
     }
 
 

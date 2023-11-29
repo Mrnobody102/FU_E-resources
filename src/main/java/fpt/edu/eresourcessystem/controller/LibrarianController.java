@@ -31,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -399,12 +400,12 @@ public class LibrarianController {
 
     @GetMapping({"/lectures/list"})
     public String showLecture(final Model model) {
-        List<Lecturer> lecturers = lecturerService.findAll();
-        List<LecturerDto> lecturerDtos = lecturers.stream()
-                .map(LecturerDto::new)
-                .collect(Collectors.toList());
-
-        model.addAttribute("lecturers", lecturerDtos);
+//        List<Lecturer> lecturers = lecturerService.findAll();
+//        List<LecturerDto> lecturerDtos = lecturers.stream()
+//                .map(LecturerDto::new)
+//                .collect(Collectors.toList());
+//
+//        model.addAttribute("lecturers", lecturerDtos);
     //    return "redirect:/api/librarian/lectures/list?start=0&length=2&draw=1";
         return "librarian/lecture/librarian_lectures";
     }

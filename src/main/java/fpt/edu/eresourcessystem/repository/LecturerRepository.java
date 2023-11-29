@@ -42,5 +42,8 @@ public interface LecturerRepository extends MongoRepository<Lecturer, String> {
 
 //    Page<Lecturer> findListLecturerWithCriteria(String searchValue, Pageable pageable);
 
+    @Query("{'account.name': {$regex: ?0, $options: 'i'}}")
+    Page<Lecturer> findByAccountNameContainingIgnoreCase(String searchValue, Pageable pageable);
+
 }
 

@@ -1,8 +1,10 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.dto.Response.LecturerDto;
 import fpt.edu.eresourcessystem.model.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -48,5 +50,9 @@ public interface LecturerService {
 
 
     List<Lecturer> findLecturers(int start, int length, String searchValue);
+
+    int getFilteredCount(String searchValue);
+
+    Page<LecturerDto> findAllLecturersWithSearch(String searchValue, Pageable pageable);
 
 }
