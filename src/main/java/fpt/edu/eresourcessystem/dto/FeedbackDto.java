@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document("feedbacks")
-public class FeedbackDTO {
+public class FeedbackDto {
     @Id
     private String id;
     private Account account;

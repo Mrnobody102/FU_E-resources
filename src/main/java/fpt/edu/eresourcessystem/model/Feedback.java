@@ -1,8 +1,6 @@
 package fpt.edu.eresourcessystem.model;
 
-
-import fpt.edu.eresourcessystem.dto.FeedbackDTO;
-import fpt.edu.eresourcessystem.dto.TrainingTypeDTO;
+import fpt.edu.eresourcessystem.dto.FeedbackDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -41,7 +39,7 @@ public class Feedback {
     @LastModifiedBy
     private String lastModifiedBy;
 
-    public Feedback(FeedbackDTO feedbackDTO) {
+    public Feedback(FeedbackDto feedbackDTO) {
         this.id = feedbackDTO.getId();
         this.account = feedbackDTO.getAccount();
         this.feedbackEmotion = feedbackDTO.getFeedbackEmotion();

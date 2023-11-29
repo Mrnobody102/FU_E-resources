@@ -1,7 +1,7 @@
 package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 
-import fpt.edu.eresourcessystem.dto.AnswerDTO;
+import fpt.edu.eresourcessystem.dto.AnswerDto;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.Answer;
 import fpt.edu.eresourcessystem.model.Document;
@@ -42,7 +42,7 @@ public class LecturerRestController {
 
     @PostMapping(value = "/answer/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     @Transactional
-    public ResponseEntity<AnswerResponseDto> addQuestion(@ModelAttribute AnswerDTO answerDTO,
+    public ResponseEntity<AnswerResponseDto> addQuestion(@ModelAttribute AnswerDto answerDTO,
                                                          @RequestParam String docId,
                                                          @RequestParam String quesId){
         Lecturer lecturer = getLoggedInLecturer();

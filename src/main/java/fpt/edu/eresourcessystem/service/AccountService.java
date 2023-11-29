@@ -1,6 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.dto.AccountDTO;
+import fpt.edu.eresourcessystem.dto.AccountDto;
 import fpt.edu.eresourcessystem.model.Account;
 import org.springframework.data.domain.Page;
 
@@ -11,9 +11,9 @@ public interface AccountService {
     List<Account> findAllLecturer();
     List<Account> searchLecturer(String search);
     List<Account> findAllLibrarian();
-    Account addAccount(AccountDTO accountDTO);
 
     Account saveAccount(Account account);
+    Account addAccount(AccountDto accountDTO);
     Account updateAccount(Account account);
     Account findByUsername(String username) ;
     Account findById(String id);

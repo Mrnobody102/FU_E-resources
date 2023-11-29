@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class DocumentDTO {
+public class DocumentDto {
     private String id;
     @NotNull
     private Topic topic;

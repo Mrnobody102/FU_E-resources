@@ -1,6 +1,6 @@
 package fpt.edu.eresourcessystem.model;
 
-import fpt.edu.eresourcessystem.dto.AnswerDTO;
+import fpt.edu.eresourcessystem.dto.AnswerDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import jakarta.validation.constraints.NotEmpty;
@@ -52,7 +52,7 @@ public class Answer {
     private String lastModifiedBy;
     @LastModifiedDate
     private String lastModifiedDate;
-    public Answer(AnswerDTO answerDTO) {
+    public Answer(AnswerDto answerDTO) {
         this.id = answerDTO.getId();
         this.answer = answerDTO.getAnswer();
         this.student = answerDTO.getStudent();

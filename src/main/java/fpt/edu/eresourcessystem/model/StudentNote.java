@@ -1,7 +1,7 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
+import fpt.edu.eresourcessystem.dto.StudentNoteDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import jakarta.validation.constraints.NotNull;
@@ -44,7 +44,7 @@ public class StudentNote {
     // Constructor DTO
 
 
-    public StudentNote(StudentNoteDTO studentNoteDTO) {
+    public StudentNote(StudentNoteDto studentNoteDTO) {
         this.id = studentNoteDTO.getId();
         this.studentId = studentNoteDTO.getStudentId();
         this.title = studentNoteDTO.getTitle();

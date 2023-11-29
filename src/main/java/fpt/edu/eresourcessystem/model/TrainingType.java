@@ -1,7 +1,7 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import fpt.edu.eresourcessystem.dto.TrainingTypeDTO;
+import fpt.edu.eresourcessystem.dto.TrainingTypeDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -41,7 +41,7 @@ public class TrainingType {
     private String lastModifiedDate;
 
     // Constructor DTO
-    public TrainingType(TrainingTypeDTO trainingTypeDTO) {
+    public TrainingType(TrainingTypeDto trainingTypeDTO) {
         this.id = trainingTypeDTO.getId();
         this.trainingTypeName = trainingTypeDTO.getTrainingTypeName();
         this.trainingTypeDescription = trainingTypeDTO.getTrainingTypeDescription();

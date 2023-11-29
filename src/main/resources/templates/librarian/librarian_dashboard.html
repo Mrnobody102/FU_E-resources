@@ -7,7 +7,7 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
 
@@ -56,12 +56,12 @@
 <!--                </div>-->
 
                 <div class="lib-main_menu-item">
-                    <a th:href="@{/lecturer}">
+                    <a th:href="@{/librarian/login_as_lecturer}">
                         <i class="p-2 fas fa-chalkboard-teacher"></i>
                         Login as lecturer</a>
                 </div>
                 <div class="lib-main_menu-item">
-                    <a th:href="@{/student}">
+                    <a th:href="@{/librarian/login_as_student}">
                         <i class="p-2 fa fa-graduation-cap" aria-hidden="true"></i>
                         Login as student</a>
                 </div>
@@ -82,8 +82,8 @@
 <script th:src="@{/js/librarian/librarian.js}"></script>
 
 <!--Bootstrap script-->
-<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+<script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"
+
         crossorigin="anonymous"></script>
 </body>
 </html>

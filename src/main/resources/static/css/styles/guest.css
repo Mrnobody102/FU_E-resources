@@ -307,7 +307,7 @@
 
 .lading-intro {
     position: relative;
-    background-image: url(/static/images/sample_guest/background_library.jpg);
+    background-image: url(/static/images/guest/background_library.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     height: 600px;
@@ -389,7 +389,7 @@
 /*contact us*/
 .contact-us {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    background-image: url(/static/images/sample_guest/background_contact.jpg);
+    background-image: url(/static/images/guest/background_contact.jpg);
     background-size: cover;
     background-position: center;
     margin: 0;

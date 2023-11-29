@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TopicDTO {
+public class TopicDto {
     @Id
     private String id;
     private Course course;

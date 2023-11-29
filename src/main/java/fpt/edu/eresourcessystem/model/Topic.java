@@ -1,7 +1,7 @@
 package fpt.edu.eresourcessystem.model;
 
 
-import fpt.edu.eresourcessystem.dto.TopicDTO;
+import fpt.edu.eresourcessystem.dto.TopicDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -49,7 +49,7 @@ public class Topic {
     private String lastModifiedDate;
 
     // Constructor DTO
-    public Topic(TopicDTO topicDTO) {
+    public Topic(TopicDto topicDTO) {
         this.id = topicDTO.getId();
         this.course = topicDTO.getCourse();
         this.topicTitle = topicDTO.getTopicTitle();

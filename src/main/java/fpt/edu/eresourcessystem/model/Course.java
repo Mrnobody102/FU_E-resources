@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import fpt.edu.eresourcessystem.dto.CourseDTO;
+import fpt.edu.eresourcessystem.dto.CourseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import jakarta.validation.constraints.NotEmpty;
@@ -75,7 +76,7 @@ public class Course {
     private String lastModifiedDate;
 
     // Constructor DTO
-    public Course(CourseDTO courseDTO, CourseEnum.Status status){
+    public Course(CourseDto courseDTO, CourseEnum.Status status){
         this.id = courseDTO.getId();
         this.librarian = courseDTO.getLibrarian();
         this.lecturer = courseDTO.getLecturer();
@@ -87,11 +88,11 @@ public class Course {
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
 
-    public Course publishCourse(CourseDTO courseDTO){
+    public Course publishCourse(CourseDto courseDTO){
         return new Course(courseDTO, CourseEnum.Status.PUBLISH);
     }
 
-    public Course draftCourse(CourseDTO courseDTO){
+    public Course draftCourse(CourseDto courseDTO){
         return new Course(courseDTO, CourseEnum.Status.DRAFT);
     }
 

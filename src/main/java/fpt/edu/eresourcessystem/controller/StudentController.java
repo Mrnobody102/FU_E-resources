@@ -1,15 +1,14 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.dto.FeedbackDTO;
+import fpt.edu.eresourcessystem.dto.FeedbackDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
-import fpt.edu.eresourcessystem.dto.StudentNoteDTO;
+import fpt.edu.eresourcessystem.dto.StudentNoteDto;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
-import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.service.*;
@@ -28,9 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashSet;
@@ -83,9 +80,15 @@ public class StudentController {
 
     private Student getLoggedInStudent() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println(loggedInEmail);
+        if (null == loggedInEmail || "anonymousUser".equals(loggedInEmail)) {
+            return null;
+        }
         Account loggedInAccount = accountService.findByEmail(loggedInEmail);
-        Student loggedInStudent = studentService.findByAccountId(loggedInAccount.getId());
-        return loggedInStudent;
+        if (loggedInAccount != null) {
+            Student loggedInStudent = studentService.findByAccountId(loggedInAccount.getId());
+            return loggedInStudent;
+        } else return null;
     }
 
     /*
@@ -100,8 +103,8 @@ public class StudentController {
     @GetMapping({"", "/home"})
     public String getStudentHome(@ModelAttribute Account account, final Model model) {
         Student student = getLoggedInStudent();
-        if(null == student){
-            return "common/login";
+        if (null == student) {
+            return "redirect:/login";
         }
         List<Course> recentCourses = courseLogService.findStudentRecentView(student.getAccount().getEmail());
 //        System.out.println(courseLogs);
@@ -132,7 +135,7 @@ public class StudentController {
         Student student = getLoggedInStudent();
         Course course = courseService.findByCourseId(courseId);
         if (null == student) {
-            return "common/login";
+            return "redirect:/login";
         } else if (null == course) {
             return "exception/404";
         } else if (null == course.getStatus() || CourseEnum.Status.PUBLISH != course.getStatus()) {
@@ -160,7 +163,7 @@ public class StudentController {
         Student student = getLoggedInStudent();
         Document document = documentService.findById(docId);
         if (null == student) {
-            return "common/login";
+            return "redirect:/login";
         } else if (null == document) {
             return "exception/404";
         } else if (DocumentEnum.DocumentStatusEnum.HIDE == document.getDocStatus()) {
@@ -194,12 +197,12 @@ public class StudentController {
         }
 
         // get others doc
-        if(null!= document.getTopic()){
+        if (null != document.getTopic()) {
             List<DocumentResponseDto> relevantDocuments = documentService
-                    .findRelevantDocument(document.getTopic().getId(),docId);
-            if(null!= relevantDocuments && relevantDocuments.size()> 0){
+                    .findRelevantDocument(document.getTopic().getId(), docId);
+            if (null != relevantDocuments && relevantDocuments.size() > 0) {
                 model.addAttribute("relevantDocuments", relevantDocuments);
-            }else {
+            } else {
                 relevantDocuments = new ArrayList<>();
                 relevantDocuments.add(new DocumentResponseDto(document));
                 model.addAttribute("relevantDocuments", relevantDocuments);
@@ -322,11 +325,11 @@ public class StudentController {
 
     @PostMapping("/my_note/student_notes/add")
     @Transactional
-    public String addMyNote(@ModelAttribute StudentNoteDTO studentNoteDTO,
+    public String addMyNote(@ModelAttribute StudentNoteDto studentNoteDTO,
                             BindingResult result) {
         Student student = getLoggedInStudent();
         if (null == student) {
-            return "common/login";
+            return "redirect:/login";
         } else if (null == studentNoteDTO || result.hasErrors()) {
             return "redirect:/student/my_note/student_notes/add?error";
         }
@@ -388,7 +391,7 @@ public class StudentController {
 
     // Method to handle the form submission
     @PostMapping("/feedbacks/add")
-    public String processFeedbackForm(@ModelAttribute("feedback") @Valid FeedbackDTO feedback,
+    public String processFeedbackForm(@ModelAttribute("feedback") @Valid FeedbackDto feedback,
                                       BindingResult result) {
 //        if (result.hasErrors()) {
 //            return "student/feedback/student_feedback-add"; // Return to the form with validation errors
@@ -412,5 +415,10 @@ public class StudentController {
         } else {
             return "redirect:/login"; // Redirect to the login page if the user is not logged in
         }
+    }
+
+    @GetMapping({"/chat"})
+    public String goHomePage() {
+        return "student/test_notification";
     }
 }

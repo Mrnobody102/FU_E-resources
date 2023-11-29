@@ -1,6 +1,6 @@
 package fpt.edu.eresourcessystem.model;
 
-import fpt.edu.eresourcessystem.dto.DocumentDTO;
+import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import jakarta.validation.constraints.NotEmpty;
@@ -8,8 +8,6 @@ import lombok.*;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -65,7 +63,7 @@ public class Document {
     @LastModifiedDate
     private String lastModifiedDate;
 
-    public Document(DocumentDTO documentDTO) {
+    public Document(DocumentDto documentDTO) {
         this.id = documentDTO.getId();
         this.topic = documentDTO.getTopic();
         this.resourceType = documentDTO.getResourceType();

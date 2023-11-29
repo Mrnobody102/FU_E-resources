@@ -1,10 +1,12 @@
-function viewOtherDocument(param){
+function viewOtherDocument(param) {
     window.location = "/student/documents/" + param;
 }
+
 function viewAllQuestion() {
     $(".stu__questions-list-view").css("display", "none");
     $("#stu__view-question-history").css("display", "block");
 }
+
 function viewQuestionWaiting() {
     $(".stu__questions-list-view").css("display", "none");
     var divContent = $("#stu__view-waiting-for-reply-question").text().trim();
@@ -18,12 +20,14 @@ function viewQuestionWaiting() {
                 console.log(data.length)
                 var html = "";
                 for (let i = 0; i < data.length; i++) {
-                    html += "   <div class=\"stu__question-content-wrapper\">\n" +
-                        "                                            <a class=\"stu__question-title\"\n" +
-                        "                                               href=\"/student/documents/" + data[i].documentId + "#question\">Ask on "+ data[i].documentTitle +"</a>\n" +
-                        "                                            <p class=\"stu__question-content question-content\"> "+data[i].questionContent +"</p>\n" +
-                        "                                            <span class=\"stu__question-content stu__question-date\"> "+data[i].lastModifiedDate+"</span>\n" +
-                        "                                        </div>"
+                    html +="<div class=stu__question-content-wrapper>\n" +
+                        "                        <span class=\"stu__question-content stu__question-date\">"+data[i].lastModifiedDate+"</span>\n" +
+                        "                    <a class=\"stu__question-title\">You asked on"+ data[i].documentTitle+"</a>\n" +
+                        "                    <p class=\"student-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
+                        "                        <a class=\"link-view-detailed\"\n" +
+                        "                              href=\"/student/documents/" + data[i].documentId + "#question\">view <i\n" +
+                        "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
+                        "                    </div>";
 
                 }
                 $("#stu__view-waiting-for-reply-question").html(html);
@@ -52,13 +56,14 @@ function viewNewReplyQuestion() {
                 console.log(data.length)
                 var html = "";
                 for (let i = 0; i < data.length; i++) {
-                    html += "   <div class=\"stu__question-content-wrapper\">\n" +
-                        "                                            <a class=\"stu__question-title\"\n" +
-                        "                                               href=\"/student/documents/" + data[i].documentId + "#question\">Ask on "+ data[i].documentTitle +"</a>\n" +
-                        "                                            <p class=\"stu__question-content question-content\"> "+data[i].questionContent +"</p>\n" +
-                        "                                            <span class=\"stu__question-content stu__question-date\"> "+data[i].lastModifiedDate+"</span>\n" +
-                        "                                        </div>"
-
+                    html +="<div class=stu__question-content-wrapper>\n" +
+                        "                        <span class=\"stu__question-content stu__question-date\">"+data[i].lastModifiedDate+"</span>\n" +
+                        "                    <a class=\"stu__question-title\">You asked on"+ data[i].documentTitle+"</a>\n" +
+                        "                    <p class=\"student-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
+                        "                        <a class=\"link-view-detailed\"\n" +
+                        "                              href=\"/student/documents/" + data[i].documentId + "#question\">view <i\n" +
+                        "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
+                        "                    </div>";
                 }
                 $("#stu__view-new-reply-question").html(html);
                 $("#loading").css("display", "none");
@@ -78,12 +83,12 @@ function viewTopicDocument(param) {
         $("#view-more-" + param).css("display", "inline");
         $("#list-doc-of-topic-" + param).css("display", "none");
     } else {
-        $("#view-less-" + param).css("display", "none");
-        $("#view-more-" + param).css("display", "none");
-        $("#loading-more-document-" + param).css("display", "inline");
         var divContent = $("#list-doc-of-topic-" + param).text().trim();
         console.log(divContent)
         if (divContent.length == 0) {
+            $("#view-less-" + param).css("display", "none");
+            $("#view-more-" + param).css("display", "none");
+            $("#loading-more-document-" + param).css("display", "inline");
             $.ajax({
                 type: 'GET',
                 url: '/api/student/documents/get_by_topic/' + param,
@@ -118,6 +123,9 @@ function viewTopicDocument(param) {
                 }
             });
         } else {
+            $("#view-less-" + param).css("display", "inline");
+            $("#view-more-" + param).css("display", "none");
+            $("#loading-more-document-" + param).css("display", "none");
             $("#list-doc-of-topic-" + param).css("display", "block");
         }
     }
@@ -292,6 +300,7 @@ $(document).ready(function () {
     });
     $("body").on("click", ".save-course", function () {
         var courseId = $(this).attr("courseId");
+        console.log(courseId)
         var loading = "<p><a th:attr=\"courseId=${courseId}\">\n" +
             "                                        <i class=\"fas fa-spinner fa-spin\"></i>\n" +
             "                                        Bookmarking</a></p>"
@@ -315,6 +324,7 @@ $(document).ready(function () {
                 }
             },
             error: function (errorData) {
+                console.log(errorData)
             }
         })
     })

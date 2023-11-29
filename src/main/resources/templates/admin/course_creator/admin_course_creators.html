@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin| Course Creators</title>
+    <title>Admin | Course Creators</title>
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" th:href="@{/assets/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
     <!-- Custom styles for this template -->
@@ -26,15 +26,11 @@
         <div class="app__container-content">
             <div class="course-details-head">
                 <a th:href="@{/admin}">Home</a>
-                <span> &gt; Course Creators</span>
+                <span> > Librarians management</span>
             </div>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Course Creators</h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-                    </div>
-                </div>
+                <h1 class="h2">Librarians management</h1>
+
             </div>
                         <div class="d-flex justify-content-center">
                             <div class="lib_data-list-wrapper">
@@ -177,8 +173,8 @@
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Bootstrap script-->
-<script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+<script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"
+
         crossorigin="anonymous"></script>
 <!--Custom script-->
 <script th:src="@{/js/librarian/librarian.js}"></script>

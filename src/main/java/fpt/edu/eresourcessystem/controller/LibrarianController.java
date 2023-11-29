@@ -1,21 +1,19 @@
 package fpt.edu.eresourcessystem.controller;
 
-import fpt.edu.eresourcessystem.dto.AccountDTO;
-import fpt.edu.eresourcessystem.dto.CourseDTO;
-import fpt.edu.eresourcessystem.dto.DocumentDTO;
+
 import fpt.edu.eresourcessystem.dto.Response.LecturerDto;
+import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
+import fpt.edu.eresourcessystem.dto.CourseDto;
+import fpt.edu.eresourcessystem.dto.AccountDto;
+import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
-import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
-import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.bson.types.ObjectId;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.mail.SimpleMailMessage;
@@ -25,18 +23,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -45,8 +39,6 @@ import java.util.stream.Collectors;
 public class LibrarianController {
 
     private final JavaMailSender javaMailSender;
-
-    //    @Value("${page-size}")
     private static final Integer pageSize = 5;
     private final AccountService accountService;
     private final LibrarianService librarianService;
@@ -60,6 +52,18 @@ public class LibrarianController {
     private final LecturerCourseService lecturerCourseService;
 
     private final TrainingTypeService trainingTypeService;
+
+    private Librarian getLoggedInLibrarian() {
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (null == loggedInEmail || "anonymousUser".equals(loggedInEmail)) {
+            return null;
+        }
+        Account loggedInAccount = accountService.findByEmail(loggedInEmail);
+        if (loggedInAccount != null) {
+            Librarian loggedInLibrarian = librarianService.findByAccountId(loggedInAccount.getId());
+            return loggedInLibrarian;
+        } else return null;
+    }
 
     /*
     DASHBOARD
@@ -95,7 +99,7 @@ public class LibrarianController {
      * @return
      */
     @PostMapping("/courses/add")
-    public String addCourseProcess(@ModelAttribute CourseDTO courseDTO,
+    public String addCourseProcess(@ModelAttribute CourseDto courseDTO,
                                    @RequestParam(value = "lecturer") String lecturer) {
         Course course = new Course(courseDTO, CourseEnum.Status.HIDE);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -508,5 +512,35 @@ public class LibrarianController {
         return "redirect:/admin/lecturers/list";
     }
 
+    /*
+        Login as
+     */
+
+    @GetMapping("/login_as_student")
+    public String loginAsStudent() {
+        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+        if (loggedInAccount != null) {
+            Student existStudent = studentService.findByAccountId(loggedInAccount.getId());
+            if(existStudent == null){
+                Student student = new Student();
+                student.setAccount(loggedInAccount);
+                studentService.addStudent(student);
+            }
+        }
+        return "redirect:/student";
+    }
+    @GetMapping("/login_as_lecturer")
+    public String loginAsLecturer() {
+        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+        if (loggedInAccount != null) {
+            Lecturer existLecturer = lecturerService.findByAccountId(loggedInAccount.getId());
+            if(existLecturer == null){
+                Lecturer lecturer = new Lecturer();
+                lecturer.setAccount(loggedInAccount);
+                lecturerService.addLecturer(lecturer);
+            }
+        }
+        return "redirect:/lecturer";
+    }
 
 }

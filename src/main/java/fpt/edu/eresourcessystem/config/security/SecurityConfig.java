@@ -6,25 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.CacheControl;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
-import org.springframework.web.servlet.resource.VersionResourceResolver;
-
-import java.time.Duration;
 
 @Configuration
 @EnableWebSecurity
@@ -36,10 +26,13 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private CustomizeAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
+    private CustomOAuth2UserService customOAuth2UserService;
+
     @Autowired
-    public SecurityConfig(CustomizeUserDetailsService customizeUserDetailsService, CustomizeAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
+    public SecurityConfig(CustomizeUserDetailsService customizeUserDetailsService, CustomizeAuthenticationSuccessHandler customAuthenticationSuccessHandler, CustomOAuth2UserService customOAuth2UserService) {
         this.customizeUserDetailsService = customizeUserDetailsService;
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+        this.customOAuth2UserService = customOAuth2UserService;
     }
 
     @Bean
@@ -47,18 +40,8 @@ public class SecurityConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(customizeUserDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http
-//    , HandlerMappingIntrospector introspector
-    ) throws Exception {
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         // Disable  csrf
         http.csrf(AbstractHttpConfigurer::disable);
@@ -68,25 +51,43 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .loginProcessingUrl("/login")
                 .successHandler(customAuthenticationSuccessHandler)
                 .failureUrl("/login?error"));
+
+
+
+        http.oauth2Login(auth -> auth.loginPage("/login")
+                .userInfoEndpoint(userInfo -> userInfo
+                        .userService(customOAuth2UserService)
+			    )
+                .successHandler(customAuthenticationSuccessHandler)
+//                .defaultSuccessUrl("/student", true)
+                .failureUrl("/login?error"));
+
         http.logout(auth -> auth.logoutUrl("/logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .clearAuthentication(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout"));
+
+
 
 //        MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector).servletPath("/");
 
         // Authorization
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/**", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
-                        .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.LIBRARIAN.name())
-                        .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.LECTURER.name())
-                        .requestMatchers("/student/**").hasAnyRole(AccountEnum.Role.STUDENT.name())
+                        .requestMatchers("/","/contact_us", "/faq", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**", "/oauth2/authorization/**").permitAll()
+                        .requestMatchers("/admin/**").hasAnyRole(AccountEnum.Role.ADMIN.name())
+                        .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.ADMIN.name(), AccountEnum.Role.LIBRARIAN.name())
+                        .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.ADMIN.name(), AccountEnum.Role.LIBRARIAN.name(), AccountEnum.Role.LECTURER.name())
+                        .requestMatchers("/student/**").hasAnyRole(AccountEnum.Role.ADMIN.name(), AccountEnum.Role.LIBRARIAN.name(), AccountEnum.Role.LECTURER.name(), AccountEnum.Role.STUDENT.name())
                         .anyRequest().authenticated())
 //                        .anyRequest().permitAll());
         ;
 
         // Exception Handling
         http.exceptionHandling(auth -> auth.accessDeniedPage("/access_denied"));
-        
+//        http.exceptionHandling(auth -> auth.accessDeniedPage("/login"));
 
         return http.build();
     }

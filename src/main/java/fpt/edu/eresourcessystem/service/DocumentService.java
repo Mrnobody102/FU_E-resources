@@ -1,6 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
-import fpt.edu.eresourcessystem.dto.DocumentDTO;
+import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Lecturer;
@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public interface DocumentService {
     List<Document> findAll();
@@ -21,7 +20,7 @@ public interface DocumentService {
 
     Iterable<EsDocument> searchDocument(String search);
 
-    Document addDocument(DocumentDTO documentDTO, String id) throws IOException;
+    Document addDocument(DocumentDto documentDTO, String id) throws IOException;
 
     Document findById(String documentId);
     List<Document> findByListId(List<String> documentIds);

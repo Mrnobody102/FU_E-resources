@@ -1,11 +1,10 @@
 package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 
-import fpt.edu.eresourcessystem.dto.AnswerDTO;
-import fpt.edu.eresourcessystem.dto.QuestionDTO;
+import fpt.edu.eresourcessystem.dto.AnswerDto;
+import fpt.edu.eresourcessystem.dto.QuestionDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
-import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -106,7 +104,7 @@ public class StudentRestController {
 
     @PostMapping(value = "/question/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     @Transactional
-    public ResponseEntity<QuestionResponseDto> addQuestion(@ModelAttribute QuestionDTO questionDTO, @RequestParam String docId){
+    public ResponseEntity<QuestionResponseDto> addQuestion(@ModelAttribute QuestionDto questionDTO, @RequestParam String docId){
         Student student = getLoggedInStudent();
         Document document = documentService.findById(docId);
         if(null == student || null==questionDTO || null==document){
@@ -127,7 +125,7 @@ public class StudentRestController {
 
     @PostMapping(value = "/answer/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     @Transactional
-    public ResponseEntity<AnswerResponseDto> addQuestion(@ModelAttribute AnswerDTO answerDTO,
+    public ResponseEntity<AnswerResponseDto> addQuestion(@ModelAttribute AnswerDto answerDTO,
                                                          @RequestParam String docId,
                                                          @RequestParam String quesId){
         Student student = getLoggedInStudent();

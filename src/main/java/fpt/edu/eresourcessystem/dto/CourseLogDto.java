@@ -1,27 +1,31 @@
 package fpt.edu.eresourcessystem.dto;
 
-
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Course;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.*;
-
-import java.util.List;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResourceTypeDTO {
-    @Id
+@ToString
+public class CourseLogDto {
     private String id;
-    private String resourceTypeName;
-    private Course course;
 
-    // Only use when response, no need in requests
-    private List<String> documents;
+    private Course course;
+    private String oldContent;
+    private String newContent;
+    private CommonEnum.Action action;
+    // Delete flag
+    private CommonEnum.DeleteFlg deleteFlg;
+
     private String createdBy;
+
     private String createdDate;
+
     private String lastModifiedBy;
+
     private String lastModifiedDate;
 }
