@@ -86,7 +86,8 @@ public class AdminController {
      * @return accounts page (no data)
      */
     @GetMapping({"/accounts/list"})
-    public String manageAccount() {
+    public String manageAccount(final Model model) {
+        model.addAttribute("roles", AccountEnum.Role.values());
         return "admin/account/admin_accounts";
     }
 
@@ -151,6 +152,7 @@ public class AdminController {
 
     @GetMapping("/course_creator")
     String findCourseByLibrarian(final Model model) {
+
         return "admin/course_creator/admin_course_creators";
     }
 
@@ -554,6 +556,17 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("error", "Training type not found.");
         }
         return "redirect:/admin/trainingtypes/list";
+    }
+
+    @DeleteMapping("/feedbacks/delete/{id}")
+    public String softDeleteFeedback(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
+        boolean isDeleted = feedbackService.softDelete(id);
+        if (isDeleted) {
+            redirectAttributes.addFlashAttribute("success", "Feedback was successfully deleted.");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Failed to delete feedback or feedback not found.");
+        }
+        return "redirect:/admin/feedbacks/list";
     }
 
     @GetMapping("/document_log/tracking")

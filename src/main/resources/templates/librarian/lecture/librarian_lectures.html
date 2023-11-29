@@ -44,6 +44,9 @@
             text-align: center;
             float: none;
         }
+        .table-responsive {
+            overflow-x: unset;
+        }
 
     </style>
 
@@ -122,6 +125,7 @@
 
         var dataTable = $('#filterTable').DataTable({
             "searching": true,
+            // "responsive": true,
            // "processing": true,
             "serverSide": true,
             "ordering": false,
@@ -162,7 +166,7 @@
                     "render": function (data, type, row) {
                         var courseList = "";
                         data.forEach(function (course) {
-                            courseList += '<a href="/librarian/courses/' + course + '">' + course + '</a>';
+                            courseList += '<button class="button-a-background m-2" href="/librarian/courses/' + course + '">' + course + '</button>';
                         });
                         return courseList;
                     }
@@ -192,7 +196,7 @@
         // Enhanced search handler with debounce
         $('#search-text').on('keyup', debounce(function() {
             dataTable.search(this.value).draw();
-        }, 500)); // 500ms delay
+        }, 100)); // 500ms delay
 
 
 

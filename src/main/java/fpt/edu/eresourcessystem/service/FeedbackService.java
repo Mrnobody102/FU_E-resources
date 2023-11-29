@@ -23,4 +23,6 @@ public interface FeedbackService {
     Page<Feedback> findAll(PageRequest pageRequest);
 
     Page<Feedback> findAllByDateRange(Date minDate, Date maxDate, Pageable pageable);
+
+    public boolean softDelete(String feedbackId);
 }

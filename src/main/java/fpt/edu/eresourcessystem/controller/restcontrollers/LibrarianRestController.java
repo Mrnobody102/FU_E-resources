@@ -27,7 +27,7 @@ public class LibrarianRestController {
             @RequestParam("start") int start,
             @RequestParam("length") int length,
             @RequestParam("draw") int draw,
-            @RequestParam(value = "search[value]", defaultValue = "") String searchValue) {
+            @RequestParam(name = "search", required = false) String searchValue) {
 
         // Xử lý yêu cầu từ DataTables và trả về dữ liệu tương ứng
         List<Lecturer> lecturer = lecturerService.findLecturers(start, length, searchValue);
@@ -36,14 +36,14 @@ public class LibrarianRestController {
                 .collect(Collectors.toList());
 
         int totalLecturers = lecturerService.getTotalLecturers(); // Tổng số hàng trong tập dữ liệu
-
-        int filteredCount = lecturerService.getFilteredCount(searchValue); // Số hàng sau khi áp dụng bộ lọc
+//
+//        int filteredCount = lecturerService.getFilteredCount(searchValue); // Số hàng sau khi áp dụng bộ lọc
 
         DataTablesResponse<LecturerDto> response = new DataTablesResponse<>();
         response.setData(lecturers);
         response.setDraw(draw);
         response.setRecordsTotal(totalLecturers);
-        response.setRecordsFiltered(filteredCount);
+        response.setRecordsFiltered(totalLecturers);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

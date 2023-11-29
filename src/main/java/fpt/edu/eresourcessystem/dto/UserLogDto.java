@@ -23,7 +23,7 @@ public class UserLogDto {
 
     private LocalDateTime date; // time
 
-    
+
 
     public UserLogDto(String url) {
         this.url = url;

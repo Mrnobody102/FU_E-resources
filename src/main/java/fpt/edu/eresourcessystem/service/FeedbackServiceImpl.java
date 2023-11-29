@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Feedback;
 import fpt.edu.eresourcessystem.repository.FeedbackRepository;
 import org.springframework.data.domain.Page;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -69,6 +71,16 @@ public class FeedbackServiceImpl implements FeedbackService {
         } else {
             return feedbackRepository.findAll(pageable);
         }
+    }
+
+    @Transactional
+    @Override
+    public boolean softDelete(String feedbackId) {
+        return feedbackRepository.findById(feedbackId).map(feedback -> {
+            feedback.setDeleteFlg(CommonEnum.DeleteFlg.DELETED); // Assuming DELETED is a constant in DeleteFlg enum representing the deleted state
+            feedbackRepository.save(feedback);
+            return true;
+        }).orElse(false); // Return false if feedback not found
     }
 
 }
