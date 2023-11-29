@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,8 +18,8 @@ public class LecturerDto {
     @Id
     private String id;
     private String accountName;
-    private List<Course> courses; // Assuming these are course titles or IDs
-    private List<String> documentTitles; // Assuming these are document titles or IDs
+    private String accountEmail;
+    private List<String> courses; // Assuming these are course titles or IDs
     private int totalCourses;
     private String lastModifiedDate;
 
@@ -26,13 +27,12 @@ public class LecturerDto {
         this.id = lecturer.getId();
         if(lecturer.getAccount() != null) {
             this.accountName = lecturer.getAccount().getName();
+            this.accountEmail = lecturer.getAccount().getEmail();
         }
-        if(lecturer.getCourses() != null) {
-            this.courses = lecturer.getCourses(); // Or map to course names/IDs
-        }
-        if(lecturer.getDocuments() != null) {
-            this.documentTitles = lecturer.getDocuments(); // Or map to document titles/IDs
-        }
+        this.courses = lecturer.getCourses() != null
+                ? lecturer.getCourses().stream().map(Course::getCourseCode).collect(Collectors.toList())
+                : Collections.emptyList();
+
         if(lecturer.getCourses() != null) {
             this.totalCourses = lecturer.getCourses().size();
         }

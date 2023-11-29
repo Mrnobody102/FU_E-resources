@@ -22,9 +22,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document("lecturers")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class Lecturer {
     @Id
     private String id;

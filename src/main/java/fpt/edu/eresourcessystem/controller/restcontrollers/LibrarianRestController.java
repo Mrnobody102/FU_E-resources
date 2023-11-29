@@ -39,7 +39,7 @@ public class LibrarianRestController {
         response.setData(lecturers);
         response.setDraw(draw);
         response.setRecordsTotal(totalLecturers);
-        response.setRecordsFiltered(totalLecturers);
+        response.setRecordsFiltered(lecturers.size());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

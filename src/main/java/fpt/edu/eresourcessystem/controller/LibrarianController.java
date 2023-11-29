@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.controller;
 import fpt.edu.eresourcessystem.dto.AccountDTO;
 import fpt.edu.eresourcessystem.dto.CourseDTO;
 import fpt.edu.eresourcessystem.dto.DocumentDTO;
+import fpt.edu.eresourcessystem.dto.Response.LecturerDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
@@ -394,8 +395,13 @@ public class LibrarianController {
 
     @GetMapping({"/lectures/list"})
     public String showLecture(final Model model) {
-       List<Lecturer> lecturers = lecturerService.findAll();
-        model.addAttribute("lecturers", lecturers);
+        List<Lecturer> lecturers = lecturerService.findAll();
+        List<LecturerDto> lecturerDtos = lecturers.stream()
+                .map(LecturerDto::new)
+                .collect(Collectors.toList());
+
+        model.addAttribute("lecturers", lecturerDtos);
+    //    return "redirect:/api/librarian/lectures/list?start=0&length=2&draw=1";
         return "librarian/lecture/librarian_lectures";
     }
 

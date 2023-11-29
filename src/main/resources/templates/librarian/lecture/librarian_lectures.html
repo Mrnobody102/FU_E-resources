@@ -91,14 +91,14 @@
                         <tr>
                             <td th:text="${iterStat.index+1}">1</td>
                             <td><a th:href="@{'/librarian/lectures/' + ${lecture.getId()}}"
-                                   th:text="${lecture.getAccount().getName()}"></a></td>
-                            <td><span class="description" th:text="${lecture.getAccount().getEmail()}"></span></td>
+                                   th:text="${lecture.getAccountName()}"></a></td>
+                            <td><span class="description" th:text="${lecture.getAccountEmail()}"></span></td>
                             <td>
                                 <th:block th:each="course : ${lecture.getCourses()}">
-                                    <a th:href="@{'/librarian/courses/' + ${course.getId()}}">
+<!--                                    <a th:href="@{'/librarian/courses/' + ${course.getId()}}">-->
                                         <button class="button-a-background"
-                                                th:text="${course.getCourseCode()}"></button>
-                                    </a>
+                                                th:text="${course}"></button>
+<!--                                    </a>-->
                                 </th:block>
                             </td>
 
@@ -143,23 +143,25 @@
                     data.length = data.length || 2;
                     data.draw = data.draw || 1;
                     data.search = $("#search-text").val() || "";
-                    // return JSON.stringify(data);
+                     // return JSON.stringify(data);
                 }
             },
             "columns": [
-                { "data": null },
-                { "data": "account.name" },
-                { "data": "account.email" },
+                { "data": null }, // For numbering
+                { "data": "accountName" },
+                { "data": "accountEmail" },
                 {
                     "data": "courses",
                     "render": function (data, type, row) {
                         var courseList = "";
                         data.forEach(function (course) {
-                            courseList += '<a href="/librarian/courses/' + course.id + '">' + course.courseCode + '</a>';
+                            courseList += '<a href="/librarian/courses/' + course.id + '">' + course + '</a>';
                         });
                         return courseList;
                     }
-                }
+                },
+                // { "data": "totalCourses" },
+                // { "data": "lastModifiedDate" }
             ]
         });
 
