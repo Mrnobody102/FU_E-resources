@@ -82,6 +82,13 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+    public void removeDocumentFromTopic(String topicId, ObjectId documentId) {
+        Query query = new Query(Criteria.where("id").is(topicId));
+        Update update = new Update().pull("documents", documentId);
+        mongoTemplate.updateFirst(query, update, Topic.class);
+    }
+
+    @Override
     public boolean softDelete(Topic topic) {
         Optional<Topic> check = topicRepository.findById(topic.getId());
         if (check.isPresent()) {
@@ -113,6 +120,7 @@ public class TopicServiceImpl implements TopicService {
         Update update = new Update().push("documents", documentId);
         mongoTemplate.updateFirst(query, update, Topic.class);
     }
+
     @Override
     public List<DocumentResponseDto> findByTopic(String topicId) {
 //        Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)

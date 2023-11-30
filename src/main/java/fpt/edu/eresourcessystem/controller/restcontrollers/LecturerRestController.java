@@ -49,7 +49,7 @@ public class LecturerRestController {
         Document document = documentService.findById(docId);
         Question question = questionService.findById(quesId);
         if(null == lecturer || null == answerDTO || null==document || null == question){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         answerDTO.setLecturer(lecturer);
         answerDTO.setQuestionId(question);
@@ -61,10 +61,9 @@ public class LecturerRestController {
             question.setStatus(QuestionAnswerEnum.Status.REPLIED);
             questionService.updateQuestion(question);
             AnswerResponseDto answerResponseDTO = new AnswerResponseDto(answer);
-            ResponseEntity<AnswerResponseDto> responseEntity = new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
-            return responseEntity;
+            return new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
         }else {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -77,10 +76,9 @@ public class LecturerRestController {
             for (Answer answer: answers) {
                 answerResponseDtos.add(new AnswerResponseDto(answer));
             }
-            ResponseEntity<List<AnswerResponseDto>> responseEntity = new ResponseEntity<>(answerResponseDtos, HttpStatus.OK);
-            return responseEntity;
+            return new ResponseEntity<>(answerResponseDtos, HttpStatus.OK);
         }else {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

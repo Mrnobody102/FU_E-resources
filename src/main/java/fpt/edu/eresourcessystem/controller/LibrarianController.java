@@ -14,7 +14,7 @@ import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.bson.types.ObjectId;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.PropertySource;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -33,22 +33,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/librarian")
-@PropertySource("web-setting.properties")
 public class LibrarianController {
 
     private final JavaMailSender javaMailSender;
-    private static final Integer pageSize = 5;
+    private final GlobalControllerAdvice globalControllerAdvice;
     private final AccountService accountService;
     private final LibrarianService librarianService;
     private final LecturerService lecturerService;
     private final StudentService studentService;
     private final CourseService courseService;
-    private final TopicService topicService;
-    private final ResourceTypeService resourceTypeService;
-    private final DocumentService documentService;
 
     private final LecturerCourseService lecturerCourseService;
 
@@ -83,8 +81,8 @@ public class LibrarianController {
      */
 
     /**
-     * @param model
-     * @return
+     * @param model model
+     * @return add course page
      */
     @GetMapping({"/courses/add"})
     public String addCourse(final Model model) {
@@ -95,9 +93,9 @@ public class LibrarianController {
     }
 
     /**
-     * @param courseDTO
-     * @param lecturer
-     * @return
+     * @param courseDTO course service model
+     * @param lecturer lecturer
+     * @return add course successfully page
      */
     @PostMapping("/courses/add")
     public String addCourseProcess(@ModelAttribute CourseDto courseDTO,
@@ -242,7 +240,7 @@ public class LibrarianController {
                              @RequestParam(required = false, defaultValue = "") String search,
                              final Model model, HttpServletRequest request) {
         Page<Course> page;
-        page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
+        page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, PAGE_SIZE);
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
@@ -346,7 +344,7 @@ public class LibrarianController {
                               @RequestParam String lecturerEmail) {
         Account account = accountService.findByEmail(lecturerEmail);
 
-        Lecturer savedLecturer = null;
+        Lecturer savedLecturer;
         if (account == null) {
             Account a = new Account();
             a.setEmail(lecturerEmail);
@@ -371,7 +369,7 @@ public class LibrarianController {
             lecturerService.addCourseToLecturer(savedLecturer.getId(), new ObjectId(courseId));
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("maihoa362001@gmail.com");
-            message.setTo("ngaydoidemcho93@gmail.com"); // Change to lecturer mail
+            message.setTo("huypq1801@gmail.com"); // Change to lecturer mail
             String subject = "Notification: Course Management Assignment";
             message.setSubject(subject);
 
@@ -384,7 +382,7 @@ public class LibrarianController {
                             "Vui lòng đăng nhập vào hệ thống quản lý khóa học để cập nhật nội dung, tài liệu và thông tin liên quan đến khóa học. " +
                             "Nếu bạn có bất kỳ thắc mắc hoặc cần sự hỗ trợ, đừng ngần ngại liên hệ với chúng tôi.\n\n" +
                             "Chúc bạn một ngày làm việc hiệu quả và nhiều niềm vui!\n\n" +
-                            "Trân trọng,\n Thư viện FPT",
+                            "Trân trọng,\nThư viện FPT",
                     course.getCourseName(), dateTime);
             message.setText(body);
             javaMailSender.send(message);
@@ -519,7 +517,7 @@ public class LibrarianController {
 
     @GetMapping("/login_as_student")
     public String loginAsStudent() {
-        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+        Account loggedInAccount = globalControllerAdvice.getLoggedInAccount();
         if (loggedInAccount != null) {
             Student existStudent = studentService.findByAccountId(loggedInAccount.getId());
             if(existStudent == null){
@@ -532,7 +530,7 @@ public class LibrarianController {
     }
     @GetMapping("/login_as_lecturer")
     public String loginAsLecturer() {
-        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+        Account loggedInAccount = globalControllerAdvice.getLoggedInAccount();
         if (loggedInAccount != null) {
             Lecturer existLecturer = lecturerService.findByAccountId(loggedInAccount.getId());
             if(existLecturer == null){

@@ -241,7 +241,7 @@
 }
 
 #editorWrapper {
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .lec__edit-topic-icon{
@@ -258,6 +258,7 @@
     border-radius: 0.2rem;
     border: 1px solid #888888;
     margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
 }
 .lec__question-content{
     padding: 0rem 0rem 0rem 1.5rem;

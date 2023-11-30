@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @ControllerAdvice
 public class GlobalControllerAdvice {
 
-    public static AccountService accountService;
+    public final AccountService accountService;
 
     public GlobalControllerAdvice(AccountService accountService) {
         this.accountService = accountService;
@@ -21,7 +21,7 @@ public class GlobalControllerAdvice {
         return accountService.findByEmail(loggedInEmail);
     }
 
-    public static Account getLoggedInAccount() {
+    public Account getLoggedInAccount() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         if (null == loggedInEmail || "anonymousUser".equals(loggedInEmail)) {
             return null;

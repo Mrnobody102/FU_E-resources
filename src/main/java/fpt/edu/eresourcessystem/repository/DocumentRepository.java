@@ -16,6 +16,8 @@ import java.util.Optional;
 @Repository("documentRepository")
 public interface DocumentRepository extends
         MongoRepository<Document, String> {
+
+    @Query("{ 'id' : ?0, 'deleteFlg' : 'PRESERVED' }")
     Optional<Document> findById(String id);
 
     @Query("{ 'createdBy' : ?0, 'deleteFlg' : 'PRESERVED' }")

@@ -13,7 +13,6 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
-    <script th:src="@{/ckfinder/static/ckfinder.js}"></script>
 
     <!-- SweetAlert từ CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -113,7 +112,7 @@
                                 </div>
 
 
-                                <div id="uploadFileInput" style="display: none" class="mt-2">
+                                <div id="uploadFileInput" style="display: none; margin-top: 2rem">
                                     <div class="d-flex justify-content-between lecturer__input-doc">
                                         <label th:for="file" class="lecturer_input-label-doc">File Upload:</label>
 

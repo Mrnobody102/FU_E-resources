@@ -66,6 +66,8 @@ public class DocumentEnum {
 
         IMAGE,
 
+        OTHER,
+
 
         UNKNOWN;
 
@@ -87,6 +89,8 @@ public class DocumentEnum {
                 case "mp4", "mov", "avi", "flv", "mkv", "webm" -> VIDEO;
 
                 case "jpg", "jpeg", "gif", "png", "svg" -> IMAGE;
+
+                case "exe", "psd", "eps", "jar", "zip", "rar" -> OTHER;
 
                 default -> DocumentFormat.UNKNOWN;
             };

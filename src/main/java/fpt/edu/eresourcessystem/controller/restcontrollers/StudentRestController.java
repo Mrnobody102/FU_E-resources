@@ -3,15 +3,14 @@ package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 import fpt.edu.eresourcessystem.dto.AnswerDto;
 import fpt.edu.eresourcessystem.dto.QuestionDto;
+import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
+import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
-import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
-import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.service.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,45 +22,28 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/student")
 public class StudentRestController {
     private final StudentService studentService;
     private final DocumentService documentService;
     private final DocumentNoteService documentNoteService;
-
     private final CourseService courseService;
-
     private final QuestionService questionService;
     private final AnswerService answerService;
-
     private final UserLogService userLogService;
     private final AccountService accountService;
-
     private final TopicService topicService;
 
-    public StudentRestController(StudentService studentService, DocumentService documentService, DocumentNoteService documentNoteService, CourseService courseService, QuestionService questionService, AnswerService answerService, UserLogService userLogService, AccountService accountService, TopicService topicService) {
-        this.studentService = studentService;
-        this.documentService = documentService;
-        this.documentNoteService = documentNoteService;
-        this.courseService = courseService;
-        this.questionService = questionService;
-        this.answerService = answerService;
-        this.userLogService = userLogService;
-        this.accountService = accountService;
-        this.topicService = topicService;
-    }
-
-    private UserLog addUserLog(String url){
+    private void addUserLog(String url){
         UserLog userLog = new UserLog(new UserLogDto(url));
-        userLog = userLogService.addUserLog(userLog);
-        return userLog;
+        userLogService.addUserLog(userLog);
     }
 
     public Student getLoggedInStudent() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Account loggedInAccount = accountService.findByEmail(loggedInEmail);
-        Student loggedInStudent = studentService.findByAccountId(loggedInAccount.getId());
-        return loggedInStudent;
+        return studentService.findByAccountId(loggedInAccount.getId());
     }
     @PostMapping("/documents/{documentId}/save_document")
     @Transactional
@@ -84,9 +66,7 @@ public class StudentRestController {
 
     @PostMapping("/documents/{documentId}/unsaved_document")
     @Transactional
-    public String unsavedDoc(@PathVariable String documentId,
-                             HttpServletRequest request,
-                             HttpSession session) {
+    public String unsavedDoc(@PathVariable String documentId) {
         // get account authorized
         Student student = getLoggedInStudent();
         if (null != documentService.findById(documentId)) {
@@ -108,7 +88,7 @@ public class StudentRestController {
         Student student = getLoggedInStudent();
         Document document = documentService.findById(docId);
         if(null == student || null==questionDTO || null==document){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         questionDTO.setStudent(student);
         questionDTO.setDocumentId(document);
@@ -116,10 +96,9 @@ public class StudentRestController {
         if(null!= question){
 //            System.out.println(question);
             QuestionResponseDto questionResponseDTO = new QuestionResponseDto(question);
-            ResponseEntity<QuestionResponseDto> responseEntity = new ResponseEntity<>(questionResponseDTO, HttpStatus.OK);
-            return responseEntity;
+            return new ResponseEntity<>(questionResponseDTO, HttpStatus.OK);
         }else {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -132,7 +111,7 @@ public class StudentRestController {
         Document document = documentService.findById(docId);
         Question question = questionService.findById(quesId);
         if(null == student || null == answerDTO || null==document || null == question){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         answerDTO.setStudent(student);
         answerDTO.setQuestionId(question);
@@ -144,10 +123,9 @@ public class StudentRestController {
             question.getAnswers().add(answer);
             questionService.updateQuestion(question);
             AnswerResponseDto answerResponseDTO = new AnswerResponseDto(answer);
-            ResponseEntity<AnswerResponseDto> responseEntity = new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
-            return responseEntity;
+            return new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
         }else {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -162,12 +140,11 @@ public class StudentRestController {
 
             // change to response object
             List<AnswerResponseDto> answerResponseDtos = answers.stream()
-                    .map(entity -> new AnswerResponseDto(entity))
+                    .map(AnswerResponseDto::new)
                     .collect(Collectors.toList());
-            ResponseEntity<List<AnswerResponseDto>> responseEntity = new ResponseEntity<>(answerResponseDtos, HttpStatus.OK);
-            return responseEntity;
+            return new ResponseEntity<>(answerResponseDtos, HttpStatus.OK);
         }else {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -216,7 +193,7 @@ public class StudentRestController {
         System.out.println(noteContent);
         Document document = documentService.findById(documentId);
         if(null == student || null == noteContent || "".equals(noteContent.trim()) || null==document){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         DocumentNote documentNote = new DocumentNote();
         documentNote.setStudentId(student.getId());
@@ -225,10 +202,9 @@ public class StudentRestController {
         DocumentNote result = documentNoteService.addDocumentNote(documentNote);
         if(null!= result){
             System.out.println(result);
-            ResponseEntity<DocumentNote> responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
-            return responseEntity;
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }else {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -237,7 +213,7 @@ public class StudentRestController {
         System.out.println(topicId);
         Topic topic = topicService.findById(topicId);
         if(null == topic){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         List<DocumentResponseDto> documents = topicService.findByTopic(topicId);
         if(null!= documents){
@@ -245,7 +221,7 @@ public class StudentRestController {
             System.out.println(documents);
             return responseEntity;
         }else {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -253,11 +229,10 @@ public class StudentRestController {
     public ResponseEntity<List<QuestionResponseDto>> getWaitQuestion(){
         Student student = getLoggedInStudent();
         if(null == student){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }else{
             List<QuestionResponseDto> questionResponseDtos = questionService.findWaitReplyQuestion(student.getId());
-            ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDtos, HttpStatus.OK);
-            return responseEntity;
+            return new ResponseEntity<>(questionResponseDtos, HttpStatus.OK);
         }
 
     }
@@ -266,11 +241,10 @@ public class StudentRestController {
     public ResponseEntity<List<QuestionResponseDto>> getNewReplyQuestion(){
         Student student = getLoggedInStudent();
         if(null == student){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }else{
             List<QuestionResponseDto> questionResponseDtos = questionService.findNewReplyQuestion(student.getId());
-            ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDtos, HttpStatus.OK);
-            return responseEntity;
+            return new ResponseEntity<>(questionResponseDtos, HttpStatus.OK);
         }
 
     }
