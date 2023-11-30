@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.dto.DocumentNoteDto;
 import fpt.edu.eresourcessystem.model.DocumentNote;
 import org.springframework.stereotype.Service;
 

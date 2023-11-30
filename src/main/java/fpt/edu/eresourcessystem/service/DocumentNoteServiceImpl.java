@@ -1,20 +1,24 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.dto.DocumentNoteDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.DocumentNote;
+import fpt.edu.eresourcessystem.model.Notification;
 import fpt.edu.eresourcessystem.repository.DocumentNoteRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service("documentNoteService")
+@RequiredArgsConstructor
 public class DocumentNoteServiceImpl implements DocumentNoteService {
     private final DocumentNoteRepository documentNoteRepository;
-
-    public DocumentNoteServiceImpl(DocumentNoteRepository documentNoteRepository) {
-        this.documentNoteRepository = documentNoteRepository;
-    }
-
+    private final MongoTemplate mongoTemplate;
     @Override
     public DocumentNote findById(String studentNoteId) {
         Optional<DocumentNote> studentNote = documentNoteRepository.findById(studentNoteId);
@@ -43,6 +47,9 @@ public class DocumentNoteServiceImpl implements DocumentNoteService {
 
     @Override
     public DocumentNote updateDocumentNote(DocumentNote documentNote) {
+        if (null == documentNote || null==documentNote.getId()){
+            return null;
+        }
         Optional<DocumentNote> savedStudentNote = documentNoteRepository.findById(documentNote.getId());
         if(savedStudentNote.isPresent()){
             DocumentNote result =  documentNoteRepository.save(documentNote);

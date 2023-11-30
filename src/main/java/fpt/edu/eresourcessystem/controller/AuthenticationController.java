@@ -2,6 +2,8 @@ package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.model.UserLog;
+import fpt.edu.eresourcessystem.service.AccountService;
+import fpt.edu.eresourcessystem.service.NotificationService;
 import fpt.edu.eresourcessystem.service.UserLogService;
 import fpt.edu.eresourcessystem.utils.RedirectUtil;
 import org.springframework.security.core.Authentication;
@@ -10,10 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AuthenticationController {
+    private final AccountService accountService;
     private final UserLogService userLogService;
+    private final NotificationService notificationService;
 
-    public AuthenticationController(UserLogService userLogService) {
+    public AuthenticationController(AccountService accountService, UserLogService userLogService, NotificationService notificationService) {
+        this.accountService = accountService;
         this.userLogService = userLogService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping({"/login"})

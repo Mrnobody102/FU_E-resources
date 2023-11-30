@@ -2,9 +2,10 @@ package fpt.edu.eresourcessystem.enums;
 
 public class NotificationEnum {
     public enum NotificationStatus{
-        UNREAD("0", "unread"),
-        READ("1", "read"),
-        DELETED("2", "deleted");
+        NEW("0", "new"),
+        UNREAD("1", "unread"),
+        READ("2", "read"),
+        DELETED("3", "deleted");
 
         private final String displayValue;
 
@@ -17,7 +18,7 @@ public class NotificationEnum {
     }
 
     public enum NotificationType{
-        ASSIGN_LECTURER_TO_COURSE("0", "assign lecturer to course"),
+        ASSIGN_LECTURER_TO_COURSE("0", "assign lecturer to course"), // implement added
         REMOVE_LECTURER_FROM_COURSE("1", "remove lecturer from course"),
         USER_SEND_FEEDBACK("2", "user send feedback"),
         STUDENT_SEND_REQUEST_DOCUMENT("3", "student send request"),
