@@ -2,11 +2,9 @@ package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 
 import fpt.edu.eresourcessystem.dto.AnswerDto;
+import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
-import fpt.edu.eresourcessystem.model.Answer;
-import fpt.edu.eresourcessystem.model.Document;
-import fpt.edu.eresourcessystem.model.Lecturer;
-import fpt.edu.eresourcessystem.model.Question;
+import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
 import fpt.edu.eresourcessystem.service.AnswerService;
 import fpt.edu.eresourcessystem.service.DocumentService;
@@ -80,6 +78,31 @@ public class LecturerRestController {
         }else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+    @GetMapping(value = "/my_question/new_question", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<QuestionResponseDto>> getNewReplyQuestion(){
+        Lecturer lecturer = getLoggedInLecturer();
+        if(null == lecturer){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }else{
+            List<QuestionResponseDto> questionResponseDto = questionService.findNewQuestionForLecturer(lecturer.getAccount().getEmail());
+            ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDto, HttpStatus.OK);
+            return responseEntity;
+        }
+
+    }
+
+    @GetMapping(value = "/my_question/replied_question", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<QuestionResponseDto>> getRepliedQuestion(){
+        Lecturer lecturer = getLoggedInLecturer();
+        if(null == lecturer){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }else{
+            List<QuestionResponseDto> questionResponseDto = questionService.findRepliedQuestionForLecturer(lecturer.getAccount().getEmail());
+            ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDto, HttpStatus.OK);
+            return responseEntity;
+        }
+
     }
 
 

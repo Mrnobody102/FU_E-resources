@@ -14,6 +14,7 @@
 .student__course-document-view{
     /*padding: 0.7rem;*/
     min-height: 100%;
+    /*margin-left: 2rem;*/
 }
 
 .student__course-document-list,
@@ -131,6 +132,7 @@
 .document-details-info {
     display: flex;
     justify-content: space-between;
+    margin-left: 1.2rem;
 }
 
 .doc-content-view, .doc-content-list{
@@ -468,4 +470,7 @@ stu__navbar-view-doc-item:hover a{
 }
 .link-view-detailed:hover{
     text-decoration: underline;
+}
+.doc-content{
+    margin-left: 1.5rem;
 }

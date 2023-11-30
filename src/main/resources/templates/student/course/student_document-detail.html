@@ -86,7 +86,7 @@
                             <div class="student__course-document-view">
 
 
-                                <div style="display: flex">
+                                <div class="doc-content" style="display: flex">
                                     <div style="display: flex; flex: 4">
                                         <th:block th:if="${document.docType.toString().equals('UNKNOWN')}">
                                             <div class="doc-content-view" th:utext="${document.editorContent}"
@@ -290,7 +290,7 @@
                                     <div class="stu__question-in-doc-content">
 <!--                                        <h5 class="my-question-header">My questions</h5>-->
                                         <div class="stu__my-question-content" id="my-questions">
-                                            <div class="stu__question-content-wrapper"  th:if="${myQuestions ne null} AND ${myQuestions.size} > 0" th:each="myQuestion : ${myQuestions}">
+                                            <div class="stu__question-content-wrapper"  th:if="${myQuestions ne null} AND ${myQuestions.size} > 0" th:each="myQuestion : ${myQuestions}" th:id="${myQuestion.questionId}">
                                                 <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${myQuestion.studentName}"></span>(You)</h6>
                                                 <p class="stu__question-content question-content" th:text="${myQuestion.questionContent}"></p>
                                                 <div class="justify-content-end link-view-question stu__question-content" th:if="${myQuestion.lastModifiedDate}">
@@ -299,7 +299,7 @@
 
                                                 <!-- view reply -->
                                                 <p  th:if="${myQuestion.totalAnswers} > 0" th:id="'view-more-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">View all <span th:id="'number-reply-'+ ${myQuestion.questionId}" th:text="${myQuestion.totalAnswers}"></span> reply</p>
-                                                <p style="display:none;"  th:if="${myQuestion.totalAnswers} > 0" th:id="'see-less-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">See less</p>
+                                                <p style="display:none;" th:id="'see-less-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">See less</p>
                                                 <p style="display:none;"  th:id="'loading-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" class="view-question-reply lec__question-content see-less"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
                                                 <div class="reply-content" th:id="'list-reply-content-'+${myQuestion.questionId}">
 

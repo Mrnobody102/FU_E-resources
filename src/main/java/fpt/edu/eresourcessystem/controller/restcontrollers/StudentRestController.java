@@ -34,6 +34,7 @@ public class StudentRestController {
     private final UserLogService userLogService;
     private final AccountService accountService;
     private final TopicService topicService;
+    private final LecturerService lecturerService;
 
     private void addUserLog(String url){
         UserLog userLog = new UserLog(new UserLogDto(url));
@@ -91,6 +92,7 @@ public class StudentRestController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         questionDTO.setStudent(student);
+        questionDTO.setLecturer(document.getCreatedBy());
         questionDTO.setDocumentId(document);
         Question question = questionService.addQuestion(new Question(questionDTO));
         if(null!= question){

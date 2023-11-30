@@ -12,8 +12,10 @@ public interface QuestionService {
 
     List<Question> findByDocId(Document document);
     List<Question> findByDocIdAndStudentId(Document document, Student student);
-    List<QuestionResponseDto> findWaitReplyQuestion(String studentId);
-    List<QuestionResponseDto> findNewReplyQuestion(String studentId);
+    List<QuestionResponseDto> findWaitReplyQuestionForStudent(String studentId);
+    List<QuestionResponseDto> findNewQuestionForLecturer(String lecturerEmail);
+    List<QuestionResponseDto> findNewReplyQuestionStudent(String studentId);
+    List<QuestionResponseDto> findRepliedQuestionForLecturer(String lecturerId);
     List<Question> findByStudent(Student student);
 
     List<Question> findByLecturer(Lecturer lecturer);

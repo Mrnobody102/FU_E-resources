@@ -18,6 +18,7 @@ public interface LecturerService {
     List<Lecturer> findAll();
 
     Lecturer findByAccountId(String accountId);
+    Lecturer findByEmail(String email);
 
     List<Lecturer> findByListLecturerIds(List<String> ids);
 
