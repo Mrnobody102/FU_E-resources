@@ -10,6 +10,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,24 +39,24 @@ public class NotificationController {
             return loggedInAccount;
         } else return null;
     }
-//    @EventListener
-//    public void handleSessionConnectEvent(SessionConnectEvent event) {
-//        System.out.println("Session Connect Event");
-//    }
+    @EventListener
+    public void handleSessionConnectEvent(SessionConnectEvent event) {
+        System.out.println("Session Connect Event");
+    }
 
-//    @EventListener
-//    public void handleSessionDisconnectEvent(SessionDisconnectEvent event) {
-//        System.out.println("Session Disconnect Event");
-//        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-//        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-//        Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
-//        if (sessionAttributes == null) {
-//            return;
-//        }
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        Notification notification = new Notification(loggedInEmail, "admin@fpt.edu.com", loggedInEmail+" left", "");
-//        simpMessagingTemplate.convertAndSend("/leave/messages", notification);
-//    }
+    @EventListener
+    public void handleSessionDisconnectEvent(SessionDisconnectEvent event) {
+        System.out.println("Session Disconnect Event");
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
+        Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
+        if (sessionAttributes == null) {
+            return;
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Notification notification = new Notification(loggedInEmail, "admin@fpt.edu.com", loggedInEmail+" left", "");
+        simpMessagingTemplate.convertAndSend("/leave/messages", notification);
+    }
 
     @MessageMapping("/chat.addUser")
 //    @SendTo("/student/chat")
@@ -69,11 +70,14 @@ public class NotificationController {
 
     @MessageMapping("/chat.sendMessage")
 //    @SendToUser("/student/chat")
-    public ChatMessage sendMessage(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
-        headerAccessor.getSessionAttributes().put("email", chatMessage.getSender());
+    public ChatMessage sendMessage(@Payload ChatMessage chatMessage,
+                                   Principal principal,
+                                   SimpMessageHeaderAccessor headerAccessor) {
+        System.out.println("notificationController-75: " + principal);
         Notification notification = new Notification();
         // Gửi thông điệp đến người dùng có địa chỉ email là "thuongdthe150682@gmail.com"
-        simpMessagingTemplate.convertAndSendToUser("thuongdthe150682@gmail.com", "/student/chat", chatMessage);
+        simpMessagingTemplate.convertAndSendToUser("thuongdthe150682@fpt.edu.vn", "/student/chat", chatMessage);
+        System.out.println("notificationController-80: " + principal);
         return chatMessage;
     }
 
@@ -84,7 +88,8 @@ public class NotificationController {
                         SimpMessageHeaderAccessor headerAccessor) {
         headerAccessor.getSessionAttributes().put("email", chatMessage.getSender());
         // Gửi thông điệp đến người dùng có địa chỉ email là "thuongdthe150682@gmail.com"
-        simpMessagingTemplate.convertAndSendToUser("thuongdthe150682@gmail.com", "/student/home", chatMessage);
+//        simpMessagingTemplate.convertAndSendToUser("thuongdthe150682@gmail.com", "/student/home", chatMessage);
+        simpMessagingTemplate.convertAndSend( "/student/home", chatMessage);
         Notification notification = new Notification();
         notification.setFromAccount(principal.getName());
         return notification;

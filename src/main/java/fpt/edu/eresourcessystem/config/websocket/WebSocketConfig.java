@@ -30,6 +30,7 @@ public class WebSocketConfig  implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
+                .setHandshakeHandler(new UserHandshakeHandler())
                 .setAllowedOriginPatterns("*").withSockJS();
     }
 
@@ -39,17 +40,4 @@ public class WebSocketConfig  implements WebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker("/student", "/admin", "/lecturer", "/librarian");
     }
 
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new AuthenticationPrincipalArgumentResolver());
-    }
-
-    @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        AuthorizationManager<Message<?>> myAuthorizationRules = AuthenticatedAuthorizationManager.authenticated();
-        AuthorizationChannelInterceptor auth = new AuthorizationChannelInterceptor(myAuthorizationRules);
-        AuthorizationEventPublisher publisher = new SpringAuthorizationEventPublisher(this.context);
-        auth.setAuthorizationEventPublisher(publisher);
-        registration.interceptors(new SecurityContextChannelInterceptor(), auth);
-    }
 }
