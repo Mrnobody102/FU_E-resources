@@ -1,15 +1,16 @@
-package fpt.edu.eresourcessystem.dto;
-
+package fpt.edu.eresourcessystem.dto.Response;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.*;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
-public class DocumentNoteDto {
+@NoArgsConstructor
+public class DocumentNoteResponseDto {
     private String id;
     private String studentId;
 

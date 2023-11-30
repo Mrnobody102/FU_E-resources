@@ -178,7 +178,6 @@ public class CourseServiceImpl implements CourseService{
         criteria.and("createdDate").exists(true);
         criteria.and("lecturer.id").is(lecturer.getId());
         criteria.and("status").is("NEW");
-
         Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("createdDate")));
         // Use a Pageable to limit the result set to 5 documents
         PageRequest pageable = PageRequest.of(0, 5);

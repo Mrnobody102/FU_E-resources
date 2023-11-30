@@ -235,6 +235,30 @@ public class StudentRestController {
         }
     }
 
+    @PostMapping(value = "/document_note/update/{documentId}",  produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    @Transactional
+    public ResponseEntity<DocumentNote> updateNoteDocument(@RequestParam String noteContent,
+                                                   @PathVariable String documentId){
+        Student student = getLoggedInStudent();
+        System.out.println(noteContent);
+        Document document = documentService.findById(documentId);
+        if(null == student || null == noteContent || "".equals(noteContent.trim()) || null==document){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        DocumentNote documentNote = documentNoteService.findByDocIdAndStudentId(documentId, student.getId());
+        documentNote.setStudentId(student.getId());
+        documentNote.setDocId(documentId);
+        documentNote.setNoteContent(noteContent);
+        DocumentNote result = documentNoteService.addDocumentNote(documentNote);
+        if(null!= result){
+            System.out.println(result);
+            ResponseEntity<DocumentNote> responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
+            return responseEntity;
+        }else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping(value = "/documents/get_by_topic/{topicId}", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<DocumentResponseDto>> getDocumentOfTopic(@PathVariable String topicId){
         System.out.println(topicId);
