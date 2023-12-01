@@ -37,7 +37,6 @@ import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/lecturer")
-@RequiredArgsConstructor
 public class LecturerController {
     private final GlobalControllerAdvice globalControllerAdvice;
     private final CourseService courseService;
