@@ -80,6 +80,7 @@ public class LecturerRestController {
         if(null!= answers){
             for (Answer answer: answers) {
                 answerResponseDtos.add(new AnswerResponseDto(answer));
+                System.out.println(new AnswerResponseDto(answer));
             }
             ResponseEntity<List<AnswerResponseDto>> responseEntity = new ResponseEntity<>(answerResponseDtos, HttpStatus.OK);
             // add log

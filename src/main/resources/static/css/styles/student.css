@@ -489,3 +489,17 @@ stu__navbar-view-doc-item:hover a{
 .edit-question-div input:focus {
     height: 2.5em; /* Chiều cao khi ô input được focus */
 }
+.edit-reply-div{
+    padding-left: 1rem;
+}
+.edit-reply-div input{
+    border: 1px solid #888888;
+    border-radius: 1rem;
+    min-width: 70%;
+    height: auto;
+    box-sizing: border-box;
+    transition: height 0.3s;
+}
+.edit-reply-div input:focus {
+    height: 2.5em; /* Chiều cao khi ô input được focus */
+}

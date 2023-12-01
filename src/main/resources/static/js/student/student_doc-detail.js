@@ -208,14 +208,31 @@ function submitFormReplyQuestion(param) {
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data.lecturerName + "</span></h6>\n" +
                         "                     <p class=\"stu__question-content\">" + data.answerContent + "</p>\n" +
                         "                     <p class=\"stu__question-content\" ><span class=\"lec__answer-date\" >" + data.lastModifiedDate + "</span> " +
-                        "                     <a class=\"stu__like-reply view-question-link-item\" reply-id=\"" + data.answerId + "\"onclick=\"likeReply(" + data.answerId + ")\"><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
+                        "                     <a class=\"stu__like-reply view-question-link-item\" reply-id=\"" + data.answerId + "\"onclick=likeReply(\"" + data.answerId + "\")><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
                         "                     </div>";
                 } else {
-                    html = "<div class=\"reply-content border-bottom\">\n" +
+                    // reply content
+                    html = "<div class=\"reply-content border-bottom\"  id=\"" + data.answerId + "\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data.studentName + "(You)</span></h6>\n" +
-                        "                     <p class=\"stu__question-content\">" + data.answerContent + "</p>\n" +
-                        "                     <p class=\"stu__question-content\" ><span class=\"lec__answer-date\" >" + data.lastModifiedDate + "</span> " +
-                        "                     <a class=\"stu__edit-reply view-reply-link-item\" reply-id=\"" + data.answerId + "\"onclick=\"likeReply(" + data.answerId + ")\" >Edit</a> | <a class=\"stu__delete-reply view-reply-link-item\" reply-id=\"" + data.answerId + "\"onclick=\"deleteReply(" + data.answerId + ")\">Delete</a>\n" +
+                        "                     <p class=\"stu__question-content\" id=\"reply-content-"+ data.answerId +"\"></p></p>\n";
+                    // edit section
+                    html+="<div class=\"edit-reply-div\" id=\"update-reply"+ data.answerId+ "\"style=\"display: none\">\n" +
+                        "                                                    <label id=\"update-reply-error"+ data.answerId+"\" class=\"display-none\">Please enter something to update.</label>\n" +
+                        "                                                    <input class=\"update-reply\" value=\"" + data.answerContent+ "\" id=\"update-reply-content-"+ data.answerId +"\">\n" +
+                        "                                                    <button id=\"close-update-reply-" + data.answerId+ "\" type=\"button\" title=\"exist\"\n" +
+                        "                                                            reply-id=\""+ data.answerId+"\" onclick=existFormEditReply(\"" +data.answerId+"\")\n" +
+                        "                                                            class=\"exist-form-edit-reply btn-danger\"><i class=\"fa-solid fa-xmark\"></i> Close</button> " +
+                        "                                                            <a type=\"button\" class=\"display-none\" title=\"Sending\" id=\"sending-update-reply"+ data.answerId+ "\"><i\n" +
+                        "                                                            class=\"fas fa-spinner fa-spin\"></i> Sending...</a>\n" +
+                        "                                                    <button type=\"button\" title=\"Edit\" id=\"send-update-reply-"+ data.answerId+"\" reply-id=\"" + data.answerId + "\"\n" +
+                        "                                                            onclick=submitFormEditReply(\"" + data.answerId + "\") class=\"btn-save\">" +
+                        "                                                    <i class=\"fa-solid fa-paper-plane\"></i> Edit\n" +
+                        "                                                    </button>\n" +
+                        "                                                    </div>";
+                    // date and link
+                    html+= "<p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data.lastModifiedDate + "</span> " +
+                        "                     <a class=\"stu__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data.answerId + "\">Edit</a> |" +
+                        "                     <a class=\"stu__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data.answerId + "\"onclick=deleteReply(\"" + data.answerId + "\")>Delete</a>\n" +
                         "                     </div>";
                 }
                 $("#list-reply-content-" + param).append(html);
@@ -265,15 +282,32 @@ function viewMoreReply(param) {
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].lecturerName + "</span></h6>\n" +
                         "                     <p class=\"stu__question-content\">" + data[i].answerContent + "</p>\n" +
                         "                     <p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
-                        "                     <a class=\"stu__like-reply view-question-link-item\" reply-id=\"" + data[i].answerId + "\"onclick=\"likeReply(" + data[i].answerId + ")\"><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
+                        "                     <a class=\"stu__like-reply view-question-link-item\" reply-id=\"" + data[i].answerId + "\"onclick=likeReply(\"" + data[i].answerId + "\")><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
 
                         "                     </div>";
                 } else {
-                    html += "<div class=\"reply-content border-bottom\">\n" +
+                    // content
+                    html += "<div class=\"reply-content border-bottom\"  id=\"" + data[i].answerId + "\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].studentName + "(You)</span></h6>\n" +
-                        "                     <p class=\"stu__question-content\">" + data[i].answerContent + "</p>\n" +
-                        "                     <p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
-                        "                     <a class=\"stu__edit-reply view-reply-link-item\" reply-id=\"" + data[i].answerId + "\"onclick=\"likeReply(" + data[i].answerId + ")\">Edit</a> | <a class=\"stu__delete-reply view-reply-link-item\" reply-id=\"" + data[i].answerId + "\"onclick=\"deleteReply(" + data[i].answerId + ")\">Delete</a>\n" +
+                        "                     <p class=\"stu__question-content\" id=\"reply-content-"+ data[i].answerId +"\">" + data[i].answerContent + "</p>";
+                    // edit section
+                    html+="<div class=\"edit-reply-div\" id=\"update-reply"+ data[i].answerId+ "\"style=\"display: none\">\n" +
+                        "                                                    <label id=\"update-reply-error"+ data[i].answerId+"\" class=\"display-none\">Please enter something to update.</label>\n" +
+                        "                                                    <input class=\"update-reply\" value=\"" + data[i].answerContent+ "\" id=\"update-reply-content-"+ data[i].answerId +"\">\n" +
+                        "                                                    <button id=\"close-update-reply-" + data[i].answerId+ "\" type=\"button\" title=\"exist\"\n" +
+                        "                                                            reply-id=\""+ data[i].answerId+"\" onclick=existFormEditReply(\"" +data[i].answerId+"\")\n" +
+                        "                                                            class=\"exist-form-edit-reply btn-danger\"><i class=\"fa-solid fa-xmark\"></i> Close</button> " +
+                        "                                                            <a type=\"button\" class=\"display-none\" title=\"Sending\" id=\"sending-update-reply"+ data[i].answerId+ "\"><i\n" +
+                        "                                                            class=\"fas fa-spinner fa-spin\"></i> Sending...</a>\n" +
+                        "                                                    <button type=\"button\" title=\"Edit\" id=\"send-update-reply-"+ data[i].answerId+"\" reply-id=\"" + data[i].answerId + "\"\n" +
+                        "                                                            onclick=submitFormEditReply(\"" + data[i].answerId + "\") class=\"btn-save\">" +
+                        "                                                    <i class=\"fa-solid fa-paper-plane\"></i> Edit\n" +
+                        "                                                    </button>\n" +
+                        "                                                    </div>";
+                    // date and link
+                    html+= "<p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
+                        "                     <a class=\"stu__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data[i].answerId + "\">Edit</a> |" +
+                        "                     <a class=\"stu__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data[i].answerId + "\"onclick=deleteReply(\"" + data[i].answerId + "\")>Delete</a>\n" +
                         "                     </div>";
                 }
 
@@ -347,12 +381,19 @@ $(document).ready(function () {
     $("body").on("click", ".add-doc-question", function () {
         $(".form-student-add-doc-new-question").css("display", "block");
     });
-
+    // edit question
     $("body").on("click", ".edit-question", function () {
         // $(this).next(".edit-question-div").toggle();
         var questionId = $(this).attr("question-id");
         $("#update-question" + questionId).css("display", "block");
         $("#question-content-" + questionId).css("display", "none");
+    })
+    // edit reply
+    $("body").on("click", ".edit-reply", function () {
+        // $(this).next(".edit-question-div").toggle();
+        var replyId = $(this).attr("reply-id");
+        $("#update-reply" + replyId).css("display", "block");
+        $("#reply-content-" + replyId).css("display", "none");
     })
 
 });
@@ -414,6 +455,67 @@ function deleteQuestion(param) {
         });
     }
 }
+
+
+function submitFormEditReply(param) {
+    console.log(param)
+    var content = $('#update-reply-content-' + param).val();
+    var trimmedString = $.trim(content);
+    console.log(content);
+    if (trimmedString == '') {
+        $('#update-reply-error' + param).addClass('error');
+    } else {
+        $('#update-reply-error' + param).css("display", "none");
+        $('#sending-update-reply' + param).css("display", "inline");
+        $("#send-update-reply-" + param).css("display", 'none');
+        $('#close-update-reply-' + param).css("display", "none");
+        $.ajax({
+            type: 'POST',
+            url: '/api/student/my_question/replies/' + param + '/update',
+            data: {'answerContent': content},
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.questionContent);
+                $("#update-reply" + param).css("display", "none");
+                $("#update-reply-content-" + param).val(data.questionContent);
+                $("#reply-content-" + param).html(data.questionContent);
+                $("#reply-content-" + param).css("display", "block");
+                $('#sending-update-reply' + param).css("display", "none");
+                $("#send-update-reply-" + param).css("display", 'inline');
+                $('#close-update-reply-' + param).css("display", "inline");
+            },
+            error: function (xhr) {
+                // Handle errors
+            }
+        });
+    }
+}
+
+function existFormEditReply(param) {
+    console.log(param);
+    $("#update-reply" + param).css("display", "none");
+    $("#reply-content-" + param).css("display", "block");
+    $('#update-reply-error' + param).removeClass('error')
+}
+
+function deleteReply(param) {
+    var result = window.confirm("Do you want to delete your reply?");
+    if (result) {
+        $.ajax({
+            type: 'POST',
+            url: '/api/student/my_question/replies/' + param + '/delete',
+            success: function (data) {
+                console.log('success-delete-reply' + param);
+                $("#" + param).html("");
+                $("#" + param).css("display", "none");
+            },
+            error: function (xhr) {
+                console.log('error-delete-reply')
+            }
+        });
+    }
+}
+
 
 // Note with bôi đen
 var isHighlighting = false;
