@@ -17,8 +17,8 @@ public class WSController {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-
-//    @MessageMapping("/sendNotification")
-//    @SendToUser("/topic/private-messages")
-
+    @MessageMapping("/sendNotification")
+    public void sendNotification(@Payload Notification notification) {
+        messagingTemplate.convertAndSendToUser(notification.getToAccount(), "/topic/notifications", notification);
+    }
 }

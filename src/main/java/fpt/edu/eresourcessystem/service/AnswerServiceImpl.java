@@ -18,14 +18,23 @@ public class AnswerServiceImpl implements AnswerService{
 
 
     @Override
+    public Answer findById(String answerId) {
+        Optional<Answer> answer = answerRepository.findById(answerId);
+        return answer.isPresent() ? answer.get() : null;
+    }
+
+    @Override
     public List<Answer> findByDocId(Document document) {
-        List<Answer> answers = answerRepository.findByDocumentId(document);
+        List<Answer> answers = answerRepository
+                .findByDocumentIdAndDeleteFlg(document, CommonEnum.DeleteFlg.PRESERVED);
         return answers;
     }
 
     @Override
     public List<Answer> findByDocIdAndQuestionId(Document document, Question question) {
-        List<Answer> answers = answerRepository.findByDocumentIdAndQuestionId(document, question);
+        List<Answer> answers = answerRepository
+                .findByDocumentIdAndQuestionIdAndDeleteFlg(document,
+                        question, CommonEnum.DeleteFlg.PRESERVED);
         return answers;
     }
 
@@ -43,8 +52,9 @@ public class AnswerServiceImpl implements AnswerService{
 
     @Override
     public Answer updateAnswer(Answer answer) {
-        Optional<Answer> savedAnswer = answerRepository.findById(answer.getId());
-        if(savedAnswer.isPresent()){
+        Answer savedAnswer = answerRepository
+                .findByIdAndDeleteFlg(answer.getId(), CommonEnum.DeleteFlg.PRESERVED);
+        if(null != savedAnswer){
             Answer result =  answerRepository.save(answer);
             return result;
         }
@@ -53,24 +63,26 @@ public class AnswerServiceImpl implements AnswerService{
 
     @Override
     public boolean deleteAnswer(Answer answer) {
-        Optional<Answer> check = answerRepository.findById(answer.getId());
-        if(check.isPresent()){
-            Answer deleteAnswer = check.get();
-            deleteAnswer.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
-            answerRepository.save(deleteAnswer);
+        Answer check = answerRepository
+                .findByIdAndDeleteFlg(answer.getId(), CommonEnum.DeleteFlg.PRESERVED);
+        if(null != check){
+            check.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+            answerRepository.save(check);
             return true;
         }
         return false;
     }
     @Override
     public List<Answer> findByQuestion(Question question) {
-        List<Answer> answers = answerRepository.findByQuestion(question);
+        List<Answer> answers = answerRepository
+                .findByQuestionAndDeleteFlg(question, CommonEnum.DeleteFlg.PRESERVED);
         return answers;
     }
 
     @Override
     public List<Answer> findByStudentAnsQuestion(Student student, Question question) {
-        List<Answer> answers = answerRepository.findByStudentAndQuestion(student, question);
+        List<Answer> answers = answerRepository
+                .findByStudentAndQuestionAndDeleteFlg(student, question, CommonEnum.DeleteFlg.PRESERVED);
         return answers;
     }
 }

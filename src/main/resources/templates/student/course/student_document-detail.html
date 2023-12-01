@@ -23,6 +23,7 @@
             color: red;
             /*font-size: smaller;*/
         }
+
         .highlight {
             background-color: yellow;
         }
@@ -64,8 +65,8 @@
                                         Lecturer:
                                         <a href="" class="lecturer-name" th:text="${account.name}">
                                         </a></span>
-<!--                                        <span style="flex: 1">Type: <span class="lecturer-name"-->
-<!--                                                                          th:text="${document.resourceType.resourceTypeName}"></span></span>-->
+                                        <!--                                        <span style="flex: 1">Type: <span class="lecturer-name"-->
+                                        <!--                                                                          th:text="${document.resourceType.resourceTypeName}"></span></span>-->
                                     </div>
                                     <div><p>Description: <span th:text="${document.description}"></span></p></div>
                                 </div>
@@ -73,7 +74,7 @@
 
                                 <div class="stu_save-course-link stu_save-doc-link">
                                     <p><a class="unsaved-doc" th:if="${saved ne null} AND ${saved} == true"
-                                        th:attr="docId=${document.getId}">
+                                          th:attr="docId=${document.getId}">
                                         <i class="fa-solid fa-bookmark"></i>
                                         Unbookmark</a>
                                     </p>
@@ -110,13 +111,19 @@
                                                    type="application/pdf" width="100%" height="600px">
                                         </th:block>
                                         <!-- Word -->
-                                        <a th:if="${document.docType.toString() eq 'DOCX'}" th:href="'data:application/msword;base64,' + ${data}" download="document.doc">Download Word</a>
+                                        <a th:if="${document.docType.toString() eq 'DOCX'}"
+                                           th:href="'data:application/msword;base64,' + ${data}"
+                                           download="document.doc">Download Word</a>
 
                                         <!-- Excel -->
-                                        <a th:if="${document.docType.toString() eq 'EXCEL'}" th:href="'data:application/vnd.ms-excel;base64,' + ${data}" download="spreadsheet.xls">Download Excel</a>
+                                        <a th:if="${document.docType.toString() eq 'EXCEL'}"
+                                           th:href="'data:application/vnd.ms-excel;base64,' + ${data}"
+                                           download="spreadsheet.xls">Download Excel</a>
 
                                         <!-- PowerPoint -->
-                                        <a th:if="${document.docType.toString() eq 'POWERPOINT'}" th:href="'data:application/vnd.ms-powerpoint;base64,' + ${data}" download="presentation.ppt">Download PowerPoint</a>
+                                        <a th:if="${document.docType.toString() eq 'POWERPOINT'}"
+                                           th:href="'data:application/vnd.ms-powerpoint;base64,' + ${data}"
+                                           download="presentation.ppt">Download PowerPoint</a>
 
                                         <!-- Video -->
                                         <th:block th:if="${document.docType.toString() eq 'VIDEO'}">
@@ -136,7 +143,7 @@
 
 
                                         <!-- Image -->
-                                        <th:block th:if="${document.docType.toString() eq 'PNG'}" >
+                                        <th:block th:if="${document.docType.toString() eq 'PNG'}">
                                             <img th:src="'data:${document.contentType};base64,' + ${data}" alt="Image"/>
                                         </th:block>
 
@@ -155,7 +162,9 @@
                                                 </th:block>
                                             </video>
                                         </th:block>
-                                        <audio th:if="${document.docType.toString() eq 'MP3'}" th:attr="src='data:${document.contentType};base64,' + ${data}" controls></audio>
+                                        <audio th:if="${document.docType.toString() eq 'MP3'}"
+                                               th:attr="src='data:${document.contentType};base64,' + ${data}"
+                                               controls></audio>
                                     </div>
                                     <div class="note-sticker">
                                         <textarea id="noteText"></textarea>
@@ -167,36 +176,41 @@
                                             <div class="list-view-doc-title">
                                                 <p class="h3 mb-2">Other Documents</p>
                                             </div>
-                                            <form action="" method="" class="form-chose-doc-type" th:if="${relevantDocuments ne null}">
+                                            <form action="" method="" class="form-chose-doc-type"
+                                                  th:if="${relevantDocuments ne null}">
                                                 <p th:each="relevantDocument : ${relevantDocuments}">
-                                                    <input name="docId" type="radio" th:id="'doc-relevant-'+ ${relevantDocument.docId}" th:value="${relevantDocument.docId}">
-                                                    <label th:for="'doc-relevant-'+ ${relevantDocument.docId}" th:text="${relevantDocument.docTitle}"
-                                                           th:doc-id="${relevantDocument.docId}" onclick="viewOtherDocument(this.getAttribute('doc-id'))"></label>
+                                                    <input name="docId" type="radio"
+                                                           th:id="'doc-relevant-'+ ${relevantDocument.docId}"
+                                                           th:value="${relevantDocument.docId}">
+                                                    <label th:for="'doc-relevant-'+ ${relevantDocument.docId}"
+                                                           th:text="${relevantDocument.docTitle}"
+                                                           th:doc-id="${relevantDocument.docId}"
+                                                           onclick="viewOtherDocument(this.getAttribute('doc-id'))"></label>
                                                 </p>
-<!--                                                <p>-->
-<!--                                                    <input name="docId" type="radio" id="doc-name1" value="Hello World">-->
-<!--                                                    <label for="doc-name1">Hello World</label>-->
-<!--                                                </p>-->
-<!--                                                <p>-->
-<!--                                                    <input name="docId" type="radio" id="doc-name2" value="Sort">-->
-<!--                                                    <label for="doc-name2">Sort</label>-->
-<!--                                                </p>-->
-<!--                                                <p>-->
-<!--                                                    <input name="docId" type="radio" id="doc-name3" value="Queue">-->
-<!--                                                    <label for="doc-name3">Queue</label>-->
-<!--                                                </p>-->
-<!--                                                <p>-->
-<!--                                                    <input name="docId" type="radio" id="doc-name4" value="Stack">-->
-<!--                                                    <label for="doc-name4">Stack</label>-->
-<!--                                                </p>-->
-<!--                                                <p>-->
-<!--                                                    <input name="docId" type="radio" id="doc-name5" value="Collections">-->
-<!--                                                    <label for="doc-name5">Collections</label>-->
-<!--                                                </p>-->
-<!--                                                <p>-->
-<!--                                                    <input name="docId" type="radio" id="doc-name6" value="Linked-list">-->
-<!--                                                    <label for="doc-name6">Linked-list</label>-->
-<!--                                                </p>-->
+                                                <!--                                                <p>-->
+                                                <!--                                                    <input name="docId" type="radio" id="doc-name1" value="Hello World">-->
+                                                <!--                                                    <label for="doc-name1">Hello World</label>-->
+                                                <!--                                                </p>-->
+                                                <!--                                                <p>-->
+                                                <!--                                                    <input name="docId" type="radio" id="doc-name2" value="Sort">-->
+                                                <!--                                                    <label for="doc-name2">Sort</label>-->
+                                                <!--                                                </p>-->
+                                                <!--                                                <p>-->
+                                                <!--                                                    <input name="docId" type="radio" id="doc-name3" value="Queue">-->
+                                                <!--                                                    <label for="doc-name3">Queue</label>-->
+                                                <!--                                                </p>-->
+                                                <!--                                                <p>-->
+                                                <!--                                                    <input name="docId" type="radio" id="doc-name4" value="Stack">-->
+                                                <!--                                                    <label for="doc-name4">Stack</label>-->
+                                                <!--                                                </p>-->
+                                                <!--                                                <p>-->
+                                                <!--                                                    <input name="docId" type="radio" id="doc-name5" value="Collections">-->
+                                                <!--                                                    <label for="doc-name5">Collections</label>-->
+                                                <!--                                                </p>-->
+                                                <!--                                                <p>-->
+                                                <!--                                                    <input name="docId" type="radio" id="doc-name6" value="Linked-list">-->
+                                                <!--                                                    <label for="doc-name6">Linked-list</label>-->
+                                                <!--                                                </p>-->
                                             </form>
                                         </div>
                                     </div>
@@ -218,7 +232,8 @@
                                     </ul>
                                 </div>
                                 <!--Note section-->
-                                <div th:href="@{'/student/documents/'+${document.id}+'#note'}" id="note" class="section-view">
+                                <div th:href="@{'/student/documents/'+${document.id}+'#note'}" id="note"
+                                     class="section-view">
                                     <div class="stu__note-in-doc-view">
                                         <div class="stu__note-in-doc-content" th:if="${note ne null}">
                                             <div class="stu__note-content">
@@ -244,132 +259,273 @@
                                             <form class="form-student-add-doc-notes" method="post" role="form"
                                                   th:object="${documentNote}"
                                                   th:id="add-note-form" enctype="multipart/form-data">
-                                                <input type="text" th:field="*{docId}" th:value="${document.getId}" readonly hidden>
+                                                <input type="text" th:field="*{docId}" th:value="${document.getId}"
+                                                       readonly hidden>
                                                 <div id="editorWrapper">
                                                     <div class="d-flex justify-content-between">
-                                                        <label for="editor" class=".student_input-label">Content:</label>
-                                                        <label id="error-input-new-note" class="student_input-label-note error-input">Content require!</label>
+                                                        <label for="editor"
+                                                               class=".student_input-label">Content:</label>
+                                                        <label id="error-input-new-note"
+                                                               class="student_input-label-note error-input">Content
+                                                            require!</label>
                                                     </div>
                                                     <textarea id="editor"
                                                               th:field="*{noteContent}" required></textarea>
                                                 </div>
                                                 <div class="stu__save-note">
-<!--                                                    <button type="submit" id="add-doc-note" onclick="submitFormAddNotes()">Save Note</button>-->
-                                                    <a type="button" title="Sending" style="display:none;"  id="sending-new-note" th:document-id="${document.id}"><i class="fas fa-spinner fa-spin"></i> Sending...</a>
-                                                    <button type="button" title="Send" id="send-new-note-button" th:document-id="${document.id}" onclick="submitFormAddNote(this.getAttribute('document-id'))">Save Note</button>
+                                                    <!--                                                    <button type="submit" id="add-doc-note" onclick="submitFormAddNotes()">Save Note</button>-->
+                                                    <a type="button" title="Sending" style="display:none;"
+                                                       id="sending-new-note" th:document-id="${document.id}"><i
+                                                            class="fas fa-spinner fa-spin"></i> Sending...</a>
+                                                    <button type="button" title="Send" id="send-new-note-button"
+                                                            th:document-id="${document.id}"
+                                                            onclick="submitFormAddNote(this.getAttribute('document-id'))">
+                                                        Save Note
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                                 <!--End note section-->
-                                <div th:href="@{'/student/documents/'+${document.id}+'#question'}" id="question" style="display: none" class="stu_doc-view-question-content section-view">
+                                <!--Question Section-->
+                                <div th:href="@{'/student/documents/'+${document.id}+'#question'}" id="question"
+                                     style="display: none" class="stu_doc-view-question-content section-view">
+
+                                    <!--New Question section-->
                                     <div class="stu__save-question">
-                                        <button class="btn btn--hover add-doc-question" id="add-doc-question">New Question</button>
+                                        <button class="btn btn--hover add-doc-question" id="add-doc-question">New
+                                            Question
+                                        </button>
                                     </div>
-                                    <form class="form-student-add-doc-new-question justify-content-between" method="post" role="form"
+                                    <form class="form-student-add-doc-new-question justify-content-between"
+                                          method="post" role="form"
                                           th:object="${newQuestion}"
-                                            id="form-add-new-question">
+                                          id="form-add-new-question">
                                         <div class="">
-                                            <input type="text" name="docId" th:value="${document.getId()}" readonly hidden>
+                                            <input type="text" name="docId" th:value="${document.getId()}" readonly
+                                                   hidden>
                                             <div class="form-content">
-                                                <label th:id="error-input-new-question" class="student_input-label-question error-input">Content require!</label>
-                                                <label for="new-question-content" class="student_input-label-question">Enter Question:</label>
+                                                <label th:id="error-input-new-question"
+                                                       class="student_input-label-question error-input">Content
+                                                    require!</label>
+                                                <label for="new-question-content" class="student_input-label-question">Enter
+                                                    Question:</label>
                                                 <textarea id="new-question-content" class="input-question-content"
                                                           th:field="*{content}"></textarea>
 
                                             </div>
                                         </div>
                                         <div class="submit-question-button">
-                                            <button type="button" title="exist" th:id="exist-new-question-form-button" onclick="existFormAddQuestion()" class="btn-danger"><i class="fa-solid fa-xmark"></i> Close</button>
-                                            <a type="button" title="Sending" style="display:none;"  th:id="sending-new-question"><i class="fas fa-spinner fa-spin"></i> Sending...</a>
-                                            <button type="button" title="Send" th:id="send-new-question-button" onclick="submitFormAddQuestion()" class="btn-save"><i class="fa-solid fa-paper-plane"></i> Send</button>
+                                            <button type="button" title="exist" th:id="exist-new-question-form-button"
+                                                    onclick="existFormAddQuestion()" class="btn-danger"><i
+                                                    class="fa-solid fa-xmark"></i> Close
+                                            </button>
+                                            <a type="button" title="Sending" style="display:none;"
+                                               th:id="sending-new-question"><i class="fas fa-spinner fa-spin"></i>
+                                                Sending...</a>
+                                            <button type="button" title="Send" th:id="send-new-question-button"
+                                                    onclick="submitFormAddQuestion()" class="btn-save"><i
+                                                    class="fa-solid fa-paper-plane"></i> Send
+                                            </button>
                                         </div>
                                     </form>
-
+                                    <!-- End New Question section-->
+                                    <!-- My Question Section-->
                                     <div class="stu__question-in-doc-content">
-<!--                                        <h5 class="my-question-header">My questions</h5>-->
+                                        <!--                                        <h5 class="my-question-header">My questions</h5>-->
                                         <div class="stu__my-question-content" id="my-questions">
-                                            <div class="stu__question-content-wrapper"  th:if="${myQuestions ne null} AND ${myQuestions.size} > 0" th:each="myQuestion : ${myQuestions}" th:id="${myQuestion.questionId}">
-                                                <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${myQuestion.studentName}"></span>(You)</h6>
-                                                <p class="stu__question-content question-content" th:text="${myQuestion.questionContent}"></p>
-                                                <div class="justify-content-end link-view-question stu__question-content" th:if="${myQuestion.lastModifiedDate}">
-                                                    <span class="stu__note-date" th:text="${myQuestion.lastModifiedDate}"></span> <a class="view-note-link-item ">Edit</a> | <a class="view-note-link-item">Delete</a> | <a class="lec__add-reply view-question-link-item" th:question-id="${myQuestion.questionId}" onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>
+                                            <div class="stu__question-content-wrapper"
+                                                 th:if="${myQuestions ne null} AND ${myQuestions.size} > 0"
+                                                 th:each="myQuestion : ${myQuestions}" th:id="${myQuestion.questionId}">
+                                                <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i>
+                                                    <span th:text="${myQuestion.studentName}"></span>(You)</h6>
+                                                <p class="stu__question-content question-content"
+                                                   th:id="'question-content-'+ ${myQuestion.questionId}"
+                                                   th:text="${myQuestion.questionContent}"></p>
+                                                <!-- Update Question section-->
+                                                <div class="edit-question-div"
+                                                     th:id="'update-question'+ ${myQuestion.questionId}"
+                                                     style="display: none">
+                                                    <label th:id="'update-question-error'+ ${myQuestion.questionId}"
+                                                           class="display-none">Please enter something to
+                                                        update.</label>
+                                                    <input class="update-question"
+                                                           th:value="${myQuestion.questionContent}"
+                                                           th:id="'update-question-content-'+ ${myQuestion.questionId}">
+                                                    <button th:id="'close-update-question-'+ ${myQuestion.questionId}"
+                                                            type="button" title="exist"
+                                                            th:question-id="${myQuestion.questionId}"
+                                                            onclick="existFormEditQuestion(this.getAttribute('question-id'))"
+                                                            class="exist-form-edit-question btn-danger"><i
+                                                            class="fa-solid fa-xmark"></i> Close
+                                                    </button>
+                                                    <a type="button" class="display-none" title="Sending"
+                                                       th:id="'sending-update-question' + ${myQuestion.questionId}"><i
+                                                            class="fas fa-spinner fa-spin"></i>
+                                                        Sending...</a>
+                                                    <button type="button" title="Edit"
+                                                            th:id="'send-update-question-'+ ${myQuestion.questionId}"
+                                                            th:question-id="${myQuestion.questionId}"
+                                                            onclick="submitFormEditQuestion(this.getAttribute('question-id'))"
+                                                            class="btn-save"><i
+                                                            class="fa-solid fa-paper-plane"></i> Edit
+                                                    </button>
+                                                </div>
+                                                <!--End Update Question section-->
+
+                                                <div class="justify-content-end link-view-question stu__question-content"
+                                                     th:if="${myQuestion.lastModifiedDate}">
+                                                    <span class="stu__note-date"
+                                                          th:text="${myQuestion.lastModifiedDate}"></span> <a
+                                                        class="view-note-link-item edit-question"
+                                                        th:question-id="${myQuestion.questionId}">Edit</a> |
+                                                    <a class="view-note-link-item delete-question"
+                                                       th:question-id="${myQuestion.questionId}"
+                                                       onclick="deleteQuestion(this.getAttribute('question-id'))">Delete</a>
+                                                    |
+                                                    <a class="lec__add-reply view-question-link-item"
+                                                       th:question-id="${myQuestion.questionId}"
+                                                       onclick="showReplyForm(this.getAttribute('question-id'))">
+                                                        Reply</a>
                                                 </div>
 
                                                 <!-- view reply -->
-                                                <p  th:if="${myQuestion.totalAnswers} > 0" th:id="'view-more-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">View all <span th:id="'number-reply-'+ ${myQuestion.questionId}" th:text="${myQuestion.totalAnswers}"></span> reply</p>
-                                                <p style="display:none;" th:id="'see-less-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">See less</p>
-                                                <p style="display:none;"  th:id="'loading-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" class="view-question-reply lec__question-content see-less"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
-                                                <div class="reply-content" th:id="'list-reply-content-'+${myQuestion.questionId}">
+                                                <p th:if="${myQuestion.totalAnswers} > 0"
+                                                   th:id="'view-more-reply-'+${myQuestion.questionId}"
+                                                   th:question-id="${myQuestion.questionId}"
+                                                   onclick="viewMoreReply(this.getAttribute('question-id'))"
+                                                   class="view-question-reply stu__question-content">View all <span
+                                                        th:id="'number-reply-'+ ${myQuestion.questionId}"
+                                                        th:text="${myQuestion.totalAnswers}"></span> reply</p>
+                                                <p style="display:none;"
+                                                   th:id="'see-less-reply-'+${myQuestion.questionId}"
+                                                   th:question-id="${myQuestion.questionId}"
+                                                   onclick="seeLessReply(this.getAttribute('question-id'))"
+                                                   class="view-question-reply stu__question-content">See less</p>
+                                                <p style="display:none;"
+                                                   th:id="'loading-reply-'+${myQuestion.questionId}"
+                                                   th:question-id="${myQuestion.questionId}"
+                                                   class="view-question-reply lec__question-content see-less"><i
+                                                        class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
+                                                <div class="reply-content"
+                                                     th:id="'list-reply-content-'+${myQuestion.questionId}">
 
                                                 </div>
                                                 <!--Reply form-->
-                                                <div class="stu__reply-form" th:id="'reply-form'+${myQuestion.questionId}">
-                                                    <form class="form-student-add-doc-new-reply justify-content-between" method="post" role="form"
+                                                <div class="stu__reply-form"
+                                                     th:id="'reply-form'+${myQuestion.questionId}">
+                                                    <form class="form-student-add-doc-new-reply justify-content-between"
+                                                          method="post" role="form"
                                                           th:object="${newAnswer}"
                                                           th:id="'reply-content-form'+${myQuestion.questionId}">
                                                         <div class="">
-                                                            <input type="text" name="docId" th:value="${document.getId()}" readonly hidden>
-                                                            <input type="text" name="quesId" th:value="${myQuestion.questionId}" readonly hidden>
-                                                            <label th:id="'new-reply-content-error-'+${myQuestion.questionId}" class=".student_input-label error-input">Content require!</label>
+                                                            <input type="text" name="docId"
+                                                                   th:value="${document.getId()}" readonly hidden>
+                                                            <input type="text" name="quesId"
+                                                                   th:value="${myQuestion.questionId}" readonly hidden>
+                                                            <label th:id="'new-reply-content-error-'+${myQuestion.questionId}"
+                                                                   class=".student_input-label error-input">Content
+                                                                require!</label>
                                                             <div class="form-content">
-                                                                <label th:for="'new-reply-content-'+${myQuestion.questionId}" class="lec_input-label-reply">Enter answer:</label>
-                                                                <textarea th:id="'new-reply-content-'+${myQuestion.questionId}" class="input-reply-content"
-                                                                          th:field="*{answer}" required></textarea>
+                                                                <label th:for="'new-reply-content-'+${myQuestion.questionId}"
+                                                                       class="lec_input-label-reply">Enter
+                                                                    answer:</label>
+                                                                <textarea
+                                                                        th:id="'new-reply-content-'+${myQuestion.questionId}"
+                                                                        class="input-reply-content"
+                                                                        th:field="*{answer}" required></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="submit-reply-button">
-                                                            <button type="button" title="exist" th:id="'exist-reply-form-button-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="existFormReplyQuestion(this.getAttribute('question-id'))" class="btn-danger"><i class="fa-solid fa-xmark"></i> Close</button>
-                                                            <a type="button" title="Sending" style="display:none;"  th:id="'sending-reply-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}"><i class="fas fa-spinner fa-spin"></i> Sending...</a>
-                                                            <button type="button" title="Send" th:id="'send-reply-button-'+${myQuestion.questionId}" th:question-id="${myQuestion.questionId}" onclick="submitFormReplyQuestion(this.getAttribute('question-id'))" class="btn-save"><i class="fa-solid fa-paper-plane"></i> Reply</button>
+                                                            <button type="button" title="exist"
+                                                                    th:id="'exist-reply-form-button-'+${myQuestion.questionId}"
+                                                                    th:question-id="${myQuestion.questionId}"
+                                                                    onclick="existFormReplyQuestion(this.getAttribute('question-id'))"
+                                                                    class="btn-danger"><i class="fa-solid fa-xmark"></i>
+                                                                Close
+                                                            </button>
+                                                            <a type="button" title="Sending" style="display:none;"
+                                                               th:id="'sending-reply-'+${myQuestion.questionId}"
+                                                               th:question-id="${myQuestion.questionId}"><i
+                                                                    class="fas fa-spinner fa-spin"></i> Sending...</a>
+                                                            <button type="button" title="Send"
+                                                                    th:id="'send-reply-button-'+${myQuestion.questionId}"
+                                                                    th:question-id="${myQuestion.questionId}"
+                                                                    onclick="submitFormReplyQuestion(this.getAttribute('question-id'))"
+                                                                    class="btn-save"><i
+                                                                    class="fa-solid fa-paper-plane"></i> Reply
+                                                            </button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
+                                    <!-- End My Question Section-->
 
-                                    <div class="stu__question-in-doc-content" th:if="${questions ne null } AND ${questions.size} > 0">
+                                    <!-- Others question section-->
+                                    <div class="stu__question-in-doc-content"
+                                         th:if="${questions ne null } AND ${questions.size} > 0">
                                         <h5 class="others-question-header">Others' questions</h5>
                                         <div class="stu__question-content-wrapper" th:each="question : ${questions}">
-                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${question.studentName}"></span></h6>
-                                            <p class="stu__question-content question-content" th:utext="${question.questionContent}"></p>
-                                            <p class="stu__answer-date stu__question-content" th:text="${question.lastModifiedDate}">Lecturer: <span class="stu__answer-lecturer" th:if="${question.lecturerName ne null}" th:text="${question.lecturerName}"></span></p>
-                                            <p  th:if="${question.totalAnswers} > 0" th:id="'view-more-reply-'+${question.questionId}" th:question-id="${question.questionId}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">View <span th:text="${question.totalAnswers}"></span> reply</p>
-                                            <p style="display:none;"  th:if="${question.totalAnswers} > 0" th:id="'see-less-reply-'+${question.questionId}" th:question-id="${question.questionId}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply stu__question-content">See less</p>
-                                            <p style="display:none;"  th:id="'loading-reply-'+${question.questionId}" th:question-id="${question.questionId}" class="view-question-reply stu__question-content"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
+                                            <h6 class="stu__question-creater-name"><i class="fa-solid fa-user"></i>
+                                                <span th:text="${question.studentName}"></span></h6>
+                                            <p class="stu__question-content question-content"
+                                               th:utext="${question.questionContent}"></p>
+                                            <p class="stu__answer-date stu__question-content"
+                                               th:text="${question.lastModifiedDate}">Lecturer: <span
+                                                    class="stu__answer-lecturer"
+                                                    th:if="${question.lecturerName ne null}"
+                                                    th:text="${question.lecturerName}"></span></p>
+                                            <p th:if="${question.totalAnswers} > 0"
+                                               th:id="'view-more-reply-'+${question.questionId}"
+                                               th:question-id="${question.questionId}"
+                                               onclick="viewMoreReply(this.getAttribute('question-id'))"
+                                               class="view-question-reply stu__question-content">View <span
+                                                    th:text="${question.totalAnswers}"></span> reply</p>
+                                            <p style="display:none;" th:if="${question.totalAnswers} > 0"
+                                               th:id="'see-less-reply-'+${question.questionId}"
+                                               th:question-id="${question.questionId}"
+                                               onclick="seeLessReply(this.getAttribute('question-id'))"
+                                               class="view-question-reply stu__question-content">See less</p>
+                                            <p style="display:none;" th:id="'loading-reply-'+${question.questionId}"
+                                               th:question-id="${question.questionId}"
+                                               class="view-question-reply stu__question-content"><i
+                                                    class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
                                             <!--                                        View reply-->
-                                            <div class="reply-content" th:id="'list-reply-content-'+${question.questionId}">
+                                            <div class="reply-content"
+                                                 th:id="'list-reply-content-'+${question.questionId}">
 
                                             </div>
                                         </div>
                                     </div>
+                                    <!--End Others question section-->
                                 </div>
+                                <!--End Question Section-->
 
-<!--                                <div class="list-view-inline bot-doctype-list">-->
-<!--                                    <form action="" method="" class="form-chose-doc-type">-->
+                                <!--                                <div class="list-view-inline bot-doctype-list">-->
+                                <!--                                    <form action="" method="" class="form-chose-doc-type">-->
 
-<!--                                        <input name="docType" type="radio" id="radio-bot-1" value="All">-->
-<!--                                        <label for="radio-bot-1">All</label>-->
+                                <!--                                        <input name="docType" type="radio" id="radio-bot-1" value="All">-->
+                                <!--                                        <label for="radio-bot-1">All</label>-->
 
-<!--                                        <input name="docType" type="radio" id="radio-bot-2" value="Reading">-->
-<!--                                        <label for="radio-bot-2">Reading</label>-->
+                                <!--                                        <input name="docType" type="radio" id="radio-bot-2" value="Reading">-->
+                                <!--                                        <label for="radio-bot-2">Reading</label>-->
 
-<!--                                        <input name="docType" type="radio" id="radio-bot-3" value="Lecturer Notes">-->
-<!--                                        <label for="radio-bot-3">Lecturer Notes</label>-->
+                                <!--                                        <input name="docType" type="radio" id="radio-bot-3" value="Lecturer Notes">-->
+                                <!--                                        <label for="radio-bot-3">Lecturer Notes</label>-->
 
-<!--                                        <input name="docType" type="radio" id="radio-bot-4" value="Reading">-->
-<!--                                        <label for="radio-bot-4">Reading</label>-->
+                                <!--                                        <input name="docType" type="radio" id="radio-bot-4" value="Reading">-->
+                                <!--                                        <label for="radio-bot-4">Reading</label>-->
 
-<!--                                        <input name="docType" type="radio" id="radio-bot-5" value="Reading">-->
-<!--                                        <label for="radio-bot-5">Reading</label>-->
+                                <!--                                        <input name="docType" type="radio" id="radio-bot-5" value="Reading">-->
+                                <!--                                        <label for="radio-bot-5">Reading</label>-->
 
-<!--                                        <input name="docType" type="radio" id="radio-bot-6" value="Reading">-->
-<!--                                        <label for="radio-bot-6">Reading</label>-->
-<!--                                    </form>-->
-<!--                                </div>-->
+                                <!--                                        <input name="docType" type="radio" id="radio-bot-6" value="Reading">-->
+                                <!--                                        <label for="radio-bot-6">Reading</label>-->
+                                <!--                                    </form>-->
+                                <!--                                </div>-->
                             </div>
                         </div>
 
@@ -398,21 +554,21 @@
 <script>
     var isHighlighting = false;
 
-    $(document).ready(function() {
-        $(document).on('mouseup', function(e) {
+    $(document).ready(function () {
+        $(document).on('mouseup', function (e) {
             var selectedText = window.getSelection().toString();
 
             if (selectedText !== '') {
                 isHighlighting = true;
                 var noteSticker = $('.note-sticker');
-                noteSticker.css({ top: e.pageY, left: e.pageX });
+                noteSticker.css({top: e.pageY, left: e.pageX});
                 noteSticker.fadeIn();
 
                 $('#noteText').val('');
             }
         });
 
-        $(document).on('click', function(e) {
+        $(document).on('click', function (e) {
             var noteSticker = $('.note-sticker');
 
             if (noteSticker.is(':visible')) {
@@ -434,8 +590,8 @@
             url: '/notes',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ text: noteText }),
-            success: function(response) {
+            data: JSON.stringify({text: noteText}),
+            success: function (response) {
                 // Xử lý phản hồi từ server
                 if (response.success) {
                     var highlightedText = $('<span>').addClass('highlight').text(selectedText);
@@ -446,7 +602,7 @@
                     // Xử lý khi lưu không thành công
                 }
             },
-            error: function(xhr, textStatus, errorThrown) {
+            error: function (xhr, textStatus, errorThrown) {
                 // Xử lý lỗi
             }
         });

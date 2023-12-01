@@ -3,15 +3,15 @@ package fpt.edu.eresourcessystem.controller.restcontrollers;
 
 import fpt.edu.eresourcessystem.dto.AnswerDto;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
+import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
-import fpt.edu.eresourcessystem.service.AnswerService;
-import fpt.edu.eresourcessystem.service.DocumentService;
-import fpt.edu.eresourcessystem.service.LecturerService;
-import fpt.edu.eresourcessystem.service.QuestionService;
+import fpt.edu.eresourcessystem.service.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
@@ -21,21 +21,26 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/lecturer")
+@RequiredArgsConstructor
 public class LecturerRestController {
     private final LecturerService lecturerService;
     private final DocumentService documentService;
     private final AnswerService answerService;
     private final QuestionService questionService;
+    private final AccountService accountService;
+    private final UserLogService userLogService;
 
-    public LecturerRestController(LecturerService lecturerService, DocumentService documentService, AnswerService answerService, QuestionService questionService) {
-        this.lecturerService = lecturerService;
-        this.documentService = documentService;
-        this.answerService = answerService;
-        this.questionService = questionService;
+    private UserLog addUserLog(String url) {
+        UserLog userLog = new UserLog(new UserLogDto(url));
+        userLog = userLogService.addUserLog(userLog);
+        return userLog;
     }
 
     public Lecturer getLoggedInLecturer() {
-        return lecturerService.findAll().get(0);
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account loggedInAccount = accountService.findByEmail(loggedInEmail);
+        Lecturer loggedInLecturer = lecturerService.findByAccountId(loggedInAccount.getId());
+        return loggedInLecturer;
     }
 
     @PostMapping(value = "/answer/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
@@ -58,6 +63,8 @@ public class LecturerRestController {
             question.getAnswers().add(answer);
             question.setStatus(QuestionAnswerEnum.Status.REPLIED);
             questionService.updateQuestion(question);
+            // add log
+            addUserLog("/api/lecturer/answers/add/"+answer.getId());
             AnswerResponseDto answerResponseDTO = new AnswerResponseDto(answer);
             return new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
         }else {
@@ -73,8 +80,12 @@ public class LecturerRestController {
         if(null!= answers){
             for (Answer answer: answers) {
                 answerResponseDtos.add(new AnswerResponseDto(answer));
+                System.out.println(new AnswerResponseDto(answer));
             }
-            return new ResponseEntity<>(answerResponseDtos, HttpStatus.OK);
+            ResponseEntity<List<AnswerResponseDto>> responseEntity = new ResponseEntity<>(answerResponseDtos, HttpStatus.OK);
+            // add log
+            addUserLog("/api/lecturer/answers/get/"+questionId);
+            return responseEntity;
         }else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -86,6 +97,8 @@ public class LecturerRestController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }else{
             List<QuestionResponseDto> questionResponseDto = questionService.findNewQuestionForLecturer(lecturer.getAccount().getEmail());
+            // add log
+            addUserLog("/api/lecturer/my_question/new_question");
             ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDto, HttpStatus.OK);
             return responseEntity;
         }
@@ -99,10 +112,51 @@ public class LecturerRestController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }else{
             List<QuestionResponseDto> questionResponseDto = questionService.findRepliedQuestionForLecturer(lecturer.getAccount().getEmail());
+            // add log
+            addUserLog("/api/lecturer/my_question/replied_question");
             ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDto, HttpStatus.OK);
             return responseEntity;
         }
 
+    }
+
+    @PostMapping(value = "/my_question/replies/{answerId}/update", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    @Transactional
+    public ResponseEntity<AnswerResponseDto> updateReply(@PathVariable String answerId, @RequestParam String answerContent) {
+        Answer answer = answerService.findById(answerId);
+        if (null == answer) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        } else {
+            if (null != answerContent && "" != answerContent.trim()) {
+                answer.setAnswer(answerContent);
+                answer.setStatus(QuestionAnswerEnum.Status.READ);
+                answer = answerService.updateAnswer(answer);
+                // add log
+                addUserLog("/api/lecturer/my_question/replies/"+answerId+"/update");
+                ResponseEntity<AnswerResponseDto> responseEntity = new ResponseEntity<>(new AnswerResponseDto(answer), HttpStatus.OK);
+                return responseEntity;
+            } else {
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+        }
+    }
+
+    @PostMapping(value = "/my_question/replies/{answerId}/delete", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    @Transactional
+    public ResponseEntity<AnswerResponseDto> deleteReply(@PathVariable String answerId) {
+        Answer answer = answerService.findById(answerId);
+        if (null == answer) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        } else {
+            boolean check = answerService.deleteAnswer(answer);
+            if (check) {
+                // add log
+                addUserLog("/api/lecturer/my_question/replies/"+answerId+"/delete");
+                return new ResponseEntity(HttpStatus.OK);
+            } else {
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+        }
     }
 
 
