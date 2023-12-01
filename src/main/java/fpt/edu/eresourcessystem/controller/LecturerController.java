@@ -7,18 +7,18 @@ import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
+import fpt.edu.eresourcessystem.service.s3.StorageService;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +46,7 @@ public class LecturerController {
     private final QuestionService questionService;
     private final AnswerService answerService;
     private final FeedbackService feedbackService;
+    private final StorageService storageService;
 
     private Lecturer getLoggedInLecturer() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -146,19 +147,6 @@ public class LecturerController {
         return "lecturer/course/lecturer_course-detail";
     }
 
-    @GetMapping("/{courseId}/delete")
-    public String delete(@PathVariable String courseId) {
-        Course checkExist = courseService.findByCourseId(courseId);
-        if (null != checkExist) {
-            for (Topic topic : checkExist.getTopics()) {
-                topicService.delete(topic.getId());
-            }
-            courseService.delete(checkExist);
-            return "redirect:/lecturer/courses/list?success";
-        }
-        return "redirect:/lecturer/courses/list?error";
-    }
-
     @GetMapping({"/courses/{courseId}/add_topic"})
     public String addTopicProcess(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
@@ -211,14 +199,14 @@ public class LecturerController {
         return "redirect:/lecturer/topics/" + topicId + "/update?success";
     }
 
-    @GetMapping({"/topics/{topicId}/delete_topic/"})
+    @GetMapping({"/topics/{topicId}/delete_topic"})
     public String deleteTopic(@PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
         if (null != topic) {
-            courseService.removeTopic(topic);
+            courseService.removeTopic(topic.getCourse().getId(), new ObjectId(topicId));
             topicService.softDelete(topic);
         }
-        return "redirect:/lecturer/" + (topic != null ? topic.getCourse().getId() : "/topics/list/1");
+        return "redirect:/lecturer/courses/" + topic.getCourse().getId();
     }
 
     @GetMapping("/topics/{topicId}")
@@ -283,14 +271,14 @@ public class LecturerController {
 
     }
 
-    @GetMapping({"resource_types/{resourceTypeId}/delete_resource_type/"})
+    @GetMapping({"resource_types/{resourceTypeId}/delete"})
     public String deleteResourceType(@PathVariable String resourceTypeId) {
         ResourceType resourcetype = resourceTypeService.findById(resourceTypeId);
         if (null != resourcetype) {
-//            courseService.removeResourceType(resourcetype);
-//            resourceTypeService.softDelete(resourcetype);
+            courseService.removeResourceType(resourcetype.getCourse().getId(), new ObjectId(resourceTypeId));
+            resourceTypeService.softDelete(resourcetype);
         }
-        return "redirect:/lecturer/courses/" + resourcetype.getCourse().getId();
+        return "redirect:/lecturer/courses/" + resourcetype.getCourse().getId() + "/resource_types";
     }
 
     @GetMapping("/resource_types/{resourceTypeId}")
@@ -345,9 +333,14 @@ public class LecturerController {
             List<Question> questions = questionService.findByDocId(document);
 
             if (document.isDisplayWithFile()) {
-                byte[] file = documentService.getGridFSFileContent(document.getContentId());
-                String base64EncodedData = Base64.getEncoder().encodeToString(file);
-                model.addAttribute("data", base64EncodedData);
+                String data;
+                if(document.getCloudFileLink() != null) {
+                    data = document.getCloudFileLink();
+                } else {
+                    byte[] file = documentService.getGridFSFileContent(document.getContentId());
+                    data = Base64.getEncoder().encodeToString(file);
+                }
+                model.addAttribute("data", data);
             }
             model.addAttribute("newAnswer", new Answer());
             model.addAttribute("document", document);
@@ -416,8 +409,24 @@ public class LecturerController {
         // Xử lý file
         // thêm check file trước khi add
         String id = "fileNotFound";
+        String message = "";
         if (file != null && !file.isEmpty()) {
-            id = documentService.addFile(file);
+            documentDTO.setFileName(file.getOriginalFilename());
+            if(file.getSize() < 1048576) {
+                id = documentService.addFile(file);
+            } else {
+                id = "uploadToCloud";
+                try {
+                    String link = storageService.uploadFile(file);
+                    documentDTO.setCloudFileLink(link);
+                    String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                    String fileExtension = StringUtils.getFilenameExtension(filename);
+                    documentDTO.setSuffix(fileExtension);
+                } catch (Exception e) {
+                    message = "Can not upload file to server! Error: " + e.getMessage();
+                    return "redirect:/lecturer/topics/" + topicId + "/documents/add?error";
+                }
+            }
         }
         Document document = documentService.addDocument(documentDTO, id);
 
@@ -444,8 +453,8 @@ public class LecturerController {
                 model.addAttribute("resourceTypes", document.getTopic().getCourse().getResourceTypes());
                 model.addAttribute("topics", document.getTopic());
             }
-            if(document.getContentId() != null) {
-                model.addAttribute("file", documentService.getGridFSFile(document.getContentId()).getFilename());
+            if(document.getFileName() != null) {
+                model.addAttribute("file", document.getFileName());
             }
             return "lecturer/document/lecturer_update-document";
         }
@@ -453,6 +462,7 @@ public class LecturerController {
 
     @PostMapping("/documents/update")
     public String updateDocument(@ModelAttribute DocumentDto document,
+                                 @RequestParam(value = "deleteCurrentFile",  required = false) String deleteCurrentFile,
                                  @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         Document checkExist = documentService.findById(document.getId());
         if (null == checkExist) {
@@ -461,11 +471,41 @@ public class LecturerController {
             checkExist.setTitle(document.getTitle());
             checkExist.setDescription(document.getDescription());
             checkExist.setEditorContent(document.getEditorContent());
+            String id = "fileNotFound";
+            String message = "";
             if (file != null && !file.isEmpty()) {
-                String id = documentService.addFile(file);
-                documentService.updateDocument(checkExist, document.getContentId().toString(), id);
+                checkExist.setFileName(file.getOriginalFilename());
+                if(file.getSize() < 1048576) {
+                    checkExist.setCloudFileLink(null);
+                    id = documentService.addFile(file);
+                } else {
+                    id = "uploadToCloud";
+                    try {
+                        String link = storageService.uploadFile(file);
+                        checkExist.setCloudFileLink(link);
+                        String filename = System.currentTimeMillis() + "_" +file.getOriginalFilename();
+                        String fileExtension = StringUtils.getFilenameExtension(filename);
+                        checkExist.setFileName(filename);
+                        checkExist.setSuffix(fileExtension);
+                        checkExist.setDocType(DocumentEnum.DocumentFormat.getDocType(fileExtension));
+                    } catch (Exception e) {
+                        message = "Can not upload file to server! Error: " + e.getMessage();
+                        return "redirect:/lecturer/topics/" + document.getTopic().getId() + "/documents/update?error";
+                    }
+                }
+            }
+            if(deleteCurrentFile != null && deleteCurrentFile.equals("on")) {
+                checkExist.setDisplayWithFile(false);
+                checkExist.setFileName(null);
+                if(checkExist.getCloudFileLink() != null) {
+                    storageService.deleteFile(checkExist.getFileName());
+                    documentService.updateDocument(checkExist, null, id);
+                } else {
+                    documentService.updateDocument(checkExist, String.valueOf(checkExist.getContentId()), id);
+                }
             } else {
-                documentService.updateDoc(checkExist);
+                checkExist.setDisplayWithFile(true);
+                documentService.updateDocument(checkExist, null, id);
             }
             return "redirect:/lecturer/documents/" + document.getId() + "/update?success";
         }
@@ -476,8 +516,9 @@ public class LecturerController {
         Document document = documentService.findById(documentId);
         if (null != document) {
             topicService.removeDocumentFromTopic(document.getTopic().getId(), new ObjectId(documentId));
+            resourceTypeService.removeDocumentFromResourceType(document.getTopic().getId(), new ObjectId(documentId));
             documentService.softDelete(document);
-            return "redirect:/documents/{documentId}?success";
+            return "redirect:/topics/" + document.getTopic().getId() + "?success";
         }
         return "redirect:/documents/{documentId}?error";
     }

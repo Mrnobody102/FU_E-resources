@@ -100,8 +100,8 @@
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item" id="resourceTypeSelection"
-                                    th:classappend="${getBy == 'resourcetypes' ? 'lec__navbar-active' : ''}">
-                                    <a th:href="@{'/lecturer/courses/' + ${course.id} + '/resourcetypes'}">
+                                    th:classappend="${getBy == 'resource_types' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{'/lecturer/courses/' + ${course.id} + '/resource_types'}">
                                         Resource types
                                     </a>
                                 </li>
@@ -128,7 +128,7 @@
                                                                 <i class="fa-solid fa-edit"></i>
                                                             </a>
                                                             <a class="lec__edit-topic-icon"
-                                                               th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}">
+                                                               th:href="@{'/lecturer/topics/' + ${topic.id} +'/delete_topic'}">
                                                                 <i class="fa-solid fa-trash"></i>
                                                             </a>
                                                         </div>
@@ -178,7 +178,7 @@
                                                                 <i class="fa-solid fa-edit"></i>
                                                             </a>
                                                             <a class="lec__edit-topic-icon"
-                                                               th:href="@{'/lecturer/resource_types/' + ${rtype.id} +'/update'}">
+                                                               th:href="@{'/lecturer/resource_types/' + ${rtype.id} +'/delete'}">
                                                                 <i class="fa-solid fa-trash"></i>
                                                             </a>
                                                         </div>

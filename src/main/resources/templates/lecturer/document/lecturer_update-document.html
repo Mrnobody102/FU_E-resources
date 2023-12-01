@@ -139,8 +139,15 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div th:if="${file ne null}" class="mb-3"><span>Current file: </span><span
-                                            th:text="${file}"></span></div>
+                                    <div th:if="${file ne null}" class="mb-3 d-flex justify-content-between">
+                                        <div>
+                                            <span>Current file: </span><span
+                                                th:text="${file}"></span>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" th:name="deleteCurrentFile" id="deleteCurrentFile">
+                                            <label th:for="deleteCurrentFile"> Delete current file</label></div>
+                                        </div>
                                     <input type="file" th:name="file" id="fileUploadInput"
                                            class="file-input form-control lecturer__input-doc" style="font-size: 1.3rem"
                                     >
@@ -244,7 +251,7 @@
     }
 </script>
 <script th:src="@{/js/editor.js}"></script>
-<script th:src="@{/js/file_validation.js}">
+<script th:src="@{/js/validation_update-file.js}">
 
 </script>
 </body>

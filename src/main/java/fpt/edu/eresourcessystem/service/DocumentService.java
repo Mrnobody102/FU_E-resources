@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.service;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
+import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
@@ -36,6 +37,8 @@ public interface DocumentService {
     Document updateDoc(Document document);
 
     boolean softDelete(Document document);
+
+    boolean setToDefaultResourceType(Course course, Document document);
 
     boolean delete(String documentId);
     String addFile(MultipartFile file) throws IOException;

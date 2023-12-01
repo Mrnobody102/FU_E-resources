@@ -40,6 +40,8 @@ public class Document {
     private DocumentEnum.DocumentFormat docType;
     private String suffix;
     private ObjectId contentId;
+    private String cloudFileLink;
+    private String fileName;
     @Lazy
     private String editorContent;
     private boolean displayWithFile;
@@ -73,6 +75,8 @@ public class Document {
         this.description = documentDTO.getDescription();
         this.contentId = documentDTO.getContentId();
         this.editorContent = documentDTO.getEditorContent();
+        this.cloudFileLink = documentDTO.getCloudFileLink();
+        this.fileName = documentDTO.getFileName();
         this.displayWithFile = documentDTO.isDisplayWithFile();
         this.docStatus = documentDTO.getDocStatus();
         this.suffix = documentDTO.getSuffix();

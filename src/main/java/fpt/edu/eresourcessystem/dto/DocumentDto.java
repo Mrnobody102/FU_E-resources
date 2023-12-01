@@ -25,6 +25,8 @@ public class DocumentDto {
     private String description;
     private String suffix;
     private ObjectId contentId;
+    private String cloudFileLink;
+    private String fileName;
     private String editorContent;
     private boolean displayWithFile;
     // Only use when response, no need in requests

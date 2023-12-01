@@ -239,7 +239,7 @@ public class StudentRestController {
         System.out.println(topicId);
         Topic topic = topicService.findById(topicId);
         if(null == topic){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         List<DocumentResponseDto> documents = topicService.findByTopic(topicId);
         if(null!= documents){
@@ -247,7 +247,7 @@ public class StudentRestController {
             System.out.println(documents);
             return responseEntity;
         }else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -257,8 +257,9 @@ public class StudentRestController {
         if(null == student){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }else{
-            List<QuestionResponseDto> questionResponseDtos = questionService.findWaitReplyQuestion(student.getId());
-            return new ResponseEntity<>(questionResponseDtos, HttpStatus.OK);
+            List<QuestionResponseDto> questionResponseDtos = questionService.findWaitReplyQuestionForStudent(student.getId());
+            ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDtos, HttpStatus.OK);
+            return responseEntity;
         }
 
     }
@@ -267,10 +268,11 @@ public class StudentRestController {
     public ResponseEntity<List<QuestionResponseDto>> getNewReplyQuestion(){
         Student student = getLoggedInStudent();
         if(null == student){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }else{
-            List<QuestionResponseDto> questionResponseDtos = questionService.findNewReplyQuestion(student.getId());
-            return new ResponseEntity<>(questionResponseDtos, HttpStatus.OK);
+            List<QuestionResponseDto> questionResponseDtos = questionService.findNewReplyQuestionStudent(student.getId());
+            ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDtos, HttpStatus.OK);
+            return responseEntity;
         }
 
     }

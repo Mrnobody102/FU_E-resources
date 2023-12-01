@@ -6,6 +6,8 @@ import com.mongodb.client.gridfs.model.GridFSFile;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.enums.DocumentEnum;
+import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
@@ -104,7 +106,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public Iterable<EsDocument> searchDocument(String search) {
-        return esDocumentRepository.findByTitleContainingOrDescriptionContainingOrDocTypeLikeOrEditorContentContainingIgnoreCase(search);
+        return esDocumentRepository.findByTitleContainingOrDescriptionContainingOrDocTypeLikeIgnoreCase(search);
     }
 
     public String addFile(MultipartFile upload) throws IOException {
@@ -140,17 +142,21 @@ public class DocumentServiceImpl implements DocumentService {
     public Document addDocument(DocumentDto documentDTO, String id) throws IOException {
         //search file
         if (null == documentDTO.getId()) {
-            if (!id.equalsIgnoreCase("fileNotFound")) {
+            if (id.equalsIgnoreCase("fileNotFound")) {
+                documentDTO.setSuffix("unknown");
+                Document result = documentRepository.save(new Document(documentDTO));
+                esDocumentRepository.save(new EsDocument(result));
+                return result;
+            } else if (id.equalsIgnoreCase("uploadToCloud")) {
+                Document result = documentRepository.save(new Document(documentDTO));
+                esDocumentRepository.save(new EsDocument(result));
+                return result;
+            } else {
                 GridFSFile file = getGridFSFile(new ObjectId(id));
                 documentDTO.setContentId(file.getObjectId());
                 String filename = StringUtils.cleanPath(file.getFilename());
                 String fileExtension = StringUtils.getFilenameExtension(filename);
                 documentDTO.setSuffix(fileExtension);
-                Document result = documentRepository.save(new Document(documentDTO));
-                esDocumentRepository.save(new EsDocument(result));
-                return result;
-            } else {
-                documentDTO.setSuffix("unknown");
                 Document result = documentRepository.save(new Document(documentDTO));
                 esDocumentRepository.save(new EsDocument(result));
                 return result;
@@ -169,19 +175,27 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document updateDocument(Document document, String currentFileId, String id) throws IOException {
         //search file
-        template.delete(new Query(Criteria.where("_id").is(currentFileId)));
-        if (null == document.getId()) {
-            if (!id.equalsIgnoreCase("fileNotFound")) {
-                GridFSFile file = getGridFSFile(new ObjectId(id));
-                document.setContentId(file.getObjectId());
-                String filename = StringUtils.cleanPath(file.getFilename());
-                String fileExtension = StringUtils.getFilenameExtension(filename);
-                document.setSuffix(fileExtension);
+        if(null != currentFileId) {
+            template.delete(new Query(Criteria.where("_id").is(currentFileId)));
+        }
+        if (null != document.getId()) {
+            if (id.equalsIgnoreCase("fileNotFound")) {
+                document.setSuffix("unknown");
+                Document result = documentRepository.save(document);
+                esDocumentRepository.save(new EsDocument(result));
+                return result;
+            } else if (id.equalsIgnoreCase("uploadToCloud")) {
                 Document result = documentRepository.save(document);
                 esDocumentRepository.save(new EsDocument(result));
                 return result;
             } else {
-                document.setSuffix("unknown");
+                GridFSFile file = getGridFSFile(new ObjectId(id));
+                document.setContentId(file.getObjectId());
+                String filename = StringUtils.cleanPath(file.getFilename());
+                String fileExtension = StringUtils.getFilenameExtension(filename);
+                document.setFileName(filename);
+                document.setSuffix(fileExtension);
+                document.setDocType(DocumentEnum.DocumentFormat.getDocType(fileExtension));
                 Document result = documentRepository.save(document);
                 esDocumentRepository.save(new EsDocument(result));
                 return result;
@@ -211,6 +225,20 @@ public class DocumentServiceImpl implements DocumentService {
 
             // Soft delete
             document.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+            documentRepository.save(document);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean setToDefaultResourceType(Course course, Document document) {
+        Optional<Document> check = documentRepository.findById(document.getId());
+        if (check.isPresent()) {
+            // Here: Soft delete note, question & answer
+
+            // Soft delete
+            document.setResourceType(course.getResourceTypes().get(4));
             documentRepository.save(document);
             return true;
         }
