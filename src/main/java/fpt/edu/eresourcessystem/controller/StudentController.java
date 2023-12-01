@@ -158,7 +158,8 @@ public class StudentController {
         DOCUMENT
     */
     @GetMapping({"/documents/{docId}"})
-    public String viewDocumentDetail(@PathVariable String docId, final Model model) {
+    public String viewDocumentDetail(@PathVariable String docId,
+                                     final Model model) {
         // auth
         Student student = getLoggedInStudent();
         Document document = documentService.findById(docId);

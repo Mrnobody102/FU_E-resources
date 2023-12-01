@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.controller;
 import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.FeedbackDto;
+import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -10,6 +11,7 @@ import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/lecturer")
 @PropertySource("web-setting.properties")
+@RequiredArgsConstructor
 public class LecturerController {
     @Value("${page-size}")
     private Integer pageSize;
@@ -41,28 +44,20 @@ public class LecturerController {
     private final ResourceTypeService resourceTypeService;
 
     private final DocumentService documentService;
-    private final CourseLogService courseLogService;
+//    private final CourseLogService courseLogService;
 
     private final QuestionService questionService;
     private final AnswerService answerService;
 
     private final FeedbackService feedbackService;
 
+    private final UserLogService userLogService;
 
-    public LecturerController(CourseService courseService, AccountService accountService, LecturerService lecturerService, StudentService studentService, TopicService topicService, ResourceTypeService resourceTypeService, DocumentService documentService, CourseLogService courseLogService, QuestionService questionService, AnswerService answerService, FeedbackService feedbackService) {
-        this.courseService = courseService;
-        this.accountService = accountService;
-        this.lecturerService = lecturerService;
-        this.studentService = studentService;
-        this.topicService = topicService;
-        this.resourceTypeService = resourceTypeService;
-        this.documentService = documentService;
-        this.courseLogService = courseLogService;
-        this.questionService = questionService;
-        this.answerService = answerService;
-        this.feedbackService = feedbackService;
+    private UserLog addUserLog(String url) {
+        UserLog userLog = new UserLog(new UserLogDto(url));
+        userLog = userLogService.addUserLog(userLog);
+        return userLog;
     }
-
 
     private Lecturer getLoggedInLecturer() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();

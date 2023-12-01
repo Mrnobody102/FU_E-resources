@@ -9,6 +9,7 @@ import javax.print.Doc;
 import java.util.List;
 
 public interface AnswerService {
+    Answer findById(String answerId);
     List<Answer> findByDocId(Document document);
     List<Answer> findByDocIdAndQuestionId(Document document , Question question);
 

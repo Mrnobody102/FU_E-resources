@@ -474,3 +474,18 @@ stu__navbar-view-doc-item:hover a{
 .doc-content{
     margin-left: 1.5rem;
 }
+.edit-question-div{
+    margin-left: 1rem;
+}
+
+.edit-question-div input{
+    border: 1px solid #888888;
+    border-radius: 1rem;
+    min-width: 70%;
+    height: auto;
+    box-sizing: border-box;
+    transition: height 0.3s;
+}
+.edit-question-div input:focus {
+    height: 2.5em; /* Chiều cao khi ô input được focus */
+}

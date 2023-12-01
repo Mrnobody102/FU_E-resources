@@ -43,16 +43,17 @@ function viewNote() {
     $("#link-view-questions").removeClass("stu__navbar-active")
     $("#link-view-notes").addClass("stu__navbar-active");
 }
-function viewSection(sectionId){
+
+function viewSection(sectionId) {
     // Ẩn tất cả các phần
-    $('.stu__navbar-view-doc-item').each(function() {
+    $('.stu__navbar-view-doc-item').each(function () {
         $(this).removeClass('stu__navbar-active');
     });
-    $(".section-view").each(function (){
+    $(".section-view").each(function () {
         $(this).css("display", "none");
     })
 
-    if(sectionId !== "note"){
+    if (sectionId !== "note") {
         var selectedSection = $("#link-view-question");
         if (selectedSection.length) {
             selectedSection.addClass('stu__navbar-active');
@@ -100,12 +101,29 @@ function submitFormAddQuestion(param) {
                 $('#exist-new-question-form-button').css("display", "inline");
                 $('#sending-new-question').css("display", "none");
                 $(".form-student-add-doc-new-question").css("display", "none");
-                var html = "<div class=\"stu__question-content-wrapper\">\n" +
+                // question content
+                var html = "<div class=\"stu__question-content-wrapper\" id=\"" + data.questionId + "\">\n" +
                     "                                                <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span> " + data.studentName + "(You)</span></h6>\n" +
-                    "                                                <p class=\"stu__question-content question-content\">" + data.questionContent + "</p>\n" +
-                    "                                                <span class=\"stu__question-date stu__question-content\">" + data.lastModifiedDate + "</span> <a class=\"view-note-link-item \">Edit</a> | <a class=\"view-note-link-item\">Delete</a>" +
+                    "                                                <p class=\"stu__question-content question-content\" id=\"question-content-" + data.questionId + "\">" + data.questionContent + "</p>\n";
+                    // edit section
+                    html+="<div class=\"edit-question-div\" id=\"update-question"+ data.questionId+ "\"style=\"display: none\">\n" +
+                    "                                                    <label id=\"update-question-error"+ data.questionId+"\" class=\"display-none\">Please enter something to update.</label>\n" +
+                    "                                                    <input class=\"update-question\" value=\"" + data.questionContent+ "\" id=\"update-question-content-"+ data.questionId +"\">\n" +
+                    "                                                    <button id=\"close-update-question-" + data.questionId+ "\" type=\"button\" title=\"exist\"\n" +
+                    "                                                            question-id=\""+ data.questionId+"\" onclick=existFormEditQuestion(\"" +data.questionId+"\")\n" +
+                    "                                                            class=\"exist-form-edit-question btn-danger\"><i class=\"fa-solid fa-xmark\"></i> Close</button> " +
+                    "                                                            <a type=\"button\" class=\"display-none\" title=\"Sending\" id=\"sending-update-question"+ data.questionId+ "\"><i\n" +
+                    "                                                            class=\"fas fa-spinner fa-spin\"></i> Sending...</a>\n" +
+                    "                                                    <button type=\"button\" title=\"Edit\" id=\"send-update-question-"+ data.questionId+"\" question-id=\"" + data.questionId + "\"\n" +
+                    "                                                            onclick=submitFormEditQuestion(\"" + data.questionId + "\") class=\"btn-save\">" +
+                    "                                                    <i class=\"fa-solid fa-paper-plane\"></i> Edit\n" +
+                    "                                                    </button>\n" +
+                    "                                                    </div>";
+                    // date and link
+                    html+= "<span class=\"stu__question-date stu__question-content\">" + data.lastModifiedDate +
+                    "                                                </span> <a class=\"view-note-link-item  edit-question\" question-id=\""+data.questionId+"\">Edit</a>" +
+                    "                                                  | <a class=\"view-note-link-item delete-question\" question-id=\""+ data.questionId +"\" onclick=deleteQuestion(\"" + data.questionId + "\")>Delete</a>" +
                     "                                                </div>\n";
-
 
                 $("#my-questions").prepend(html);
                 console.log(data.studentName)
@@ -136,7 +154,7 @@ function submitFormAddNote(param) {
         console.log(content);
         $.ajax({
             type: 'POST',
-            url: '/api/student/document_note/add/'+param,
+            url: '/api/student/document_note/add/' + param,
             data: {'noteContent': content},
             dataType: 'json',
             success: function (data) {
@@ -154,7 +172,8 @@ function submitFormAddNote(param) {
         });
     }
 }
-function existFormAddQuestion(){
+
+function existFormAddQuestion() {
     $('#form-add-new-question').trigger("reset");
     $('#form-add-new-question').css("display", "none")
 }
@@ -164,12 +183,12 @@ function submitFormReplyQuestion(param) {
     var trimmedString = $.trim(content);
 
     if (trimmedString == '') {
-        $('#new-reply-content-error-' + param).css("display","block");
+        $('#new-reply-content-error-' + param).css("display", "block");
     } else {
-        $('#send-reply-button-'+ param).css("display", "none");
-        $('#exist-reply-form-button-'+ param).css("display", "none");
-        $('#sending-reply-'+ param).css("display", "inline");
-        $('#new-reply-content-error-' + param).css("display","none");
+        $('#send-reply-button-' + param).css("display", "none");
+        $('#exist-reply-form-button-' + param).css("display", "none");
+        $('#sending-reply-' + param).css("display", "inline");
+        $('#new-reply-content-error-' + param).css("display", "none");
         var replyForm = 'reply-content-form' + param;
         var formData = $("#" + replyForm).serialize();
         $.ajax({
@@ -179,9 +198,9 @@ function submitFormReplyQuestion(param) {
             dataType: 'json',
             success: function (data) {
                 $('#reply-content-form' + param).trigger('reset');
-                $('#send-reply-button-'+ param).css("display", "inline");
-                $('#exist-reply-form-button-'+ param).css("display", "inline");
-                $('#sending-reply-'+ param).css("display", "none");
+                $('#send-reply-button-' + param).css("display", "inline");
+                $('#exist-reply-form-button-' + param).css("display", "inline");
+                $('#sending-reply-' + param).css("display", "none");
                 $('#reply-form' + param).css("display", "none");
                 var html = "";
                 if (data.studentName == null) {
@@ -196,12 +215,12 @@ function submitFormReplyQuestion(param) {
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data.studentName + "(You)</span></h6>\n" +
                         "                     <p class=\"stu__question-content\">" + data.answerContent + "</p>\n" +
                         "                     <p class=\"stu__question-content\" ><span class=\"lec__answer-date\" >" + data.lastModifiedDate + "</span> " +
-                        "                     <a class=\"stu__edit-reply view-reply-link-item\" reply-id=\"" + data.answerId + "\"onclick=\"likeReply(" + data.answerId + ")\">Edit</a> | <a class=\"stu__delete-reply view-reply-link-item\" reply-id=\"" + data.answerId + "\"onclick=\"deleteReply(" + data.answerId + ")\">Delete</a>\n" +
+                        "                     <a class=\"stu__edit-reply view-reply-link-item\" reply-id=\"" + data.answerId + "\"onclick=\"likeReply(" + data.answerId + ")\" >Edit</a> | <a class=\"stu__delete-reply view-reply-link-item\" reply-id=\"" + data.answerId + "\"onclick=\"deleteReply(" + data.answerId + ")\">Delete</a>\n" +
                         "                     </div>";
                 }
                 $("#list-reply-content-" + param).append(html);
                 // change total of answer
-                var totalReply = $('#number-reply-'+param).text();
+                var totalReply = $('#number-reply-' + param).text();
                 var intValue = parseInt(totalReply);
 
                 if (!isNaN(intValue)) {
@@ -209,9 +228,9 @@ function submitFormReplyQuestion(param) {
                     var newValue = intValue + 1;
 
                     // Set the new value as the text of the span
-                    $('#number-reply-'+param).text(newValue);
+                    $('#number-reply-' + param).text(newValue);
                 } else {
-                    $('#number-reply-'+param).text("");
+                    $('#number-reply-' + param).text("");
                 }
             },
             error: function (xhr) {
@@ -292,8 +311,8 @@ $(document).ready(function () {
     var hash = window.location.hash;
     if (hash) {
         var sectionId = hash.substring(1);// exclude '#'
-        if(sectionId!== "note"){
-            if($("#" + sectionId).length > 0){
+        if (sectionId !== "note") {
+            if ($("#" + sectionId).length > 0) {
                 viewMoreReply(sectionId);
             }
         }
@@ -329,27 +348,91 @@ $(document).ready(function () {
         $(".form-student-add-doc-new-question").css("display", "block");
     });
 
+    $("body").on("click", ".edit-question", function () {
+        // $(this).next(".edit-question-div").toggle();
+        var questionId = $(this).attr("question-id");
+        $("#update-question" + questionId).css("display", "block");
+        $("#question-content-" + questionId).css("display", "none");
+    })
+
 });
 
+function submitFormEditQuestion(param) {
+    var content = $('#update-question-content-' + param).val();
+    var trimmedString = $.trim(content);
+    console.log(content);
+    if (trimmedString == '') {
+        $('#update-question-error' + param).addClass('error');
+    } else {
+        $('#update-question-error' + param).css("display", "none");
+        $('#sending-update-question' + param).css("display", "inline");
+        $("#send-update-question-" + param).css("display", 'none');
+        $('#close-update-question-' + param).css("display", "none");
+        $.ajax({
+            type: 'POST',
+            url: '/api/student/my_question/' + param + '/update',
+            data: {'questionContent': content},
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.questionContent);
+                $("#update-question" + param).css("display", "none");
+                $("#update-question-content-" + param).val(data.questionContent);
+                $("#question-content-" + param).html(data.questionContent);
+                $("#question-content-" + param).css("display", "block");
+                $('#sending-update-question' + param).css("display", "none");
+                $("#send-update-question-" + param).css("display", 'inline');
+                $('#close-update-question-' + param).css("display", "inline");
+            },
+            error: function (xhr) {
+                // Handle errors
+            }
+        });
+    }
+}
+
+function existFormEditQuestion(param) {
+    console.log(param);
+    $("#update-question" + param).css("display", "none");
+    $("#question-content-" + param).css("display", "block");
+    $('#update-question-error' + param).removeClass('error')
+}
+
+function deleteQuestion(param) {
+    var result = window.confirm("Do you want to delete your question?");
+    if (result) {
+        $.ajax({
+            type: 'POST',
+            url: '/api/student/my_question/' + param + '/delete',
+            success: function (data) {
+                console.log('success-delete-question' + param);
+                $("#" + param).html("");
+                $("#" + param).css("display", "none");
+            },
+            error: function (xhr) {
+                console.log('error-delete-question')
+            }
+        });
+    }
+}
 
 // Note with bôi đen
 var isHighlighting = false;
 
-$(document).ready(function() {
-    $('#editor').on('mouseup', function(e) {
+$(document).ready(function () {
+    $('#editor').on('mouseup', function (e) {
         var selectedText = $('#editor').getSelection().toString();
 
         if (selectedText !== '') {
             isHighlighting = true;
             var noteSticker = $('.note-sticker');
-            noteSticker.css({ top: e.pageY, left: e.pageX });
+            noteSticker.css({top: e.pageY, left: e.pageX});
             noteSticker.fadeIn();
 
             $('#noteText').val('');
         }
     });
 
-    $('#editor').on('click', function(e) {
+    $('#editor').on('click', function (e) {
         var noteSticker = $('.note-sticker');
 
         if (noteSticker.is(':visible')) {
@@ -370,15 +453,15 @@ function saveNote() {
         url: '/',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ text: noteText }),
-        success: function(response) {
+        data: JSON.stringify({text: noteText}),
+        success: function (response) {
             if (response.success) {
                 var highlightedText = $('<span>').addClass('highlight').text(selectedText);
                 ('#editor').getSelection().getRangeAt(0).surroundContents(highlightedText);
             } else {
             }
         },
-        error: function(xhr, textStatus, errorThrown) {
+        error: function (xhr, textStatus, errorThrown) {
         }
     });
 
