@@ -28,7 +28,7 @@ public class AuthenticationController {
         if (redirect != null) {
             // log user action
             UserLogDto userLogDto = new UserLogDto("/login");
-            UserLog userLog = userLogService.addUserLog(new UserLog(userLogDto));
+            userLogService.addUserLog(new UserLog(userLogDto));
             return redirect;
         }
         return "guest/guest_login";
@@ -38,16 +38,14 @@ public class AuthenticationController {
     public String logout() {
         // log user action
         UserLogDto userLogDto = new UserLogDto("/logout");
-        UserLog userLog = userLogService.addUserLog(new UserLog(userLogDto));
+        userLogService.addUserLog(new UserLog(userLogDto));
         return "redirect:/login";
     }
 
     private String getAuthenticatedUserRedirectUrl(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             String redirectUrl = RedirectUtil.getRedirectUrl(authentication);
-            if (redirectUrl != null) {
-                return "redirect:" + redirectUrl;
-            }
+            return "redirect:" + redirectUrl;
         }
         return null;
     }

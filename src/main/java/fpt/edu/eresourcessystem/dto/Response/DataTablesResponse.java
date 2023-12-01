@@ -1,7 +1,8 @@
-package fpt.edu.eresourcessystem.model;
+package fpt.edu.eresourcessystem.dto.Response;
 
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
 
@@ -11,12 +12,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class DataTableResponse {
+public class DataTablesResponse<T> {
+
+    private List<T> data;
     private int draw;
     private long recordsTotal;
     private long recordsFiltered;
-    private List<TrainingType> data;
 
-    // Getters and setters
+    // Các getters và setters
 }
 

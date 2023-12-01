@@ -9,3 +9,17 @@ spring:
             scope:
               - email
               - profile
+
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAYLUUFKHYRZ3U3LNL
+      secret-key: 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
+    region:
+      static: ap-southeast-1
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: fpt-e-resources

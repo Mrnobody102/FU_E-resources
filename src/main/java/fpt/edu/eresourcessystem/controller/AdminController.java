@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.constants.UrlConstants;
 import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
 import fpt.edu.eresourcessystem.dto.AccountDto;
 import fpt.edu.eresourcessystem.dto.TrainingTypeDto;
@@ -8,16 +9,11 @@ import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -26,45 +22,30 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
+import static fpt.edu.eresourcessystem.constants.UrlConstants.ERROR_PARAM;
+import static fpt.edu.eresourcessystem.constants.UrlConstants.SUCCESS_PARAM;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/admin")
-@PropertySource("web-setting.properties")
 public class AdminController {
-    @Value("${page-size}")
-    private Integer pageSize;
 
+    private final GlobalControllerAdvice globalControllerAdvice;
     private final AccountService accountService;
     private final AdminService adminService;
     private final LibrarianService librarianService;
     private final LecturerService lecturerService;
     private final StudentService studentService;
     private final CourseService courseService;
-    private final TopicService topicService;
-    private final DocumentService documentService;
     private final UserLogService userLogService;
     private final FeedbackService feedbackService;
-
     private final TrainingTypeService trainingTypeService;
-
-    public AdminController(AccountService accountService, AdminService adminService,
-                           LibrarianService librarianService, LecturerService lecturerService,
-                           StudentService studentService, CourseService courseService,
-                           TopicService topicService, DocumentService documentService, UserLogService userLogService,
-                           FeedbackService feedbackService, TrainingTypeService trainingTypeService) {
-        this.accountService = accountService;
-        this.adminService = adminService;
-        this.librarianService = librarianService;
-        this.lecturerService = lecturerService;
-        this.studentService = studentService;
-        this.courseService = courseService;
-        this.topicService = topicService;
-        this.documentService = documentService;
-        this.userLogService = userLogService;
-        this.feedbackService = feedbackService;
-        this.trainingTypeService = trainingTypeService;
-    }
 
     /*
     DASHBOARD
@@ -86,38 +67,34 @@ public class AdminController {
      * @return accounts page (no data)
      */
     @GetMapping({"/accounts/list"})
-    public String manageAccount() {
+    public String manageAccount(final Model model) {
+        model.addAttribute("roles", AccountEnum.Role.values());
         return "admin/account/admin_accounts";
     }
 
 
     @GetMapping("/systemLog")
-    String manageSystemLog(final Model model) {
+    String manageSystemLog() {
         return "admin/system_log/admin_system_logs";
     }
 
     @GetMapping("/systemLog/userLog")
-    String viewUserLog(final Model model) {
+    String viewUserLog() {
         return "admin/system_log/admin_user_logs";
     }
 
     @GetMapping("/systemLog/courseLog")
-    String viewCourseLog(final Model model) {
+    String viewCourseLog() {
         return "admin/system_log/admin_course_logs";
     }
 
     @GetMapping("/systemLog/documentLog")
-    String viewDocumentLog(final Model model) {
+    String viewDocumentLog() {
         return "admin/system_log/admin_document_logs";
     }
 
-    @GetMapping("/trainingTypeManagement")
-    String manageTrainingType(final Model model) {
-        return "admin/training_type_management/admin_training_type_management";
-    }
-
     /*
-    This function to display detail of courses for admin
+        This function to display detail of courses for admin
      */
     @GetMapping("/course/{courseId}")
     String getCourseByLibrarian(@PathVariable String courseId, final Model model) {
@@ -125,7 +102,7 @@ public class AdminController {
     }
 
     /*
-    This function to display librarians and created course by that librarians
+        This function to display librarians and created course by that librarians
      */
     @GetMapping("/course_creator/list")
     String findCourseByLibrarianList(final Model model) {
@@ -139,8 +116,6 @@ public class AdminController {
                 return "exception/404";
             }
             List<Course> courses = librarian.getCreatedCourses();
-
-            System.out.println(courses.size());
             model.addAttribute("librarianList", librarianList);
             model.addAttribute("librarians", librarian);
             model.addAttribute("courses", courses);
@@ -150,11 +125,10 @@ public class AdminController {
     }
 
     @GetMapping("/course_creator")
-    String findCourseByLibrarian(final Model model) {
+    String findCourseByLibrarian() {
+
         return "admin/course_creator/admin_course_creators";
     }
-
-
 
     @GetMapping("/accounts/list/{pageIndex}")
     String findAccountByPage(@PathVariable Integer pageIndex,
@@ -163,9 +137,9 @@ public class AdminController {
                              final Model model) {
         Page<Account> page;
         if (null == role || "all".equals(role)) {
-            page = accountService.findByUsernameLikeOrEmailLike(search, search, pageIndex, pageSize);
+            page = accountService.findByUsernameLikeOrEmailLike(search, search, pageIndex, PAGE_SIZE);
         } else {
-            page = accountService.findByRoleAndUsernameLikeOrEmailLike(role, search, search, pageIndex, pageSize);
+            page = accountService.findByRoleAndUsernameLikeOrEmailLike(role, search, search, pageIndex, PAGE_SIZE);
         }
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         model.addAttribute("pages", pages);
@@ -178,11 +152,6 @@ public class AdminController {
         return "admin/account/admin_accounts";
     }
 
-    /**
-     * @param accountDTO
-     * @param model
-     * @return
-     */
     @GetMapping("/accounts/add")
     public String addAccountProcess(@ModelAttribute AccountDto accountDTO, final Model model) {
         model.addAttribute("account", Objects.requireNonNullElseGet(accountDTO, Account::new));
@@ -192,10 +161,6 @@ public class AdminController {
         return "admin/account/admin_add-account";
     }
 
-    /**
-     * @param accountDTO
-     * @return
-     */
     @PostMapping("/accounts/add")
     public String addAccount(@ModelAttribute AccountDto accountDTO) {
         String email = accountDTO.getEmail();
@@ -205,28 +170,29 @@ public class AdminController {
         }
         Account account = accountService.addAccount(accountDTO);
         switch (role) {
-            case ADMIN:
+            case ADMIN -> {
                 Admin admin = new Admin();
                 admin.setAccount(account);
                 adminService.addAdmin(admin);
-                break;
-            case LIBRARIAN:
+            }
+            case LIBRARIAN -> {
                 Librarian librarian = new Librarian();
                 librarian.setAccount(account);
                 librarianService.addLibrarian(librarian);
-                break;
-            case STUDENT:
+            }
+            case STUDENT -> {
                 Student student = new Student();
                 student.setAccount(account);
                 studentService.addStudent(student);
-                break;
-            case LECTURER:
+            }
+            case LECTURER -> {
                 Lecturer lecturer = new Lecturer();
                 lecturer.setAccount(account);
                 lecturerService.addLecturer(lecturer);
-                break;
-            default:
+            }
+            default -> {
                 return "redirect:/admin/accounts/add?error";
+            }
         }
 
         RedirectAttributes attributes = new RedirectAttributesModelMap();
@@ -234,11 +200,6 @@ public class AdminController {
         return "redirect:/admin/accounts/add?success";
     }
 
-    /**
-     * @param accountId
-     * @param model
-     * @return
-     */
     @GetMapping({"/accounts/{accountId}/update", "/accounts/updated/{accountId}"})
     public String updateAccountProcess(@PathVariable(required = false) String accountId, final Model model) {
         if (null == accountId) {
@@ -259,37 +220,30 @@ public class AdminController {
         }
     }
 
-    /**
-     * @param accountDTO
-     * @param model
-     * @return
-     */
     @PostMapping("/accounts/update")
     public String updateAccount(@ModelAttribute AccountDto accountDTO,
                                 final Model model) {
         Account checkExist = accountService.findById(accountDTO.getId());
         if (null == checkExist) {
             model.addAttribute("errorMessage", "account not exist.");
-            return "exception/404";
+            return UrlConstants.ACCESS_DENIED;
         } else {
             Account checkEmailDuplicate = accountService.findByEmail(accountDTO.getEmail());
             if (checkEmailDuplicate != null &&
                     !checkExist.getEmail().equalsIgnoreCase(accountDTO.getEmail())) {
-                String result = "redirect:/admin/accounts/updated/" + accountDTO.getId() + "?error";
-                return result;
+                return "redirect:/admin/accounts/updated/" + accountDTO.getId() + ERROR_PARAM;
             }
             AccountEnum.Role role = accountDTO.getRole();
             Account account = new Account(accountDTO);
-            System.out.println(role);
             switch (role) {
-                case ADMIN:
+                case ADMIN -> {
                     if (null == adminService.findByAccountId(account.getId())) {
                         Admin admin = new Admin();
                         admin.setAccount(account);
                         adminService.updateAdmin(admin);
                     }
-                    break;
-                case LIBRARIAN:
+                }
+                case LIBRARIAN -> {
                     Librarian librarian = librarianService.findByAccountId(accountDTO.getId());
                     if (librarian == null) {
                         librarian = new Librarian();
@@ -298,23 +252,24 @@ public class AdminController {
                     } else {
                         librarianService.updateLibrarian(librarian);
                     }
-                    break;
-                case STUDENT:
+                }
+                case STUDENT -> {
                     if (null == studentService.findByAccountId(account.getId())) {
                         Student student = new Student();
                         student.setAccount(account);
                         studentService.updateStudent(student);
                     }
-                    break;
-                case LECTURER:
+                }
+                case LECTURER -> {
                     if (null == lecturerService.findByAccountId(account.getId())) {
                         Lecturer lecturer = new Lecturer();
                         lecturer.setAccount(account);
                         lecturerService.updateLecturer(lecturer);
                     }
-                    break;
-                default:
-                    return "redirect:/admin/accounts/updated/" + account.getId() + "?error";
+                }
+                default -> {
+                    return "redirect:/admin/accounts/updated/%s?error".formatted(account.getId());
+                }
             }
             accountService.updateAccount(account);
             model.addAttribute("account", account);
@@ -322,8 +277,7 @@ public class AdminController {
             model.addAttribute("campuses", AccountEnum.Campus.values());
             model.addAttribute("genders", AccountEnum.Gender.values());
             model.addAttribute("success", "");
-            String result = "redirect:/admin/accounts/updated/" + account.getId() + "?success";
-            return result;
+            return "redirect:/admin/accounts/updated/".concat(account.getId() + SUCCESS_PARAM);
         }
     }
 
@@ -338,50 +292,45 @@ public class AdminController {
     public String deleteAccount(@PathVariable String accountId) {
         Account foundAccount = accountService.findById(accountId);
         AccountEnum.Role role = foundAccount.getRole();
-        if (null != foundAccount) {
-            // SOFT DELETE
+        // SOFT DELETE
 
-            switch (role) {
-                case ADMIN:
-                    Admin admin = adminService.findByAccountId(accountId);
-                    admin.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
-                    adminService.updateAdmin(admin);
-                    break;
-                case LIBRARIAN:
-                    Librarian librarian = librarianService.findByAccountId(accountId);
-                    librarian.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
-                    librarianService.updateLibrarian(librarian);
-
-                    break;
-                case LECTURER:
-                    Lecturer lecturer = lecturerService.findByAccountId(accountId);
-                    lecturer.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
-                    lecturerService.updateLecturer(lecturer);
-                    // Xóa quyền quản lý môn học + ghi log
-                    // Xóa mềm topic đã tạo
-                    // Xóa mềm resource type đã tạo
-                    // Xóa mềm tài liệu đã đăng
-
-                    break;
-                case STUDENT:
-                    Student student = studentService.findByAccountId(accountId);
-                    student.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
-                    studentService.updateStudent(student);
-                    // Xóa mềm note on document
-                    // Xóa mềm question của student
-                    // Xóa mềm saved course
-                    // Xóa mềm saved document
-                    // Xóa mềm student self note
-
-                    break;
+        switch (role) {
+            case ADMIN -> {
+                Admin admin = adminService.findByAccountId(accountId);
+                admin.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+                adminService.updateAdmin(admin);
             }
-            foundAccount.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
-            accountService.updateAccount(foundAccount);
+            case LIBRARIAN -> {
+                Librarian librarian = librarianService.findByAccountId(accountId);
+                librarian.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+                librarianService.updateLibrarian(librarian);
+            }
+            case LECTURER -> {
+                Lecturer lecturer = lecturerService.findByAccountId(accountId);
+                lecturer.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+                lecturerService.updateLecturer(lecturer);
+            }
+            // Xóa quyền quản lý môn học + ghi log
+            // Xóa mềm topic đã tạo
+            // Xóa mềm resource type đã tạo
+            // Xóa mềm tài liệu đã đăng
 
-            return "redirect: /admin/accounts/list?success";
-        } else {
-            return "redirect:/admin/accounts/" + accountId + "/update?error";
+            case STUDENT -> {
+                Student student = studentService.findByAccountId(accountId);
+                student.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+                studentService.updateStudent(student);
+            }
+            // Xóa mềm note on document
+            // Xóa mềm question của student
+            // Xóa mềm saved course
+            // Xóa mềm saved document
+            // Xóa mềm student self note
+
         }
+        foundAccount.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+        accountService.updateAccount(foundAccount);
+
+        return "redirect: /admin/accounts/list?success";
     }
 
     @GetMapping({"/user_log/tracking"})
@@ -402,27 +351,24 @@ public class AdminController {
         return "admin/system_log/admin_course_logs";
     }
 
-    @GetMapping("/feedbacks/list/{pageIndex}")
-    String showFeedbacksByPage(@PathVariable Integer pageIndex,
-                               @RequestParam(required = false, defaultValue = "") String search,
-                               final Model model, HttpServletRequest request) {
-        Page<Course> page;
-//        page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, pageSize);
-//        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-//        model.addAttribute("pages", pages);
-//        model.addAttribute("totalPage", page.getTotalPages());
-//        model.addAttribute("courses", page.getContent());
-//        model.addAttribute("search", search);
-//        model.addAttribute("currentPage", pageIndex);
-        return "librarian/course/librarian_courses";
-    }
+//    @GetMapping("/feedbacks/list/{pageIndex}")
+//    String showFeedbacksByPage(@PathVariable Integer pageIndex,
+//                               @RequestParam(required = false, defaultValue = "") String search,
+//                               final Model model, HttpServletRequest request) {
+//        Page<Course> page;
+////        page = courseService.findByCodeOrNameOrDescription(search, search, search, pageIndex, PAGE_SIZE);
+////        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+////        model.addAttribute("pages", pages);
+////        model.addAttribute("totalPage", page.getTotalPages());
+////        model.addAttribute("courses", page.getContent());
+////        model.addAttribute("search", search);
+////        model.addAttribute("currentPage", pageIndex);
+//        return "librarian/course/librarian_courses";
+//    }
 
     @GetMapping({"/feedbacks"})
-    public String showFeedbacks(final Model model) {
-//        List<Feedback> feedbacks = feedbackService.findAll();
-//        model.addAttribute("feedbacks", feedbacks);
+    public String showFeedbacks() {
         return "admin/feedback/admin_feedbacks";
-//        return  "librarian/course/detailCourseTest";
     }
 
     @GetMapping({"/feedbacks/list"})
@@ -430,7 +376,6 @@ public class AdminController {
         List<Feedback> feedbacks = feedbackService.findAll();
         model.addAttribute("feedbacks", feedbacks);
         return "admin/feedback/admin_feedbacks";
-//        return  "librarian/course/detailCourseTest";
     }
 
     @GetMapping("/feedbacks/{id}")
@@ -458,7 +403,7 @@ public class AdminController {
             return "redirect:/admin/trainingtypes/add";
         }
         try {
-            TrainingType trainingType1 =  new TrainingType(trainingType);
+            TrainingType trainingType1 = new TrainingType(trainingType);
             TrainingType save = trainingTypeService.save(trainingType1);
             redirectAttributes.addFlashAttribute("success", "Training Type added successfully.");
         } catch (Exception e) {
@@ -497,7 +442,7 @@ public class AdminController {
 
 
     @GetMapping("/trainingtypes")
-    public String listTrainingTypesNone(Model model) {
+    public String listTrainingTypesNone() {
         return "admin/training_type/admin_training-type";
     }
 
@@ -522,13 +467,13 @@ public class AdminController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error updating training type: " + e.getMessage());
         }
-        return "redirect:/admin/trainingtypes/"+trainingType.getId();
+        return "redirect:/admin/trainingtypes/" + trainingType.getId();
     }
 
 
     //
     @PostMapping("/trainingtypes/delete/{id}")
-    public String deleteTrainingType(@PathVariable("id") String  id,
+    public String deleteTrainingType(@PathVariable("id") String id,
                                      RedirectAttributes redirectAttributes) {
         try {
             trainingTypeService.deleteById(String.valueOf(id));
@@ -556,6 +501,17 @@ public class AdminController {
         return "redirect:/admin/trainingtypes/list";
     }
 
+    @DeleteMapping("/feedbacks/delete/{id}")
+    public String softDeleteFeedback(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
+        boolean isDeleted = feedbackService.softDelete(id);
+        if (isDeleted) {
+            redirectAttributes.addFlashAttribute("success", "Feedback was successfully deleted.");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Failed to delete feedback or feedback not found.");
+        }
+        return "redirect:/admin/feedbacks/list";
+    }
+
     @GetMapping("/document_log/tracking")
     public String documentLogManage() {
         return "admin/system_log/admin_document_logs";
@@ -567,11 +523,11 @@ public class AdminController {
      */
 
     @GetMapping("/login_as_student")
-    public String loginAsStudent(Model model) {
-        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+    public String loginAsStudent() {
+        Account loggedInAccount = globalControllerAdvice.getLoggedInAccount();
         if (loggedInAccount != null) {
             Student existStudent = studentService.findByAccountId(loggedInAccount.getId());
-            if(existStudent == null){
+            if (existStudent == null) {
                 Student student = new Student();
                 student.setAccount(loggedInAccount);
                 studentService.addStudent(student);
@@ -582,10 +538,10 @@ public class AdminController {
 
     @GetMapping("/login_as_lecturer")
     public String loginAsLecturer() {
-        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+        Account loggedInAccount = globalControllerAdvice.getLoggedInAccount();
         if (loggedInAccount != null) {
             Lecturer existLecturer = lecturerService.findByAccountId(loggedInAccount.getId());
-            if(existLecturer == null){
+            if (existLecturer == null) {
                 Lecturer lecturer = new Lecturer();
                 lecturer.setAccount(loggedInAccount);
                 lecturerService.addLecturer(lecturer);
@@ -596,10 +552,10 @@ public class AdminController {
 
     @GetMapping("/login_as_librarian")
     public String loginAsLibrarian() {
-        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+        Account loggedInAccount = globalControllerAdvice.getLoggedInAccount();
         if (loggedInAccount != null) {
             Librarian existLibrarian = librarianService.findByAccountId(loggedInAccount.getId());
-            if(existLibrarian == null){
+            if (existLibrarian == null) {
                 Librarian librarian = new Librarian();
                 librarian.setAccount(loggedInAccount);
                 librarianService.addLibrarian(librarian);

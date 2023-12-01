@@ -52,7 +52,7 @@ public class LecturerRestController {
         Document document = documentService.findById(docId);
         Question question = questionService.findById(quesId);
         if(null == lecturer || null == answerDTO || null==document || null == question){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         answerDTO.setLecturer(lecturer);
         answerDTO.setQuestionId(question);
@@ -66,10 +66,9 @@ public class LecturerRestController {
             // add log
             addUserLog("/api/lecturer/answers/add/"+answer.getId());
             AnswerResponseDto answerResponseDTO = new AnswerResponseDto(answer);
-            ResponseEntity<AnswerResponseDto> responseEntity = new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
-            return responseEntity;
+            return new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
         }else {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -87,7 +86,7 @@ public class LecturerRestController {
             addUserLog("/api/lecturer/answers/get/"+questionId);
             return responseEntity;
         }else {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping(value = "/my_question/new_question", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})

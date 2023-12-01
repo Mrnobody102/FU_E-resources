@@ -1149,6 +1149,17 @@
     width: 100%;
 }
 
+.sidebar__link:hover i {
+    color: var(--white-color);
+}
+
+.active-link i {
+    color: var(--white-color);
+    font-size: 1.4rem;
+    display: block;
+    width: 100%;
+}
+
 .sidebar__link-name {
     font-weight: var(--font-normal);
     transition: color .4s;

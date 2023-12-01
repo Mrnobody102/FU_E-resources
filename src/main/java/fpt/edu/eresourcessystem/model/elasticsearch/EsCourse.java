@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.model.elasticsearch;
 
+import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.Course;
 import lombok.AllArgsConstructor;
 import lombok.*;
@@ -29,6 +30,8 @@ public class EsCourse implements Serializable {
     @Field
     private String lecturer;
     @Field
+    private CourseEnum.Status status;
+    @Field
     private String lastModifiedDate;
     @Field
     private String createdBy;
@@ -39,6 +42,7 @@ public class EsCourse implements Serializable {
         this.description = course.getDescription();
         this.name = course.getCourseName();
         this.lecturer = course.getLecturer().getAccount().getName();
+        this.status = course.getStatus();
         this.lastModifiedDate = course.getLastModifiedDate();
         this.createdBy = course.getCreatedBy();
     }

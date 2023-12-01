@@ -4,7 +4,11 @@ import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.bson.types.ObjectId;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -35,12 +39,12 @@ public class Document {
 
     private DocumentEnum.DocumentFormat docType;
     private String suffix;
-
-    // thay bằng grid fs id
+    private ObjectId contentId;
+    private String cloudFileLink;
+    private String fileName;
     @Lazy
-    private byte[] content;
-    @Lazy
-    private String editorContent; //link video, audio - cloud
+    private String editorContent;
+    private boolean displayWithFile;
 
     private List<String> notes;
     private List<String> questions;
@@ -69,8 +73,11 @@ public class Document {
         this.resourceType = documentDTO.getResourceType();
         this.title = documentDTO.getTitle();
         this.description = documentDTO.getDescription();
-        this.content = documentDTO.getContent();
+        this.contentId = documentDTO.getContentId();
         this.editorContent = documentDTO.getEditorContent();
+        this.cloudFileLink = documentDTO.getCloudFileLink();
+        this.fileName = documentDTO.getFileName();
+        this.displayWithFile = documentDTO.isDisplayWithFile();
         this.docStatus = documentDTO.getDocStatus();
         this.suffix = documentDTO.getSuffix();
         this.docType = DocumentEnum.DocumentFormat.getDocType(documentDTO.getSuffix());

@@ -27,8 +27,6 @@ public class EsDocument implements Serializable {
     @Field
     private String docType;
     @Field
-    private String editorContent;
-    @Field
     private String lastModifiedDate;
     @Field
     private String createdBy;
@@ -38,7 +36,6 @@ public class EsDocument implements Serializable {
         this.title = document.getTitle();
         this.description = document.getDescription();
         this.docType = document.getSuffix().toUpperCase();
-        this.editorContent = document.getEditorContent();
         this.lastModifiedDate = document.getLastModifiedDate();
         this.createdBy = document.getCreatedBy();
     }

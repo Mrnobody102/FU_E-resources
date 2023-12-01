@@ -6,6 +6,7 @@ import fpt.edu.eresourcessystem.model.Topic;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -23,12 +24,12 @@ public class DocumentDto {
     private String title;
     private String description;
     private String suffix;
-    private byte[] content;
-    private String editorContent; //link video, audio - cloud
-
+    private ObjectId contentId;
+    private String cloudFileLink;
+    private String fileName;
+    private String editorContent;
+    private boolean displayWithFile;
     // Only use when response, no need in requests
-    private List<String> notes;
-    private List<String> questions;
     private DocumentEnum.DocumentStatusEnum docStatus;
     private String createdBy;
     private String createdDate;

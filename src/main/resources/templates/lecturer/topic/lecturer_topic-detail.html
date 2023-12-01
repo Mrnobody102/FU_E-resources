@@ -34,16 +34,16 @@
                         <div class="course-details-head">
                             <a th:href="@{/lecturer}">Home</a>
                             <span> &gt; <a th:href="@{/lecturer/courses/list/all/1}"> Courses management</a> </span>
-                            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${course.id}}"
-                                           th:text="${course.courseCode}"></a> </span>
+                            <span> &gt; <a th:href="@{'/lecturer/courses/' + ${courseId}}"
+                                           th:text="${courseCode}"></a> </span>
                             <span> &gt; <a th:href="@{'/lecturer/topics/' + ${topic.id}}"
                                            th:text="${topic.topicTitle}"></a> </span>
                         </div>
                         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                             <div style="flex: 3">
                                 <h1 class="h2" th:text="${topic.topicTitle}"></h1>
-                                <p th:text="${course.courseCode} + ' - ' + ${course.courseName}"></p>
-                                <p id="content" class="doc-info-description"
+                                <p th:text="${courseCode} + ' - ' + ${courseName}"></p>
+                                <p id="content" class="doc-info-description" th:unless="${topic.topicDescription eq ''}"
                                    style="text-align: justify; margin-bottom: 0" th:text="'Topic description: ' + ${topic.topicDescription}"></p>
                             </div>
                             <div style="flex: 1; display: flex; justify-content: center">

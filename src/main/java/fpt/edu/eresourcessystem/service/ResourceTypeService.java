@@ -19,4 +19,8 @@ public interface ResourceTypeService {
     boolean delete(String ResourceTypeId);
 
     void addDocumentToResourceType(String resourceTypeId, ObjectId documentId);
+
+    void removeDocumentFromResourceType(String id, ObjectId objectId);
+
+    boolean softDelete(ResourceType resourceType);
 }

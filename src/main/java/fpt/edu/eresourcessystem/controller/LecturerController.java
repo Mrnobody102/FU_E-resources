@@ -8,12 +8,12 @@ import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
+import fpt.edu.eresourcessystem.service.s3.StorageService;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -21,43 +21,36 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Base64;
+import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
+import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
+
 @Controller
+@AllArgsConstructor
 @RequestMapping("/lecturer")
-@PropertySource("web-setting.properties")
 @RequiredArgsConstructor
 public class LecturerController {
-    @Value("${page-size}")
-    private Integer pageSize;
+    private final GlobalControllerAdvice globalControllerAdvice;
     private final CourseService courseService;
     private final AccountService accountService;
     private final LecturerService lecturerService;
     private final StudentService studentService;
     private final TopicService topicService;
     private final ResourceTypeService resourceTypeService;
-
     private final DocumentService documentService;
-//    private final CourseLogService courseLogService;
-
     private final QuestionService questionService;
     private final AnswerService answerService;
-
     private final FeedbackService feedbackService;
-
-    private final UserLogService userLogService;
-
-    private UserLog addUserLog(String url) {
-        UserLog userLog = new UserLog(new UserLogDto(url));
-        userLog = userLogService.addUserLog(userLog);
-        return userLog;
-    }
+    private final StorageService storageService;
 
     private Lecturer getLoggedInLecturer() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -66,8 +59,7 @@ public class LecturerController {
         }
         Account loggedInAccount = accountService.findByEmail(loggedInEmail);
         if (loggedInAccount != null) {
-            Lecturer loggedInLecturer = lecturerService.findByAccountId(loggedInAccount.getId());
-            return loggedInLecturer;
+            return lecturerService.findByAccountId(loggedInAccount.getId());
         } else return null;
     }
 
@@ -85,9 +77,9 @@ public class LecturerController {
      */
 
     /**
-     * @param pageIndex
-     * @param model
-     * @return
+     * @param pageIndex page index
+     * @param model model
+     * @return lecturer courses
      */
     @GetMapping({"/courses/list/{status}/{pageIndex}"})
     public String viewCourseManaged(@PathVariable(required = false) Integer pageIndex, final Model model, @PathVariable String status) {
@@ -96,7 +88,7 @@ public class LecturerController {
         if (null == lecturer || "".equalsIgnoreCase(status)) {
             return "common/login";
         }
-        Page<Course> page = lecturerService.findListManagingCourse(lecturer, status, pageIndex, pageSize);
+        Page<Course> page = lecturerService.findListManagingCourse(lecturer, status, pageIndex, PAGE_SIZE);
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
@@ -126,15 +118,9 @@ public class LecturerController {
     public String changeCourseStatus(@PathVariable String courseID, @RequestParam String status) {
         Course course = courseService.findByCourseId(courseID);
         switch (status.toUpperCase()) {
-            case "PUBLISH":
-                course.setStatus(CourseEnum.Status.PUBLISH);
-                break;
-            case "DRAFT":
-                course.setStatus(CourseEnum.Status.DRAFT);
-                break;
-            case "HIDE":
-                course.setStatus(CourseEnum.Status.HIDE);
-                break;
+            case "PUBLISH" -> course.setStatus(CourseEnum.Status.PUBLISH);
+            case "DRAFT" -> course.setStatus(CourseEnum.Status.DRAFT);
+            case "HIDE" -> course.setStatus(CourseEnum.Status.HIDE);
         }
         courseService.updateCourse(course);
         return "redirect:/lecturer/courses/" + courseID;
@@ -163,19 +149,6 @@ public class LecturerController {
         model.addAttribute("getBy", getBy);
 
         return "lecturer/course/lecturer_course-detail";
-    }
-
-    @GetMapping("/{courseId}/delete")
-    public String delete(@PathVariable String courseId) {
-        Course checkExist = courseService.findByCourseId(courseId);
-        if (null != checkExist) {
-            for (Topic topic : checkExist.getTopics()) {
-                topicService.delete(topic.getId());
-            }
-            courseService.delete(checkExist);
-            return "redirect:/lecturer/courses/list?success";
-        }
-        return "redirect:/lecturer/courses/list?error";
     }
 
     @GetMapping({"/courses/{courseId}/add_topic"})
@@ -225,26 +198,27 @@ public class LecturerController {
             checkTopicExist.setTopicTitle(topic.getTopicTitle());
             checkTopicExist.setTopicDescription(topic.getTopicDescription());
             topicService.updateTopic(checkTopicExist);
-            return "redirect:/lecturer/topics/" + topicId + "/update?success";
-        }
-        return "redirect:/lecturer/topics/" + topicId + "/update?error";
 
+        }
+        return "redirect:/lecturer/topics/" + topicId + "/update?success";
     }
 
-    @GetMapping({"/topics/{topicId}/delete_topic/"})
-    public String deleteTopic(@PathVariable String courseId, @PathVariable String topicId, final Model model) {
+    @GetMapping({"/topics/{topicId}/delete_topic"})
+    public String deleteTopic(@PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
         if (null != topic) {
-            courseService.removeTopic(topic);
+            courseService.removeTopic(topic.getCourse().getId(), new ObjectId(topicId));
             topicService.softDelete(topic);
         }
-        return "redirect:/lecturer/" + topic.getCourse().getId();
+        return "redirect:/lecturer/courses/" + topic.getCourse().getId();
     }
 
     @GetMapping("/topics/{topicId}")
     public String viewTopicDetail(@PathVariable String topicId, final Model model) {
         Topic topic = topicService.findById(topicId);
-        model.addAttribute("course", topic.getCourse());
+        model.addAttribute("courseId", topic.getCourse().getId());
+        model.addAttribute("courseName", topic.getCourse().getCourseName());
+        model.addAttribute("courseCode", topic.getCourse().getCourseCode());
         model.addAttribute("documents", topic.getDocuments());
         model.addAttribute("topic", topic);
         return "lecturer/topic/lecturer_topic-detail";
@@ -301,14 +275,14 @@ public class LecturerController {
 
     }
 
-    @GetMapping({"resource_types/{resourceTypeId}/delete_resource_type/"})
-    public String deleteResourceType(@PathVariable String courseId, @PathVariable String resourceTypeId, final Model model) {
+    @GetMapping({"resource_types/{resourceTypeId}/delete"})
+    public String deleteResourceType(@PathVariable String resourceTypeId) {
         ResourceType resourcetype = resourceTypeService.findById(resourceTypeId);
         if (null != resourcetype) {
-//            courseService.removeResourceType(resourcetype);
-//            resourceTypeService.softDelete(resourcetype);
+            courseService.removeResourceType(resourcetype.getCourse().getId(), new ObjectId(resourceTypeId));
+            resourceTypeService.softDelete(resourcetype);
         }
-        return "redirect:/lecturer/courses/" + resourcetype.getCourse().getId();
+        return "redirect:/lecturer/courses/" + resourcetype.getCourse().getId() + "/resource_types";
     }
 
     @GetMapping("/resource_types/{resourceTypeId}")
@@ -338,8 +312,8 @@ public class LecturerController {
                                @RequestParam(required = false, defaultValue = "") String search,
                                @RequestParam(required = false, defaultValue = "all") String course,
                                @RequestParam(required = false, defaultValue = "all") String topic,
-                               final Model model, HttpServletRequest request) {
-        Page<Document> page = documentService.filterAndSearchDocument(course, topic, search, search, pageIndex, pageSize);
+                               final Model model) {
+        Page<Document> page = documentService.filterAndSearchDocument(course, topic, search, search, pageIndex, PAGE_SIZE);
 
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         model.addAttribute("pages", pages);
@@ -353,7 +327,7 @@ public class LecturerController {
     }
 
     @GetMapping({"/documents/{documentId}"})
-    public String viewDocument(@PathVariable(required = false) String documentId, final Model model) {
+    public String viewDocument(@PathVariable(required = false) String documentId, final Model model) throws IOException {
         Document document = documentService.findById(documentId);
         if (null == document) {
             model.addAttribute("errorMessage", "Could not found document.");
@@ -362,9 +336,15 @@ public class LecturerController {
             // get list question
             List<Question> questions = questionService.findByDocId(document);
 
-            if (!document.getDocType().toString().equalsIgnoreCase("UNKNOWN")) {
-                String base64EncodedData = Base64.getEncoder().encodeToString(document.getContent());
-                model.addAttribute("data", base64EncodedData);
+            if (document.isDisplayWithFile()) {
+                String data;
+                if(document.getCloudFileLink() != null) {
+                    data = document.getCloudFileLink();
+                } else {
+                    byte[] file = documentService.getGridFSFileContent(document.getContentId());
+                    data = Base64.getEncoder().encodeToString(file);
+                }
+                model.addAttribute("data", data);
             }
             model.addAttribute("newAnswer", new Answer());
             model.addAttribute("document", document);
@@ -416,31 +396,45 @@ public class LecturerController {
         List<ResourceType> resourceTypesInCourse = topic.getCourse().getResourceTypes();
         boolean checkResourceTypeExist = true;
         ResourceType existedResourceType = null;
-        for (ResourceType resourceType1 : resourceTypesInCourse) {
-            if (resourceType1.getResourceTypeName().equalsIgnoreCase(respondResourceType)) {
+        for (ResourceType resourceTypeObject : resourceTypesInCourse) {
+            if (resourceTypeObject.getResourceTypeName().equalsIgnoreCase(respondResourceType)) {
                 checkResourceTypeExist = false;
-                existedResourceType = resourceType1;
+                existedResourceType = resourceTypeObject;
                 break;
             }
         }
-        if (checkResourceTypeExist == true) {
+        if (checkResourceTypeExist) {
             ResourceType addedResourceType = resourceTypeService.addResourceType(resourceType);
             documentDTO.setResourceType(addedResourceType);
         } else {
             documentDTO.setResourceType(existedResourceType);
         }
-        // set resource type vào document
-
 
         // Xử lý file
         // thêm check file trước khi add
         String id = "fileNotFound";
+        String message = "";
         if (file != null && !file.isEmpty()) {
-            id = documentService.addFile(file);
+            documentDTO.setFileName(file.getOriginalFilename());
+            if(file.getSize() < 1048576) {
+                id = documentService.addFile(file);
+            } else {
+                id = "uploadToCloud";
+                try {
+                    String link = storageService.uploadFile(file);
+                    documentDTO.setCloudFileLink(link);
+                    String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                    String fileExtension = StringUtils.getFilenameExtension(filename);
+                    documentDTO.setSuffix(fileExtension);
+                } catch (Exception e) {
+                    message = "Can not upload file to server! Error: " + e.getMessage();
+                    return "redirect:/lecturer/topics/" + topicId + "/documents/add?error";
+                }
+            }
         }
         Document document = documentService.addDocument(documentDTO, id);
-        // Xử lý sau khi add document
 
+        // Xử lý sau khi add document
         resourceTypeService.addDocumentToResourceType(document.getResourceType().getId(), new ObjectId(document.getId()));
 
         // Thêm document vào topic
@@ -450,7 +444,7 @@ public class LecturerController {
     }
 
     @GetMapping({"/documents/{documentId}/update"})
-    public String updateDocumentProcess(@PathVariable(required = false) String documentId, final Model model) {
+    public String updateDocumentProcess(@PathVariable(required = false) String documentId, final Model model) throws IOException {
         if (null == documentId) {
             documentId = "";
         }
@@ -459,23 +453,64 @@ public class LecturerController {
             return "redirect:lecturer/documents/update?error";
         } else {
             model.addAttribute("document", document);
-            model.addAttribute("resourceTypes", DocumentEnum.DefaultTopicResourceTypes.values());
+            if(document.getTopic() != null) {
+                model.addAttribute("resourceTypes", document.getTopic().getCourse().getResourceTypes());
+                model.addAttribute("topics", document.getTopic());
+            }
+            if(document.getFileName() != null) {
+                model.addAttribute("file", document.getFileName());
+            }
             return "lecturer/document/lecturer_update-document";
         }
     }
 
     @PostMapping("/documents/update")
-    public String updateCourse(@ModelAttribute DocumentDto document, final Model model) throws IOException {
+    public String updateDocument(@ModelAttribute DocumentDto document,
+                                 @RequestParam(value = "deleteCurrentFile",  required = false) String deleteCurrentFile,
+                                 @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         Document checkExist = documentService.findById(document.getId());
-
         if (null == checkExist) {
             return "redirect:/lecturer/documents/" + document.getId() + "/update?error";
         } else {
             checkExist.setTitle(document.getTitle());
             checkExist.setDescription(document.getDescription());
-            checkExist.setResourceType(document.getResourceType());
-            checkExist.setContent(document.getContent());
-            documentService.updateDocument(checkExist);
+            checkExist.setEditorContent(document.getEditorContent());
+            String id = "fileNotFound";
+            String message = "";
+            if (file != null && !file.isEmpty()) {
+                checkExist.setFileName(file.getOriginalFilename());
+                if(file.getSize() < 1048576) {
+                    checkExist.setCloudFileLink(null);
+                    id = documentService.addFile(file);
+                } else {
+                    id = "uploadToCloud";
+                    try {
+                        String link = storageService.uploadFile(file);
+                        checkExist.setCloudFileLink(link);
+                        String filename = System.currentTimeMillis() + "_" +file.getOriginalFilename();
+                        String fileExtension = StringUtils.getFilenameExtension(filename);
+                        checkExist.setFileName(filename);
+                        checkExist.setSuffix(fileExtension);
+                        checkExist.setDocType(DocumentEnum.DocumentFormat.getDocType(fileExtension));
+                    } catch (Exception e) {
+                        message = "Can not upload file to server! Error: " + e.getMessage();
+                        return "redirect:/lecturer/topics/" + document.getTopic().getId() + "/documents/update?error";
+                    }
+                }
+            }
+            if(deleteCurrentFile != null && deleteCurrentFile.equals("on")) {
+                checkExist.setDisplayWithFile(false);
+                checkExist.setFileName(null);
+                if(checkExist.getCloudFileLink() != null) {
+                    storageService.deleteFile(checkExist.getFileName());
+                    documentService.updateDocument(checkExist, null, id);
+                } else {
+                    documentService.updateDocument(checkExist, String.valueOf(checkExist.getContentId()), id);
+                }
+            } else {
+                checkExist.setDisplayWithFile(true);
+                documentService.updateDocument(checkExist, null, id);
+            }
             return "redirect:/lecturer/documents/" + document.getId() + "/update?success";
         }
     }
@@ -484,11 +519,12 @@ public class LecturerController {
     public String deleteDocument(@PathVariable String documentId) {
         Document document = documentService.findById(documentId);
         if (null != document) {
-            topicService.removeDocuments(document);
+            topicService.removeDocumentFromTopic(document.getTopic().getId(), new ObjectId(documentId));
+            resourceTypeService.removeDocumentFromResourceType(document.getTopic().getId(), new ObjectId(documentId));
             documentService.softDelete(document);
-            return "redirect:/librarian/courses/list/1?success";
+            return "redirect:/topics/" + document.getTopic().getId() + "?success";
         }
-        return "redirect:/librarian/courses/list/1?error";
+        return "redirect:/documents/{documentId}?error";
     }
 
     /*
@@ -501,7 +537,7 @@ public class LecturerController {
         if (null == lecturer || "".equalsIgnoreCase(status)) {
             return "common/login";
         }
-        Page<Document> page = lecturerService.findListDocuments(lecturer, status, pageIndex, pageSize);
+        Page<Document> page = lecturerService.findListDocuments(lecturer, status, pageIndex, PAGE_SIZE);
         List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
         model.addAttribute("pages", pages);
         model.addAttribute("totalPage", page.getTotalPages());
@@ -559,7 +595,7 @@ public class LecturerController {
         if (loggedInUser != null) {
             feedback.setAccount(loggedInUser);
             // Save the feedback to the database
-            Feedback feedback1 = feedbackService.saveFeedback(new Feedback(feedback));
+            feedbackService.saveFeedback(new Feedback(feedback));
 
             return "redirect:/admin/feedbacks/list"; // Redirect to a success page
         } else {
@@ -572,11 +608,11 @@ public class LecturerController {
      */
 
     @GetMapping("/login_as_student")
-    public String loginAsStudent(Model model) {
-        Account loggedInAccount = GlobalControllerAdvice.getLoggedInAccount();
+    public String loginAsStudent() {
+        Account loggedInAccount = globalControllerAdvice.getLoggedInAccount();
         if (loggedInAccount != null) {
             Student existStudent = studentService.findByAccountId(loggedInAccount.getId());
-            if(existStudent == null){
+            if (existStudent == null) {
                 Student student = new Student();
                 student.setAccount(loggedInAccount);
                 studentService.addStudent(student);

@@ -18,6 +18,8 @@ public interface TopicService {
 
     Topic removeDocuments(Document document);
 
+    void removeDocumentFromTopic(String topicId, ObjectId documentId);
+
     boolean softDelete(Topic topic);
 
     boolean delete(String topicId);
