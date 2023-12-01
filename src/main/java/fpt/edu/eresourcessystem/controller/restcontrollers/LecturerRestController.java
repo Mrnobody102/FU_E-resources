@@ -152,6 +152,10 @@ public class LecturerRestController {
             if (check) {
                 // add log
                 addUserLog("/api/lecturer/my_question/replies/"+answerId+"/delete");
+                //chage list answer
+                Question question = questionService.findById(answer.getQuestion().getId());
+                question.getAnswers().remove(answerId);
+                questionService.updateQuestion(question);
                 return new ResponseEntity(HttpStatus.OK);
             } else {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);

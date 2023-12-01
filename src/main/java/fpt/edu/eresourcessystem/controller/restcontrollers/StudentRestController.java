@@ -129,6 +129,7 @@ public class StudentRestController {
             // add log
             addUserLog("/api/student/answer/add/" + answer.getId());
             AnswerResponseDto answerResponseDTO = new AnswerResponseDto(answer);
+            System.out.println(new AnswerResponseDto(answer));
             return new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -370,6 +371,10 @@ public class StudentRestController {
             if (check) {
                 // add log
                 addUserLog("/api/student/my_question/replies/"+answerId+"/delete");
+                //chage list answer
+                Question question = questionService.findById(answer.getQuestion().getId());
+                question.getAnswers().remove(answerId);
+                questionService.updateQuestion(question);
                 return new ResponseEntity(HttpStatus.OK);
             } else {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
