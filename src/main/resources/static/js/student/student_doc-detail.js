@@ -9,7 +9,18 @@ ClassicEditor
     .then(editor => {
         newEditor = editor;
         editor.editing.view.change(writer => {
-            writer.setStyle('height', '200px', editor.editing.view.document.getRoot());
+            writer.setStyle('height', 'auto', editor.editing.view.document.getRoot());
+            writer.setStyle('minHeight', '280px', editor.editing.view.document.getRoot());
+        });
+        editor.model.document.on('change:data', () => {
+            console.log("check editor change")
+            // Enable the button when the content changes
+            $('#send-edit-note-button').removeClass('disabled');
+        });
+        editor.model.document.on('change:data', () => {
+            console.log("check editor change")
+            // Enable the button when the content changes
+            $('#send-new-note-button').removeClass('disabled');
         });
         console.log(Array.from(editor.ui.componentFactory.names()));
     })
@@ -146,11 +157,7 @@ function submitFormAddNote(param) {
         $('#send-new-note-button').css("display", "none");
         $('#sending-new-note').css("display", "block");
         $('#error-input-new-note').css("display", "none");
-        // newEditor.updateElement();
-        //
-        // var data = $('#myForm').serializeArray();
-        // var formData = $('#add-note-form').serialize();
-        // formData.set('noteContent', editorContent);
+        $("#send-delete-note-button").css("display", "none");
         console.log(content);
         $.ajax({
             type: 'POST',
@@ -160,14 +167,75 @@ function submitFormAddNote(param) {
             success: function (data) {
                 console.log("success: " + data.noteContent)
                 var html = data.noteContent;
-                $("#new-note-content").html(html);
-                $('#stu__note-in-doc-content-new').css("display", "block");
+                $('#send-edit-note-button').css("display", "inline");
+                $("#send-delete-note-button").css("display", "inline");
                 $('#sending-new-note').css("display", "none");
-                $('#add-note-form').css("display", "none");
+                // $('#add-note-form').css("display", "none");
+                newEditor.setData(html);
+                $('#send-edit-note-button').addClass("disabled");
             },
             error: function (xhr) {
                 // Handle errors
                 console.log("error")
+            }
+        });
+    }
+}
+function  submitFormEditNote(param){
+    // var content = $('#editor').val();
+    var content = newEditor.getData();
+    var trimmedString = $.trim(content);
+    console.log(newEditor.getData())
+    if (trimmedString == '') {
+        $('#error-input-new-note').css("display", "block");
+    } else {
+        $('#send-edit-note-button').css("display", "none");
+        $('#sending-new-note').css("display", "block");
+        $('#error-input-new-note').css("display", "none");
+        $("#send-delete-note-button").css("display", "none");
+        console.log(content);
+        $.ajax({
+            type: 'POST',
+            url: '/api/student/document_note/' + param+ '/update',
+            data: {'noteContent': content},
+            dataType: 'json',
+            success: function (data) {
+                console.log("success: " + data.noteContent)
+                var html = data.noteContent;
+                $('#send-edit-note-button').css("display", "inline");
+                $('#send-delete-note-button').css("display", "inline");
+                $('#sending-new-note').css("display", "none");
+                // $('#add-note-form').css("display", "none");
+                newEditor.setData(html);
+                $('#send-edit-note-button').addClass('disabled');
+            },
+            error: function (xhr) {
+                // Handle errors
+                console.log("error")
+            }
+        });
+    }
+}
+
+function submitDeleteDocumentNote(param){
+    $('#send-delete-note-button').addClass('display-none');
+    $('#send-edit-note-button').addClass('display-none');
+    $('#sending-delete').css("display", "block");
+    var result = window.confirm("Do you want to delete your note?");
+    if (result) {
+        $.ajax({
+            type: 'POST',
+            url: '/api/student/document_note/' + param+ '/delete',
+            success: function (data) {
+                console.log('success-delete-question' + param);
+                $('#send-new-note-button').css("display", "inline");
+                $('#sending-delete').css("display", "none");
+                $('#error-input-new-note').css("display", "none");
+                newEditor.setData('');
+                $('#send-new-note-button').addClass('disabled');
+            },
+            error: function (xhr) {
+                console.log('error-delete-question')
             }
         });
     }

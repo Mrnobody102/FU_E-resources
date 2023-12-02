@@ -239,12 +239,12 @@ stu__navbar-view-doc-item:hover a{
 .stu__save-note button{
     padding: 0.5rem 1.5rem;
     border: white;
-    background-color: var(--second-background-btn-color);
+    /*background-color: var(--second-background-btn-color);*/
 }
-.stu__save-note button:hover{
-    color: var(--link-color);
-    background-color: var(--second-background-btn-color-hover);
-}
+/*.stu__save-note button:hover{*/
+/*    color: var(--link-color);*/
+/*    background-color: var(--second-background-btn-color-hover);*/
+/*}*/
 .view-note-link,
 .view-question-link{
     text-align: right;

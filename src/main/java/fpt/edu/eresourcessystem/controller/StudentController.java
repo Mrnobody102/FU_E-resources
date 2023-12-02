@@ -151,9 +151,8 @@ public class StudentController {
 
         DocumentNote documentNote = documentNoteService.findByDocIdAndStudentId(docId, student.getId());
         if (null != documentNote) {
-            model.addAttribute("note", documentNote);
-        }
-        model.addAttribute("documentNote", new DocumentNote());
+            model.addAttribute("documentNote", documentNote);
+        } else model.addAttribute("documentNote", new DocumentNote());
         // get list questions
         List<Question> questions = questionService.findByDocId(document);
         List<QuestionResponseDto> questionResponseDtos = new ArrayList<>();

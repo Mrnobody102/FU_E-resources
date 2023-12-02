@@ -219,7 +219,7 @@ public class StudentRestController {
         }
     }
 
-    @PostMapping(value = "/document_note/update/{documentId}", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/document_note/{documentId}/update", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     @Transactional
     public ResponseEntity<DocumentNote> updateNoteDocument(@RequestParam String noteContent,
                                                            @PathVariable String documentId) {
@@ -233,9 +233,31 @@ public class StudentRestController {
         DocumentNote result = documentNoteService.updateDocumentNote(documentNote);
         if (null != result) {
             // add log
-            addUserLog("/api/student/document_note/update/" + documentId);
+            addUserLog("/api/student/document_note"+ documentId+"/update" );
             ResponseEntity<DocumentNote> responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
             return responseEntity;
+        } else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value = "/document_note/{documentId}/delete")
+    @Transactional
+    public ResponseEntity<String> deleteNoteDocument(@PathVariable String documentId) {
+        Student student = getLoggedInStudent();
+        Document document = documentService.findById(documentId);
+        if (null == student  ||  null == document) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        DocumentNote documentNote = documentNoteService.findByDocIdAndStudentId(documentId, student.getId());
+        if (null != documentNote) {
+            boolean check = documentNoteService.deleteDocumentNote(documentNote);
+            if(check){
+                // add log
+                addUserLog("/api/student/document_note"+ documentId+"/delete" );
+                ResponseEntity<String> responseEntity = new ResponseEntity<>("Delete Document note successfully.", HttpStatus.OK);
+                return responseEntity;
+            } return new ResponseEntity<>("Delete Document note failed.", HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }

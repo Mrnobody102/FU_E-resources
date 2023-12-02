@@ -235,27 +235,27 @@
                                 <div th:href="@{'/student/documents/'+${document.id}+'#note'}" id="note"
                                      class="section-view">
                                     <div class="stu__note-in-doc-view">
-                                        <div class="stu__note-in-doc-content" th:if="${note ne null}">
-                                            <div class="stu__note-content">
-                                                <div id="note-content" th:utext="${note.noteContent}"></div>
-                                            </div>
-                                            <div class="view-note-link">
-                                                <div class="justify-content-end">
-                                                    <a class="edit-Note">Edit</a> <a class="delete-note">Delete</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="stu__note-in-doc-content-new" style="display:none;">
-                                            <div class="stu__note-content">
-                                                <div id="new-note-content"></div>
-                                            </div>
-                                            <div class="view-note-link">
-                                                <div class="justify-content-end">
-                                                    <a class="edit-note">Edit</a> <a class="delete-note">Delete</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="stu__note-in-doc-textarea" th:if="${note == null}">
+<!--                                        <div class="stu__note-in-doc-content" th:if="${note ne null}">-->
+<!--                                            <div class="stu__note-content">-->
+<!--                                                <div id="note-content" th:utext="${note.noteContent}"></div>-->
+<!--                                            </div>-->
+<!--                                            <div class="view-note-link">-->
+<!--                                                <div class="justify-content-end">-->
+<!--                                                    <a class="edit-Note">Edit</a> <a class="delete-note">Delete</a>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div id="stu__note-in-doc-content-new" style="display:none;">-->
+<!--                                            <div class="stu__note-content">-->
+<!--                                                <div id="new-note-content"></div>-->
+<!--                                            </div>-->
+<!--                                            <div class="view-note-link">-->
+<!--                                                <div class="justify-content-end">-->
+<!--                                                    <a class="edit-note">Edit</a> <a class="delete-note">Delete</a>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+                                        <div class="stu__note-in-doc-textarea">
                                             <form class="form-student-add-doc-notes" method="post" role="form"
                                                   th:object="${documentNote}"
                                                   th:id="add-note-form" enctype="multipart/form-data">
@@ -277,11 +277,24 @@
                                                     <a type="button" title="Sending" style="display:none;"
                                                        id="sending-new-note" th:document-id="${document.id}"><i
                                                             class="fas fa-spinner fa-spin"></i> Sending...</a>
-                                                    <button type="button" title="Send" id="send-new-note-button"
+                                                    <button class="btn-save disabled" th:classappend="${documentNote.id ne null} ? 'display-none' : ''" type="button" title="Send" id="send-new-note-button"
                                                             th:document-id="${document.id}"
                                                             onclick="submitFormAddNote(this.getAttribute('document-id'))">
                                                         Save Note
                                                     </button>
+                                                    <button class="btn-save disabled edit-note" th:classappend="${documentNote.id == null} ? 'display-none' : ''" type="button" title="Send" id="send-edit-note-button"
+                                                            th:document-id="${document.id}"
+                                                            onclick="submitFormEditNote(this.getAttribute('document-id'))">
+                                                        Save changes
+                                                    </button>
+                                                    <button class="btn-danger delete-note" type="button" title="Send" id="send-delete-note-button"
+                                                            th:document-id="${document.id}"
+                                                            onclick="submitDeleteDocumentNote(this.getAttribute('document-id'))">
+                                                        Delete
+                                                    </button>
+                                                    <a type="button" title="Deleting" style="display:none;"
+                                                       id="sending-delete" th:document-id="${document.id}"><i
+                                                            class="fas fa-spinner fa-spin"></i> Deleting...</a>
                                                 </div>
                                             </form>
                                         </div>
@@ -294,7 +307,7 @@
 
                                     <!--New Question section-->
                                     <div class="stu__save-question">
-                                        <button class="btn btn--hover add-doc-question" id="add-doc-question">New
+                                        <button class="btn btn-save add-doc-question" id="add-doc-question">New
                                             Question
                                         </button>
                                     </div>
