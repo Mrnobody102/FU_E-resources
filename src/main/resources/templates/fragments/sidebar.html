@@ -148,13 +148,8 @@
                 <span>Other</span>
             </h3>
             <div class="sidebar__list">
-                <!--                <a href="#" class="sidebar__link">-->
-                <!--                    <i class="fa-solid fa-hand"></i>-->
-                <!--                    <span class="sidebar__link-name">Request documents</span>-->
-                <!--                    <span class="sidebar__link-floating">Request documents</span>-->
-                <!--                </a>-->
                 <a th:href="@{/student/feedbacks/add}" class="sidebar__link"
-                   th:classappend="${#strings.equals(activeLink, 'feedback')} ? 'active-link' : ''">
+                   th:classappend="${#strings.equals(activeLink, 'send-feedback')} ? 'active-link' : ''">
                     <i title="Feedback" class="fa-solid fa-comment"></i>
                     <span class="sidebar__link-name">Feedback</span>
                     <span class="sidebar__link-floating">Feedback</span>

@@ -76,9 +76,8 @@
 .header__navbar-item:hover,
 .header__navbar-icon-link:hover,
 .header__navbar-item-link:hover {
-    color: rgb(255, 255, 255);
+    color: var(--header-hover-color);
     cursor: pointer;
-    text-decoration: underline;
 }
 
 
@@ -93,7 +92,7 @@
 }
 
 .header__navbar-icon:hover {
-    box-shadow: 0 0 0.3rem rgba(255, 255, 255, 0.8);
+    color: var(--header-hover-color);
 }
 
 /* Main navbar */
@@ -1281,6 +1280,7 @@
     .sidebar__link i {
         font-size: 2rem;
     }
+
     .sidebar__link-name {
         transition: color .4s, opacity .4s;
     }
@@ -1349,6 +1349,14 @@
 
     .show-sidebar .sidebar__link i {
         color: black;
+    }
+
+    .show-sidebar .sidebar__link:hover i {
+        color: white;
+    }
+
+    .show-sidebar .active-link i {
+        color: white;
     }
 
     /* Add padding main */

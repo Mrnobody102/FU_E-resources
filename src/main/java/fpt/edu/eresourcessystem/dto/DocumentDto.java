@@ -27,7 +27,7 @@ public class DocumentDto {
     private ObjectId contentId;
     private String cloudFileLink;
     private String fileName;
-    private String editorContent;
+    private String content;
     private boolean displayWithFile;
     // Only use when response, no need in requests
     private DocumentEnum.DocumentStatusEnum docStatus;

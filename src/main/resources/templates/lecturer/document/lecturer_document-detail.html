@@ -88,12 +88,12 @@
 
 
                                 <div style="display: flex">
-                                    <th:block th:unless="${document.displayWithFile}">
-                                        <div class="doc-content-view" th:utext="${document.editorContent}"
+                                    <th:block th:unless="${document.displayWithFile == true}">
+                                        <div class="doc-content-view" th:utext="${document.getContent}"
                                              style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
                                         </div>
                                     </th:block>
-                                    <th:block th:if="${document.displayWithFile}">
+                                    <th:block th:if="${document.displayWithFile == true}">
                                         <th:block th:unless="${document.cloudFileLink ne null}">
                                             <th:block th:if="${document.docType.toString().equals('TXT')}">
                                                 <iframe class="doc-content-view"

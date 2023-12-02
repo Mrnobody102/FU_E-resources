@@ -1,12 +1,14 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.model.Account;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class InitController {
-    @GetMapping({"/", "/guest", "/home"})
-    public String goHomePage() {
+    @GetMapping({ "/guest"})
+    public String goGuestHomePage() {
         return "guest/guest_home";
     }
 

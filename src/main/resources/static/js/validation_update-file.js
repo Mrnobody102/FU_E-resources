@@ -2,7 +2,6 @@
 
 let fileInput = document.getElementById('fileUploadInput');
 let cancelButton = document.getElementById('cancelUploadButton');
-let isDisplayWithFile = document.getElementById('isDisplayWithFile');
 let file = null;
 let isUploading = false;
 const allowedFormats = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx',
@@ -11,7 +10,7 @@ const allowedFormats = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx',
     'jpg', 'jpeg', 'gif', 'png', 'svg',
     'exe', 'psd', 'eps', 'jar', 'zip', 'rar'];
 
-let deleteCurrentFile = document.getElementById('deleteCurrentFile');
+let replaceFileMessage = document.getElementById('replaceFileMessage');
 
 cancelButton.addEventListener('click', function () {
     if (isUploading) {
@@ -19,9 +18,7 @@ cancelButton.addEventListener('click', function () {
         file = null;
         fileInput.value = '';
         document.getElementById('previewContainer').innerHTML = 'File will be previewed here.';
-        isDisplayWithFile.style.display = 'block';
-        deleteCurrentFile.checked = false;
-        deleteCurrentFile.disabled = false;
+        replaceFileMessage.style.display = 'none';
     } else {
         console.log('Không có tệp tin đang được tải lên để hủy');
     }
@@ -35,12 +32,9 @@ fileInput.addEventListener('change', function (event) {
         isUploading = false;
         fileInput.value = '';
         document.getElementById('previewContainer').innerHTML = 'File will be previewed here.';
-        isDisplayWithFile.style.display = 'block';
-        deleteCurrentFile.checked = false;
-        deleteCurrentFile.style.display = 'inline';
+        replaceFileMessage.style.display = 'none';
     } else {
-        deleteCurrentFile.checked = true;
-        deleteCurrentFile.style.display = 'none';
+        replaceFileMessage.style.display = 'inline';
     }
     var fileSizeInMB = file.size / (1024 * 1024); // Chuyển đổi kích thước tệp tin thành Megabyte
     if (fileSizeInMB > 100) {
@@ -68,18 +62,15 @@ fileInput.addEventListener('change', function (event) {
                     preview.src = e.target.result;
                     preview.style.maxWidth = '100%';
                     preview.style.maxHeight = '400px';
-                    isDisplayWithFile.style.display = 'block';
                 } else if (file.type.startsWith('video/')) {
                     preview = document.createElement('video');
                     preview.src = e.target.result;
                     preview.controls = true;
                     preview.style.maxWidth = '100%';
-                    isDisplayWithFile.style.display = 'block';
                 } else if (file.type.startsWith('audio/')) {
                     preview = document.createElement('audio');
                     preview.src = e.target.result;
                     preview.controls = true;
-                    isDisplayWithFile.style.display = 'block';
                 } else if (file.type === 'application/pdf') {
                     if (fileSizeInMB < 1) {
                         preview = document.createElement('embed');
@@ -90,11 +81,9 @@ fileInput.addEventListener('change', function (event) {
                         preview = document.createElement('p');
                         preview.textContent = 'PDF file larger than 1MB will not be previewed.';
                     }
-                    isDisplayWithFile.style.display = 'block';
                 } else {
                     preview = document.createElement('span');
                     preview.textContent = 'This file cannot be previewed.';
-                    isDisplayWithFile.style.display = 'none';
                 }
                 document.getElementById('previewContainer').appendChild(preview);
             }
@@ -112,29 +101,6 @@ fileInput.addEventListener('change', function (event) {
         return;
     }
 });
-
-deleteCurrentFile.addEventListener("change", function() {
-    if (deleteCurrentFile.checked) {
-        if (isUploading == false) {
-            isDisplayWithFile.style.display = 'none';
-        } else {
-            isDisplayWithFile.style.display = 'block';
-        }
-    } else {
-        isDisplayWithFile.style.display = 'block';
-    };
-});
-
-if (deleteCurrentFile.checked) {
-    if (isUploading == false) {
-        isDisplayWithFile.style.display = 'none';
-    } else {
-        isDisplayWithFile.style.display = 'block';
-    }
-} else {
-    isDisplayWithFile.style.display = 'block';
-};
-
 function getFileExtension(filename) {
     return filename.split('.').pop();
 }

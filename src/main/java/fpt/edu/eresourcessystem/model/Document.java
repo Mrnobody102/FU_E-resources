@@ -43,7 +43,7 @@ public class Document {
     private String cloudFileLink;
     private String fileName;
     @Lazy
-    private String editorContent;
+    private String content;
     private boolean displayWithFile;
 
     private List<String> notes;
@@ -74,7 +74,7 @@ public class Document {
         this.title = documentDTO.getTitle();
         this.description = documentDTO.getDescription();
         this.contentId = documentDTO.getContentId();
-        this.editorContent = documentDTO.getEditorContent();
+        this.content = documentDTO.getContent();
         this.cloudFileLink = documentDTO.getCloudFileLink();
         this.fileName = documentDTO.getFileName();
         this.displayWithFile = documentDTO.isDisplayWithFile();

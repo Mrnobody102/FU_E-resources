@@ -90,7 +90,7 @@
                                 <div class="doc-content" style="display: flex">
                                     <div style="display: flex; flex: 4">
                                         <th:block th:if="${document.docType.toString().equals('UNKNOWN')}">
-                                            <div class="doc-content-view" th:utext="${document.editorContent}"
+                                            <div class="doc-content-view" th:utext="${document.getContent}"
                                                  style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
                                             </div>
                                         </th:block>

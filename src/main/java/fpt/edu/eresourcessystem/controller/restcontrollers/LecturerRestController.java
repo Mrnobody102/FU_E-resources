@@ -8,6 +8,8 @@ import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
 import fpt.edu.eresourcessystem.service.*;
+import fpt.edu.eresourcessystem.service.s3.ImageService;
+import fpt.edu.eresourcessystem.service.s3.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +17,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/lecturer")
@@ -29,6 +36,7 @@ public class LecturerRestController {
     private final QuestionService questionService;
     private final AccountService accountService;
     private final UserLogService userLogService;
+    private final ImageService imageService;
 
     private UserLog addUserLog(String url) {
         UserLog userLog = new UserLog(new UserLogDto(url));
@@ -158,6 +166,23 @@ public class LecturerRestController {
             }
         }
     }
+
+    @PostMapping("/upload_image_editor")
+    @ResponseBody
+    public Map<String, Object> imageUpload(MultipartRequest request) throws IOException {
+        Map<String, Object> responseData = new HashMap<>();
+        try {
+            MultipartFile file = request.getFile("upload");
+            String s3Url = imageService.uploadImage(file);
+            responseData.put("uploaded", true);
+            responseData.put("url", s3Url);
+            return responseData;
+        } catch (IOException e) {
+            responseData.put("uploaded", false);
+            return responseData;
+        }
+    }
+
 
 
 }

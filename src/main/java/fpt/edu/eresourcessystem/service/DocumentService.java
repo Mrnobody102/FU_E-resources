@@ -7,9 +7,11 @@ import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
+import org.apache.tika.exception.TikaException;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +29,7 @@ public interface DocumentService {
 
     byte[] getGridFSFileContent(ObjectId id) throws IOException;
 
-    Document addDocument(DocumentDto documentDTO, String id) throws IOException;
+    Document addDocument(DocumentDto documentDTO, String id) throws IOException, TikaException, SAXException;
 
     Document findById(String documentId);
     List<Document> findByListId(List<String> documentIds);

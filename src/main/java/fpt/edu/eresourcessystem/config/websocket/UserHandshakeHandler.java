@@ -27,7 +27,7 @@ public class UserHandshakeHandler extends DefaultHandshakeHandler {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        System.out.println(authentication.getName());
         Collection<? extends GrantedAuthority> auth = authentication.getAuthorities();
-        System.out.println("ỦeHandshakeHandler -27: "+ new UserPrincipal(authentication.getName()));
+        System.out.println("HandshakeHandler -27: "+ new UserPrincipal(authentication.getName()));
         return new UserPrincipal(authentication.getName());
     }
 }

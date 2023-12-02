@@ -12,7 +12,7 @@
             <!--                <i class="fa-solid fa-house"></i>-->
             <!--                E-Resources-->
             <!--            </h2>-->
-            <a href="/" class="header__logo-link grid__column-2">
+            <a class="header__logo-link grid__column-2">
                 <div class="header__logo">
                     <img alt="" th:src="@{/images/fptUniversityLogo.png}">
                 </div>
@@ -143,7 +143,7 @@
             <div class="sidebar-system col-md-4">
                 <div class="sidebar__arrow d-flex align-items-center">
                     <i id="toggleIdLecturer" class="fa-solid fa-bars sidebar-icon"></i>
-                    <a href="/" class="header__logo-link">
+                    <a class="header__logo-link">
                         <div class="header__logo">
                             <img alt="" th:src="@{/images/fptUniversityLogo.png}">
                         </div>
@@ -247,7 +247,7 @@
                     <!--                        &lt;!&ndash; FPT University&ndash;&gt;-->
                     <!--                        E-Resources-->
                     <!--                    </h2>-->
-                    <a href="/" class="header__logo-link">
+                    <a class="header__logo-link">
                         <div class="header__logo">
                             <img alt="" th:src="@{/images/fptUniversityLogo.png}">
                         </div>
@@ -256,6 +256,18 @@
             </div>
             <div class="header__link-list col-8">
                 <ul class="header__navbar-list">
+                    <li class="header__navbar-item">
+                        <a href="/" class="header__navbar-item-link">
+                            <i class="header__navbar-icon fa-solid fa-home"></i>
+                            <!--                                                        Help-->
+                        </a>
+                    </li>
+                    <li class="header__navbar-item">
+                        <a href="" class="header__navbar-item-link">
+                            <i class="header__navbar-icon far fa-question-circle"></i>
+                            <!--                                                        Help-->
+                        </a>
+                    </li>
                     <li class="header__navbar-item header__notify-appearance">
                         <a href="" class="header__navbar-item-link">
                             <i class="header__navbar-icon fas fa-bell"></i>
@@ -285,6 +297,7 @@
                             </footer>
                         </div>
                     </li>
+
                     <th:block th:if="${loggedInUser ne null}">
                         <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
                             <div class="header__navbar-user-wrap">
@@ -318,12 +331,7 @@
                             <i class="header__navbar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></i>
                             <span class="header__label">Logout</span></a>
                     </li>
-                    <li class="header__navbar-item">
-                        <a href="" class="header__navbar-item-link">
-                            <i class="header__navbar-icon far fa-question-circle"></i>
-                            <!--                                                        Help-->
-                        </a>
-                    </li>
+
                 </ul>
             </div>
         </nav>
