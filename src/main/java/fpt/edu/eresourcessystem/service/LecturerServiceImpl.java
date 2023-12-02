@@ -208,16 +208,14 @@ public class LecturerServiceImpl implements LecturerService {
             List<Account> matchingAccounts = mongoTemplate.find(accountQuery, Account.class);
 
             // Chuyển đổi thành danh sách ID tài khoản
-            List<String> accountIds = matchingAccounts.stream()
-                    .map(Account::getId)
+            List<ObjectId> accountIds = matchingAccounts.stream()
+                    .map(Account -> new ObjectId(Account.getId()))
                     .collect(Collectors.toList());
             // Lọc giảng viên theo ID tài khoản
             if (!accountIds.isEmpty()) {
                 query.addCriteria(Criteria.where("account.id").in(accountIds));
             }
         }
-        System.out.println("Query variable: " + query);
-
         // Truy vấn và trả về danh sách giảng viên
         List<Lecturer> lecturerList = mongoTemplate.find(query, Lecturer.class);
         return lecturerList;
