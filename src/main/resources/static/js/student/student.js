@@ -363,7 +363,13 @@ $(document).ready(function () {
         $(".stu__navbar-favourite-item").removeClass("stu__navbar-active");
         $(this).addClass("stu__navbar-active");
     })
-
+    // Add event listeners to input and textarea
+    $('#noteTitle').on('input', function() {
+        $('#send-edit-note-button').removeClass('disabled');
+    });
+    $('#description').on('input', function() {
+        $('#send-edit-note-button').removeClass('disabled');
+    });
 });
 
 function viewDocumentNote(){
@@ -375,4 +381,14 @@ function viewMyNote(){
     console.log("view document note")
     $("#documentNote").addClass('display-none');
     $("#myNote").removeClass('display-none');
+}
+function submitDeleteMyNote(){
+    var result = window.confirm("Do you want to delete your note?");
+    if (result) {
+        $("#send-edit-note-button").addClass("disabled");
+        $("#send-delete-note-button").addClass("display-none");
+        $("#sending-delete").css("display", "inline");
+        $("#deleteStudentNote").submit();
+        console.log("submited.")
+    }
 }

@@ -40,21 +40,21 @@
                         <div class="document-details-head">
                             <a th:href="@{/student}">Home</a>
                             <span> &gt; <a th:href="@{/student/my_library/my_notes/1}">My notes</a></span>
-                            <span> &gt; Add new notes</span>
+                            <span> &gt; Edit my note</span>
                         </div>
                         <div>
                             <form class="form-student-add-notes" method="post" role="form"
-                                  th:action="@{/student/my_note/student_notes/add}"
+                                  th:action="@{'/student/my_note/student_notes/update'}"
                                   th:object="${studentNote}"
-                                  th:id="add-new-mmy-note" enctype="multipart/form-data">
+                                  th:id="add-form" enctype="multipart/form-data">
                                 <!--Title-->
                                 <label class="student_input-label student_input-title-note"
                                        th:for="noteTitle">Title<span class="require-input">*</span>:</label>
+                                <input type="text" th:id="noteId"
+                                       th:field="*{id}" placeholder="Enter note title" readonly hidden>
                                 <input type="text" th:id="noteTitle"
                                        class="student_input form-control student__input-note"
                                        th:field="*{title}" placeholder="Enter note title" required>
-                                <p class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
-                                <p class="error-input">Title can not be empty.</p>
                                 <!--Description-->
                                 <label class="student_input-label student_input-label-note" th:for="description">Description:</label>
                                 <textarea type="text" th:id="description"
@@ -65,23 +65,33 @@
                                         <label for="editor"
                                                class="student_input-label student_input-label-doc">Content:</label>
                                     </div>
-                                    <p class="error" th:if="${#fields.hasErrors('editorContent')}" th:errors="*{editorContent}"></p>
-                                    <p class="error-input">Content can not be empty.</p>
+
                                     <textarea id="editor"
                                               th:field="*{editorContent}" minlength="1"></textarea>
                                 </div>
-                                <!--                <div id="uploadFileInput" class="mt-2">-->
-                                <!--                  <div class="d-flex justify-content-between lecturer__input-doc">-->
-                                <!--                    <label th:for="file" class="lecturer_input-label-doc">File Upload:</label>-->
-                                <!--                  </div>-->
-                                <!--                  <input type="file" th:name="file" id="fileUploadInput"-->
-                                <!--                         class="file-input form-control student__input-note" style="font-size: 1.3rem">-->
-                                <!--                </div>-->
                                 <div class="stu__save-note">
-                                    <button type="button" class="btn btn-save student_btn-save"
-                                            onclick="submitFormCreateNote()">Add note
+                                    <a type="button" title="Sending" style="display:none;"
+                                       id="sending-new-note" th:studentNote-id="${studentNote.id}"><i
+                                            class="fas fa-spinner fa-spin"></i> Updating...</a>
+                                    <button class="btn-save disabled edit-note"
+                                            type="submit" title="Update" id="send-edit-note-button"
+                                            th:studentNote-id="${studentNote.id}">
+                                        Update
                                     </button>
+
+                                    <button class="btn-danger delete-note" type="button" title="Send"
+                                            id="send-delete-note-button"
+                                            th:studentNote-id="${studentNote.id}"
+                                            onclick="submitDeleteMyNote()">
+                                        Delete
+                                    </button>
+                                    <a type="button" title="Deleting" style="display:none;"
+                                       id="sending-delete" th:studentNote-id="${studentNote.id}"><i
+                                            class="fas fa-spinner fa-spin"></i> Deleting...</a>
                                 </div>
+                            </form>
+                            <form class="display-none" method="post" th:action="@{/student/my_note/student_notes/delete}" id="deleteStudentNote">
+                                <input name="studentNoteId" th:value="${studentNote.id}" readonly hidden>
                             </form>
                         </div>
 
@@ -135,6 +145,10 @@
             editor.editing.view.change(writer => {
                 writer.setStyle('height', '400px', editor.editing.view.document.getRoot());
             });
+            editor.model.document.on('change:data', () => {
+                // Enable the button when the content changes
+                $('#send-edit-note-button').removeClass('disabled');
+            });
             console.log(Array.from(editor.ui.componentFactory.names()));
         })
         .catch(error => {
@@ -145,15 +159,6 @@
     document.querySelector('#submitAllData').addEventListener('click', () => {
         console.log(newEditor.getData());
     });
-    function submitFormCreateNote(){
-        var content = newEditor.getData();
-        var title = $("#noteTitle");
-        if($.trim(title) == "" || $.trim(content) == ''){
-            $(".error-input").css("display", "block");
-        }else {
-            $("#add-new-mmy-note").submit();
-        }
-    }
 </script>
 </body>
 

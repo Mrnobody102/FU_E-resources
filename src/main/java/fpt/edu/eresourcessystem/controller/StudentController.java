@@ -320,6 +320,66 @@ public class StudentController {
         }
     }
 
+    @GetMapping({"/my_note/student_notes/{studentNoteId}", "/my_note/student_notes/{studentNoteId}/updateProcess"})
+    public String viewMyNoteProcess(@PathVariable String studentNoteId, final Model model) {
+        StudentNote studentNote = studentNoteService.findById(studentNoteId);
+        System.out.println(studentNoteId);
+        System.out.println(studentNote);
+        if(null == studentNoteId){
+            return "exception/404";
+
+        }else {
+            model.addAttribute("studentNote", studentNote);
+            System.out.println(studentNote);
+            return "student/library/student_my-note_detail";
+        }
+
+    }
+
+    @PostMapping("/my_note/student_notes/update")
+    @Transactional
+    public String updateMyNote(@ModelAttribute StudentNote studentNote,
+                            BindingResult result) {
+        Student student = getLoggedInStudent();
+        StudentNote checkExist = studentNoteService.findById(studentNote.getId());
+        if (null == student) {
+            return LOGIN_REQUIRED;
+        } else if (null == checkExist || result.hasErrors()) {
+            return "redirect:/student/my_note/student_notes/" + studentNote.getId() + "?error";
+        }
+        checkExist.setTitle(studentNote.getTitle());
+        checkExist.setDescription(studentNote.getDescription());
+        checkExist.setEditorContent(studentNote.getEditorContent());
+        studentNote = studentNoteService.updateStudentNote(checkExist);
+        if (null != studentNote) {
+            // add log
+            addUserLog("/student/my_note/student_notes/" + studentNote.getId()+ "?success");
+            return "redirect:/student/my_note/student_notes/"+ studentNote.getId() + SUCCESS_PARAM;
+        } else {
+            return "redirect:/student/my_note/student_notes/"+ studentNote.getId() + "?error";
+        }
+    }
+
+    @PostMapping("/my_note/student_notes/delete")
+    @Transactional
+    public String deleteMyNote(@RequestParam String studentNoteId) {
+        Student student = getLoggedInStudent();
+        StudentNote checkExist = studentNoteService.findById(studentNoteId);
+        if (null == student) {
+            return LOGIN_REQUIRED;
+        } else if (null == checkExist) {
+            return "redirect:/student/my_note/student_notes/" + studentNoteId + "?error";
+        }
+        boolean checkDeleted = studentNoteService.softDeleteStudentNote(checkExist);
+        if (checkDeleted) {
+            // add log
+            addUserLog("/student/my_note/student_notes/delete/" + studentNoteId+ "?success");
+            return "redirect:/student/my_note/student_notes/add" + SUCCESS_PARAM;
+        } else {
+            return "redirect:/student/my_note/student_notes/" + studentNoteId + "?error";
+        }
+    }
+
     // tối ưu
     @GetMapping("/my_library/my_questions/history")
     public String viewMyQuestions(final Model model) {

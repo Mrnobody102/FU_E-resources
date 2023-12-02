@@ -3,6 +3,8 @@ package fpt.edu.eresourcessystem.service;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import fpt.edu.eresourcessystem.dto.StudentNoteDto;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.model.DocumentNote;
 import fpt.edu.eresourcessystem.model.StudentNote;
 import fpt.edu.eresourcessystem.repository.StudentNoteRepository;
 import org.springframework.data.domain.Page;
@@ -38,12 +40,20 @@ public class StudentNoteServiceImpl implements StudentNoteService{
     }
 
     @Override
+    public StudentNote findById(String studentNoteId) {
+        StudentNote studentNote = studentNoteRepository
+                .findByIdAndDeleteFlg(studentNoteId, CommonEnum.DeleteFlg.PRESERVED);
+        return studentNote;
+    }
+
+    @Override
     public Page<StudentNote> getNoteByStudent(String studentId, int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         Criteria criteria = new Criteria();
         criteria.and("createdDate").exists(true);
 //        criteria.and("createdBy").is(studentId);
         criteria.and("studentId").is(studentId);
+        criteria.and("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED);
         Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("createdDate"))).with(pageable);
         List<StudentNote> results = mongoTemplate.find(query, StudentNote.class);
         Page<StudentNote> page =  PageableExecutionUtils.getPage(results, pageable,
@@ -78,5 +88,41 @@ public class StudentNoteServiceImpl implements StudentNoteService{
             }
             return null;
         }
+    }
+
+    @Override
+    public StudentNote updateStudentNote(StudentNote studentNote) {
+        if (null == studentNote || null==studentNote.getId()){
+            return null;
+        }
+        StudentNote savedStudentNote = studentNoteRepository
+                .findByIdAndDeleteFlg(studentNote.getId(), CommonEnum.DeleteFlg.PRESERVED);
+        if(null != savedStudentNote){
+            StudentNote result =  studentNoteRepository.save(studentNote);
+            return result;
+        }
+        return null;
+    }
+
+    @Override
+    public boolean softDeleteStudentNote(StudentNote studentNote) {
+        StudentNote check = studentNoteRepository.findByIdAndDeleteFlg(studentNote.getId(), CommonEnum.DeleteFlg.PRESERVED);
+        if(null != check){
+            // SOFT DELETE
+            studentNote.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
+            studentNoteRepository.save(studentNote);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteStudentNote(StudentNote studentNote) {
+        StudentNote check = studentNoteRepository.findByIdAndDeleteFlg(studentNote.getId(), CommonEnum.DeleteFlg.PRESERVED);
+        if(null != check){
+            studentNoteRepository.delete(studentNote);
+            return true;
+        }
+        return false;
     }
 }
