@@ -365,3 +365,14 @@ $(document).ready(function () {
     })
 
 });
+
+function viewDocumentNote(){
+    console.log("view my note")
+    $("#documentNote").removeClass('display-none');
+    $("#myNote").addClass('display-none');
+}
+function viewMyNote(){
+    console.log("view document note")
+    $("#documentNote").addClass('display-none');
+    $("#myNote").removeClass('display-none');
+}

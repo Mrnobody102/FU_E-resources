@@ -16,6 +16,7 @@ public class DocumentNoteResponseDto {
 
     private String content;
     private String docId;
+    private String documentTitle;
 
     // Only use when response, no need in requests
     private String createdBy;

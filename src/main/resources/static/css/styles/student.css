@@ -187,7 +187,10 @@
     margin-left: 2rem;
 }
 .list-course-content-not-found, .list-content-not-found {
-    margin: 2rem;
+    margin-top: 1rem;
+    margin-left: 3rem;
+    font-size: var(--medium-font-size);
+    font-weight: var(--font-medium);
 }
 .stu__navbar-favourite-list,
 .stu__navbar-view-doc-list{

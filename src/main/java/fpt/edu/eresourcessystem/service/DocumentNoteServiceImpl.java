@@ -4,7 +4,10 @@ import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.DocumentNote;
 import fpt.edu.eresourcessystem.repository.DocumentNoteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,7 +74,8 @@ public class DocumentNoteServiceImpl implements DocumentNoteService {
 
     @Override
     public List<DocumentNote> findByStudent(String studentId) {
-        List<DocumentNote> documentNotes = documentNoteRepository.findByStudentId(studentId);
-        return documentNotes;
+        Criteria criteria = Criteria.where("studentId").is(studentId).and("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED);
+        Query query = new Query(criteria).with(Sort.by(Sort.Direction.DESC, "lastModifiedDate"));
+        return mongoTemplate.find(query, DocumentNote.class);
     }
 }

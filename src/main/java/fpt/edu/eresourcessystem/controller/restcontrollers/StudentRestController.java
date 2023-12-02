@@ -208,6 +208,7 @@ public class StudentRestController {
         DocumentNote documentNote = new DocumentNote();
         documentNote.setStudentId(student.getId());
         documentNote.setDocId(documentId);
+        documentNote.setDocumentTitle(document.getTitle());
         documentNote.setNoteContent(noteContent);
         DocumentNote result = documentNoteService.addDocumentNote(documentNote);
         if (null != result) {

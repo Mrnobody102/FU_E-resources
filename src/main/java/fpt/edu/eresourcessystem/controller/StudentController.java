@@ -275,6 +275,8 @@ public class StudentController {
         if (student != null) {
             page = studentNoteService.getNoteByStudent(student.getId(), pageIndex, PAGE_SIZE);
         }
+        List<DocumentNote> studentDocumentNotes = documentNoteService.findByStudent(student.getId());
+        System.out.println(studentDocumentNotes.size());
         if (null != page) {
             List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
             model.addAttribute("pages", pages);
@@ -284,6 +286,8 @@ public class StudentController {
             model.addAttribute("roles", AccountEnum.Role.values());
             model.addAttribute("currentPage", pageIndex);
             model.addAttribute("search", search);
+            // document notes model
+            model.addAttribute("studentDocumentNotes", studentDocumentNotes);
         }
         return "student/library/student_my-notes";
     }
