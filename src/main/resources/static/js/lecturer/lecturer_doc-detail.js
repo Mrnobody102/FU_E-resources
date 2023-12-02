@@ -44,7 +44,7 @@ function submitFormReplyQuestion(param) {
                     // date and link
                     html+="<p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data.lastModifiedDate + "</span> " +
                         "                     <a class=\"lec__edit-reply view-reply-link-item  edit-reply\" reply-id=\"" + data.answerId + "\">Edit</a> | " +
-                        "                     <a class=\"lec__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data.answerId + "\"onclick=deleteReply(\"" + data.answerId + "\")>Delete</a>\n" +
+                        "                     <a class=\"lec__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data.answerId + "\" onclick=deleteReply(\"" + data.answerId + "\",\"" + data.questionId + "\")>Delete</a>\n" +
                         "                     </div>";
                 } else {
                     html = "<div class=\"reply-content border-bottom\">\n" +
@@ -119,7 +119,7 @@ function viewMoreReply(param) {
                     // date and link
                     html+="<p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
                         "                     <a class=\"lec__edit-reply view-reply-link-item  edit-reply\" reply-id=\"" + data[i].answerId + "\">Edit</a> | " +
-                        "                     <a class=\"lec__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data[i].answerId + "\"onclick=deleteReply(\"" + data[i].answerId + "\")>Delete</a>\n" +
+                        "                     <a class=\"lec__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data[i].answerId + "\" onclick=deleteReply(\"" + data[i].answerId + "\",\"" + data[i].questionId + "\")>Delete</a>\n" +
                         "                     </div>";
                 } else {
                     html += "<div class=\"reply-content  border-bottom\"  id=\"" + data[i].answerId + "\">\n" +
@@ -183,7 +183,7 @@ function existFormEditReply(param) {
     $('#update-reply-error' + param).removeClass('error')
 }
 
-function deleteReply(param) {
+function deleteReply(param, param2) {
     console.log(param)
     var result = window.confirm("Do you want to delete your reply?");
     if (result) {
@@ -195,7 +195,7 @@ function deleteReply(param) {
                 $("#" + param).html("");
                 $("#" + param).css("display", "none");
                 // change total of answer
-                var totalReply = $('#number-reply-' + param).text();
+                var totalReply = $('#number-reply-' + param2).text();
                 var intValue = parseInt(totalReply);
 
                 if (!isNaN(intValue)) {
@@ -203,9 +203,9 @@ function deleteReply(param) {
                     var newValue = intValue - 1;
 
                     // Set the new value as the text of the span
-                    $('#number-reply-' + param).text(newValue);
+                    $('#number-reply-' + param2).text(newValue);
                 } else {
-                    $('#number-reply-' + param).text("");
+                    $('#number-reply-' + param2).text("");
                 }
             },
             error: function (xhr) {

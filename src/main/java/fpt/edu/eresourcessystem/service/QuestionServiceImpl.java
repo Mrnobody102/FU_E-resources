@@ -77,8 +77,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<QuestionResponseDto> findRepliedQuestionForLecturer(String lecturerEmail) {
+        QuestionAnswerEnum.Status [] statuses = {QuestionAnswerEnum.Status.REPLIED,QuestionAnswerEnum.Status.READ, QuestionAnswerEnum.Status.UNREAD};
         Query query = new Query(Criteria.where("lecturer").is(lecturerEmail)
-                .and("status").is(QuestionAnswerEnum.Status.REPLIED));
+                .and("status").in(statuses));
         List<Question> questions = mongoTemplate.find(query, Question.class);
         List<QuestionResponseDto> responseList = questions.stream()
                 .filter(entity -> CommonEnum.DeleteFlg.PRESERVED.equals(entity.getDeleteFlg()))

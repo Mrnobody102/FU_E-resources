@@ -29,7 +29,7 @@ function viewQuestionWaiting() {
                 // Handle errors
             }
         });
-    } else $("#stu__view-waiting-for-reply-question").css("display", "block");
+    } else $("#lec__view-waiting-for-reply-question").css("display", "block");
 
 }
 function viewQuestionReplied(){

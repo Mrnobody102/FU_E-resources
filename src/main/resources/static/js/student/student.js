@@ -25,7 +25,7 @@ function viewQuestionWaiting() {
                         "                    <a class=\"stu__question-title\">You asked on"+ data[i].documentTitle+"</a>\n" +
                         "                    <p class=\"student-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
                         "                        <a class=\"link-view-detailed\"\n" +
-                        "                              href=\"/student/documents/" + data[i].documentId + "#question\">view <i\n" +
+                        "                              href=\"/student/documents/" + data[i].documentId + "#"+ data[i].questionId +"\">view <i\n" +
                         "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
                         "                    </div>";
 
@@ -58,10 +58,10 @@ function viewNewReplyQuestion() {
                 for (let i = 0; i < data.length; i++) {
                     html +="<div class=stu__question-content-wrapper>\n" +
                         "                        <span class=\"stu__question-content stu__question-date\">"+data[i].lastModifiedDate+"</span>\n" +
-                        "                    <a class=\"stu__question-title\">You asked on"+ data[i].documentTitle+"</a>\n" +
+                        "                    <a class=\"stu__question-title\">New reply for your question at "+ data[i].documentTitle+"</a>\n" +
                         "                    <p class=\"student-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
                         "                        <a class=\"link-view-detailed\"\n" +
-                        "                              href=\"/student/documents/" + data[i].documentId + "#question\">view <i\n" +
+                        "                              href=\"/student/documents/" + data[i].documentId + "#"+ data[i].questionId +"\">view <i\n" +
                         "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
                         "                    </div>";
                 }

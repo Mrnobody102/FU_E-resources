@@ -233,7 +233,7 @@ function submitFormReplyQuestion(param) {
                     // date and link
                     html+= "<p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data.lastModifiedDate + "</span> " +
                         "                     <a class=\"stu__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data.answerId + "\">Edit</a> |" +
-                        "                     <a class=\"stu__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data.answerId + "\"onclick=deleteReply(\"" + data.answerId + "\")>Delete</a>\n" +
+                        "                     <a class=\"stu__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data.answerId + "\" onclick=deleteReply(\"" + data.answerId + "\",\"" + data.questionId + "\")>Delete</a>\n" +
                         "                     </div>";
                 }
                 $("#list-reply-content-" + param).append(html);
@@ -308,7 +308,7 @@ function viewMoreReply(param) {
                     // date and link
                     html+= "<p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
                         "                     <a class=\"stu__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data[i].answerId + "\">Edit</a> |" +
-                        "                     <a class=\"stu__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data[i].answerId + "\"onclick=deleteReply(\"" + data[i].answerId + "\")>Delete</a>\n" +
+                        "                     <a class=\"stu__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data[i].answerId + "\" onclick=deleteReply(\"" + data[i].answerId + "\",\"" + data[i].questionId + "\")>Delete</a>\n" +
                         "                     </div>";
                 }
 
@@ -499,7 +499,7 @@ function existFormEditReply(param) {
     $('#update-reply-error' + param).removeClass('error')
 }
 
-function deleteReply(param) {
+function deleteReply(param, param2) {
     var result = window.confirm("Do you want to delete your reply?");
     if (result) {
         $.ajax({
@@ -510,7 +510,7 @@ function deleteReply(param) {
                 $("#" + param).html("");
                 $("#" + param).css("display", "none");
                 // change total of answer
-                var totalReply = $('#number-reply-' + param).text();
+                var totalReply = $('#number-reply-' + param2).text();
                 var intValue = parseInt(totalReply);
 
                 if (!isNaN(intValue)) {
@@ -518,9 +518,9 @@ function deleteReply(param) {
                     var newValue = intValue - 1;
 
                     // Set the new value as the text of the span
-                    $('#number-reply-' + param).text(newValue);
+                    $('#number-reply-' + param2).text(newValue);
                 } else {
-                    $('#number-reply-' + param).text("");
+                    $('#number-reply-' + param2).text("");
                 }
                 },
             error: function (xhr) {
