@@ -15,6 +15,7 @@ import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
@@ -36,7 +37,7 @@ import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
 import static fpt.edu.eresourcessystem.constants.UrlConstants.*;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/student")
 public class StudentController {
     private final AccountService accountService;

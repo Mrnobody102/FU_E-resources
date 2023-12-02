@@ -96,17 +96,29 @@
                                     </div>
                                 </div>
 
+                                <label class="lecturer_input-label-doc" th:for="description">Add document method:</label>
+                                <div>
+                                    <input class="btn-check" type="radio" th:field="*{displayWithFile}" th:name="displayWithFile"
+                                           value="false" id="displayContentType1" autocomplete="off">
+                                    <label class="btn btn-secondary" for="displayContentType1">Create new content
+                                    </label>
+                                    <input class="btn-check" type="radio" th:field="*{displayWithFile}" th:name="displayWithFile"
+                                           value="true" id="displayContentType2" checked="checked" autocomplete="off">
+                                    <label class="btn btn-secondary" for="displayContentType2">Upload available file
+                                    </label>
+                                </div>
+
                                 <div id="editorWrapper">
                                     <div class="d-flex justify-content-between">
                                         <label for="editor" class="lecturer_input-label-doc">Content:</label>
                                     </div>
 
                                     <textarea id="editor"
-                                              th:field="*{editorContent}"></textarea>
+                                              th:field="*{content}"></textarea>
                                 </div>
 
 
-                                <div id="uploadFileInput" style="margin-top: 2rem">
+                                <div id="uploadFileInput" style="display: none; margin-top: 1rem">
                                     <div class="d-flex justify-content-between lecturer__input-doc">
                                         <label th:for="file" class="lecturer_input-label-doc">File Upload:</label>
 
@@ -120,12 +132,6 @@
                                     <input type="file" th:name="file" id="fileUploadInput"
                                            class="file-input form-control lecturer__input-doc" style="font-size: 1.3rem"
                                     >
-                                    <div class="mt-3" id="isDisplayWithFile" style="display: none">
-                                        <input type="checkbox" th:name="displayWithFile" th:field="*{displayWithFile}"
-                                               th:checked="${document.displayWithFile}">
-                                        <label th:for="displayWithFile"> Display lesson content as FILE CONTENT instead
-                                            of edited content</label>
-                                    </div>
                                     <div class="mt-3">
                                         <div id="previewContainer" class="form-control">File will be previewed here.
                                         </div>
@@ -208,6 +214,17 @@
                 selectResource.val(inputValue);
             }
         }
+    });
+
+    // Type of content
+    $('#displayContentType1').click(function () {
+        $('#editorWrapper').fadeIn();
+        $('#uploadFileInput').fadeOut();
+    });
+
+    $('#displayContentType2').click(function () {
+        $('#editorWrapper').fadeOut();
+        $('#uploadFileInput').fadeIn();
     });
 
     // RESPONSE STATUS

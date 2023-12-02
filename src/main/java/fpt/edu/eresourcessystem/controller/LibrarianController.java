@@ -12,6 +12,7 @@ import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
 import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/librarian")
 public class LibrarianController {
 
@@ -47,9 +48,7 @@ public class LibrarianController {
     private final LecturerService lecturerService;
     private final StudentService studentService;
     private final CourseService courseService;
-
     private final LecturerCourseService lecturerCourseService;
-
     private final TrainingTypeService trainingTypeService;
 
     private Librarian getLoggedInLibrarian() {

@@ -2,7 +2,8 @@
 ClassicEditor
     .create(document.querySelector('#editor'), {
         ckfinder: {
-            uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Images&responseType=json'
+            uploadUrl: '/api/lecturer/upload_image_editor',
+            withCredentials: true
         },
     })
     .then(editor => {

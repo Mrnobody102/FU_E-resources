@@ -3,7 +3,6 @@ package fpt.edu.eresourcessystem.controller;
 import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.FeedbackDto;
-import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -11,10 +10,9 @@ import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.service.s3.StorageService;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.apache.tika.exception.TikaException;
 import org.bson.types.ObjectId;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +23,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -33,9 +32,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
+import static fpt.edu.eresourcessystem.utils.CommonUtils.extractTextFromFile;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/lecturer")
 public class LecturerController {
     private final GlobalControllerAdvice globalControllerAdvice;
@@ -335,7 +335,7 @@ public class LecturerController {
             // get list question
             List<Question> questions = questionService.findByDocId(document);
 
-            if (document.isDisplayWithFile()) {
+            if (document.isDisplayWithFile() == true) {
                 String data;
                 if(document.getCloudFileLink() != null) {
                     data = document.getCloudFileLink();
@@ -385,7 +385,7 @@ public class LecturerController {
     public String addDocumentProcess(@ModelAttribute DocumentDto documentDTO,
                                      @RequestParam(value = "topicId") String topicId,
                                      @RequestParam(value = "respondResourceType") String respondResourceType,
-                                     @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+                                     @RequestParam(value = "file", required = false) MultipartFile file) throws IOException, TikaException, SAXException {
         // set topic vào document
         Topic topic = topicService.findById(topicId);
         documentDTO.setTopic(topic);
@@ -409,26 +409,32 @@ public class LecturerController {
             documentDTO.setResourceType(existedResourceType);
         }
 
-        // Xử lý file
-        // thêm check file trước khi add
         String id = "fileNotFound";
-        String message = "";
-        if (file != null && !file.isEmpty()) {
-            documentDTO.setFileName(file.getOriginalFilename());
-            if(file.getSize() < 1048576) {
-                id = documentService.addFile(file);
-            } else {
-                id = "uploadToCloud";
-                try {
-                    String link = storageService.uploadFile(file);
-                    documentDTO.setCloudFileLink(link);
-                    String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-                    String fileExtension = StringUtils.getFilenameExtension(filename);
-                    documentDTO.setSuffix(fileExtension);
-                } catch (Exception e) {
-                    message = "Can not upload file to server! Error: " + e.getMessage();
-                    return "redirect:/lecturer/topics/" + topicId + "/documents/add?error";
+        if(String.valueOf(documentDTO.isDisplayWithFile()).equalsIgnoreCase("true")) {
+            documentDTO.setDisplayWithFile(true);
+            // Xử lý file
+            // thêm check file trước khi add
+            String message = "";
+            if (file != null && !file.isEmpty() && file.getSize() < 104857600) {
+                documentDTO.setContent(extractTextFromFile(file.getInputStream()));
+                if(file.getSize() < 1048576) {
+                    id = documentService.addFile(file);
+                } else {
+                    id = "uploadToCloud";
+                    try {
+                        String link = storageService.uploadFile(file);
+                        documentDTO.setCloudFileLink(link);
+                        String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                        String fileExtension = StringUtils.getFilenameExtension(filename);
+                        documentDTO.setFileName(filename);
+                        documentDTO.setSuffix(fileExtension);
+                    } catch (Exception e) {
+                        message = "Can not upload file to server! Error: " + e.getMessage();
+                        return "redirect:/lecturer/topics/" + topicId + "/documents/add?error";
+                    }
                 }
+            } else {
+                documentDTO.setDisplayWithFile(false);
             }
         }
         Document document = documentService.addDocument(documentDTO, id);
@@ -444,9 +450,6 @@ public class LecturerController {
 
     @GetMapping({"/documents/{documentId}/update"})
     public String updateDocumentProcess(@PathVariable(required = false) String documentId, final Model model) throws IOException {
-        if (null == documentId) {
-            documentId = "";
-        }
         Document document = documentService.findById(documentId);
         if (null == document) {
             return "redirect:lecturer/documents/update?error";
@@ -466,50 +469,49 @@ public class LecturerController {
     @PostMapping("/documents/update")
     public String updateDocument(@ModelAttribute DocumentDto document,
                                  @RequestParam(value = "deleteCurrentFile",  required = false) String deleteCurrentFile,
-                                 @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+                                 @RequestParam(value = "file", required = false) MultipartFile file) throws IOException, TikaException, SAXException {
         Document checkExist = documentService.findById(document.getId());
         if (null == checkExist) {
             return "redirect:/lecturer/documents/" + document.getId() + "/update?error";
         } else {
             checkExist.setTitle(document.getTitle());
             checkExist.setDescription(document.getDescription());
-            checkExist.setEditorContent(document.getEditorContent());
             String id = "fileNotFound";
             String message = "";
-            if (file != null && !file.isEmpty()) {
-                checkExist.setFileName(file.getOriginalFilename());
-                if(file.getSize() < 1048576) {
-                    checkExist.setCloudFileLink(null);
-                    id = documentService.addFile(file);
-                } else {
-                    id = "uploadToCloud";
-                    try {
-                        String link = storageService.uploadFile(file);
-                        checkExist.setCloudFileLink(link);
-                        String filename = System.currentTimeMillis() + "_" +file.getOriginalFilename();
-                        String fileExtension = StringUtils.getFilenameExtension(filename);
-                        checkExist.setFileName(filename);
-                        checkExist.setSuffix(fileExtension);
-                        checkExist.setDocType(DocumentEnum.DocumentFormat.getDocType(fileExtension));
-                    } catch (Exception e) {
-                        message = "Can not upload file to server! Error: " + e.getMessage();
-                        return "redirect:/lecturer/topics/" + document.getTopic().getId() + "/documents/update?error";
+            if(checkExist.isDisplayWithFile() == false){
+                checkExist.setContent(document.getContent());
+                documentService.updateDocument(checkExist, null, id);
+            } else {
+                if (file != null && !file.isEmpty() && file.getSize() < 104857600) {
+                    checkExist.setFileName(file.getOriginalFilename());
+                    checkExist.setContent(extractTextFromFile(file.getInputStream()));
+                    if(file.getSize() < 1048576) {
+                        checkExist.setCloudFileLink(null);
+                        id = documentService.addFile(file);
+                    } else {
+                        id = "uploadToCloud";
+                        try {
+                            String link = storageService.uploadFile(file);
+                            checkExist.setCloudFileLink(link);
+                            String filename = System.currentTimeMillis() + "_" +file.getOriginalFilename();
+                            String fileExtension = StringUtils.getFilenameExtension(filename);
+                            checkExist.setFileName(filename);
+                            checkExist.setSuffix(fileExtension);
+                            checkExist.setDocType(DocumentEnum.DocumentFormat.getDocType(fileExtension));
+                        } catch (Exception e) {
+                            message = "Can not upload file to server! Error: " + e.getMessage();
+                            return "redirect:/lecturer/topics/" + document.getTopic().getId() + "/documents/update?error";
+                        }
                     }
                 }
-            }
-            if(deleteCurrentFile != null && deleteCurrentFile.equals("on")) {
-                checkExist.setDisplayWithFile(false);
-                checkExist.setFileName(null);
-                if(checkExist.getCloudFileLink() != null) {
+                if(checkExist.getCloudFileLink() != null && checkExist.getContentId() == null) {
                     storageService.deleteFile(checkExist.getFileName());
                     documentService.updateDocument(checkExist, null, id);
                 } else {
                     documentService.updateDocument(checkExist, String.valueOf(checkExist.getContentId()), id);
                 }
-            } else {
-                checkExist.setDisplayWithFile(true);
-                documentService.updateDocument(checkExist, null, id);
             }
+
             return "redirect:/lecturer/documents/" + document.getId() + "/update?success";
         }
     }

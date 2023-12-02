@@ -1,7 +1,6 @@
 // FILE VALIDATIONS
 let fileInput = document.getElementById('fileUploadInput');
 let cancelButton = document.getElementById('cancelUploadButton');
-let isDisplayWithFile = document.getElementById('isDisplayWithFile');
 
 let file = null;
 let isUploading = false;
@@ -18,25 +17,18 @@ cancelButton.addEventListener('click', function () {
         file = null;
         fileInput.value = '';
         document.getElementById('previewContainer').innerHTML = 'File will be previewed here.';
-        isDisplayWithFile.style.display = 'block';
     } else {
         console.log('Không có tệp tin đang được tải lên để hủy');
     }
 });
 
-if(fileInput.files[0] == null ) {
-    isDisplayWithFile.style.display = 'none';
-}
-
 fileInput.addEventListener('change', function (event) {
-    console.log(isDisplayWithFile);
     isUploading = true;
     file = event.target.files[0];
     if(file == null) {
         isUploading = false;
         fileInput.value = '';
         document.getElementById('previewContainer').innerHTML = 'File will be previewed here.';
-        isDisplayWithFile.style.display = 'block';
     }
     var fileSizeInMB = file.size / (1024 * 1024); // Chuyển đổi kích thước tệp tin thành Megabyte
     if (fileSizeInMB > 100) {
@@ -64,18 +56,15 @@ fileInput.addEventListener('change', function (event) {
                     preview.src = e.target.result;
                     preview.style.maxWidth = '100%';
                     preview.style.maxHeight = '400px';
-                    isDisplayWithFile.style.display = 'block';
                 } else if (file.type.startsWith('video/')) {
                     preview = document.createElement('video');
                     preview.src = e.target.result;
                     preview.controls = true;
                     preview.style.maxWidth = '100%';
-                    isDisplayWithFile.style.display = 'block';
                 } else if (file.type.startsWith('audio/')) {
                     preview = document.createElement('audio');
                     preview.src = e.target.result;
                     preview.controls = true;
-                    isDisplayWithFile.style.display = 'block';
                 } else if (file.type === 'application/pdf') {
                     if (fileSizeInMB < 1) {
                         preview = document.createElement('embed');
@@ -86,11 +75,9 @@ fileInput.addEventListener('change', function (event) {
                         preview = document.createElement('p');
                         preview.textContent = 'PDF file larger than 1MB will not be previewed.';
                     }
-                    isDisplayWithFile.style.display = 'block';
                 } else {
                     preview = document.createElement('span');
                     preview.textContent = 'This file cannot be previewed.';
-                    isDisplayWithFile.style.display = 'none';
                 }
                 document.getElementById('previewContainer').appendChild(preview);
             }

@@ -14,6 +14,7 @@ import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import fpt.edu.eresourcessystem.repository.DocumentRepository;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsDocumentRepository;
 import org.apache.commons.io.IOUtils;
+import org.apache.tika.exception.TikaException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,11 +29,14 @@ import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static fpt.edu.eresourcessystem.utils.CommonUtils.extractTextFromFile;
 
 @Service("documentService")
 public class DocumentServiceImpl implements DocumentService {
@@ -139,7 +143,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 
     @Override
-    public Document addDocument(DocumentDto documentDTO, String id) throws IOException {
+    public Document addDocument(DocumentDto documentDTO, String id) throws IOException, TikaException, SAXException {
         //search file
         if (null == documentDTO.getId()) {
             if (id.equalsIgnoreCase("fileNotFound")) {

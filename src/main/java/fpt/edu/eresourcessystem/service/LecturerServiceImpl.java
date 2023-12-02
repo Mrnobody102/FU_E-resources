@@ -130,7 +130,7 @@ public class LecturerServiceImpl implements LecturerService {
         // Sort by the "time" in descending order to get the most recent documents
         criteria.andOperator(
                 criteria.where("lecturer.id").is(lecturer.getId()),
-                status.equalsIgnoreCase("ALL") ? new Criteria() : criteria.where("status").is(status),
+                status.equalsIgnoreCase("ALL") ? new Criteria() : criteria.where("status").is(status.toUpperCase()),
                 criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
         );
         Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("lecturerCourseIds.createdDate")));
