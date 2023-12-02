@@ -88,7 +88,7 @@ public class LecturerRestController {
         if(null!= answers){
             for (Answer answer: answers) {
                 answerResponseDtos.add(new AnswerResponseDto(answer));
-                System.out.println(new AnswerResponseDto(answer));
+//                System.out.println(new AnswerResponseDto(answer));
             }
             ResponseEntity<List<AnswerResponseDto>> responseEntity = new ResponseEntity<>(answerResponseDtos, HttpStatus.OK);
             // add log
@@ -160,6 +160,10 @@ public class LecturerRestController {
             if (check) {
                 // add log
                 addUserLog("/api/lecturer/my_question/replies/"+answerId+"/delete");
+                //chage list answer
+                Question question = questionService.findById(answer.getQuestion().getId());
+                question.getAnswers().remove(answer);
+                questionService.updateQuestion(question);
                 return new ResponseEntity(HttpStatus.OK);
             } else {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);

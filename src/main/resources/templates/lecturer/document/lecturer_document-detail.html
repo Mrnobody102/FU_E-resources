@@ -183,8 +183,7 @@
                                                    onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>
 
                                             </p>
-                                            <p th:if="${question.answers.size()} > 0"
-                                               th:id="'view-more-reply-'+${question.getId()}"
+                                            <p th:id="'view-more-reply-'+${question.getId()}"
                                                th:question-id="${question.id}"
                                                onclick="viewMoreReply(this.getAttribute('question-id'))"
                                                class="view-question-reply lec__question-content">View all <span
@@ -239,8 +238,7 @@
                                                                 th:id="'send-reply-button-'+${question.getId()}"
                                                                 th:question-id="${question.id}"
                                                                 onclick="submitFormReplyQuestion(this.getAttribute('question-id'))"
-                                                                class="btn-save"><i class="fa-solid fa-paper-plane">
-                                                            Send</i></button>
+                                                                class="btn-save"><i class="fa-solid fa-paper-plane"></i>Send</button>
                                                     </div>
                                                 </form>
                                             </div>

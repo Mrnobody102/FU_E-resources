@@ -96,7 +96,6 @@ public class StudentRestController {
         questionDTO.setDocumentId(document);
         Question question = questionService.addQuestion(new Question(questionDTO));
         if (null != question) {
-//            System.out.println(question);
             // add log
             addUserLog("/api/student/question/add" + question.getId());
             QuestionResponseDto questionResponseDTO = new QuestionResponseDto(question);
@@ -122,9 +121,11 @@ public class StudentRestController {
         answerDTO.setDocumentId(document);
         Answer answer = answerService.addAnswer(new Answer(answerDTO));
         if (null != answer) {
-//            System.out.println(question);
             // update list answer of the question
             question.getAnswers().add(answer);
+            if(question.getStatus() != QuestionAnswerEnum.Status.CREATED){
+                question.setStatus(QuestionAnswerEnum.Status.CREATED);
+            }
             questionService.updateQuestion(question);
             // add log
             addUserLog("/api/student/answer/add/" + answer.getId());
@@ -200,7 +201,6 @@ public class StudentRestController {
     public ResponseEntity<DocumentNote> addNewNote(@RequestParam String noteContent,
                                                    @PathVariable String documentId) {
         Student student = getLoggedInStudent();
-        System.out.println(noteContent);
         Document document = documentService.findById(documentId);
         if (null == student || null == noteContent || "".equals(noteContent.trim()) || null == document) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -213,7 +213,6 @@ public class StudentRestController {
         if (null != result) {
             // add log
             addUserLog("/api/student/document_note/add/" + documentId);
-            System.out.println(result);
             return new ResponseEntity<>(result, HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -225,7 +224,6 @@ public class StudentRestController {
     public ResponseEntity<DocumentNote> updateNoteDocument(@RequestParam String noteContent,
                                                            @PathVariable String documentId) {
         Student student = getLoggedInStudent();
-        System.out.println(noteContent);
         Document document = documentService.findById(documentId);
         if (null == student || null == noteContent || "".equals(noteContent.trim()) || null == document) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -245,7 +243,6 @@ public class StudentRestController {
 
     @GetMapping(value = "/documents/get_by_topic/{topicId}", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<DocumentResponseDto>> getDocumentOfTopic(@PathVariable String topicId) {
-        System.out.println(topicId);
         Topic topic = topicService.findById(topicId);
         if (null == topic) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -255,7 +252,6 @@ public class StudentRestController {
             // add log
             addUserLog("/api/student/documents/get_by_topic/" + topicId);
             ResponseEntity<List<DocumentResponseDto>> responseEntity = new ResponseEntity<>(documents, HttpStatus.OK);
-            System.out.println(documents);
             return responseEntity;
         } else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -281,7 +277,6 @@ public class StudentRestController {
     @Transactional
     public ResponseEntity<QuestionResponseDto> updateQuestion(@PathVariable String questionId,
                                                               @RequestParam String questionContent) {
-        System.out.println(questionContent);
         Question question = questionService.findById(questionId);
         if (null == question) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -289,7 +284,6 @@ public class StudentRestController {
             if (null != questionContent && "" != questionContent.trim()) {
                 question.setContent(questionContent);
                 question = questionService.updateQuestion(question);
-                System.out.println(question.getContent());
                 // add log
                 addUserLog("/api/student/my_question/"+questionId+"/update");
                 ResponseEntity<QuestionResponseDto> responseEntity = new ResponseEntity<>(new QuestionResponseDto(question), HttpStatus.OK);
@@ -370,6 +364,10 @@ public class StudentRestController {
             if (check) {
                 // add log
                 addUserLog("/api/student/my_question/replies/"+answerId+"/delete");
+                //chage list answer
+                Question question = questionService.findById(answer.getQuestion().getId());
+                question.getAnswers().remove(answer);
+                questionService.updateQuestion(question);
                 return new ResponseEntity(HttpStatus.OK);
             } else {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);

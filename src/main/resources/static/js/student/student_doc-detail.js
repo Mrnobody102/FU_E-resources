@@ -211,14 +211,15 @@ function submitFormReplyQuestion(param) {
                         "                     <a class=\"stu__like-reply view-question-link-item\" reply-id=\"" + data.answerId + "\"onclick=likeReply(\"" + data.answerId + "\")><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
                         "                     </div>";
                 } else {
+                    console.log(data.studentName)
                     // reply content
                     html = "<div class=\"reply-content border-bottom\"  id=\"" + data.answerId + "\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data.studentName + "(You)</span></h6>\n" +
-                        "                     <p class=\"stu__question-content\" id=\"reply-content-"+ data.answerId +"\"></p></p>\n";
+                        "                     <p class=\"stu__question-content\" id=\"reply-content-"+ data.answerId +"\"></p>" + data.answerContent + "</p>\n";
                     // edit section
                     html+="<div class=\"edit-reply-div\" id=\"update-reply"+ data.answerId+ "\"style=\"display: none\">\n" +
                         "                                                    <label id=\"update-reply-error"+ data.answerId+"\" class=\"display-none\">Please enter something to update.</label>\n" +
-                        "                                                    <input class=\"update-reply\" value=\"" + data.answerContent+ "\" id=\"update-reply-content-"+ data.answerId +"\">\n" +
+                        "                                                    <input class=\"update-reply\" value=\"" + data.answerContent + "\" id=\"update-reply-content-"+ data.answerId +"\">\n" +
                         "                                                    <button id=\"close-update-reply-" + data.answerId+ "\" type=\"button\" title=\"exist\"\n" +
                         "                                                            reply-id=\""+ data.answerId+"\" onclick=existFormEditReply(\"" +data.answerId+"\")\n" +
                         "                                                            class=\"exist-form-edit-reply btn-danger\"><i class=\"fa-solid fa-xmark\"></i> Close</button> " +
@@ -232,7 +233,7 @@ function submitFormReplyQuestion(param) {
                     // date and link
                     html+= "<p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data.lastModifiedDate + "</span> " +
                         "                     <a class=\"stu__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data.answerId + "\">Edit</a> |" +
-                        "                     <a class=\"stu__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data.answerId + "\"onclick=deleteReply(\"" + data.answerId + "\")>Delete</a>\n" +
+                        "                     <a class=\"stu__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data.answerId + "\" onclick=deleteReply(\"" + data.answerId + "\",\"" + data.questionId + "\")>Delete</a>\n" +
                         "                     </div>";
                 }
                 $("#list-reply-content-" + param).append(html);
@@ -307,7 +308,7 @@ function viewMoreReply(param) {
                     // date and link
                     html+= "<p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
                         "                     <a class=\"stu__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data[i].answerId + "\">Edit</a> |" +
-                        "                     <a class=\"stu__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data[i].answerId + "\"onclick=deleteReply(\"" + data[i].answerId + "\")>Delete</a>\n" +
+                        "                     <a class=\"stu__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data[i].answerId + "\" onclick=deleteReply(\"" + data[i].answerId + "\",\"" + data[i].questionId + "\")>Delete</a>\n" +
                         "                     </div>";
                 }
 
@@ -475,10 +476,10 @@ function submitFormEditReply(param) {
             data: {'answerContent': content},
             dataType: 'json',
             success: function (data) {
-                console.log(data.questionContent);
+                console.log(data.answerContent);
                 $("#update-reply" + param).css("display", "none");
-                $("#update-reply-content-" + param).val(data.questionContent);
-                $("#reply-content-" + param).html(data.questionContent);
+                $("#update-reply-content-" + param).val(data.answerContent);
+                $("#reply-content-" + param).html(data.answerContent);
                 $("#reply-content-" + param).css("display", "block");
                 $('#sending-update-reply' + param).css("display", "none");
                 $("#send-update-reply-" + param).css("display", 'inline');
@@ -498,7 +499,7 @@ function existFormEditReply(param) {
     $('#update-reply-error' + param).removeClass('error')
 }
 
-function deleteReply(param) {
+function deleteReply(param, param2) {
     var result = window.confirm("Do you want to delete your reply?");
     if (result) {
         $.ajax({
@@ -508,7 +509,20 @@ function deleteReply(param) {
                 console.log('success-delete-reply' + param);
                 $("#" + param).html("");
                 $("#" + param).css("display", "none");
-            },
+                // change total of answer
+                var totalReply = $('#number-reply-' + param2).text();
+                var intValue = parseInt(totalReply);
+
+                if (!isNaN(intValue)) {
+                    // Increment the integer by 1
+                    var newValue = intValue - 1;
+
+                    // Set the new value as the text of the span
+                    $('#number-reply-' + param2).text(newValue);
+                } else {
+                    $('#number-reply-' + param2).text("");
+                }
+                },
             error: function (xhr) {
                 console.log('error-delete-reply')
             }
