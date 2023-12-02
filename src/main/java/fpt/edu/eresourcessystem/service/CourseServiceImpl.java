@@ -393,5 +393,10 @@ public class CourseServiceImpl implements CourseService{
         return esCourseRepository.customSearch(search, pageable);
     }
 
+    @Override
+    public long countTotalCourses() {
+        return courseRepository.count();
+    }
+
 
 }

@@ -63,4 +63,5 @@ public interface CourseService {
 
     boolean removeLecture(String courseId);
     SearchPage<EsCourse> searchCourse(String search, int pageIndex, int pageSize);
+    long countTotalCourses();
 }

@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.dto;
 
 
+import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,8 +25,10 @@ public class UserLogDto {
     private LocalDateTime date; // time
 
 
+    private AccountEnum.Role role;
 
-    public UserLogDto(String url) {
+    public UserLogDto(String url, AccountEnum.Role role) {
         this.url = url;
+        this.role = role;
     }
 }

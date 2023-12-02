@@ -95,7 +95,10 @@ public class StudentController {
         HOME
      */
     private UserLog addUserLog(String url) {
-        UserLog userLog = new UserLog(new UserLogDto(url));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Account loggedInUser = accountService.findByEmail(currentPrincipalName);
+        UserLog userLog = new UserLog(new UserLogDto(url,loggedInUser.getRole()));
         userLog = userLogService.addUserLog(userLog);
         return userLog;
     }

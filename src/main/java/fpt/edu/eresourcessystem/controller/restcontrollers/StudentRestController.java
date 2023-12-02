@@ -5,6 +5,7 @@ import fpt.edu.eresourcessystem.dto.AnswerDto;
 import fpt.edu.eresourcessystem.dto.QuestionDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
+import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeTypeUtils;
@@ -52,7 +54,8 @@ public class StudentRestController {
     }
 
     private UserLog addUserLog(String url){
-        UserLog userLog = new UserLog(new UserLogDto(url));
+//        Student student = getLoggedInStudent();
+        UserLog userLog = new UserLog(new UserLogDto(url, AccountEnum.Role.STUDENT ));
         userLog = userLogService.addUserLog(userLog);
         return userLog;
     }
