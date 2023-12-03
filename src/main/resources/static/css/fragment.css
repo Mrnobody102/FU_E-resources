@@ -182,6 +182,7 @@
     background-color: white;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
+    cursor: auto;
 }
 
 .header__notify-header h3 {
@@ -190,6 +191,7 @@
     margin: 0 0 0 12px;
     font-weight: 400;
     line-height: 35px;
+    transition: background-color 0.5s ease;
 }
 
 .header__notify-list {
@@ -210,6 +212,7 @@
 
 .header__notify-item--seen {
     background-color: var(--second-back-ground);
+    transition: background-color 0.5s ease;
 }
 
 .header__notify-link {
@@ -251,9 +254,8 @@
 
 .header__notify-footer-btn {
     text-decoration: none;
-    color: white;
-    font-size: 1.2rem;
-    padding: 4px 0;
+    font-size: 1.3rem;
+    padding: 6px 0;
     width: 100%;
     text-align: center;
     line-height: 1.6rem;
@@ -265,14 +267,12 @@
     margin: 0 0 0 16px;
     display: flex;
     align-items: center;
-    cursor: pointer;
     justify-content: center;
     align-items: center;
 }
 
 .header__navbar-user-appearance:hover .header__navbar-user-option-list {
     display: block;
-    cursor: pointer;
 }
 
 .header__navbar-user-img {
@@ -322,16 +322,15 @@
 .header__navbar-user-profile-img {
     width: 80px;
     height: 80px;
-    border-radius: 5px;
+    border-radius: 50%;
     border: 1px solid #dbdbdb;
 }
 
 /*Logout*/
 .student__log-out {
-    padding: 12px 20px 12px 20px;
+    padding: 8px 20px 8px 20px;
     background-color: var(--primary-color);
-    border-radius: 5px;
-    font-weight: bold;
+    border-radius: 3px;
     transition: background-color 0.5s ease;
     margin-top: 6px;
 }
@@ -352,7 +351,7 @@
     border-color: transparent transparent var(--white-color) transparent;
     z-index: 0;
     position: absolute;
-    top: -10px;
+    top: -9px;
     left: 200px;
 }
 
@@ -581,7 +580,7 @@
 }
 
 .header__search:focus-within {
-    box-shadow: 0 0 4px #f88dd6;
+    box-shadow: 0 0 4px #9babfc;
 }
 .search-label{
     margin-left: 1rem;
@@ -711,7 +710,7 @@
 }
 
 .header__search-input:focus ~ .header__search-history {
-    display: block;
+    /*display: block;*/
 }
 
 /* Search-history */

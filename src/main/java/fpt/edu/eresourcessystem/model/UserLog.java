@@ -37,6 +37,7 @@ public class UserLog {
     public UserLog(UserLogDto userLogDto){
         this.id = userLogDto.getId();
         this.url = userLogDto.getUrl();
+        this.role = userLogDto.getRole();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
 }

@@ -13,6 +13,7 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+    <link rel="stylesheet" th:href="@{/css/content-style.css}"/>
 
 
     <style>
@@ -87,133 +88,99 @@
                             <div class="student__course-document-view">
 
 
-                                <div class="doc-content" style="display: flex">
-                                    <div style="display: flex; flex: 4">
-                                        <th:block th:if="${document.docType.toString().equals('UNKNOWN')}">
-                                            <div class="doc-content-view" th:utext="${document.getContent}"
-                                                 style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
-                                            </div>
-                                        </th:block>
-                                        <th:block th:if="${document.docType.toString().equals('TXT')}">
-                                            <iframe class="doc-content-view"
-                                                    th:src="'data:text;base64,' + ${data}"
-                                                    width="100%" height="600px"></iframe>
-                                        </th:block>
-                                        <th:block th:if="${document.docType.toString() eq 'HTML'}">
-                                            <iframe id="htmlContent"
-                                                    class="doc-content-view"
-                                                    th:attr="src='data:text/html;base64,' + ${data}"
-                                                    width="100%" height="600px"></iframe>
-                                        </th:block>
-                                        <th:block th:if="${document.docType.toString() eq 'PDF'}">
-                                            <embed class="doc-content-view"
-                                                   th:attr="src='data:application/pdf;base64,' + ${data}"
-                                                   type="application/pdf" width="100%" height="600px">
-                                        </th:block>
-                                        <!-- Word -->
-                                        <a th:if="${document.docType.toString() eq 'DOCX'}"
-                                           th:href="'data:application/msword;base64,' + ${data}"
-                                           download="document.doc">Download Word</a>
-
-                                        <!-- Excel -->
-                                        <a th:if="${document.docType.toString() eq 'EXCEL'}"
-                                           th:href="'data:application/vnd.ms-excel;base64,' + ${data}"
-                                           download="spreadsheet.xls">Download Excel</a>
-
-                                        <!-- PowerPoint -->
-                                        <a th:if="${document.docType.toString() eq 'POWERPOINT'}"
-                                           th:href="'data:application/vnd.ms-powerpoint;base64,' + ${data}"
-                                           download="presentation.ppt">Download PowerPoint</a>
-
-                                        <!-- Video -->
-                                        <th:block th:if="${document.docType.toString() eq 'VIDEO'}">
-                                            <video controls class="doc-content-view" width="100%" height="100%">
-                                                <th:block th:if="${document.suffix eq 'webm'}">
-                                                    <source type="video/webm"
-                                                            th:src="'data:video/webm;base64,' + ${data}"
-                                                    >
-                                                </th:block>
-                                                <th:block th:if="${document.suffix eq 'mp4'}">
-                                                    <source type="video/mp4"
-                                                            th:src="'data:video/mp4;base64,' + ${data}"
-                                                    >
-                                                </th:block>
-                                            </video>
-                                        </th:block>
-
-
-                                        <!-- Image -->
-                                        <th:block th:if="${document.docType.toString() eq 'PNG'}">
-                                            <img th:src="'data:${document.contentType};base64,' + ${data}" alt="Image"/>
-                                        </th:block>
-
-                                        <!-- Audio -->
-                                        <th:block th:if="${document.docType.toString() eq 'AUDIO'}">
-                                            <video controls class="doc-content-view" width="100%" height="100%">
-                                                <th:block th:if="${document.suffix eq 'webm'}">
-                                                    <source type="video/webm"
-                                                            th:src="'data:video/webm;base64,' + ${data}"
-                                                    >
-                                                </th:block>
-                                                <th:block th:if="${document.suffix eq 'mp4'}">
-                                                    <source type="video/mp4"
-                                                            th:src="'data:video/mp4;base64,' + ${data}"
-                                                    >
-                                                </th:block>
-                                            </video>
-                                        </th:block>
-                                        <audio th:if="${document.docType.toString() eq 'MP3'}"
-                                               th:attr="src='data:${document.contentType};base64,' + ${data}"
-                                               controls></audio>
-                                    </div>
-                                    <div class="note-sticker">
-                                        <textarea id="noteText"></textarea>
-                                        <button onclick="saveNote()">Save Note</button>
-                                    </div>
-                                    <div class="student__course-document-list" style="flex: 1">
-
-                                        <div class="list-view-block doc-name-list">
-                                            <div class="list-view-doc-title">
-                                                <p class="h3 mb-2">Other Documents</p>
-                                            </div>
-                                            <form action="" method="" class="form-chose-doc-type"
-                                                  th:if="${relevantDocuments ne null}">
-                                                <p th:each="relevantDocument : ${relevantDocuments}">
-                                                    <input name="docId" type="radio"
-                                                           th:id="'doc-relevant-'+ ${relevantDocument.id}"
-                                                           th:value="${relevantDocument.id}">
-                                                    <label th:for="'doc-relevant-'+ ${relevantDocument.id}"
-                                                           th:text="${relevantDocument.title}"
-                                                           th:doc-id="${relevantDocument.id}"
-                                                           onclick="viewOtherDocument(this.getAttribute('doc-id'))"></label>
-                                                </p>
-                                                <!--                                                <p>-->
-                                                <!--                                                    <input name="docId" type="radio" id="doc-name1" value="Hello World">-->
-                                                <!--                                                    <label for="doc-name1">Hello World</label>-->
-                                                <!--                                                </p>-->
-                                                <!--                                                <p>-->
-                                                <!--                                                    <input name="docId" type="radio" id="doc-name2" value="Sort">-->
-                                                <!--                                                    <label for="doc-name2">Sort</label>-->
-                                                <!--                                                </p>-->
-                                                <!--                                                <p>-->
-                                                <!--                                                    <input name="docId" type="radio" id="doc-name3" value="Queue">-->
-                                                <!--                                                    <label for="doc-name3">Queue</label>-->
-                                                <!--                                                </p>-->
-                                                <!--                                                <p>-->
-                                                <!--                                                    <input name="docId" type="radio" id="doc-name4" value="Stack">-->
-                                                <!--                                                    <label for="doc-name4">Stack</label>-->
-                                                <!--                                                </p>-->
-                                                <!--                                                <p>-->
-                                                <!--                                                    <input name="docId" type="radio" id="doc-name5" value="Collections">-->
-                                                <!--                                                    <label for="doc-name5">Collections</label>-->
-                                                <!--                                                </p>-->
-                                                <!--                                                <p>-->
-                                                <!--                                                    <input name="docId" type="radio" id="doc-name6" value="Linked-list">-->
-                                                <!--                                                    <label for="doc-name6">Linked-list</label>-->
-                                                <!--                                                </p>-->
-                                            </form>
+                                <div style="display: flex">
+                                    <th:block th:unless="${document.displayWithFile == true}">
+                                        <div class="doc-content-view ck-content" th:utext="${document.getContent}"
+                                             style="height: 500px; flex: 3; overflow: auto">
                                         </div>
-                                    </div>
+                                    </th:block>
+                                    <th:block th:if="${document.displayWithFile == true}">
+                                        <th:block th:unless="${document.cloudFileLink ne null}">
+                                            <th:block th:if="${document.docType.toString().equals('TXT')}">
+                                                <iframe class="doc-content-view"
+                                                        th:src="'data:text;base64,' + ${data}"
+                                                        width="100%" height="600px"></iframe>
+                                            </th:block>
+                                            <th:block th:if="${document.docType.toString() eq 'HTML'}">
+                                                <iframe id="htmlContent"
+                                                        class="doc-content-view"
+                                                        th:attr="src='data:text/html;base64,' + ${data}"
+                                                        width="100%" height="600px"></iframe>
+                                            </th:block>
+                                            <th:block th:if="${document.docType.toString() eq 'PDF'}">
+                                                <embed class="doc-content-view"
+                                                       th:attr="src='data:application/pdf;base64,' + ${data}"
+                                                       type="application/pdf" width="100%" height="600px">
+                                            </th:block>
+
+                                            <!-- Video -->
+                                            <th:block th:if="${document.docType.toString() eq 'VIDEO'}">
+                                                <video controls class="doc-content-view" width="100%" height="100%">
+                                                    <th:block th:if="${document.suffix eq 'mkv'}">
+                                                        <source type="video/mkv"
+                                                                th:src="'data:video/mkv;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                    <th:block th:if="${document.suffix eq 'flv'}">
+                                                        <source type="video/flv"
+                                                                th:src="'data:video/flv;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                    <th:block th:if="${document.suffix eq 'avi'}">
+                                                        <source type="video/avi"
+                                                                th:src="'data:video/avi;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                    <th:block th:if="${document.suffix eq 'mp4'}">
+                                                        <source type="video/mp4"
+                                                                th:src="'data:video/mp4;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                    <th:block th:if="${document.suffix eq 'webm'}">
+                                                        <source type="video/webm"
+                                                                th:src="'data:video/webm;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                    <th:block th:if="${document.suffix eq 'mov'}">
+                                                        <source type="video/mov"
+                                                                th:src="'data:video/mov;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                </video>
+                                            </th:block>
+                                            <!-- Image -->
+                                            <th:block th:if="${document.docType.toString() eq 'IMAGE'}">
+                                                <img th:src="'data:image;base64,' + ${data}"
+                                                     alt="Image"/>
+                                            </th:block>
+
+                                            <audio th:if="${document.docType.toString() eq 'AUDIO'}" controls>
+                                                <source type="audio/mp3" th:src="'data:audio/mp3;base64,' + ${data}">
+                                            </audio>
+                                        </th:block>
+                                        <th:block th:if="${document.cloudFileLink ne null}">
+                                            <th:block
+                                                    th:unless="${document.docType.toString() eq 'VIDEO' or document.docType.toString() eq 'AUDIO'}">
+                                                <th:block th:unless="${document.docType.toString() eq 'OTHER'}">
+                                                    <embed class="doc-content-view"
+                                                           th:attr="src='https://docs.google.com/gview?url=' + ${data} + '&embedded=true'"
+                                                           width="100%" height="600px">
+                                                </th:block>
+                                                <th:block th:if="${document.docType.toString() eq 'OTHER'}">
+                                                    <div class="mt-3 mb-3">
+                                                        <span>Attached file: </span>
+                                                        <a th:href="${data}" th:text="${document.fileName}" download></a>
+                                                    </div>
+                                                </th:block>
+                                            </th:block>
+                                            <th:block
+                                                    th:if="${document.docType.toString() eq 'VIDEO' or document.docType.toString() eq 'AUDIO'}">
+                                                <embed class="doc-content-view"
+                                                       th:attr="src=${data}" width="100%" height="600px">
+                                            </th:block>
+                                        </th:block>
+                                    </th:block>
+
                                 </div>
 
 

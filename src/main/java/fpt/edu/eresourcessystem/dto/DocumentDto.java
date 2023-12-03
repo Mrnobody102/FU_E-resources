@@ -28,6 +28,7 @@ public class DocumentDto {
     private String cloudFileLink;
     private String fileName;
     private String content;
+    private String fileDescription;
     private boolean displayWithFile;
     // Only use when response, no need in requests
     private DocumentEnum.DocumentStatusEnum docStatus;

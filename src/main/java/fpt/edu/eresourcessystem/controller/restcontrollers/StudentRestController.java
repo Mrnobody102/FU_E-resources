@@ -7,6 +7,7 @@ import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
+import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
@@ -37,7 +38,7 @@ public class StudentRestController {
     private final LecturerService lecturerService;
 
     private void addUserLog(String url){
-        UserLog userLog = new UserLog(new UserLogDto(url));
+        UserLog userLog = new UserLog(new UserLogDto(url,  AccountEnum.Role.STUDENT ));
         userLogService.addUserLog(userLog);
     }
 

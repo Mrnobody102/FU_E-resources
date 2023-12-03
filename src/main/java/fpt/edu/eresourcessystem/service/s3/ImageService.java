@@ -33,7 +33,7 @@ public class ImageService {
     public String uploadImage(MultipartFile file) throws IOException {
         String fileName = file.getOriginalFilename();
         String ext = fileName.substring(fileName.indexOf("."));
-        String uuidFileName = "ckeditor_image" + UUID.randomUUID() + ext;
+        String uuidFileName = "ckeditor_image_" + UUID.randomUUID() + ext;
         String localPath = localLocation + "/uploads/" + uuidFileName;
         File localFile = new File(localPath);
         file.transferTo(localFile);
