@@ -17,38 +17,8 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+    <link th:href="@{/css/table.css}" rel="stylesheet">
 
-    <style>
-        .dataTables_wrapper .dataTables_length {
-            display: none;
-            float: right;
-        }
-
-        #filterTable_filter {
-            float: left;
-            padding-bottom: 25px;
-        }
-
-        select.lib_show-all-btn {
-            display: inline;
-            width: 200px;
-            margin-left: 25px;
-            padding: 5px;
-        }
-
-        .dataTables_info {
-            display: none;
-        }
-
-        .dataTables_wrapper .dataTables_paginate {
-            text-align: center;
-            float: none;
-        }
-        .table-responsive {
-            overflow-x: unset;
-        }
-
-    </style>
 
 </head>
 <body class="app_container">
@@ -71,8 +41,11 @@
             <div class="lib_data-list-wrapper">
                 <div class="lib_search-container">
                     <div class="d-flex">
-                        <input class="lib_search-content" type="text" placeholder="Search lecturer.." name="search"
-                               th:value="${search}" id="search-text"/>
+                        <div>
+                            <label for="search-text">Search lecturer:</label>
+                            <input class="lib_search-content" type="text" placeholder="Search lecturer.." name="search"
+                                   th:value="${search}" id="search-text"/>
+                        </div>
                         <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
                             <i class="lib_search-btn-icon fas fa-search"></i>
                         </button>
@@ -123,10 +96,10 @@
 <script>
     $(document).ready(function () {
 
-        var dataTable = $('#filterTable').DataTable({
+        const dataTable = $('#filterTable').DataTable({
             "searching": true,
             // "responsive": true,
-           // "processing": true,
+            // "processing": true,
             "serverSide": true,
             "ordering": false,
             "pagingType": "simple_numbers",
@@ -185,7 +158,7 @@
 
         function debounce(func, delay) {
             let debounceTimer;
-            return function() {
+            return function () {
                 const context = this;
                 const args = arguments;
                 clearTimeout(debounceTimer);
@@ -194,10 +167,9 @@
         }
 
         // Enhanced search handler with debounce
-        $('#search-text').on('keyup', debounce(function() {
+        $('#search-text').on('keyup', debounce(function () {
             dataTable.search(this.value).draw();
         }, 100)); // 500ms delay
-
 
 
         // Ẩn nhãn 'Search:' mà DataTables tự động tạo

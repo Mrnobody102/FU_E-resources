@@ -189,32 +189,40 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public List<Lecturer> findLecturers(int start, int length, String searchValue) {
+    public Page<Lecturer> findLecturers(int start, int length, String searchValue) {
         int page = start / length;
         Pageable pageable = PageRequest.of(page, length);
+
         Query query = new Query().with(pageable);
 
         if (searchValue != null && !searchValue.isEmpty()) {
             // Tìm các tài khoản phù hợp
-            Query accountQuery = new Query().addCriteria(new Criteria().orOperator(
+            Criteria criteria = new Criteria().orOperator(
                     Criteria.where("name").regex(searchValue, "i"),
                     Criteria.where("email").regex(searchValue, "i")
-            ));
+            );
+            Query accountQuery = new Query(criteria);
             List<Account> matchingAccounts = mongoTemplate.find(accountQuery, Account.class);
 
             // Chuyển đổi thành danh sách ID tài khoản
             List<ObjectId> accountIds = matchingAccounts.stream()
-                    .map(Account -> new ObjectId(Account.getId()))
+                    .map(Account::getId)
+                    .map(ObjectId::new)
                     .collect(Collectors.toList());
+
             // Lọc giảng viên theo ID tài khoản
             if (!accountIds.isEmpty()) {
                 query.addCriteria(Criteria.where("account.id").in(accountIds));
             }
         }
-        // Truy vấn và trả về danh sách giảng viên
+
+        // Truy vấn và trả về danh sách giảng viên với phân trang
+
         List<Lecturer> lecturerList = mongoTemplate.find(query, Lecturer.class);
-        return lecturerList;
+        long total = mongoTemplate.count(query, Lecturer.class);
+        return new PageImpl<>(lecturerList, pageable, total);
     }
+
 
 
     @Override

@@ -74,7 +74,7 @@
                 <div class="lib_search-container">
                     <form class="d-flex" th:action="@{/librarian/courses/list/1}" th:method="get">
                         <div class="d-flex">
-
+                            <label for="search-text">Search course:</label>
                             <input class="lib_search-content" type="text" placeholder="Search course.." name="search"
                                    th:value="${search}" id="search-text"/>
                             <button type="submit" class="lib_search-btn-wrapper lib_search-btn">

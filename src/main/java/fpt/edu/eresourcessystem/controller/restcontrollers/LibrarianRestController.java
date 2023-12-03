@@ -36,20 +36,17 @@ public class LibrarianRestController {
             @RequestParam(name = "search", required = false) String searchValue) {
 
         // Xử lý yêu cầu từ DataTables và trả về dữ liệu tương ứng
-        List<Lecturer> lecturer = lecturerService.findLecturers(start, length, searchValue);
-        List<LecturerDto> lecturers = lecturer.stream()
-                .map(LecturerDto::new)
-                .collect(Collectors.toList());
+        Page<Lecturer> page = lecturerService.findLecturers(start, length, searchValue);
 
-        int totalLecturers = lecturerService.getTotalLecturers(); // Tổng số hàng trong tập dữ liệu
-//
-//        int filteredCount = lecturerService.getFilteredCount(searchValue); // Số hàng sau khi áp dụng bộ lọc
+        // Convert to DTOs
+        Page<LecturerDto> lecturers = page.map(LecturerDto::new);
 
+        // Prepare the response for DataTables
         DataTablesResponse<LecturerDto> response = new DataTablesResponse<>();
-        response.setData(lecturers);
+        response.setData(lecturers.getContent());
         response.setDraw(draw);
-        response.setRecordsTotal(totalLecturers);
-        response.setRecordsFiltered(totalLecturers);
+        response.setRecordsTotal(lecturerService.getTotalLecturers()); // Total records
+        response.setRecordsFiltered(lecturers.getTotalElements());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -65,7 +62,7 @@ public class LibrarianRestController {
         int page = start / length + 1; // Calculate the page number
 //        Pageable pageable = PageRequest.of(page, length);
         if (page < 0) page = 0;
-        Page<Course> coursesPage = courseService.findByCodeOrNameOrDescription(searchValue, searchValue, searchValue, page, length);
+        Page<Course> coursesPage = courseService.findByCodeOrNameOrDescription(searchValue.trim(), searchValue.trim(), searchValue.trim(), page, length);
 
         // Chuyển đổi từ Page<Course> sang Page<CourseDto>
         Page<CourseDto> courseDtoPage = coursesPage.map(course -> {

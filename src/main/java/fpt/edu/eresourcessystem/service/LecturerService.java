@@ -49,7 +49,7 @@ public interface LecturerService {
     int getTotalLecturers();
 
 
-    List<Lecturer> findLecturers(int start, int length, String searchValue);
+    Page<Lecturer> findLecturers(int start, int length, String searchValue);
 
     int getFilteredCount(String searchValue);
 

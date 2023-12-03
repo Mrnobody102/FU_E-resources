@@ -1,0 +1,29 @@
+
+.dataTables_wrapper .dataTables_length {
+    display: none;
+    float: right;
+}
+
+#filterTable_filter {
+    float: left;
+    padding-bottom: 25px;
+}
+
+select.lib_show-all-btn {
+    display: inline;
+    width: 200px;
+    margin-left: 25px;
+    padding: 5px;
+}
+
+.dataTables_info {
+    display: none;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    text-align: center;
+    float: none;
+}
+.table-responsive {
+    overflow-x: unset;
+}

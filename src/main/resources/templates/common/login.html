@@ -16,16 +16,31 @@
                 </div>
 
                 <div class="auth-form__form">
-                    <div th:if="${param.error}" class="alert alert-danger" role="alert">Invalid username or password
+                    <div th:if="${param.error}" class="alert alert-danger" role="alert">Invalid account
                     </div>
 
-                    <div class="auth-form__group">
-                        <input type="email" name="username" class="auth-form__input" placeholder="Your Email">
-                    </div>
-                    <div class="auth-form__group">
-                        <input type="password" name="password" class="auth-form__input" placeholder="Enter Password">
-                    </div>
+                                        <div class="auth-form__group">
+                                            <input type="email" name="username" class="auth-form__input" placeholder="Your Email">
+                                        </div>
+                                        <div class="auth-form__group">
+                                            <input type="password" name="password" class="auth-form__input" placeholder="Enter Password">
+                                        </div>
+                    <div class="auth-form__socials">
+                        <a th:href="@{/oauth2/authorization/google}"
+                           class="btn btn--size-s btn-primary auth-form__socials--google">
+                            <i class="auth-form__socials-google-icon fab fa-google"></i>
+                            <span class="auth-form__socials-title">
+                        Login with Google
+                        </span>
+                        </a>
+                        <a href="" class="btn btn--size-s btn--with-icon auth-form__socials--feid">
+                            <i class="auth-form__socials-feid-icon fa-solid fa-envelope"></i>
+                            <span class="auth-form__socials-title">
+                        Login with FeID
+                        </span>
+                        </a>
 
+                    </div>
                     <!--                    <div class="auth-form__select">-->
                     <!--                        <label th:for="campus">Select campus</label>-->
                     <!--                        <select class="auth-form__select-tag" th:name="campus" th:id="campuses">-->
@@ -44,28 +59,13 @@
                         </div>
                     </div>
 
-                    <div class="auth-form__controls">
+                    <div class="auth-form__controls mb-3">
                         <a href="/" id="closeLoginForm" class="btn btn--hover auth-form__controls-back">Back</a>
-                        <button type="submit" class="btn btn--primary">Login</button>
+                                                <button type="submit" class="btn btn--primary">Login</button>
                     </div>
                 </div>
             </div>
-            <div class="auth-form__socials">
-                <a th:href="@{/oauth2/authorization/google}"
-                        class="btn btn--size-s btn--with-icon auth-form__socials--google">
-                    <i class="auth-form__socials-google-icon fab fa-google"></i>
-                    <span class="auth-form__socials-title">
-                        Login with Google
-                        </span>
-                </a>
-                <a href="" class="btn btn--size-s btn--with-icon auth-form__socials--feid">
-                    <i class="auth-form__socials-feid-icon fa-solid fa-envelope"></i>
-                    <span class="auth-form__socials-title">
-                        Login with FeID
-                        </span>
-                </a>
 
-            </div>
         </form>
     </div>
 </div>

@@ -104,9 +104,8 @@
                         </div>
 
                         <div class="d-flex">
-                            <select class="lib_filter" onchange="this.form.submit()" th:id="role" th:name="role">
-                                <option value="all">All
-                                </option>
+                            <select class="lib_filter" onchange="filterByRole()" id="role" th:name="role">
+                                <option value="all">All</option>
                                 <option th:each="role : ${roles}"
                                         th:selected="(${roleSearch} == ${role.getDisplayValue()})"
                                         th:text="${role.getDisplayValue()}"
@@ -142,6 +141,7 @@
                                 <th>STT</th>
                                 <th>Email</th>
                                 <th>URL</th>
+                                <th>Role</th>
                                 <th>Time</th>
 
                             </tr>
@@ -152,42 +152,13 @@
                                     <td th:text="${iterStart.index +1}"></td>
                                     <td th:text="${userLog.account}"></td>
                                     <td th:text="${userLog.url}"></td>
+                                    <td th:text="${userLog.role}"></td>
                                     <td th:text="${userLog.time}"></td>
                                 </tr>
                             </th:block>
                             </tbody>
                         </table>
-                        <!--                        Phân trang       -->
-                        <!--                        <nav aria-label="Page navigation example" th:if="${totalPage} > 1">-->
-                        <!--                            <ul class="pagination" id="pagination">-->
-                        <!--                                <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">-->
-                        <!--                                    <a class="page-link previous-page-account"-->
-                        <!--                                       style="cursor: pointer">-->
-                        <!--                                        &laquo;-->
-                        <!--                                    </a>-->
-                        <!--                                </li>-->
 
-                        <!--                                <li class="page-item" th:classappend=" (${currentPage == pageIndex}) ? 'active' : '' "-->
-                        <!--                                    th:each="pageIndex: ${pages}">-->
-                        <!--                                    <th:block th:if="${pageIndex == -1}">-->
-                        <!--                                        <span class="page-link">...</span>-->
-                        <!--                                    </th:block>-->
-                        <!--                                    <th:block th:if="${pageIndex != -1}">-->
-                        <!--                                        <a class="page-link page-account-number" style="cursor: pointer"-->
-                        <!--                                           th:text="${pageIndex}"-->
-                        <!--                                           th:value="${pageIndex}"-->
-                        <!--                                        ></a>-->
-                        <!--                                    </th:block>-->
-                        <!--                                </li>-->
-                        <!--                                <li th:class="${currentPage == totalPage} ? 'page-item disabled' : 'page-item'">-->
-                        <!--                                    <a class="page-link next-page-account"-->
-                        <!--                                       style="cursor: pointer">-->
-                        <!--                                        &raquo;-->
-                        <!--                                    </a>-->
-                        <!--                                </li>-->
-                        <!--                            </ul>-->
-                        <!--                        </nav>-->
-                        <!--                       Hết phân trang           -->
                     </div>
                 </div>
             </div>
@@ -247,6 +218,11 @@
             }
         );
 
+        window.filterByRole = function() {
+            var selectedRole = $('#role').val();
+            table.columns(3).search(selectedRole).draw();
+        };
+
         // Redraw the table when the date range changes
         $('#datepicker, #datepicker2').change(function () {
             table.draw();
@@ -264,6 +240,7 @@
                 $(this).css('display', 'none');
             }
         });
+
 
         // Initial table draw
         table.draw();
