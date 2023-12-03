@@ -3,7 +3,7 @@ function initializeDataTable(selector, customOptions) {
         "searching": true,
         "ordering": false,
         "pagingType": "simple_numbers",
-        "pageLength": 2,
+        "pageLength": 10,
         "language": {
             "paginate": {
                 "first": "<<",

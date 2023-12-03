@@ -66,9 +66,17 @@ public class AdminController {
     /**
      * @return accounts page (no data)
      */
-    @GetMapping({"/accounts/list"})
+    @GetMapping({"/accounts"})
     public String manageAccount(final Model model) {
         model.addAttribute("roles", AccountEnum.Role.values());
+        return "admin/account/admin_accounts";
+    }
+
+    @GetMapping({"/accounts/list"})
+    public String listAllAccount(final Model model) {
+        model.addAttribute("roles", AccountEnum.Role.values());
+        List<Account> all = accountService.findAll();
+        model.addAttribute("accounts",all);
         return "admin/account/admin_accounts";
     }
 
