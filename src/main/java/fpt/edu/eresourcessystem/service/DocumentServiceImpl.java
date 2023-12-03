@@ -162,6 +162,7 @@ public class DocumentServiceImpl implements DocumentService {
                 documentDTO.setContentId(file.getObjectId());
                 String filename = StringUtils.cleanPath(file.getFilename());
                 String fileExtension = StringUtils.getFilenameExtension(filename);
+                documentDTO.setFileName(filename);
                 documentDTO.setSuffix(fileExtension);
                 Document result = documentRepository.save(new Document(documentDTO));
                 esDocumentRepository.save(new EsDocument(result));

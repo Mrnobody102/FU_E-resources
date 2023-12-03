@@ -39,7 +39,7 @@ public class CommonUtils {
 //        File file = new File("src/main/1mb.pdf");
 
         Parser parser = new AutoDetectParser();
-        BodyContentHandler handler = new BodyContentHandler(1000000);
+        BodyContentHandler handler = new BodyContentHandler(100000000);
         Metadata metadata = new Metadata();
         ParseContext context = new ParseContext();
         parser.parse(fileBytes, handler, metadata, context);

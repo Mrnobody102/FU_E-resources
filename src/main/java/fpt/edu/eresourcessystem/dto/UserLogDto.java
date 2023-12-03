@@ -31,4 +31,8 @@ public class UserLogDto {
         this.url = url;
         this.role = role;
     }
+
+    public UserLogDto(String url) {
+        this.url = url;
+    }
 }

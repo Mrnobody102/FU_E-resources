@@ -14,6 +14,7 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
+    <link rel="stylesheet" th:href="@{/css/content-style.css}"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.min.js"
@@ -89,8 +90,8 @@
 
                                 <div style="display: flex">
                                     <th:block th:unless="${document.displayWithFile == true}">
-                                        <div class="doc-content-view" th:utext="${document.getContent}"
-                                             style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
+                                        <div class="doc-content-view ck-content" th:utext="${document.getContent}"
+                                             style="height: 500px; flex: 3; overflow: auto">
                                         </div>
                                     </th:block>
                                     <th:block th:if="${document.displayWithFile == true}">
@@ -111,27 +112,23 @@
                                                        th:attr="src='data:application/pdf;base64,' + ${data}"
                                                        type="application/pdf" width="100%" height="600px">
                                             </th:block>
-                                            <!-- Word -->
-                                            <a th:if="${document.docType.toString() eq 'DOCX'}"
-                                               th:href="'data:application/msword;base64,' + ${data}"
-                                               download="document.doc">Download Word</a>
-
-                                            <!-- Excel -->
-                                            <a th:if="${document.docType.toString() eq 'EXCEL'}"
-                                               th:href="'data:application/vnd.ms-excel;base64,' + ${data}"
-                                               download="spreadsheet.xls">Download Excel</a>
-
-                                            <!-- PowerPoint -->
-                                            <a th:if="${document.docType.toString() eq 'POWERPOINT'}"
-                                               th:href="'data:application/vnd.ms-powerpoint;base64,' + ${data}"
-                                               download="presentation.ppt">Download PowerPoint</a>
 
                                             <!-- Video -->
                                             <th:block th:if="${document.docType.toString() eq 'VIDEO'}">
                                                 <video controls class="doc-content-view" width="100%" height="100%">
-                                                    <th:block th:if="${document.suffix eq 'webm'}">
-                                                        <source type="video/webm"
-                                                                th:src="'data:video/webm;base64,' + ${data}"
+                                                    <th:block th:if="${document.suffix eq 'mkv'}">
+                                                        <source type="video/mkv"
+                                                                th:src="'data:video/mkv;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                    <th:block th:if="${document.suffix eq 'flv'}">
+                                                        <source type="video/flv"
+                                                                th:src="'data:video/flv;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                    <th:block th:if="${document.suffix eq 'avi'}">
+                                                        <source type="video/avi"
+                                                                th:src="'data:video/avi;base64,' + ${data}"
                                                         >
                                                     </th:block>
                                                     <th:block th:if="${document.suffix eq 'mp4'}">
@@ -139,21 +136,48 @@
                                                                 th:src="'data:video/mp4;base64,' + ${data}"
                                                         >
                                                     </th:block>
+                                                    <th:block th:if="${document.suffix eq 'webm'}">
+                                                        <source type="video/webm"
+                                                                th:src="'data:video/webm;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                    <th:block th:if="${document.suffix eq 'mov'}">
+                                                        <source type="video/mov"
+                                                                th:src="'data:video/mov;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
                                                 </video>
                                             </th:block>
                                             <!-- Image -->
-                                            <th:block th:if="${document.docType.toString() eq 'PNG'}">
-                                                <img th:src="'data:${document.contentType};base64,' + ${data}"
+                                            <th:block th:if="${document.docType.toString() eq 'IMAGE'}">
+                                                <img th:src="'data:image;base64,' + ${data}"
                                                      alt="Image"/>
                                             </th:block>
 
-                                            <audio th:if="${document.docType eq 'AUDIO'}"
-                                                   th:attr="src='data:${document.contentType};base64,' + ${data}"></audio>
+                                            <audio th:if="${document.docType.toString() eq 'AUDIO'}" controls>
+                                                <source type="audio/mp3" th:src="'data:audio/mp3;base64,' + ${data}">
+                                            </audio>
                                         </th:block>
                                         <th:block th:if="${document.cloudFileLink ne null}">
-                                            <embed class="doc-content-view"
-                                                   th:attr="src=${data}"
-                                                   type="application/pdf" width="100%" height="600px">
+                                            <th:block
+                                                    th:unless="${document.docType.toString() eq 'VIDEO' or document.docType.toString() eq 'AUDIO'}">
+                                                <th:block th:unless="${document.docType.toString() eq 'OTHER'}">
+                                                    <embed class="doc-content-view"
+                                                           th:attr="src='https://docs.google.com/gview?url=' + ${data} + '&embedded=true'"
+                                                           width="100%" height="600px">
+                                                </th:block>
+                                                <th:block th:if="${document.docType.toString() eq 'OTHER'}">
+                                                    <div class="mt-3 mb-3">
+                                                        <span>Attached file: </span>
+                                                        <a th:href="${data}" th:text="${document.fileName}" download></a>
+                                                    </div>
+                                                </th:block>
+                                            </th:block>
+                                            <th:block
+                                                    th:if="${document.docType.toString() eq 'VIDEO' or document.docType.toString() eq 'AUDIO'}">
+                                                <embed class="doc-content-view"
+                                                       th:attr="src=${data}" width="100%" height="600px">
+                                            </th:block>
                                         </th:block>
                                     </th:block>
 
@@ -238,7 +262,8 @@
                                                                 th:id="'send-reply-button-'+${question.getId()}"
                                                                 th:question-id="${question.id}"
                                                                 onclick="submitFormReplyQuestion(this.getAttribute('question-id'))"
-                                                                class="btn-save"><i class="fa-solid fa-paper-plane"></i>Send</button>
+                                                                class="btn-save"><i class="fa-solid fa-paper-plane"></i>Send
+                                                        </button>
                                                     </div>
                                                 </form>
                                             </div>

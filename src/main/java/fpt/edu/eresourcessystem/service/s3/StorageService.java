@@ -30,7 +30,7 @@ public class StorageService {
 
     public String uploadFile(MultipartFile file) {
         File fileObj = convertMultiPartFileToFile(file);
-        String fileName = file.getOriginalFilename();
+        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, fileName, fileObj);
         s3Client.putObject(putObjectRequest);
         fileObj.delete();

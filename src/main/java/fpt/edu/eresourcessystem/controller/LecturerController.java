@@ -416,16 +416,24 @@ public class LecturerController {
             // thêm check file trước khi add
             String message = "";
             if (file != null && !file.isEmpty() && file.getSize() < 104857600) {
-                documentDTO.setContent(extractTextFromFile(file.getInputStream()));
-                if(file.getSize() < 1048576) {
+
+                String filename = file.getOriginalFilename();
+                String fileExtension = StringUtils.getFilenameExtension(filename);
+                DocumentEnum.DocumentFormat docType = DocumentEnum.DocumentFormat.getDocType(fileExtension);
+
+                if(docType != DocumentEnum.DocumentFormat.OTHER) {
+                    documentDTO.setContent(extractTextFromFile(file.getInputStream()));
+                } else {
+                    documentDTO.setContent(null);
+                }
+                if(file.getSize() < 1048576 && docType != DocumentEnum.DocumentFormat.MS_DOC
+                        && docType != DocumentEnum.DocumentFormat.OTHER && docType != DocumentEnum.DocumentFormat.AUDIO) {
                     id = documentService.addFile(file);
                 } else {
                     id = "uploadToCloud";
                     try {
                         String link = storageService.uploadFile(file);
                         documentDTO.setCloudFileLink(link);
-                        String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-                        String fileExtension = StringUtils.getFilenameExtension(filename);
                         documentDTO.setFileName(filename);
                         documentDTO.setSuffix(fileExtension);
                     } catch (Exception e) {
@@ -483,18 +491,25 @@ public class LecturerController {
                 documentService.updateDocument(checkExist, null, id);
             } else {
                 if (file != null && !file.isEmpty() && file.getSize() < 104857600) {
+                    String filename = System.currentTimeMillis() + "_" +file.getOriginalFilename();
+                    String fileExtension = StringUtils.getFilenameExtension(filename);
+                    DocumentEnum.DocumentFormat docType = DocumentEnum.DocumentFormat.getDocType(fileExtension);
                     checkExist.setFileName(file.getOriginalFilename());
-                    checkExist.setContent(extractTextFromFile(file.getInputStream()));
-                    if(file.getSize() < 1048576) {
+                    if(docType != DocumentEnum.DocumentFormat.OTHER) {
+                        checkExist.setContent(extractTextFromFile(file.getInputStream()));
+                    } else {
+                        checkExist.setContent(null);
+                    }
+                    if(file.getSize() < 1048576  && docType != DocumentEnum.DocumentFormat.MS_DOC
+                            && docType != DocumentEnum.DocumentFormat.OTHER && docType != DocumentEnum.DocumentFormat.AUDIO) {
                         checkExist.setCloudFileLink(null);
                         id = documentService.addFile(file);
                     } else {
                         id = "uploadToCloud";
                         try {
+                            checkExist.setContentId(null);
                             String link = storageService.uploadFile(file);
                             checkExist.setCloudFileLink(link);
-                            String filename = System.currentTimeMillis() + "_" +file.getOriginalFilename();
-                            String fileExtension = StringUtils.getFilenameExtension(filename);
                             checkExist.setFileName(filename);
                             checkExist.setSuffix(fileExtension);
                             checkExist.setDocType(DocumentEnum.DocumentFormat.getDocType(fileExtension));

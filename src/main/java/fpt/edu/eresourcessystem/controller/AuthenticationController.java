@@ -28,6 +28,15 @@ public class AuthenticationController {
         this.notificationService = notificationService;
     }
 
+    private UserLog addUserLog(String url) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Account loggedInUser = accountService.findByEmail(currentPrincipalName);
+        UserLog userLog = new UserLog(new UserLogDto(url,loggedInUser.getRole()));
+        userLog = userLogService.addUserLog(userLog);
+        return userLog;
+    }
+
     @GetMapping({"/", "/home"})
     public String goHomePage() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -60,8 +69,10 @@ public class AuthenticationController {
         String redirect = getAuthenticatedUserRedirectUrl(authentication);
         if (redirect != null) {
             // log user action
-            UserLogDto userLogDto = new UserLogDto("/login");
-            userLogService.addUserLog(new UserLog(userLogDto));
+            String currentPrincipalName = authentication.getName();
+            Account loggedInUser = accountService.findByEmail(currentPrincipalName);
+            UserLogDto userLogDto = new UserLogDto("/login", loggedInUser.getRole());
+            UserLog userLog = userLogService.addUserLog(new UserLog(userLogDto));
             return redirect;
         }
         return "guest/guest_login";
@@ -69,9 +80,13 @@ public class AuthenticationController {
 
     @GetMapping({"/logout"})
     public String logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        Account loggedInUser = accountService.findByEmail(currentPrincipalName);
+
         // log user action
-        UserLogDto userLogDto = new UserLogDto("/logout");
-        userLogService.addUserLog(new UserLog(userLogDto));
+        UserLogDto userLogDto = new UserLogDto("/logout", loggedInUser.getRole());
+        UserLog userLog = userLogService.addUserLog(new UserLog(userLogDto) );
         return "redirect:/login";
     }
 
