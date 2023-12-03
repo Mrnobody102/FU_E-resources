@@ -180,11 +180,11 @@
                                                   th:if="${relevantDocuments ne null}">
                                                 <p th:each="relevantDocument : ${relevantDocuments}">
                                                     <input name="docId" type="radio"
-                                                           th:id="'doc-relevant-'+ ${relevantDocument.docId}"
-                                                           th:value="${relevantDocument.docId}">
-                                                    <label th:for="'doc-relevant-'+ ${relevantDocument.docId}"
-                                                           th:text="${relevantDocument.docTitle}"
-                                                           th:doc-id="${relevantDocument.docId}"
+                                                           th:id="'doc-relevant-'+ ${relevantDocument.id}"
+                                                           th:value="${relevantDocument.id}">
+                                                    <label th:for="'doc-relevant-'+ ${relevantDocument.id}"
+                                                           th:text="${relevantDocument.title}"
+                                                           th:doc-id="${relevantDocument.id}"
                                                            onclick="viewOtherDocument(this.getAttribute('doc-id'))"></label>
                                                 </p>
                                                 <!--                                                <p>-->

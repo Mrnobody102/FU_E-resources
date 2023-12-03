@@ -506,3 +506,16 @@ stu__navbar-view-doc-item:hover a{
 .edit-reply-div input:focus {
     height: 2.5em; /* Chiều cao khi ô input được focus */
 }
+.list-view-inline label{
+    cursor: pointer;
+}
+.list-view-block label{
+    cursor: pointer;
+}
+.bot-doctype-list{
+    padding-top: 1rem;
+}
+.list-doc-by-resource{
+    margin-top: 1rem;
+    margin-left: 1.5rem;
+}

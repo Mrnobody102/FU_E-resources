@@ -398,4 +398,12 @@ public class StudentRestController {
         }
     }
 
+    @GetMapping("/documents/get_by_resource/{resourceId}/{courseId}")
+    public ResponseEntity<List<DocumentResponseDto>> findCourseDocumentByResource(@PathVariable String resourceId,
+                                                                                  @PathVariable String courseId){
+        List<DocumentResponseDto> documents = documentService.findAllDocumentsByCourseAndResourceType(courseId,resourceId);
+        ResponseEntity<List<DocumentResponseDto>> responseEntity = new ResponseEntity<>(documents, HttpStatus.OK);
+        return responseEntity;
+    }
+
 }

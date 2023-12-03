@@ -87,8 +87,8 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public Course findByCourseId(String courseId){
-        Optional<Course> course = courseRepository.findById(courseId);
-        return course.orElse(null);
+        Course course = courseRepository.findByIdAndDeleteFlg(courseId, CommonEnum.DeleteFlg.PRESERVED);
+        return course;
     }
 
     @Override

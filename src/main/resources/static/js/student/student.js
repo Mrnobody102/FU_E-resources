@@ -100,8 +100,8 @@ function viewTopicDocument(param) {
                         html += "<div class=\"d-flex document-view-info border-bottom\">\n" +
                             "                                                    <div class=\"doc-info-head grid__column-8\">\n" +
                             "                                                        <p class=\"doc-info-title\"><a\n" +
-                            "                                                                href=\"/student/documents/" + data[i].docId + "\">\n" +
-                            "                                                            <span>" + data[i].docTitle + "</span></a>\n" +
+                            "                                                                href=\"/student/documents/" + data[i].id + "\">\n" +
+                            "                                                            <span>" + data[i].title + "</span></a>\n" +
                             "                                                        </p>\n" +
                             "                                                        <p class=\"doc-info-description\">\n" +
                             "                                                            <span>" + data[i].description + "</span>\n" +
@@ -391,4 +391,48 @@ function submitDeleteMyNote(){
         $("#deleteStudentNote").submit();
         console.log("submited.")
     }
+}
+function choseResourceType(label){
+    $("#list-by-topic").addClass("display-none");
+    var resourceId = $(label).attr('for').slice(0, -12);
+    var courseId = $(label).attr('course-id');
+    $("#loading-by-resource").css("display", "block");
+    $.ajax({
+        type: 'GET',
+        url: '/api/student/documents/get_by_resource/' + resourceId +"/" + courseId,
+        dataType: 'json',
+        success: function (data) {
+            console.log(resourceId)
+            console.log(courseId)
+            console.log(data.length)
+            var html = "";
+            for (let i = 0; i < data.length; i++) {
+                html += "<div class=\"d-flex document-view-info border-bottom\">\n" +
+                    "                                                    <div class=\"doc-info-head grid__column-8\">\n" +
+                    "                                                        <p class=\"doc-info-title\"><a\n" +
+                    "                                                                href=\"/student/documents/" + data[i].id + "\">\n" +
+                    "                                                            <span>" + data[i].title + "</span></a>\n" +
+                    "                                                        </p>\n" +
+                    "                                                        <p class=\"doc-info-description\">\n" +
+                    "                                                            <span>" + data[i].description + "</span>\n" +
+                    "                                                        </p>\n" +
+                    "                                                    </div>\n" +
+                    "                                                    <div class=\"doc-info grid__column-2\">\n" +
+                    "                                                        <p><span class=\"doc-info-date\">" + data[i].lastModifiedDate + "</span></p>\n" +
+                    "                                                    </div>\n" +
+                    "                                                </div>"
+
+            }
+            $("#list-by-resource").html(html);
+            $("#loading-by-resource").css("display", "none");
+            $("#list-by-resource").removeClass("display-none");
+        },
+        error: function (xhr) {
+            // Handle errors
+        }
+    });
+}
+function listByTopic(){
+    $("#list-by-topic").removeClass("display-none");
+    $("#list-by-resource").addClass("display-none");
 }
