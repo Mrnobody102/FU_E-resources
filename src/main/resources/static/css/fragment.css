@@ -584,7 +584,7 @@
 }
 
 .header__search:focus-within {
-    box-shadow: 0 0 4px #f88dd6;
+    box-shadow: 0 0 4px #9babfc;
 }
 .search-label{
     margin-left: 1rem;
@@ -714,7 +714,7 @@
 }
 
 .header__search-input:focus ~ .header__search-history {
-    display: block;
+    /*display: block;*/
 }
 
 /* Search-history */

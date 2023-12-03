@@ -29,6 +29,9 @@ public class Document {
     @NotEmpty(message = "course.validation.resourceType.required")
     @DocumentReference(lazy = true)
     private Topic topic;
+
+    private String courseId;
+
     @DocumentReference(lazy = true)
     private ResourceType resourceType;
 
@@ -37,11 +40,14 @@ public class Document {
     private String description;
     private DocumentEnum.DocumentStatusEnum docStatus;
 
+    private String editorContent;
+
     private DocumentEnum.DocumentFormat docType;
     private String suffix;
     private ObjectId contentId;
     private String cloudFileLink;
     private String fileName;
+    private String fileDescription;
     @Lazy
     private String content;
     private boolean displayWithFile;
