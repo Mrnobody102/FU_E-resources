@@ -86,8 +86,8 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="lib_input-label"><label th:for="statusSelection">Training type:</label></td>
-                                    <td><select class="" th:field="*{trainingType}" name="status" th:id="statusSelection">
+                                    <td class="lib_input-label"><label th:for="trainingTypeSelection">Training type:</label></td>
+                                    <td><select  class="form-control" th:field="*{trainingType}" name="trainingType" th:id="trainingTypeSelection">
                                         <option disabled value="">-- Select Training Type --</option>
                                         <option th:each="trainingType : ${trainingTypes}"
                                                 th:text="${trainingType.getTrainingTypeName()}"

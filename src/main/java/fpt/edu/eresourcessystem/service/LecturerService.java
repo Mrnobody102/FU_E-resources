@@ -15,6 +15,7 @@ public interface LecturerService {
 
     Lecturer updateLecturer(Lecturer lecturer);
 
+    Lecturer updateCourseForLecturer( Lecturer foundLecturer, Course result);
     List<Lecturer> findAll();
 
     Lecturer findByAccountId(String accountId);

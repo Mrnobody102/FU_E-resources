@@ -41,7 +41,7 @@ public class EmailService {
                         "<h2>Kính gửi Giảng viên,</h2>" +
                         "<p>Chúng tôi xin thông báo bạn đã được phân công quản lý khóa học <strong>'%s'</strong> từ thời điểm <strong>%s</strong>.</p>" +
                         "<p>Đây là một cơ hội tuyệt vời để bạn thể hiện khả năng và đóng góp vào sự phát triển của khóa học.</p>" +
-                        "<p>Vui lòng <a href=#>đăng nhập vào hệ thống</a> quản lý khóa học để cập nhật nội dung, tài liệu và thông tin liên quan đến khóa học. " +
+                        "<p>Vui lòng <a href=#> đăng nhập vào hệ thống</a> quản lý khóa học để cập nhật nội dung, tài liệu và thông tin liên quan đến khóa học. " +
                         "Nếu bạn có bất kỳ thắc mắc hoặc cần sự hỗ trợ, đừng ngần ngại liên hệ với chúng tôi.</p>" +
                         "<p>Chúc bạn một ngày làm việc hiệu quả và nhiều niềm vui!</p>" +
                         "<p>Trân trọng,<br>[Tên của bạn hoặc tên tổ chức]</p>" +

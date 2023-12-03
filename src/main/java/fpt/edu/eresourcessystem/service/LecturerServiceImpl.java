@@ -54,6 +54,13 @@ public class LecturerServiceImpl implements LecturerService {
         }
         return null;
     }
+    @Override
+    public  Lecturer updateCourseForLecturer(Lecturer lecturer, Course result) {
+        Query query = new Query(Criteria.where("id").is(lecturer.getId()));
+        Update update = new Update().push("courses", new ObjectId(result.getId()));
+        mongoTemplate.updateFirst(query, update, Lecturer.class);
+        return lecturer;
+    }
 
     @Override
     public List<Lecturer> findAll() {

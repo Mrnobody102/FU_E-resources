@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.TrainingType;
 import fpt.edu.eresourcessystem.repository.TrainingTypeRepository;
@@ -59,6 +60,19 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
         existingTrainingType.setTrainingTypeDescription(trainingType.getTrainingTypeDescription());
 
         return trainingTypeRepository.save(existingTrainingType);
+    }
+
+    @Override
+    public TrainingType addCourseToTrainingType(String trainingTypeId, Course course) {
+        Optional<TrainingType> trainingTypeOpt = trainingTypeRepository.findById(trainingTypeId);
+
+        if (trainingTypeOpt.isPresent()) {
+            TrainingType trainingType = trainingTypeOpt.get();
+//            course.setTrainingType(trainingType);
+            trainingType.getCourses().add(course);
+            return trainingTypeRepository.save(trainingType);
+        }
+        return null;
     }
 
     @Override

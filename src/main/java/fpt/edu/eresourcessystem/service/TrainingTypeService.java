@@ -1,5 +1,6 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.TrainingType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,4 +27,6 @@ public interface TrainingTypeService {
      long getTotalTrainingTypesCount();
 
      Page<TrainingType> findAllWithFilter(String search, Pageable pageable);
+
+     TrainingType addCourseToTrainingType(String trainingTypeId, Course course);
 }
