@@ -14,15 +14,6 @@
                 </div>
             </a>
             <ul class="header__navbar-list grid__column-9">
-                <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
-                    <div class="header__navbar-user-wrap">
-                        <img th:src="@{/images/role_avatar/librarian.png}" alt="" class="header__navbar-user-img">
-                        <th:block th:if="${loggedInUser ne null}">
-                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span
-                                class="header__navbar-user-role">(Librarian)</span>
-                        </th:block>
-                    </div>
-                </li>
                 <li class="header__navbar-item header__notify-appearance">
                     <p class="notification-number">1</p>
                     <a class="header__navbar-item-link">
@@ -50,6 +41,15 @@
                         <footer class="header__notify-footer">
                             <a href="" class="header__notify-footer-btn">See all</a>
                         </footer>
+                    </div>
+                </li>
+                <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
+                    <div class="header__navbar-user-wrap">
+                        <img th:src="@{/images/role_avatar/librarian.png}" alt="" class="header__navbar-user-img">
+                        <th:block th:if="${loggedInUser ne null}">
+                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span
+                                class="header__navbar-user-role">(Librarian)</span>
+                        </th:block>
                     </div>
                 </li>
                 <li class="header__navbar-item">
@@ -76,16 +76,6 @@
                 </div>
             </a>
             <ul class="header__navbar-list  grid__column-9">
-
-                <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
-                    <div class="header__navbar-user-wrap">
-                        <img th:src="@{/images/role_avatar/admin.png}" alt="" class="header__navbar-user-img">
-                        <th:block th:if="${loggedInUser ne null}">
-                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span
-                                class="header__navbar-user-role">(Admin)</span>
-                        </th:block>
-                    </div>
-                </li>
                 <li class="header__navbar-item header__notify-appearance">
                     <p class="notification-number">1</p>
                     <a class="header__navbar-item-link">
@@ -113,6 +103,15 @@
                         <footer class="header__notify-footer">
                             <a href="" class="header__notify-footer-btn">See all</a>
                         </footer>
+                    </div>
+                </li>
+                <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
+                    <div class="header__navbar-user-wrap">
+                        <img th:src="@{/images/role_avatar/admin.png}" alt="" class="header__navbar-user-img">
+                        <th:block th:if="${loggedInUser ne null}">
+                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span
+                                class="header__navbar-user-role">(Admin)</span>
+                        </th:block>
                     </div>
                 </li>
                 <li class="header__navbar-item">
@@ -146,37 +145,6 @@
 
             <div class="header__link-list col-md-8">
                 <ul class="header__navbar-list">
-                    <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
-                        <div class="header__navbar-user-wrap">
-                            <img th:src="@{/images/role_avatar/lecturer_female.jpg}" alt="" class="header__navbar-user-img">
-                            <th:block th:if="${loggedInUser ne null}">
-                                <span class="header__navbar-user-name" th:text="${loggedInUser.name}"></span> <span
-                                    class="header__navbar-user-role">(Lecturer)</span>
-                            </th:block>
-                        </div>
-                        <div class="header__navbar-user-option-list header__bridge">
-                            <div class="header__navbar-user-profile">
-                                <div class="header__navbar-user-profile-img-wrapper">
-                                    <img th:src="@{/images/role_avatar/lecturer_female.jpg}" alt=""
-                                         class="header__navbar-user-profile-img">
-                                </div>
-                                <div style="min-width: max-content">
-                                    <p th:text="${loggedInUser.name}"></p>
-                                    <p th:text="${loggedInUser.dateOfBirth}"></p>
-                                </div>
-                            </div>
-                            <div class="student__log-out" th:unless="${loggedInUser.role.toString() eq 'LECTURER'}">
-                                <a th:href="@{/}">
-                                    Back to dashboard
-                                </a>
-                            </div>
-                            <div class="student__log-out">
-                                <a th:href="@{/logout}">
-                                    Log out
-                                </a>
-                            </div>
-                        </div>
-                    </li>
                     <li class="header__navbar-item header__notify-appearance">
                         <p class="notification-number">1</p>
                         <a class="header__navbar-item-link">
@@ -213,13 +181,42 @@
                             <!--                            Help-->
                         </a>
                     </li>
-
+                    <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
+                        <div class="header__navbar-user-wrap">
+                            <img th:src="@{/images/role_avatar/lecturer_female.jpg}" alt="" class="header__navbar-user-img">
+                            <th:block th:if="${loggedInUser ne null}">
+                                <span class="header__navbar-user-name" th:text="${loggedInUser.name}"></span> <span
+                                    class="header__navbar-user-role">(Lecturer)</span>
+                            </th:block>
+                        </div>
+                        <div class="header__navbar-user-option-list header__bridge">
+                            <div class="header__navbar-user-profile">
+                                <div class="header__navbar-user-profile-img-wrapper">
+                                    <img th:src="@{/images/role_avatar/lecturer_female.jpg}" alt=""
+                                         class="header__navbar-user-profile-img">
+                                </div>
+                                <div style="min-width: max-content">
+                                    <p th:text="${loggedInUser.name}"></p>
+                                    <p th:text="${loggedInUser.dateOfBirth}"></p>
+                                </div>
+                            </div>
+                            <div class="student__log-out" th:unless="${loggedInUser.role.toString() eq 'LECTURER'}">
+                                <a th:href="@{/}">
+                                    Back to dashboard
+                                </a>
+                            </div>
+                            <div class="student__log-out">
+                                <a th:href="@{/logout}">
+                                    Log out
+                                </a>
+                            </div>
+                        </div>
+                    </li>
                     <li class="header__navbar-item">
                         <a th:href="@{/logout}" onclick="" class="header__navbar-item-link" style="font-weight: bold">
                             <i class="header__navbar-icon fa-solid fa-right-from-bracket" aria-hidden="true"></i>
                             <span class="header__label">Logout</span></a>
                     </li>
-
                 </ul>
             </div>
         </nav>
@@ -247,41 +244,6 @@
             </div>
             <div class="header__link-list col-8">
                 <ul class="header__navbar-list">
-                    <th:block th:if="${loggedInUser ne null}">
-                        <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
-                            <div class="header__navbar-user-wrap">
-                                <img th:src="@{/images/role_avatar/student.png}" alt="" class="header__navbar-user-img">
-
-                                <span class="header__navbar-user-name" th:text="${loggedInUser.name}"></span> <span
-                                    class="header__navbar-user-role">(Student)</span>
-
-                            </div>
-                            <div class="header__navbar-user-option-list header__bridge">
-                                <div class="header__navbar-user-profile">
-                                    <div class="header__navbar-user-profile-img-wrapper">
-                                        <img th:src="@{/images/role_avatar/student.png}" alt=""
-                                             class="header__navbar-user-profile-img">
-                                    </div>
-                                    <div style="min-width: max-content">
-                                        <p th:text="${loggedInUser.name}"></p>
-                                        <p th:text="${loggedInUser.dateOfBirth}"></p>
-                                    </div>
-                                </div>
-                                <div class="student__log-out" th:unless="${loggedInUser.role.toString() eq 'STUDENT'}">
-                                    <a th:href="@{/}">
-                                        Back to dashboard
-                                    </a>
-                                </div>
-                                <div class="student__log-out">
-                                    <a th:href="@{/logout}">
-                                        Log out
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-                    </th:block>
-
-
                     <li class="header__navbar-item header__notify-appearance">
                         <p class="notification-number">1</p>
                         <a class="header__navbar-item-link">
@@ -320,6 +282,39 @@
                         </a>
                     </li>
 
+                    <th:block th:if="${loggedInUser ne null}">
+                        <li class="header__navbar-item header__navbar-user header__navbar-user-appearance">
+                            <div class="header__navbar-user-wrap">
+                                <img th:src="@{/images/role_avatar/student.png}" alt="" class="header__navbar-user-img">
+
+                                <span class="header__navbar-user-name" th:text="${loggedInUser.name}"></span> <span
+                                    class="header__navbar-user-role">(Student)</span>
+
+                            </div>
+                            <div class="header__navbar-user-option-list header__bridge">
+                                <div class="header__navbar-user-profile">
+                                    <div class="header__navbar-user-profile-img-wrapper">
+                                        <img th:src="@{/images/role_avatar/student.png}" alt=""
+                                             class="header__navbar-user-profile-img">
+                                    </div>
+                                    <div style="min-width: max-content">
+                                        <p th:text="${loggedInUser.name}"></p>
+                                        <p th:text="${loggedInUser.dateOfBirth}"></p>
+                                    </div>
+                                </div>
+                                <div class="student__log-out" th:unless="${loggedInUser.role.toString() eq 'STUDENT'}">
+                                    <a th:href="@{/}">
+                                        Back to dashboard
+                                    </a>
+                                </div>
+                                <div class="student__log-out">
+                                    <a th:href="@{/logout}">
+                                        Log out
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </th:block>
 
                     <li class="header__navbar-item">
                         <a th:href="@{/logout}" onclick="" class="header__navbar-item-link" style="font-weight: bold">

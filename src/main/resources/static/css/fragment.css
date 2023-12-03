@@ -154,12 +154,13 @@
     /*top: 120%;*/
     background-color: var(--white-color);
     right: -4rem;
-    display: none;
+    /*display: none;*/
     z-index: 2;
     border-radius: 10px;
     box-shadow: 0 2px 6px gray;
     border: solid rgb(223, 217, 217) 1px;
     margin-top: 8px;
+    min-width: 35rem;
 }
 
 .header__notify-header::before {
