@@ -1,6 +1,6 @@
 package fpt.edu.eresourcessystem.repository;
 
-import fpt.edu.eresourcessystem.model.Account;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Course;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,4 +65,6 @@ public interface CourseRepository extends
     Page<Course> findByCourseCodeLikeIgnoreCase(String status, Pageable pageable);
 
     Page<Course> findByStatus(String status, Pageable pageable);
+
+    Course findByIdAndDeleteFlg(String courseId, CommonEnum.DeleteFlg preserved);
 }

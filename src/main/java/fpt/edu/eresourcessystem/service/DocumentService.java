@@ -46,4 +46,6 @@ public interface DocumentService {
     String addFile(MultipartFile file) throws IOException;
 
     List<DocumentResponseDto> findRelevantDocument(String topicId, String docId);
+
+    List<DocumentResponseDto> findAllDocumentsByCourseAndResourceType(String courseId, String resourceTypeId);
 }

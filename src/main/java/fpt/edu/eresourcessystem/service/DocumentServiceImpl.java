@@ -7,11 +7,11 @@ import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
-import fpt.edu.eresourcessystem.model.Course;
-import fpt.edu.eresourcessystem.model.Document;
-import fpt.edu.eresourcessystem.model.Lecturer;
+import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
+import fpt.edu.eresourcessystem.repository.CourseRepository;
 import fpt.edu.eresourcessystem.repository.DocumentRepository;
+import fpt.edu.eresourcessystem.repository.ResourceTypeRepository;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsDocumentRepository;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.exception.TikaException;
@@ -36,8 +36,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static fpt.edu.eresourcessystem.utils.CommonUtils.extractTextFromFile;
-
 @Service("documentService")
 public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
@@ -47,14 +45,18 @@ public class DocumentServiceImpl implements DocumentService {
     private final GridFsTemplate template;
 
     private final GridFsOperations operations;
+    private final CourseRepository courseRepository;
+    private final ResourceTypeRepository resourceTypeRepository;
 
     @Autowired
-    public DocumentServiceImpl(DocumentRepository documentRepository, EsDocumentRepository esDocumentRepository, MongoTemplate mongoTemplate, GridFsTemplate template, GridFsOperations operations) {
+    public DocumentServiceImpl(DocumentRepository documentRepository, EsDocumentRepository esDocumentRepository, MongoTemplate mongoTemplate, GridFsTemplate template, GridFsOperations operations, CourseRepository courseRepository, ResourceTypeRepository resourceTypeRepository) {
         this.documentRepository = documentRepository;
         this.esDocumentRepository = esDocumentRepository;
         this.mongoTemplate = mongoTemplate;
         this.template = template;
         this.operations = operations;
+        this.courseRepository = courseRepository;
+        this.resourceTypeRepository = resourceTypeRepository;
     }
 
     @Override
@@ -257,5 +259,22 @@ public class DocumentServiceImpl implements DocumentService {
             return true;
         }
         return false;
+    }
+    @Override
+    public List<DocumentResponseDto> findAllDocumentsByCourseAndResourceType(String courseId, String resourceTypeId) {
+        Course course = courseRepository.findByIdAndDeleteFlg(courseId, CommonEnum.DeleteFlg.PRESERVED);
+        List<String> topics = course.getTopics().stream().map(o -> o.getId()).toList();
+        Criteria criteria = Criteria.where("topic.id").in(topics)
+                .and("resourceType.id").is(resourceTypeId)
+                .and("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED);
+        Query query = new Query(criteria);
+        query.fields().include("id")
+                .include("title")
+                .include("topic")
+                .include("description")
+                .include("createdBy")
+                .include("createdDate").include("lastModifiedBy")
+                .include("lastModifiedDate");
+        return mongoTemplate.find(query, DocumentResponseDto.class, "documents");
     }
 }

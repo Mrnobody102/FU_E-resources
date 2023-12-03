@@ -67,6 +67,7 @@ public class DocumentEnum {
         IMAGE,
 
         OTHER,
+        MS_DOC,
 
 
         UNKNOWN;
