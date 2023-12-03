@@ -42,8 +42,9 @@
                 <div class="lib_data-list-wrapper">
                     <div class="lib_search-container">
                         <form class="d-flex" method="get" th:action="@{/admin/accounts/list}" th:id="search-form">
-                            <div class="d-flex me-2">
-                                <select class="lib_filter"  th:id="role" th:name="role">
+                            <div class="manager_search-box" style="margin-right: 2rem">
+                                <label>Filter by role:</label>
+                                <select class="lib_filter lib_search-content" th:id="role" th:name="role">
                                     <option value="all">All
                                     </option>
                                     <option th:each="role : ${roles}"
@@ -53,18 +54,21 @@
                                     </option>
                                 </select>
                             </div>
-                            <div class="d-flex">
+                            <div class="manager_search-box">
+                                <label>Search user: </label>
+                                <div class="d-flex">
 
-                                <input class="lib_search-content" placeholder="Search user.." th:id="search-text"
-                                       th:name="search" th:value="${search}" type="text"/>
-                                <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
-                                    <i class="lib_search-btn-icon fas fa-search"></i>
-                                </button>
-                                <a class="btn lib_show-all-btn" th:href="@{/admin/accounts/list}">Show all</a>
+                                    <input class="lib_search-content" placeholder="Search user.." th:id="search-text"
+                                           th:name="search" th:value="${search}" type="text"/>
+                                    <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
+                                        <i class="lib_search-btn-icon fas fa-search"></i>
+                                    </button>
+                                    <a class="btn lib_show-all-btn" th:href="@{/admin/accounts/list}">Show all</a>
+                                </div>
                             </div>
 
                         </form>
-                        <div>
+                        <div class="manager_search-box">
                             <a class="lib_btn-add" th:href="@{/admin/accounts/add}" type="button">
                                 <i class="fa-solid fa-plus"></i>
                                 <span>New</span>
@@ -76,12 +80,12 @@
                     <div class="table-responsive" th:if="${accounts ne null}">
                         <table class="table table-striped table-sm" id="filterTable">
                             <thead class="table-head">
-                                <th>STT</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Campus</th>
-                                <!--                                <th></th>-->
+                            <th>STT</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Campus</th>
+                            <!--                                <th></th>-->
                             </thead>
                             <tbody>
                             <th:block th:each="account, iterStart : ${accounts}">
@@ -101,35 +105,35 @@
                             </th:block>
                             </tbody>
                         </table>
-<!--                        <nav aria-label="Page navigation example" th:if="${totalPage} > 1">-->
-<!--                            <ul class="pagination" id="pagination">-->
-<!--                                <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">-->
-<!--                                    <a class="page-link previous-page-account"-->
-<!--                                       style="cursor: pointer">-->
-<!--                                        &laquo;-->
-<!--                                    </a>-->
-<!--                                </li>-->
+                        <!--                        <nav aria-label="Page navigation example" th:if="${totalPage} > 1">-->
+                        <!--                            <ul class="pagination" id="pagination">-->
+                        <!--                                <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">-->
+                        <!--                                    <a class="page-link previous-page-account"-->
+                        <!--                                       style="cursor: pointer">-->
+                        <!--                                        &laquo;-->
+                        <!--                                    </a>-->
+                        <!--                                </li>-->
 
-<!--                                <li class="page-item" th:classappend=" (${currentPage == pageIndex}) ? 'active' : '' "-->
-<!--                                    th:each="pageIndex: ${pages}">-->
-<!--                                    <th:block th:if="${pageIndex == -1}">-->
-<!--                                        <span class="page-link">...</span>-->
-<!--                                    </th:block>-->
-<!--                                    <th:block th:if="${pageIndex != -1}">-->
-<!--                                        <a class="page-link page-account-number" style="cursor: pointer"-->
-<!--                                           th:text="${pageIndex}"-->
-<!--                                           th:value="${pageIndex}"-->
-<!--                                        ></a>-->
-<!--                                    </th:block>-->
-<!--                                </li>-->
-<!--                                <li th:class="${currentPage == totalPage} ? 'page-item disabled' : 'page-item'">-->
-<!--                                    <a class="page-link next-page-account"-->
-<!--                                       style="cursor: pointer">-->
-<!--                                        &raquo;-->
-<!--                                    </a>-->
-<!--                                </li>-->
-<!--                            </ul>-->
-<!--                        </nav>-->
+                        <!--                                <li class="page-item" th:classappend=" (${currentPage == pageIndex}) ? 'active' : '' "-->
+                        <!--                                    th:each="pageIndex: ${pages}">-->
+                        <!--                                    <th:block th:if="${pageIndex == -1}">-->
+                        <!--                                        <span class="page-link">...</span>-->
+                        <!--                                    </th:block>-->
+                        <!--                                    <th:block th:if="${pageIndex != -1}">-->
+                        <!--                                        <a class="page-link page-account-number" style="cursor: pointer"-->
+                        <!--                                           th:text="${pageIndex}"-->
+                        <!--                                           th:value="${pageIndex}"-->
+                        <!--                                        ></a>-->
+                        <!--                                    </th:block>-->
+                        <!--                                </li>-->
+                        <!--                                <li th:class="${currentPage == totalPage} ? 'page-item disabled' : 'page-item'">-->
+                        <!--                                    <a class="page-link next-page-account"-->
+                        <!--                                       style="cursor: pointer">-->
+                        <!--                                        &raquo;-->
+                        <!--                                    </a>-->
+                        <!--                                </li>-->
+                        <!--                            </ul>-->
+                        <!--                        </nav>-->
                     </div>
                 </div>
             </div>
@@ -189,7 +193,7 @@
 
         $('#role').on('change', function () {
             var selectedRole = $(this).val();
-            if(selectedRole === 'all') {
+            if (selectedRole === 'all') {
                 table.column(3).search('').draw();
             } else {
                 filterByRole(selectedRole);

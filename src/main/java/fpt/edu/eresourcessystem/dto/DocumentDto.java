@@ -18,11 +18,16 @@ public class DocumentDto {
     private String id;
     @NotNull
     private Topic topic;
+    private String courseId;
     private ResourceType resourceType;
 
     @NotEmpty(message = "document.validation.title.required")
     private String title;
     private String description;
+
+
+    private String editorContent;
+
     private String suffix;
     private ObjectId contentId;
     private String cloudFileLink;

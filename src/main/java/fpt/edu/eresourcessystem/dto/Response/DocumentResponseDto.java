@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class DocumentResponseDto {
     private String id;
     private String title;
-    private ObjectId topic;
+    private String topic;
     private String description;
     private String createdBy;
     private String createdDate;
@@ -29,5 +29,6 @@ public class DocumentResponseDto {
         this.title = document.getTitle();
         this.description = document.getDescription();
         this.lastModifiedDate = document.getLastModifiedDate();
+        this.lastModifiedBy = document.getLastModifiedBy();
     }
 }

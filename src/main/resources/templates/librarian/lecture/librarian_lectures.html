@@ -45,15 +45,18 @@
             <div class="lib_data-list-wrapper">
                 <div class="lib_search-container">
                     <div class="d-flex">
-                        <div>
+                        <div class="manager_search-box">
                             <label for="search-text">Search lecturer:</label>
-                            <input class="lib_search-content" type="text" placeholder="Search lecturer.." name="search"
-                                   th:value="${search}" id="search-text"/>
+                            <div class="d-flex">
+                                <input class="lib_search-content" type="text" placeholder="Search lecturer.." name="search"
+                                       th:value="${search}" id="search-text"/>
+                                <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
+                                    <i class="lib_search-btn-icon fas fa-search"></i>
+                                </button>
+                                <a class="btn lib_show-all-btn" th:href="@{/librarian/lectures/list}">Show AlL</a>
+                            </div>
                         </div>
-                        <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
-                            <i class="lib_search-btn-icon fas fa-search"></i>
-                        </button>
-                        <a class="btn lib_show-all-btn" th:href="@{/librarian/lectures/list}">Show AlL</a>
+
                     </div>
                 </div>
             </div>

@@ -397,14 +397,14 @@ function choseResourceType(label){
     var resourceId = $(label).attr('for').slice(0, -12);
     var courseId = $(label).attr('course-id');
     $("#loading-by-resource").css("display", "block");
+    console.log(resourceId)
+    console.log(courseId)
     $.ajax({
         type: 'GET',
         url: '/api/student/documents/get_by_resource/' + resourceId +"/" + courseId,
         dataType: 'json',
         success: function (data) {
-            console.log(resourceId)
-            console.log(courseId)
-            console.log(data.length)
+            console.log(data)
             var html = "";
             for (let i = 0; i < data.length; i++) {
                 html += "<div class=\"d-flex document-view-info border-bottom\">\n" +
@@ -429,6 +429,7 @@ function choseResourceType(label){
         },
         error: function (xhr) {
             // Handle errors
+            console.log("Fail")
         }
     });
 }

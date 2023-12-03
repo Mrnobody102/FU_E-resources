@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -264,18 +265,19 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public List<DocumentResponseDto> findAllDocumentsByCourseAndResourceType(String courseId, String resourceTypeId) {
         Course course = courseRepository.findByIdAndDeleteFlg(courseId, CommonEnum.DeleteFlg.PRESERVED);
-        List<String> topics = course.getTopics().stream().map(o -> o.getId()).toList();
+        List<ObjectId> topics = course.getTopics().stream().map(o -> new ObjectId(o.getId())).toList();
         Criteria criteria = Criteria.where("topic.id").in(topics)
-                .and("resourceType.id").is(resourceTypeId)
-                .and("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED);
+                .and("resourceType.id").is(new ObjectId(resourceTypeId))
+                .and("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED.toString());
         Query query = new Query(criteria);
         query.fields().include("id")
                 .include("title")
-                .include("topic")
                 .include("description")
                 .include("createdBy")
                 .include("createdDate").include("lastModifiedBy")
                 .include("lastModifiedDate");
-        return mongoTemplate.find(query, DocumentResponseDto.class, "documents");
+        List<DocumentResponseDto> documents = mongoTemplate.find(query, Document.class, "documents").stream().map(o -> new DocumentResponseDto(o)).toList();
+
+        return documents;
     }
 }

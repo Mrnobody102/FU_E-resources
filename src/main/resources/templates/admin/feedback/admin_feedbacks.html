@@ -74,33 +74,42 @@
                 <div class="lib_data-list-wrapper">
                     <div class="lib_search-container">
                         <div class="d-flex">
-                            <input class="lib_search-content" type="text" placeholder="Search feedback.."
-                                   th:name="search" th:id="search-text" th:value="${search}"/>
-                            <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
-                                <i class="lib_search-btn-icon fas fa-search"></i>
-                            </button>
-                            <a class="btn lib_show-all-btn" th:href="@{/admin/feedbacks/list}">Show AlL</a>
-                        </div>
-                        <div class="d-flex">
-                            <div class="input-group date" id="datepicker">
-                                <input type="text" class="form-control" id="date" placeholder="From date"/>
-                                <span class="input-group-append">
+                            <div class="manager_search-box">
+                                <label class="mb-2">Filter by date:</label>
+                                <div class="d-flex">
+                                    <div class="input-group date" id="datepicker">
+                                        <input type="text" class="form-control" id="date" placeholder="From date"/>
+                                        <span class="input-group-append">
                                                 <span class="lib_search-btn-wrapper lib_search-btn">
                                                     <i class="fa-regular fa-calendar-days "></i>
                                                 </span>
                                                 </span>
-                            </div>
+                                    </div>
 
-                            <div class="input-group date" id="datepicker2">
-                                <input type="text" class="form-control" id="date2" placeholder="To date"/>
-                                <span class="input-group-append">
+                                    <div class="input-group date" id="datepicker2">
+                                        <input type="text" class="form-control" id="date2" placeholder="To date"/>
+                                        <span class="input-group-append">
                                        <span class="lib_search-btn-wrapper lib_search-btn">
                                                     <i class="fa-regular fa-calendar-days "></i>
                                                 </span>
                                                 </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="manager_search-box">
+                                <label class="mb-2">Search feedback: </label>
+                                <div class="d-flex">
+                                    <input class="lib_search-content" type="text" placeholder="Enter here..."
+                                           th:name="search" th:id="search-text" th:value="${search}"/>
+                                    <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
+                                        <i class="lib_search-btn-icon fas fa-search"></i>
+                                    </button>
+                                    <a class="btn lib_show-all-btn" th:href="@{/admin/feedbacks/list}">Show AlL</a>
+                                </div>
+
                             </div>
                         </div>
-
                     </div>
 
                     <div class="table-responsive" th:if="${feedbacks ne null}">

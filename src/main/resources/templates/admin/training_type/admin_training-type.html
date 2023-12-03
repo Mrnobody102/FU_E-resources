@@ -71,13 +71,20 @@
                     <div class="lib_search-container">
 <!--                        <form class="d-flex" th:action="@{/admin/trainingtypes/list/1}" method="get" th:id="search-form">-->
                             <div class="d-flex">
-                                <label for="search-text">Search training type:</label>
-                                <input class="lib_search-content" type="text" placeholder="Search training type.."
-                                       th:name="search" th:id="search-text" th:value="${search}"/>
-                                <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
-                                    <i class="lib_search-btn-icon fas fa-search"></i>
-                                </button>
-                                <a class="btn lib_show-all-btn" th:href="@{/admin/trainingtypes/list}">Show all</a>
+                                <div class="manager_search-box">
+                                    <label th:for="search-text">Search training type:</label>
+                                    <div class="d-flex">
+                                        <input class="lib_search-content" type="text" placeholder="Enter here..."
+                                               th:name="search" th:id="search-text" th:value="${search}"/>
+                                        <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
+                                            <i class="lib_search-btn-icon fas fa-search"></i>
+                                        </button>
+                                        <div class="manager_search-box">
+                                            <a class="btn lib_show-all-btn" th:href="@{/admin/trainingtypes/list}">Show all</a>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 <!--                        </form>-->
                         <div>

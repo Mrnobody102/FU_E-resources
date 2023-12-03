@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
 
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
@@ -34,52 +35,57 @@
                 <h1 class="h2">Librarians management</h1>
 
             </div>
-                        <div class="d-flex justify-content-center">
-                            <div class="lib_data-list-wrapper">
-                                <div class="lib_search-container">
-                                    <form class="d-flex" th:action="@{/admin/course_creator/list}" method="get" th:id="search-form">
-                                        <div class="d-flex">
-                                            <input class="lib_search-content" type="text" placeholder="Search user.."
-                                                   th:name="search" th:id="search-text" th:value="${search}"/>
-                                            <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
-                                                <i class="lib_search-btn-icon fas fa-search"></i>
-                                            </button>
-                                            <a class="btn lib_show-all-btn" th:href="@{/admin/course_creator/list}">Show AlL</a>
+            <div class="d-flex justify-content-center">
+                <div class="lib_data-list-wrapper">
+                    <div class="lib_search-container">
+                        <form class="d-flex" th:action="@{/admin/course_creator/list}" method="get" th:id="search-form">
+                            <div class="manager_search-box">
+                                <label>Search librarian:</label>
+                                <div class="d-flex">
+                                    <input class="lib_search-content" type="text" placeholder="Enter here..."
+                                           th:name="search" th:id="search-text" th:value="${search}"/>
+
+                                    <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
+                                        <i class="lib_search-btn-icon fas fa-search"></i>
+                                    </button>
+                                    <a class="btn lib_show-all-btn" th:href="@{/admin/course_creator/list}">Show AlL</a>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="table-responsive" th:if="${librarians ne null}">
+                        <table class="table table-striped table-sm" id="filterTable">
+                            <thead class="table-head">
+                            <th>STT</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Created Courses</th>
+                            </thead>
+                            <tbody>
+                            <th:block th:each="librarian, iterStart : ${librarians}">
+                                <tr>
+                                    <td th:text="${iterStart.index +1}"></td>
+                                    <td th:text="${librarian.account.name}"></td>
+                                    <td th:text="${librarian.account.email}"></td>
+                                    <td>
+                                        <div th:each="course, item : ${courses}">
+                                            <span><a th:href="@{'/admin/course/' + ${course.getId}}"
+                                                     th:text="${course.courseCode} "> </a></span>
+                                            <span th:if="${!item.last}">&nbsp;</span>
                                         </div>
-                                    </form>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </div>
 
-                                </div>
-
-            <div class="table-responsive" th:if="${librarians ne null}">
-                <table class="table table-striped table-sm" id="filterTable">
-                    <thead class="table-head">
-                        <th>STT</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Created Courses</th>
-                    </thead>
-                    <tbody>
-                    <th:block th:each="librarian, iterStart : ${librarians}">
-                        <tr>
-                            <td th:text="${iterStart.index +1}"></td>
-                            <td th:text="${librarian.account.name}"></td>
-                            <td th:text="${librarian.account.email}"></td>
-                            <td  >
-                                <div th:each="course, item : ${courses}" >
-                                  <span><a th:href="@{'/admin/course/' + ${course.getId}}" th:text="${course.courseCode} "> </a></span>
-                                    <span th:if="${!item.last}">&nbsp;</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </th:block>
-                    </tbody>
-                </table>
+                </div>
             </div>
-
         </div>
     </div>
-</div>
-</div>
 </div>
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>

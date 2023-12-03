@@ -94,44 +94,56 @@
                 <div class="lib_data-list-wrapper">
                     <div class="lib_search-container">
                         <div class="d-flex">
-
-                            <input class="lib_search-content" placeholder="Search user.." th:id="search-text"
-                                   th:name="search" th:value="${search}" type="text"/>
-                            <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
-                                <i class="lib_search-btn-icon fas fa-search"></i>
-                            </button>
-                            <a class="btn lib_show-all-btn" th:href="@{/admin/user_log/tracking}">Show all</a>
-                        </div>
-
-                        <div class="d-flex">
-                            <select class="lib_filter" onchange="filterByRole()" id="role" th:name="role">
-                                <option value="all">All</option>
-                                <option th:each="role : ${roles}"
-                                        th:selected="(${roleSearch} == ${role.getDisplayValue()})"
-                                        th:text="${role.getDisplayValue()}"
-                                        th:value="${role}">
-                                </option>
-                            </select>
-                        </div>
-                        <div class="d-flex">
-                            <div class="input-group date" id="datepicker">
-                                <input type="text" class="form-control" id="date" placeholder="From date"/>
-                                <span class="input-group-append">
+                            <div class="manager_search-box">
+                                <label>Filter by role:</label>
+                                <div class="d-flex">
+                                    <select class="lib_filter lib_search-content" onchange="filterByRole()" id="role" th:name="role">
+                                        <option value="all">All</option>
+                                        <option th:each="role : ${roles}"
+                                                th:selected="(${roleSearch} == ${role.getDisplayValue()})"
+                                                th:text="${role.getDisplayValue()}"
+                                                th:value="${role}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="manager_search-box">
+                                <label>Filter by date:</label>
+                                <div class="d-flex">
+                                    <div class="input-group date" id="datepicker">
+                                        <input type="text" class="form-control" id="date" placeholder="From date"/>
+                                        <span class="input-group-append">
                                                 <span class="lib_search-btn-wrapper lib_search-btn">
                                                     <i class="fa-regular fa-calendar-days "></i>
                                                 </span>
                                                 </span>
-                            </div>
+                                    </div>
 
-                            <div class="input-group date" id="datepicker2">
-                                <input type="text" class="form-control" id="date2" placeholder="To date"/>
-                                <span class="input-group-append">
+                                    <div class="input-group date" id="datepicker2">
+                                        <input type="text" class="form-control" id="date2" placeholder="To date"/>
+                                        <span class="input-group-append">
                                        <span class="lib_search-btn-wrapper lib_search-btn">
                                                     <i class="fa-regular fa-calendar-days "></i>
                                                 </span>
                                                 </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="manager_search-box">
+                                    <label>Search user: </label>
+                                    <div class="d-flex">
+                                        <input class="lib_search-content" placeholder="Enter here..." th:id="search-text"
+                                               th:name="search" th:value="${search}" type="text"/>
+                                        <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
+                                            <i class="lib_search-btn-icon fas fa-search"></i>
+                                        </button>
+                                        <a class="btn lib_show-all-btn" th:href="@{/admin/user_log/tracking}">Show all</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
 
                     <div class="table-responsive">
@@ -218,7 +230,7 @@
             }
         );
 
-        window.filterByRole = function() {
+        window.filterByRole = function () {
             var selectedRole = $('#role').val();
             table.columns(3).search(selectedRole).draw();
         };

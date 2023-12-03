@@ -86,14 +86,19 @@
                 <div class="lib_search-container">
                     <form class="d-flex" th:action="@{/librarian/courses/list/1}" th:method="get">
                         <div class="d-flex">
-                            <label for="search-text">Search course:</label>
-                            <input class="lib_search-content" type="text" placeholder="Search course.." name="search"
-                                   th:value="${search}" id="search-text"/>
-                            <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
-                                <i class="lib_search-btn-icon fas fa-search"></i>
-                            </button>
+                            <div class="manager_search-box">
+                                <label for="search-text">Search course:</label>
+                                <div class="d-flex">
+                                    <input class="lib_search-content" type="text" placeholder="Search course.."
+                                           name="search"
+                                           th:value="${search}" id="search-text"/>
+                                    <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
+                                        <i class="lib_search-btn-icon fas fa-search"></i>
+                                    </button>
+                                    <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list/1}">Show All</a>
+                                </div>
+                            </div>
 
-                            <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list/1}">Show All</a>
                         </div>
                     </form>
                     <div>
@@ -211,12 +216,12 @@
             ],
             "columnDefs": [
                 {
-                "targets": 0,
-                "orderable": false,
-                "searchable": false,
-                "render": function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;  // For index column (STT)
-                }
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                    "render": function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;  // For index column (STT)
+                    }
                 },
                 {
                     "targets": 3, // Target the description column

@@ -538,9 +538,9 @@ public class LecturerController {
             topicService.removeDocumentFromTopic(document.getTopic().getId(), new ObjectId(documentId));
             resourceTypeService.removeDocumentFromResourceType(document.getTopic().getId(), new ObjectId(documentId));
             documentService.softDelete(document);
-            return "redirect:/topics/" + document.getTopic().getId() + "?success";
+            return "redirect:/lecturer/topics/" + document.getTopic().getId() + "?success";
         }
-        return "redirect:/documents/{documentId}?error";
+        return "redirect:/lecturer/documents/{documentId}?error";
     }
 
     /*

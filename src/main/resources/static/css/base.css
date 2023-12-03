@@ -554,3 +554,13 @@ li {
     height: 100%;
 }
 
+.manager_search-box {
+    display: flex;
+    flex-direction: column;
+    margin-right: 2rem;
+}
+
+.manager_homepage-title {
+
+}
+
