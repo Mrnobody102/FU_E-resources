@@ -153,7 +153,7 @@
     width: auto;
     /*top: 120%;*/
     background-color: var(--white-color);
-    right: 31rem;
+    right: -4rem;
     display: none;
     z-index: 2;
     border-radius: 10px;
@@ -294,7 +294,7 @@
     color: var(--text-color);
     margin-top: 8px;
     padding: 16px;
-    right: 26rem;
+    right: 0rem;
     text-align: center;
     --growth-from: 0;
     --growth-to: 1;
@@ -1407,4 +1407,26 @@
 .show-sidebar .sidebar__link:hover .sidebar__link-floating {
     opacity: 1;
     color: var(--black-color);
+}
+
+.header__notify-appearance{
+    position: relative;
+}
+
+.notification-number {
+    position: absolute;
+    top: -1.3rem;
+    right: -1.1rem;
+    width: 15px;
+    height: 15px;
+    background-color: #e74c3c;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+.header__navbar-user-appearance{
+    position: relative;
 }

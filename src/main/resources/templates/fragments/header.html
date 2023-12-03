@@ -19,7 +19,8 @@
             </a>
             <ul class="header__navbar-list grid__column-9">
                 <li class="header__navbar-item header__notify-appearance">
-                    <a href="" class="header__navbar-item-link">
+                    <p class="notification-number">1</p>
+                    <a class="header__navbar-item-link">
                         <i class="header__navbar-icon fas fa-bell"></i>
                     </a>
                     <!--Notifications Header-->
@@ -52,7 +53,7 @@
                     <div class="header__navbar-user-wrap">
                         <img th:src="@{/images/sample_account/avt.jpg}" alt="" class="header__navbar-user-img">
                         <th:block th:if="${loggedInUser ne null}">
-                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"> </span> <span
+                            <span class="header__navbar-user-name" th:text="${loggedInUser.name}"></span> <span
                                 class="header__navbar-user-role">(Librarian)</span>
                         </th:block>
                     </div>
@@ -86,7 +87,8 @@
             </a>
             <ul class="header__navbar-list  grid__column-9">
                 <li class="header__navbar-item header__notify-appearance">
-                    <a href="" class="header__navbar-item-link">
+                    <p class="notification-number">1</p>
+                    <a class="header__navbar-item-link">
                         <i class="header__navbar-icon fas fa-bell"></i>
                     </a>
                     <!--Notifications Header-->
@@ -154,7 +156,8 @@
             <div class="header__link-list col-md-8">
                 <ul class="header__navbar-list">
                     <li class="header__navbar-item header__notify-appearance">
-                        <a href="" class="header__navbar-item-link">
+                        <p class="notification-number">1</p>
+                        <a class="header__navbar-item-link">
                             <i class="header__navbar-icon fas fa-bell"></i>
                             <!--                            Notifications-->
                         </a>
@@ -269,7 +272,8 @@
                         </a>
                     </li>
                     <li class="header__navbar-item header__notify-appearance">
-                        <a href="" class="header__navbar-item-link">
+                        <p class="notification-number">1</p>
+                        <a class="header__navbar-item-link">
                             <i class="header__navbar-icon fas fa-bell"></i>
                             <!--                            Notifications-->
                         </a>
