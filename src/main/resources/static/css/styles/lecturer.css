@@ -181,7 +181,7 @@
     margin-bottom: 1rem;
 }
 
-.lec__navbar-list{
+.lec__navbar-list {
     /*display: inline;*/
     margin: 2rem 2rem 0;
     width: 85%;
@@ -193,7 +193,7 @@
     padding: 1rem 1.5rem;
     font-weight: var(--font-medium);
     border-radius: 0.3rem;
-
+    cursor: pointer;
 }
 .lec__navbar-item:hover a,
 .lec__navbar-view-doc-item:hover a{
@@ -241,7 +241,7 @@
 }
 
 #editorWrapper {
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .lec__edit-topic-icon{
@@ -258,6 +258,7 @@
     border-radius: 0.2rem;
     border: 1px solid #888888;
     margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
 }
 .lec__question-content{
     padding: 0rem 0rem 0rem 1.5rem;
@@ -345,4 +346,67 @@
 }
 .question-content{
     font-size: 1.8rem;
+}
+.lec__question-view-wrapper {
+    padding: 16px;
+    background-color: white;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .16);
+}
+.view-question-list{
+    width: 90%;
+    padding: 0rem 1.3rem 0rem 0rem;
+    margin: 1rem 0rem 0.2rem 2rem;
+}
+.lecturer-content-view-brief{
+    font-size: var(--medium-font-size);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    margin-left: 0rem;
+}
+.link-view-detailed{
+    color: #0a58ca;
+    cursor: pointer;
+}
+.link-view-detailed i{
+    font-size: var(--small-font-size);
+}
+.link-view-detailed:hover{
+    text-decoration: underline;
+}
+.lec__question-title{
+    font-size: var(--medium-font-size);
+    font-weight: bold;
+    overflow: hidden;
+}
+.lec__question-title:hover{
+    text-decoration: underline;
+}
+.lec__question-in-doc-content{
+    padding-top: 1rem;
+}
+.view-list{
+    padding-top: 1rem;
+}
+.lec__questions-list-view{
+    padding-top: 1rem;
+}
+.edit-question-div input:focus {
+    height: 2.5em; /* Chiều cao khi ô input được focus */
+}
+.edit-reply-div{
+    padding-left: 1rem;
+}
+.edit-reply-div input{
+    border: 1px solid #888888;
+    border-radius: 1rem;
+    min-width: 70%;
+    height: auto;
+    box-sizing: border-box;
+    transition: height 0.3s;
+}
+.edit-reply-div input:focus {
+    height: 2.5em; /* Chiều cao khi ô input được focus */
 }

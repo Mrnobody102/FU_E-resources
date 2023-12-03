@@ -1,13 +1,14 @@
 package fpt.edu.eresourcessystem.controller;
 
+import fpt.edu.eresourcessystem.model.Account;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class InitController {
-    @GetMapping({"/", "/guest", "/home"})
-    public String goHomePage() {
+    @GetMapping({ "/guest"})
+    public String goGuestHomePage() {
         return "guest/guest_home";
     }
 
@@ -23,6 +24,10 @@ public class InitController {
 
     @GetMapping({"/access_denied"})
     public String accessDenied() {
+        return "exception/404";
+    }
+    @GetMapping({"/bad_request"})
+    public String badRequest() {
         return "exception/404";
     }
 }

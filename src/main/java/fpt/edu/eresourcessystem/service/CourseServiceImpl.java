@@ -7,6 +7,7 @@ import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
 import fpt.edu.eresourcessystem.repository.CourseRepository;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsCourseRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,7 @@ import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
@@ -85,8 +87,8 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public Course findByCourseId(String courseId){
-        Optional<Course> course = courseRepository.findById(courseId);
-        return course.orElse(null);
+        Course course = courseRepository.findByIdAndDeleteFlg(courseId, CommonEnum.DeleteFlg.PRESERVED);
+        return course;
     }
 
     @Override
@@ -178,7 +180,6 @@ public class CourseServiceImpl implements CourseService{
         criteria.and("createdDate").exists(true);
         criteria.and("lecturer.id").is(lecturer.getId());
         criteria.and("status").is("NEW");
-
         Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("createdDate")));
         // Use a Pageable to limit the result set to 5 documents
         PageRequest pageable = PageRequest.of(0, 5);
@@ -227,20 +228,17 @@ public class CourseServiceImpl implements CourseService{
 
 
     @Override
-    public Course removeTopic(Topic topic) {
-        Course course = findByCourseId(topic.getCourse().getId());
-        if (null != course) {
-            // check delete success
-            if (null != course.getTopics()) {
-                for (int i = 0; i < course.getTopics().size(); i++) {
-                    if (course.getTopics().get(i).equals(topic.getId())) {
-                        course.getTopics().remove(i);
-                        return courseRepository.save(course);
-                    }
-                }
-            }
-        }
-        return null;
+    public void removeTopic(String courseId, ObjectId topicId) {
+        Query query = new Query(Criteria.where("id").is(courseId));
+        Update update = new Update().pull("topics", topicId);
+        mongoTemplate.updateFirst(query, update, Course.class);
+    }
+
+    @Override
+    public void removeResourceType(String courseId, ObjectId rsId) {
+        Query query = new Query(Criteria.where("id").is(courseId));
+        Update update = new Update().pull("resourceTypes", rsId);
+        mongoTemplate.updateFirst(query, update, Course.class);
     }
 
     // Resource type

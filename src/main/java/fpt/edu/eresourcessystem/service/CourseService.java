@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.service;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.elasticsearch.core.SearchPage;
 
@@ -42,7 +43,9 @@ public interface CourseService {
 
     boolean addTopic(Topic topic);
 
-    Course removeTopic(Topic topic);
+    void removeTopic(String courseId, ObjectId topicId);
+
+    void removeResourceType(String courseId, ObjectId rsId);
 
     // Resource type
     boolean addResourceType(ResourceType resourceType);

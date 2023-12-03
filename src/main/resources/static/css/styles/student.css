@@ -14,6 +14,7 @@
 .student__course-document-view{
     /*padding: 0.7rem;*/
     min-height: 100%;
+    /*margin-left: 2rem;*/
 }
 
 .student__course-document-list,
@@ -131,6 +132,7 @@
 .document-details-info {
     display: flex;
     justify-content: space-between;
+    margin-left: 1.2rem;
 }
 
 .doc-content-view, .doc-content-list{
@@ -185,7 +187,10 @@
     margin-left: 2rem;
 }
 .list-course-content-not-found, .list-content-not-found {
-    margin: 2rem;
+    margin-top: 1rem;
+    margin-left: 3rem;
+    font-size: var(--medium-font-size);
+    font-weight: var(--font-medium);
 }
 .stu__navbar-favourite-list,
 .stu__navbar-view-doc-list{
@@ -237,12 +242,12 @@ stu__navbar-view-doc-item:hover a{
 .stu__save-note button{
     padding: 0.5rem 1.5rem;
     border: white;
-    background-color: var(--second-background-btn-color);
+    /*background-color: var(--second-background-btn-color);*/
 }
-.stu__save-note button:hover{
-    color: var(--link-color);
-    background-color: var(--second-background-btn-color-hover);
-}
+/*.stu__save-note button:hover{*/
+/*    color: var(--link-color);*/
+/*    background-color: var(--second-background-btn-color-hover);*/
+/*}*/
 .view-note-link,
 .view-question-link{
     text-align: right;
@@ -468,4 +473,49 @@ stu__navbar-view-doc-item:hover a{
 }
 .link-view-detailed:hover{
     text-decoration: underline;
+}
+.doc-content{
+    margin-left: 1.5rem;
+}
+.edit-question-div{
+    margin-left: 1rem;
+}
+
+.edit-question-div input{
+    border: 1px solid #888888;
+    border-radius: 1rem;
+    min-width: 70%;
+    height: auto;
+    box-sizing: border-box;
+    transition: height 0.3s;
+}
+.edit-question-div input:focus {
+    height: 2.5em; /* Chiều cao khi ô input được focus */
+}
+.edit-reply-div{
+    padding-left: 1rem;
+}
+.edit-reply-div input{
+    border: 1px solid #888888;
+    border-radius: 1rem;
+    min-width: 70%;
+    height: auto;
+    box-sizing: border-box;
+    transition: height 0.3s;
+}
+.edit-reply-div input:focus {
+    height: 2.5em; /* Chiều cao khi ô input được focus */
+}
+.list-view-inline label{
+    cursor: pointer;
+}
+.list-view-block label{
+    cursor: pointer;
+}
+.bot-doctype-list{
+    padding-top: 1rem;
+}
+.list-doc-by-resource{
+    margin-top: 1rem;
+    margin-left: 1.5rem;
 }

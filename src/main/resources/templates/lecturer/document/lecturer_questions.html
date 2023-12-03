@@ -75,50 +75,55 @@
                         </div>
                         <div class="lec__navbar-favourite">
                             <ul class="lec__navbar-list border-bottom">
-                                <li class="lec__navbar-item"
-                                    th:classappend="${status == 'all' ? 'lec__navbar-active' : ''}">
-                                    <a th:href="@{/lecturer/questions/list/all/1}">
+                                <li class="lec__navbar-item lec__navbar-active" onclick="viewAllQuestion(this)">
+                                    <a>
                                         All
                                     </a>
                                 </li>
-                                <li class="lec__navbar-item"
-                                    th:classappend="${status == 'new' ? 'lec__navbar-active' : ''}">
-                                    <a th:href="@{/lecturer/questions/list/new/1}">
+                                <li class="lec__navbar-item" onclick="viewQuestionWaiting(this)">
+                                    <a>
                                         Waiting for reply
                                     </a>
                                 </li>
-                                <li class="lec__navbar-item"
-                                    th:classappend="${status == 'publish' ? 'lec__navbar-active' : ''}">
-                                    <a th:href="@{/lecturer/questions/list/publish/1}">
+                                <li class="lec__navbar-item" onclick="viewQuestionReplied(this)">
+                                    <a>
                                         Has been replied
                                     </a>
                                 </li>
                             </ul>
                         </div>
-
-
-                        <div class="stu__courses-list-view">
-                            <div class="stu__view-my-notes">
+                        <div class="lec__questions-list-view view-list" id="loading"  style="display:none;">
+                            <p th:id="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</p>
+                        </div>
+                        <div th:id="lec__view-waiting-for-reply-question" style="display: none" class="view-list lec__questions-list-view">
+                        </div>
+                        <div th:id="lec__view-replied-question" style="display: none" class="view-list lec__questions-list-view">
+                        </div>
+                        <div class="lec__questions-list-view" th:id="lec__questions-list-view">
+                            <div class="lec__view-my-questions">
                                 <div th:if="${param.search} AND ${studentQuestions == null} OR ${studentQuestions.size()} == 0"
                                      class="list-content-not-found">
-                                    <p class="h3">You didn't ask any question.</p>
+                                     <p class="h3">No questions have been sent to you.</p>
                                 </div>
-                                <div class="stu__view-list-note-content"
+                                <div class="lec__view-list-question"
                                      th:if="${studentQuestions ne null} AND ${studentQuestions.size()} > 0">
-                                    <div class="view-note-list">
-                                        <ul class="home__note-list">
-                                            <li class="home__note-item">
-                                                <div class="stu__question-view-wrapper"
+                                    <div class="view-question-list">
+                                        <ul class="home__question-list">
+                                            <li class="home__question-item">
+                                                <div class="lec__question-view-wrapper"
                                                      th:each="studentQuestion : ${studentQuestions}">
                                                     <!--                          <h2 class="home__note-title" th:text="${studentNote.title}"-->
                                                     <!--                              href=""></h2>-->
-                                                    <a class="stu__question-title"
-                                                       th:text="'Ask on '+${studentQuestion.documentId.title}"
-                                                       th:href="@{'/lecturer/documents/' + ${studentQuestion.documentId.id}+'#question'}">
-                                                    </a><span class="home__note-date"
+                                                    <span class="home__note-date"
                                                               th:text="${studentQuestion.lastModifiedDate}"></span>
-                                                    <p class="home__note-description"
-                                                       th:text="${studentQuestion.content}"></p>
+                                                    <a class="lec__question-title"
+                                                       th:text="${studentQuestion.student.account.name}+' asked on '+${studentQuestion.documentId.title}"></a>
+                                                    <p class="lecturer-content-view-brief">
+                                                        <span th:text="${studentQuestion.content}"></span>
+                                                        <a class="link-view-detailed"
+                                                           th:href="@{'/lecturer/documents/' + ${studentQuestion.documentId.id} + '#' + ${studentQuestion.id}}">view <i
+                                                                class="fa-solid fa-arrow-right"></i></a>
+                                                    </p>
                                                 </div>
                                             </li>
                                         </ul>

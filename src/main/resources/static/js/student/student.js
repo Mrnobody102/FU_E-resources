@@ -25,7 +25,7 @@ function viewQuestionWaiting() {
                         "                    <a class=\"stu__question-title\">You asked on"+ data[i].documentTitle+"</a>\n" +
                         "                    <p class=\"student-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
                         "                        <a class=\"link-view-detailed\"\n" +
-                        "                              href=\"/student/documents/" + data[i].documentId + "#question\">view <i\n" +
+                        "                              href=\"/student/documents/" + data[i].documentId + "#"+ data[i].questionId +"\">view <i\n" +
                         "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
                         "                    </div>";
 
@@ -58,10 +58,10 @@ function viewNewReplyQuestion() {
                 for (let i = 0; i < data.length; i++) {
                     html +="<div class=stu__question-content-wrapper>\n" +
                         "                        <span class=\"stu__question-content stu__question-date\">"+data[i].lastModifiedDate+"</span>\n" +
-                        "                    <a class=\"stu__question-title\">You asked on"+ data[i].documentTitle+"</a>\n" +
+                        "                    <a class=\"stu__question-title\">New reply for your question at "+ data[i].documentTitle+"</a>\n" +
                         "                    <p class=\"student-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
                         "                        <a class=\"link-view-detailed\"\n" +
-                        "                              href=\"/student/documents/" + data[i].documentId + "#question\">view <i\n" +
+                        "                              href=\"/student/documents/" + data[i].documentId + "#"+ data[i].questionId +"\">view <i\n" +
                         "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
                         "                    </div>";
                 }
@@ -100,8 +100,8 @@ function viewTopicDocument(param) {
                         html += "<div class=\"d-flex document-view-info border-bottom\">\n" +
                             "                                                    <div class=\"doc-info-head grid__column-8\">\n" +
                             "                                                        <p class=\"doc-info-title\"><a\n" +
-                            "                                                                href=\"/student/documents/" + data[i].docId + "\">\n" +
-                            "                                                            <span>" + data[i].docTitle + "</span></a>\n" +
+                            "                                                                href=\"/student/documents/" + data[i].id + "\">\n" +
+                            "                                                            <span>" + data[i].title + "</span></a>\n" +
                             "                                                        </p>\n" +
                             "                                                        <p class=\"doc-info-description\">\n" +
                             "                                                            <span>" + data[i].description + "</span>\n" +
@@ -363,5 +363,76 @@ $(document).ready(function () {
         $(".stu__navbar-favourite-item").removeClass("stu__navbar-active");
         $(this).addClass("stu__navbar-active");
     })
-
+    // Add event listeners to input and textarea
+    $('#noteTitle').on('input', function() {
+        $('#send-edit-note-button').removeClass('disabled');
+    });
+    $('#description').on('input', function() {
+        $('#send-edit-note-button').removeClass('disabled');
+    });
 });
+
+function viewDocumentNote(){
+    console.log("view my note")
+    $("#documentNote").removeClass('display-none');
+    $("#myNote").addClass('display-none');
+}
+function viewMyNote(){
+    console.log("view document note")
+    $("#documentNote").addClass('display-none');
+    $("#myNote").removeClass('display-none');
+}
+function submitDeleteMyNote(){
+    var result = window.confirm("Do you want to delete your note?");
+    if (result) {
+        $("#send-edit-note-button").addClass("disabled");
+        $("#send-delete-note-button").addClass("display-none");
+        $("#sending-delete").css("display", "inline");
+        $("#deleteStudentNote").submit();
+        console.log("submited.")
+    }
+}
+function choseResourceType(label){
+    $("#list-by-topic").addClass("display-none");
+    var resourceId = $(label).attr('for').slice(0, -12);
+    var courseId = $(label).attr('course-id');
+    $("#loading-by-resource").css("display", "block");
+    $.ajax({
+        type: 'GET',
+        url: '/api/student/documents/get_by_resource/' + resourceId +"/" + courseId,
+        dataType: 'json',
+        success: function (data) {
+            console.log(resourceId)
+            console.log(courseId)
+            console.log(data.length)
+            var html = "";
+            for (let i = 0; i < data.length; i++) {
+                html += "<div class=\"d-flex document-view-info border-bottom\">\n" +
+                    "                                                    <div class=\"doc-info-head grid__column-8\">\n" +
+                    "                                                        <p class=\"doc-info-title\"><a\n" +
+                    "                                                                href=\"/student/documents/" + data[i].id + "\">\n" +
+                    "                                                            <span>" + data[i].title + "</span></a>\n" +
+                    "                                                        </p>\n" +
+                    "                                                        <p class=\"doc-info-description\">\n" +
+                    "                                                            <span>" + data[i].description + "</span>\n" +
+                    "                                                        </p>\n" +
+                    "                                                    </div>\n" +
+                    "                                                    <div class=\"doc-info grid__column-2\">\n" +
+                    "                                                        <p><span class=\"doc-info-date\">" + data[i].lastModifiedDate + "</span></p>\n" +
+                    "                                                    </div>\n" +
+                    "                                                </div>"
+
+            }
+            $("#list-by-resource").html(html);
+            $("#loading-by-resource").css("display", "none");
+            $("#list-by-resource").removeClass("display-none");
+        },
+        error: function (xhr) {
+            // Handle errors
+        }
+    });
+}
+function listByTopic(){
+    $("#list-by-topic").removeClass("display-none");
+    $("#list-by-resource").addClass("display-none");
+}

@@ -35,7 +35,6 @@ function connect(event) {
 function onConnected() {
     // Subscribe to the Public Topic
     stompClient.subscribe('/student/chat', onMessageReceived);
-
     // Tell your username to the server
     stompClient.send("/app/chat.addUser",
         {},

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>New note | FPT University E-resources</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+
+    <!-- CK Editor-->
+    <script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
+
+    <!-- SweetAlert từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+</head>
+
+<body class="app_container">
+<!-- Header -->
+<div class="row" th:replace="~{fragments/header::studentHeaderSection}"></div>
+<div class="main_content">
+    <div class="container-content-wrapper">
+        <!--  Main-->
+        <div class="container-content">
+            <div class="main-content stu_course-saved">
+                <div class="stu_course-saved-content d-flex">
+                    <div class="stu_sidebar">
+                        <div th:replace="~{fragments/sidebar:: studentSidebar('my-note')}"></div>
+                    </div>
+
+                    <div class="stu_student-notes-content main" id="main">
+                        <div class="document-details-head">
+                            <a th:href="@{/student}">Home</a>
+                            <span> &gt; <a th:href="@{/student/my_library/my_notes/1}">My notes</a></span>
+                            <span> &gt; Edit my note</span>
+                        </div>
+                        <div>
+                            <form class="form-student-add-notes" method="post" role="form"
+                                  th:action="@{'/student/my_note/student_notes/update'}"
+                                  th:object="${studentNote}"
+                                  th:id="add-form" enctype="multipart/form-data">
+                                <!--Title-->
+                                <label class="student_input-label student_input-title-note"
+                                       th:for="noteTitle">Title<span class="require-input">*</span>:</label>
+                                <input type="text" th:id="noteId"
+                                       th:field="*{id}" placeholder="Enter note title" readonly hidden>
+                                <input type="text" th:id="noteTitle"
+                                       class="student_input form-control student__input-note"
+                                       th:field="*{title}" placeholder="Enter note title" required>
+                                <!--Description-->
+                                <label class="student_input-label student_input-label-note" th:for="description">Description:</label>
+                                <textarea type="text" th:id="description"
+                                          class="student_textarea form-control student__input-note"
+                                          th:field="*{description}" placeholder="Enter description"></textarea>
+                                <div id="editorWrapper">
+                                    <div class="d-flex justify-content-between">
+                                        <label for="editor"
+                                               class="student_input-label student_input-label-doc">Content:</label>
+                                    </div>
+
+                                    <textarea id="editor"
+                                              th:field="*{editorContent}" minlength="1"></textarea>
+                                </div>
+                                <div class="stu__save-note">
+                                    <a type="button" title="Sending" style="display:none;"
+                                       id="sending-new-note" th:studentNote-id="${studentNote.id}"><i
+                                            class="fas fa-spinner fa-spin"></i> Updating...</a>
+                                    <button class="btn-save disabled edit-note"
+                                            type="submit" title="Update" id="send-edit-note-button"
+                                            th:studentNote-id="${studentNote.id}">
+                                        Update
+                                    </button>
+
+                                    <button class="btn-danger delete-note" type="button" title="Send"
+                                            id="send-delete-note-button"
+                                            th:studentNote-id="${studentNote.id}"
+                                            onclick="submitDeleteMyNote()">
+                                        Delete
+                                    </button>
+                                    <a type="button" title="Deleting" style="display:none;"
+                                       id="sending-delete" th:studentNote-id="${studentNote.id}"><i
+                                            class="fas fa-spinner fa-spin"></i> Deleting...</a>
+                                </div>
+                            </form>
+                            <form class="display-none" method="post" th:action="@{/student/my_note/student_notes/delete}" id="deleteStudentNote">
+                                <input name="studentNoteId" th:value="${studentNote.id}" readonly hidden>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+
+<!--jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<!--Bootstrap script-->
+<script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"
+
+        crossorigin="anonymous"></script>
+<!--Custom script-->
+<script th:src="@{/js/student/student.js}"></script>
+<script th:inline="javascript">
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Save note successful!',
+            'success'
+        );
+    }
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check note information again!',
+            'error'
+        );
+    }
+
+    let newEditor;
+
+    // CK editor
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            ckfinder: {
+                uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
+            },
+        })
+        .then(editor => {
+            newEditor = editor;
+            editor.editing.view.change(writer => {
+                writer.setStyle('height', '400px', editor.editing.view.document.getRoot());
+            });
+            editor.model.document.on('change:data', () => {
+                // Enable the button when the content changes
+                $('#send-edit-note-button').removeClass('disabled');
+            });
+            console.log(Array.from(editor.ui.componentFactory.names()));
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+    // submit
+    document.querySelector('#submitAllData').addEventListener('click', () => {
+        console.log(newEditor.getData());
+    });
+</script>
+</body>
+
+</html>

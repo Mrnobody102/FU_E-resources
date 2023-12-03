@@ -52,6 +52,5 @@ public class StudentNote {
         this.editorContent = studentNoteDTO.getEditorContent();
         this.status = studentNoteDTO.getStatus();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
-
     }
 }

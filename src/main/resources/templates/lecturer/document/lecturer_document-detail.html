@@ -14,6 +14,7 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
+    <link rel="stylesheet" th:href="@{/css/content-style.css}"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.min.js"
@@ -23,7 +24,7 @@
 
 <body class="app_container">
 <!-- Header -->
-<div class="row" th:replace="~{fragments/header::headerLecturerSection}"></div>
+<div th:replace="~{fragments/header::headerLecturerSection}"></div>
 <div class="main_content">
     <div class="container-content-wrapper">
         <!--  Main-->
@@ -34,7 +35,7 @@
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar('my-courses-management')}"></div>
                     </div>
 
-                    <div class="stu_course-content main" id="main">
+                    <div class="stu_course-content main" id="main-lecturer">
                         <div class="document-details-head">
                             <a th:href="@{/lecturer}">Home</a>
                             <span> &gt; <a th:href="@{/lecturer/courses/list/all/1}">Courses management</a></span>
@@ -48,7 +49,8 @@
                         <div style="width: 100%">
                             <div class="document-details-info border-bottom">
                                 <div>
-                                    <div class="doc-info-name d-flex justify-content-between" style="margin-bottom: 4px">
+                                    <div class="doc-info-name d-flex justify-content-between"
+                                         style="margin-bottom: 4px">
                                         <div style="flex: 3; margin-right: 2rem">
                                             <p class="doc-info-name h2" th:text="${document.getTitle()}"></p>
                                             <div style="display: flex; width: 100%">
@@ -63,10 +65,12 @@
                                         </div>
                                         <div style="flex: 1; display: flex; justify-content: center">
                                             <div>
-                                                <a class="btn btn--hover mb-2 mt-2" th:href="@{'/lecturer/documents/' + ${document.id} + '/update'}">
+                                                <a class="btn btn--hover mb-2 mt-2"
+                                                   th:href="@{'/lecturer/documents/' + ${document.id} + '/update'}">
                                                     <span><i class="fa-solid fa-edit"></i>  Edit document</span>
                                                 </a>
-                                                <a class="btn btn--hover" th:href="@{'/lecturer/documents/' + ${document.id} + '/delete'}">
+                                                <a class="btn btn--hover"
+                                                   th:href="@{'/lecturer/documents/' + ${document.id} + '/delete'}">
                                                     <span><i class="fa-solid fa-trash"></i>  Delete document</span>
                                                 </a>
                                             </div>
@@ -85,120 +89,181 @@
 
 
                                 <div style="display: flex">
-                                    <th:block th:if="${document.docType.toString().equals('UNKNOWN')}">
-                                        <div class="doc-content-view" th:utext="${document.editorContent}"
-                                             style="height: 500px; flex: 3; padding: 1rem; border: 2px solid gray; overflow: auto">
+                                    <th:block th:unless="${document.displayWithFile == true}">
+                                        <div class="doc-content-view ck-content" th:utext="${document.getContent}"
+                                             style="height: 500px; flex: 3; overflow: auto">
                                         </div>
                                     </th:block>
-                                    <th:block th:if="${document.docType.toString().equals('TXT')}">
-                                        <iframe class="doc-content-view"
-                                                th:src="'data:text;base64,' + ${data}"
-                                                width="100%" height="600px"></iframe>
-                                    </th:block>
-                                    <th:block th:if="${document.docType.toString() eq 'HTML'}">
-                                        <iframe id="htmlContent"
-                                                class="doc-content-view"
-                                                th:attr="src='data:text/html;base64,' + ${data}"
-                                                width="100%" height="600px"></iframe>
-                                    </th:block>
-                                    <th:block th:if="${document.docType.toString() eq 'PDF'}">
-                                        <embed class="doc-content-view"
-                                               th:attr="src='data:application/pdf;base64,' + ${data}"
-                                               type="application/pdf" width="100%" height="600px">
-                                    </th:block>
-                                    <!-- Word -->
-                                    <a th:if="${document.docType.toString() eq 'DOCX'}" th:href="'data:application/msword;base64,' + ${data}" download="document.doc">Download Word</a>
+                                    <th:block th:if="${document.displayWithFile == true}">
+                                        <th:block th:unless="${document.cloudFileLink ne null}">
+                                            <th:block th:if="${document.docType.toString().equals('TXT')}">
+                                                <iframe class="doc-content-view"
+                                                        th:src="'data:text;base64,' + ${data}"
+                                                        width="100%" height="600px"></iframe>
+                                            </th:block>
+                                            <th:block th:if="${document.docType.toString() eq 'HTML'}">
+                                                <iframe id="htmlContent"
+                                                        class="doc-content-view"
+                                                        th:attr="src='data:text/html;base64,' + ${data}"
+                                                        width="100%" height="600px"></iframe>
+                                            </th:block>
+                                            <th:block th:if="${document.docType.toString() eq 'PDF'}">
+                                                <embed class="doc-content-view"
+                                                       th:attr="src='data:application/pdf;base64,' + ${data}"
+                                                       type="application/pdf" width="100%" height="600px">
+                                            </th:block>
 
-                                    <!-- Excel -->
-                                    <a th:if="${document.docType.toString() eq 'EXCEL'}" th:href="'data:application/vnd.ms-excel;base64,' + ${data}" download="spreadsheet.xls">Download Excel</a>
-
-                                    <!-- PowerPoint -->
-                                    <a th:if="${document.docType.toString() eq 'POWERPOINT'}" th:href="'data:application/vnd.ms-powerpoint;base64,' + ${data}" download="presentation.ppt">Download PowerPoint</a>
-
-                                    <!-- Video -->
-                                    <th:block th:if="${document.docType.toString() eq 'VIDEO'}">
-                                        <video controls class="doc-content-view" width="100%" height="100%">
-                                            <th:block th:if="${document.suffix eq 'webm'}">
-                                                <source type="video/webm"
-                                                        th:src="'data:video/webm;base64,' + ${data}"
+                                            <!-- Video -->
+                                            <th:block th:if="${document.docType.toString() eq 'VIDEO'}">
+                                                <video controls class="doc-content-view" width="100%" height="100%">
+                                                    <th:block th:if="${document.suffix eq 'mkv'}">
+                                                        <source type="video/mkv"
+                                                                th:src="'data:video/mkv;base64,' + ${data}"
                                                         >
+                                                    </th:block>
+                                                    <th:block th:if="${document.suffix eq 'flv'}">
+                                                        <source type="video/flv"
+                                                                th:src="'data:video/flv;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                    <th:block th:if="${document.suffix eq 'avi'}">
+                                                        <source type="video/avi"
+                                                                th:src="'data:video/avi;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                    <th:block th:if="${document.suffix eq 'mp4'}">
+                                                        <source type="video/mp4"
+                                                                th:src="'data:video/mp4;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                    <th:block th:if="${document.suffix eq 'webm'}">
+                                                        <source type="video/webm"
+                                                                th:src="'data:video/webm;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                    <th:block th:if="${document.suffix eq 'mov'}">
+                                                        <source type="video/mov"
+                                                                th:src="'data:video/mov;base64,' + ${data}"
+                                                        >
+                                                    </th:block>
+                                                </video>
                                             </th:block>
-                                            <th:block th:if="${document.suffix eq 'mp4'}">
-                                                <source type="video/mp4"
-                                                        th:src="'data:video/mp4;base64,' + ${data}"
-                                                >
+                                            <!-- Image -->
+                                            <th:block th:if="${document.docType.toString() eq 'IMAGE'}">
+                                                <img th:src="'data:image;base64,' + ${data}"
+                                                     alt="Image"/>
                                             </th:block>
-                                        </video>
+
+                                            <audio th:if="${document.docType.toString() eq 'AUDIO'}" controls>
+                                                <source type="audio/mp3" th:src="'data:audio/mp3;base64,' + ${data}">
+                                            </audio>
+                                        </th:block>
+                                        <th:block th:if="${document.cloudFileLink ne null}">
+                                            <th:block
+                                                    th:unless="${document.docType.toString() eq 'VIDEO' or document.docType.toString() eq 'AUDIO'}">
+                                                <th:block th:unless="${document.docType.toString() eq 'OTHER'}">
+                                                    <embed class="doc-content-view"
+                                                           th:attr="src='https://docs.google.com/gview?url=' + ${data} + '&embedded=true'"
+                                                           width="100%" height="600px">
+                                                </th:block>
+                                                <th:block th:if="${document.docType.toString() eq 'OTHER'}">
+                                                    <div class="mt-3 mb-3">
+                                                        <span>Attached file: </span>
+                                                        <a th:href="${data}" th:text="${document.fileName}" download></a>
+                                                    </div>
+                                                </th:block>
+                                            </th:block>
+                                            <th:block
+                                                    th:if="${document.docType.toString() eq 'VIDEO' or document.docType.toString() eq 'AUDIO'}">
+                                                <embed class="doc-content-view"
+                                                       th:attr="src=${data}" width="100%" height="600px">
+                                            </th:block>
+                                        </th:block>
                                     </th:block>
 
-
-                                    <!-- Image -->
-                                    <th:block th:if="${document.docType.toString() eq 'PNG'}" >
-                                        <img th:src="'data:${document.contentType};base64,' + ${data}" alt="Image"/>
-                                    </th:block>
-
-                                    <!-- Audio -->
-                                    <th:block th:if="${document.docType.toString() eq 'AUDIO'}">
-                                        <video controls class="doc-content-view" width="100%" height="100%">
-                                            <th:block th:if="${document.suffix eq 'webm'}">
-                                                <source type="video/webm"
-                                                        th:src="'data:video/webm;base64,' + ${data}"
-                                                >
-                                            </th:block>
-                                            <th:block th:if="${document.suffix eq 'mp4'}">
-                                                <source type="video/mp4"
-                                                        th:src="'data:video/mp4;base64,' + ${data}"
-                                                >
-                                            </th:block>
-                                        </video>
-                                    </th:block>
-                                    <audio th:if="${document.docType.toString() eq 'MP3'}" th:attr="src='data:${document.contentType};base64,' + ${data}" controls></audio>
                                 </div>
 
 
-                                <div class="stu__navbar-view-doc">
-                                    <ul class="stu__navbar-view-doc-list border-bottom">
-                                        <li class="stu__navbar-view-doc-item stu__navbar-active">
+                                <div class="lec__navbar-view-doc">
+                                    <ul class="lec__navbar-view-doc-list">
+                                        <li class="lec__navbar-view-doc-item lec__navbar-active">
                                             <a href="#">
                                                 Question & Answer
                                             </a>
                                         </li>
                                     </ul>
-                                    <div class="lec__question-in-doc-content" th:if="${questions ne null } AND ${questions.size} > 0">
-                                        <div class="lec__question-content-wrapper" th:each="question : ${questions}">
-                                            <h6 class="lec__question-creater-name"><i class="fa-solid fa-user"></i> <span th:text="${question.student.account.name}"></span></h6>
-                                            <p class="lec__question-content question-content" th:utext="${question.content}"></p>
-                                            <p class="lec__question-content" ><span class="lec__answer-date" th:text="${question.lastModifiedDate}"></span> <a class="lec__add-reply view-question-link-item" th:question-id="${question.id}" onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>
+                                    <div class="lec__question-in-doc-content"
+                                         th:if="${questions ne null } AND ${questions.size} > 0">
+                                        <div class="lec__question-content-wrapper" th:each="question : ${questions}"
+                                             th:id="${question.id}">
+                                            <h6 class="lec__question-creater-name"><i class="fa-solid fa-user"></i>
+                                                <span th:text="${question.student.account.name}"></span></h6>
+                                            <p class="lec__question-content question-content"
+                                               th:utext="${question.content}"></p>
+                                            <p class="lec__question-content"><span class="lec__answer-date"
+                                                                                   th:text="${question.lastModifiedDate}"></span>
+                                                <a class="lec__add-reply view-question-link-item"
+                                                   th:question-id="${question.id}"
+                                                   onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>
 
                                             </p>
-                                            <p th:if="${question.answers.size()} > 0" th:id="'view-more-reply-'+${question.getId()}" th:question-id="${question.id}" onclick="viewMoreReply(this.getAttribute('question-id'))"  class="view-question-reply lec__question-content">View all <span th:id="'number-reply-'+ ${question.id}"  th:text="${question.answers.size()}"></span> reply</p>
-                                            <p style="display:none;"  th:if="${question.answers.size()} > 0" th:id="'see-less-reply-'+${question.getId()}" th:question-id="${question.id}" onclick="seeLessReply(this.getAttribute('question-id'))"  class="view-question-reply lec__question-content">See less</p>
-                                            <p style="display:none;"  th:id="'loading-reply-'+${question.getId()}" th:question-id="${question.id}" class="view-question-reply lec__question-content"><i class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
-                                            <div class="reply-content" th:id="'list-reply-content-'+${question.getId()}">
-<!--                                                <div class="reply-content" th:if="${answers ne null}" th:each="answer : ${answers}">-->
-<!--                                                    <h6 class="stu__reply-creater-name"><i class="fa-solid fa-user"></i> <span th:if="${answer.studentName ne null}"  th:text="${answer.studentName}"></span> <span th:if="${answer.lecturerName ne null}"  th:text="${answer.lecturerName+'(You)'}"></span></h6>-->
-<!--                                                    <p class="lec__reply-content" th:utext="${answer.answerContent}"></p>-->
-<!--                                                    <p class="lec__reply-content" ><span class="lec__answer-date" th:text="${answer.lastModifiedDate}"></span> <a class="lec__like-reply view-question-link-item" th:question-id="${question.id}" onclick="likeReply(this.getAttribute('question-id'))"><i class="fa-regular fa-thumbs-up"></i> Like</a>-->
-<!--                                                </div>-->
+                                            <p th:id="'view-more-reply-'+${question.getId()}"
+                                               th:question-id="${question.id}"
+                                               onclick="viewMoreReply(this.getAttribute('question-id'))"
+                                               class="view-question-reply lec__question-content">View all <span
+                                                    th:id="'number-reply-'+ ${question.id}"
+                                                    th:text="${question.answers.size()}"></span> reply</p>
+                                            <p style="display:none;" th:if="${question.answers.size()} > 0"
+                                               th:id="'see-less-reply-'+${question.getId()}"
+                                               th:question-id="${question.id}"
+                                               onclick="seeLessReply(this.getAttribute('question-id'))"
+                                               class="view-question-reply lec__question-content">See less</p>
+                                            <p style="display:none;" th:id="'loading-reply-'+${question.getId()}"
+                                               th:question-id="${question.id}"
+                                               class="view-question-reply lec__question-content"><i
+                                                    class="fas fa-spinner fa-spin"></i> Loading more reply...</p>
+                                            <div class="reply-content"
+                                                 th:id="'list-reply-content-'+${question.getId()}">
                                             </div>
                                             <div class="lec__reply-form" th:id="'reply-form'+${question.getId()}">
-                                                <form class="form-lecturer-add-doc-new-reply justify-content-between" method="post" role="form"
+                                                <form class="form-lecturer-add-doc-new-reply justify-content-between"
+                                                      method="post" role="form"
                                                       th:object="${newAnswer}"
                                                       th:id="'reply-content-form'+${question.getId()}">
                                                     <div class="">
-                                                        <input type="text" name="docId" th:value="${document.getId()}" readonly hidden>
-                                                        <input type="text" name="quesId" th:value="${question.getId()}" readonly hidden>
-                                                        <label th:id="'new-reply-content-error-'+${question.getId()}" class="lecturer_input-label error-input">Content require!</label>
+                                                        <input type="text" name="docId" th:value="${document.getId()}"
+                                                               readonly hidden>
+                                                        <input type="text" name="quesId" th:value="${question.getId()}"
+                                                               readonly hidden>
+                                                        <label th:id="'new-reply-content-error-'+${question.getId()}"
+                                                               class="lecturer_input-label error-input">Content
+                                                            require!</label>
                                                         <div class="form-content">
-                                                            <label th:for="'new-reply-content-'+${question.getId()}" class="lec_input-label-reply">Enter answer:</label>
-                                                            <textarea th:id="'new-reply-content-'+${question.getId()}" class="input-reply-content"
+                                                            <label th:for="'new-reply-content-'+${question.getId()}"
+                                                                   class="lec_input-label-reply">Enter answer:</label>
+                                                            <textarea th:id="'new-reply-content-'+${question.getId()}"
+                                                                      class="input-reply-content"
                                                                       th:field="*{answer}" required></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="submit-reply-button">
-                                                        <button type="button" title="exist" th:id="'exist-reply-form-button-'+${question.getId()}" th:question-id="${question.id}" onclick="existFormReplyQuestion(this.getAttribute('question-id'))" class="btn-danger"><i class="fa-solid fa-xmark"></i> Close</button>
-                                                        <a type="button" title="Sending" style="display:none;"  th:id="'sending-reply-'+${question.getId()}" th:question-id="${question.id}"><i class="fas fa-spinner fa-spin"></i> Sending...</a>
-                                                        <button type="button" title="Send" th:id="'send-reply-button-'+${question.getId()}" th:question-id="${question.id}" onclick="submitFormReplyQuestion(this.getAttribute('question-id'))" class="btn-save"><i class="fa-solid fa-paper-plane"> Send</i></button>
+                                                        <button type="button" title="exist"
+                                                                th:id="'exist-reply-form-button-'+${question.getId()}"
+                                                                th:question-id="${question.id}"
+                                                                onclick="existFormReplyQuestion(this.getAttribute('question-id'))"
+                                                                class="btn-danger"><i class="fa-solid fa-xmark"></i>
+                                                            Close
+                                                        </button>
+                                                        <a type="button" title="Sending" style="display:none;"
+                                                           th:id="'sending-reply-'+${question.getId()}"
+                                                           th:question-id="${question.id}"><i
+                                                                class="fas fa-spinner fa-spin"></i> Sending...</a>
+                                                        <button type="button" title="Send"
+                                                                th:id="'send-reply-button-'+${question.getId()}"
+                                                                th:question-id="${question.id}"
+                                                                onclick="submitFormReplyQuestion(this.getAttribute('question-id'))"
+                                                                class="btn-save"><i class="fa-solid fa-paper-plane"></i>Send
+                                                        </button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -223,8 +288,8 @@
 <script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"
 
         crossorigin="anonymous"></script>
-<script src="/js/lecturer/lecturer.js"></script>
-<script src="/js/lecturer/lecturer_doc-detail.js"></script>
+<script th:src="@{/js/lecturer/lecturer.js}"></script>
+<script th:src="@{/js/lecturer/lecturer_doc-detail.js}"></script>
 <script>
     var content = document.getElementById("content");
     var button = document.getElementById("readMoreBtn");

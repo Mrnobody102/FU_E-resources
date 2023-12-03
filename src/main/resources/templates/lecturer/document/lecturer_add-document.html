@@ -14,7 +14,6 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
-    <script th:src="@{/ckfinder/static/ckfinder.js}"></script>
 
     <!-- SweetAlert từ CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -97,37 +96,46 @@
                                     </div>
                                 </div>
 
+                                <label class="lecturer_input-label-doc" th:for="description">Add document method:</label>
+                                <div>
+                                    <input class="btn-check" type="radio" th:field="*{displayWithFile}" th:name="displayWithFile"
+                                           value="false" id="displayContentType1" autocomplete="off">
+                                    <label class="btn btn-secondary" for="displayContentType1">Create new content
+                                    </label>
+                                    <input class="btn-check" type="radio" th:field="*{displayWithFile}" th:name="displayWithFile"
+                                           value="true" id="displayContentType2" checked="checked" autocomplete="off">
+                                    <label class="btn btn-secondary" for="displayContentType2">Upload available file
+                                    </label>
+                                </div>
+
                                 <div id="editorWrapper">
                                     <div class="d-flex justify-content-between">
                                         <label for="editor" class="lecturer_input-label-doc">Content:</label>
-
-                                        <div id="uploadFile">
-                                            <button type="button" class="border-0"
-                                                    style="padding: 4px 6px; border-radius: 2px">
-                                                Upload available file
-                                            </button>
-                                        </div>
                                     </div>
 
                                     <textarea id="editor"
-                                              th:field="*{editorContent}"></textarea>
+                                              th:field="*{content}"></textarea>
                                 </div>
 
 
-                                <div id="uploadFileInput" style="display: none" class="mt-2">
+                                <div id="uploadFileInput" style="display: none; margin-top: 1rem">
                                     <div class="d-flex justify-content-between lecturer__input-doc">
                                         <label th:for="file" class="lecturer_input-label-doc">File Upload:</label>
 
-                                        <div id="editContent" class="d-flex align-items-center">
+                                        <div id="cancelUploadButton" class="d-flex align-items-center">
                                             <button type="button" class="border-0"
                                                     style="padding: 4px 6px; border-radius: 2px">
-                                                Create new content
+                                                Reset uploading file
                                             </button>
                                         </div>
                                     </div>
                                     <input type="file" th:name="file" id="fileUploadInput"
                                            class="file-input form-control lecturer__input-doc" style="font-size: 1.3rem"
                                     >
+                                    <div class="mt-3">
+                                        <div id="previewContainer" class="form-control">File will be previewed here.
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div>
@@ -169,21 +177,10 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
 <!-- CK Editor-->
 <script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
-<script th:src="@{/js/editor.js}"></script>
 <script th:inline="javascript">
     // Resource Type
     $('#defineResourceType').click(function () {
         $('#inputResourceWrapper').fadeIn();
-    });
-
-    $('#uploadFile').click(function () {
-        $('#editorWrapper').fadeOut();
-        $('#uploadFileInput').fadeIn();
-    });
-
-    $('#editContent').click(function () {
-        $('#editorWrapper').fadeIn();
-        $('#uploadFileInput').fadeOut();
     });
 
     $('#defineButton').click(function () {
@@ -219,9 +216,18 @@
         }
     });
 
-    // VALIDATION AND SWAL
-    // validate_addDocument();
+    // Type of content
+    $('#displayContentType1').click(function () {
+        $('#editorWrapper').fadeIn();
+        $('#uploadFileInput').fadeOut();
+    });
 
+    $('#displayContentType2').click(function () {
+        $('#editorWrapper').fadeOut();
+        $('#uploadFileInput').fadeIn();
+    });
+
+    // RESPONSE STATUS
     var successParam = [[${param.success}]];
     if (successParam) {
         Swal.fire(
@@ -241,6 +247,8 @@
     }
 
 </script>
+<script th:src="@{/js/editor.js}"></script>
+<script th:src="@{/js/validation_add-file.js}"></script>
 </body>
 
 </html>

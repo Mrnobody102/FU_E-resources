@@ -5,13 +5,14 @@
     --white-color: #fff;
     --black-color: #000;
     --text-color: #000;
-    --title-color: #DD173B;
+    --title-color: #e12b1b;
     --border-color: #dbdbdb;
-    --hover-color: #825cf3;
+    --hover-color: #5c7af3;
+    --header-hover-color: #d5d5d5;
     --bg-hover-color: #e3e6fc;
     --hover-color-2: #CEE8E9;
-    /*--gradient-color: #1e41cb;*/
-    /*--primary-color: #182ebe;*/
+    /*--gradient-color: white;*/
+    /*--primary-color: white;*/
     --gradient-color: #114a9d;
     --primary-color: #0a429d;
     --background-btn-color-hover: #0a429d;
@@ -545,5 +546,11 @@ li {
 
 .paragraph {
     white-space: pre-wrap;
+}
+
+/* Important */
+.image img {
+    width: 100%;
+    height: 100%;
 }
 

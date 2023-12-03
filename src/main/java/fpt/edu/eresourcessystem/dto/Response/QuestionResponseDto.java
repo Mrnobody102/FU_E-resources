@@ -21,7 +21,7 @@ public class QuestionResponseDto {
 
     private int totalAnswers;
 
-    private String lecturerName;
+    private String lecturerEmail;
 
     private String lastModifiedDate;
     public QuestionResponseDto(Question question){
@@ -37,9 +37,7 @@ public class QuestionResponseDto {
         }else {
             this.totalAnswers = 0;
         }
-        if(null != question.getLecturer() && null !=question.getLecturer().getAccount()) {
-            this.lecturerName = question.getLecturer().getAccount().getName();
-        }
+        this.lecturerEmail = question.getLecturer();
         this.lastModifiedDate = question.getLastModifiedDate();
     }
 }

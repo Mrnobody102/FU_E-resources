@@ -75,7 +75,7 @@
     height: auto;
     display: block;
 
-    position: center;
+    /*position: center;*/
     overflow: hidden;
     margin-top: 0px;
 }
@@ -452,6 +452,7 @@ a {
     margin-top: 86px;
     padding: 0;
     background-color: white;
+    min-height: 80vh;
 }
 .faq-heading{
     font-size: 40px;

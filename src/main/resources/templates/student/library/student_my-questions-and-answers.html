@@ -119,7 +119,7 @@
                                             <p class="student-content-view-brief"><span
                                                     th:text="${studentQuestion.content}"></span>
                                                 <a class="link-view-detailed"
-                                                      th:href="@{'/student/documents/' + ${studentQuestion.documentId.id}+'#question'}">view <i
+                                                      th:href="@{'/student/documents/' + ${studentQuestion.documentId.id} + '#' + ${studentQuestion.id}}">view <i
                                                         class="fa-solid fa-arrow-right"></i></a></p>
 
                                             <!--                                                    <div class="home__note-item stu__list-answers"-->

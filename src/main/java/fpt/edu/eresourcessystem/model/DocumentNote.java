@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,6 +29,9 @@ public class DocumentNote {
 
     @NotNull
     private String docId;
+
+    @NotNull
+    private String documentTitle;
 
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
@@ -46,6 +51,7 @@ public class DocumentNote {
         this.studentId = documentNoteDTO.getStudentId();
         this.noteContent = documentNoteDTO.getContent();
         this.docId = documentNoteDTO.getDocId();
+        this.documentTitle = documentNoteDTO.getDocumentTitle();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
 }

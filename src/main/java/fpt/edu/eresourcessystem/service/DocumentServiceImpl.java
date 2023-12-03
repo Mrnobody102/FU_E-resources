@@ -6,12 +6,16 @@ import com.mongodb.client.gridfs.model.GridFSFile;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
-import fpt.edu.eresourcessystem.model.Document;
-import fpt.edu.eresourcessystem.model.Lecturer;
+import fpt.edu.eresourcessystem.enums.DocumentEnum;
+import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
+import fpt.edu.eresourcessystem.repository.CourseRepository;
 import fpt.edu.eresourcessystem.repository.DocumentRepository;
+import fpt.edu.eresourcessystem.repository.ResourceTypeRepository;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsDocumentRepository;
 import org.apache.commons.io.IOUtils;
+import org.apache.tika.exception.TikaException;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +29,7 @@ import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,30 +42,21 @@ public class DocumentServiceImpl implements DocumentService {
     private final EsDocumentRepository esDocumentRepository;
     private final MongoTemplate mongoTemplate;
 
-    private GridFsTemplate template;
+    private final GridFsTemplate template;
 
-    private GridFsOperations operations;
+    private final GridFsOperations operations;
+    private final CourseRepository courseRepository;
+    private final ResourceTypeRepository resourceTypeRepository;
 
     @Autowired
-    public DocumentServiceImpl(DocumentRepository documentRepository, EsDocumentRepository esDocumentRepository, MongoTemplate mongoTemplate, GridFsTemplate template, GridFsOperations operations) {
+    public DocumentServiceImpl(DocumentRepository documentRepository, EsDocumentRepository esDocumentRepository, MongoTemplate mongoTemplate, GridFsTemplate template, GridFsOperations operations, CourseRepository courseRepository, ResourceTypeRepository resourceTypeRepository) {
         this.documentRepository = documentRepository;
         this.esDocumentRepository = esDocumentRepository;
         this.mongoTemplate = mongoTemplate;
         this.template = template;
         this.operations = operations;
-    }
-
-    public String addFile(MultipartFile upload) throws IOException {
-
-        //define additional metadata
-        DBObject metadata = new BasicDBObject();
-        metadata.put("fileSize", upload.getSize());
-
-        //store in database which returns the objectID
-        Object fileID = template.store(upload.getInputStream(), upload.getOriginalFilename(), upload.getContentType(), metadata);
-
-        //return as a string
-        return fileID.toString();
+        this.courseRepository = courseRepository;
+        this.resourceTypeRepository = resourceTypeRepository;
     }
 
     @Override
@@ -71,7 +67,6 @@ public class DocumentServiceImpl implements DocumentService {
                 .skip(0)
                 .limit(9)
                 .with(Sort.by(Sort.Order.desc("createdDate")));
-        ;
         List<Document> documents = mongoTemplate.find(query, Document.class);
         if (null != documents) {
             List<DocumentResponseDto> responseList = documents.stream()
@@ -117,24 +112,58 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public Iterable<EsDocument> searchDocument(String search) {
-        return esDocumentRepository.findByTitleContainingOrDescriptionContainingOrDocTypeLikeOrEditorContentContainingIgnoreCase(search);
+        return esDocumentRepository.search(search);
+    }
+
+    public String addFile(MultipartFile upload) throws IOException {
+
+        //define additional metadata
+        DBObject metadata = new BasicDBObject();
+        metadata.put("fileSize", upload.getSize());
+
+        //store in database which returns the objectID
+        Object fileID = template.store(upload.getInputStream(),
+                upload.getOriginalFilename(),
+                upload.getContentType(),
+                metadata);
+
+        //return as a string
+        return fileID.toString();
+    }
+
+
+    @Override
+    public GridFSFile getGridFSFile(ObjectId id) {
+        return template.findOne(new Query(Criteria.where("_id").is(id)));
     }
 
     @Override
-    public Document addDocument(DocumentDto documentDTO, String id) throws IOException {
+    public byte[] getGridFSFileContent(ObjectId id) throws IOException {
+        GridFSFile file = template.findOne(new Query(Criteria.where("_id").is(id)));
+        return IOUtils.toByteArray(operations.getResource(file).getInputStream());
+    }
+
+
+    @Override
+    public Document addDocument(DocumentDto documentDTO, String id) throws IOException, TikaException, SAXException {
         //search file
         if (null == documentDTO.getId()) {
-            if (!id.equalsIgnoreCase("fileNotFound")) {
-                GridFSFile file = template.findOne(new Query(Criteria.where("_id").is(id)));
-                documentDTO.setContent(IOUtils.toByteArray(operations.getResource(file).getInputStream()));
-                String filename = StringUtils.cleanPath(file.getFilename());
-                String fileExtension = StringUtils.getFilenameExtension(filename);
-                documentDTO.setSuffix(fileExtension);
+            if (id.equalsIgnoreCase("fileNotFound")) {
+                documentDTO.setSuffix("unknown");
+                Document result = documentRepository.save(new Document(documentDTO));
+                esDocumentRepository.save(new EsDocument(result));
+                return result;
+            } else if (id.equalsIgnoreCase("uploadToCloud")) {
                 Document result = documentRepository.save(new Document(documentDTO));
                 esDocumentRepository.save(new EsDocument(result));
                 return result;
             } else {
-                documentDTO.setSuffix("unknown");
+                GridFSFile file = getGridFSFile(new ObjectId(id));
+                documentDTO.setContentId(file.getObjectId());
+                String filename = StringUtils.cleanPath(file.getFilename());
+                String fileExtension = StringUtils.getFilenameExtension(filename);
+                documentDTO.setFileName(filename);
+                documentDTO.setSuffix(fileExtension);
                 Document result = documentRepository.save(new Document(documentDTO));
                 esDocumentRepository.save(new EsDocument(result));
                 return result;
@@ -151,13 +180,48 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public Document updateDocument(Document document) throws IOException {
-        Optional<Document> checkExist = documentRepository.findById(document.getId());
-        if (checkExist.isPresent()) {
-            Document result = documentRepository.save(document);
-            return result;
+    public Document updateDocument(Document document, String currentFileId, String id) throws IOException {
+        //search file
+        if(null != currentFileId) {
+            template.delete(new Query(Criteria.where("_id").is(currentFileId)));
         }
-        return null;
+        if (null != document.getId()) {
+            if (id.equalsIgnoreCase("fileNotFound")) {
+                document.setSuffix("unknown");
+                Document result = documentRepository.save(document);
+                esDocumentRepository.save(new EsDocument(result));
+                return result;
+            } else if (id.equalsIgnoreCase("uploadToCloud")) {
+                Document result = documentRepository.save(document);
+                esDocumentRepository.save(new EsDocument(result));
+                return result;
+            } else {
+                GridFSFile file = getGridFSFile(new ObjectId(id));
+                document.setContentId(file.getObjectId());
+                String filename = StringUtils.cleanPath(file.getFilename());
+                String fileExtension = StringUtils.getFilenameExtension(filename);
+                document.setFileName(filename);
+                document.setSuffix(fileExtension);
+                document.setDocType(DocumentEnum.DocumentFormat.getDocType(fileExtension));
+                Document result = documentRepository.save(document);
+                esDocumentRepository.save(new EsDocument(result));
+                return result;
+            }
+        } else {
+            Optional<Document> checkExist = documentRepository.findById(document.getId());
+            if (!checkExist.isPresent()) {
+                Document result = documentRepository.save(document);
+                esDocumentRepository.save(new EsDocument(result));
+                return result;
+            }
+            return null;
+        }
+    }
+
+    @Override
+    public Document updateDoc(Document document){
+        Document updateDoc = documentRepository.save(document);
+        return updateDoc;
     }
 
     @Override
@@ -175,6 +239,20 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    public boolean setToDefaultResourceType(Course course, Document document) {
+        Optional<Document> check = documentRepository.findById(document.getId());
+        if (check.isPresent()) {
+            // Here: Soft delete note, question & answer
+
+            // Soft delete
+            document.setResourceType(course.getResourceTypes().get(4));
+            documentRepository.save(document);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean delete(String documentId) {
         Optional<Document> check = documentRepository.findById(documentId);
         if (check.isPresent()) {
@@ -182,5 +260,22 @@ public class DocumentServiceImpl implements DocumentService {
             return true;
         }
         return false;
+    }
+    @Override
+    public List<DocumentResponseDto> findAllDocumentsByCourseAndResourceType(String courseId, String resourceTypeId) {
+        Course course = courseRepository.findByIdAndDeleteFlg(courseId, CommonEnum.DeleteFlg.PRESERVED);
+        List<String> topics = course.getTopics().stream().map(o -> o.getId()).toList();
+        Criteria criteria = Criteria.where("topic.id").in(topics)
+                .and("resourceType.id").is(resourceTypeId)
+                .and("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED);
+        Query query = new Query(criteria);
+        query.fields().include("id")
+                .include("title")
+                .include("topic")
+                .include("description")
+                .include("createdBy")
+                .include("createdDate").include("lastModifiedBy")
+                .include("lastModifiedDate");
+        return mongoTemplate.find(query, DocumentResponseDto.class, "documents");
     }
 }

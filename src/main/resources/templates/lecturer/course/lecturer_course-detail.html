@@ -100,8 +100,8 @@
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item" id="resourceTypeSelection"
-                                    th:classappend="${getBy == 'resourcetypes' ? 'lec__navbar-active' : ''}">
-                                    <a th:href="@{'/lecturer/courses/' + ${course.id} + '/resourcetypes'}">
+                                    th:classappend="${getBy == 'resource_types' ? 'lec__navbar-active' : ''}">
+                                    <a th:href="@{'/lecturer/courses/' + ${course.id} + '/resource_types'}">
                                         Resource types
                                     </a>
                                 </li>
@@ -118,15 +118,19 @@
                                                     <a th:href="@{'/lecturer/topics/' + ${topic.id}}"
                                                        th:text="${topic.topicTitle}" style="flex: 3"></a>
                                                     <div style="flex: 1; display: flex; justify-content: center; min-width: fit-content">
-                                                        <div>
-                                                            <a class="lec__edit-topic-icon"
-                                                               th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}">
-                                                                <i class="fa-regular fa-edit"></i><span> Update topic</span>
-                                                            </a>
+                                                        <div style="min-height: fit-content">
                                                             <a class="lec__add-doc-icon"
                                                                th:href="@{'/lecturer/topics/' + ${topic.id} +'/documents/add'}">
                                                                 + <span>Add
                                                                 document </span></a>
+                                                            <a class="lec__edit-topic-icon"
+                                                               th:href="@{'/lecturer/topics/' + ${topic.id} +'/update'}">
+                                                                <i class="fa-solid fa-edit"></i>
+                                                            </a>
+                                                            <a class="lec__edit-topic-icon"
+                                                               th:href="@{'/lecturer/topics/' + ${topic.id} +'/delete_topic'}">
+                                                                <i class="fa-solid fa-trash"></i>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </h3>
@@ -164,14 +168,19 @@
                                                        th:text="${rtype.resourceTypeName}" style="flex: 3"></a>
                                                     <div style="flex: 1; display: flex; justify-content: center; min-width: fit-content">
                                                         <div>
-                                                            <a class="lec__edit-topic-icon"
-                                                               th:href="@{'/lecturer/resource_types/' + ${rtype.id} +'/update'}">
-                                                                <i class="fa-regular fa-edit"></i><span> Update resource type</span>
-                                                            </a>
+
                                                             <a class="lec__add-doc-icon"
                                                                th:href="@{'/lecturer/resource_types/' + ${rtype.id} +'/documents/add'}">
                                                                 + <span>Add
                                                                 document </span></a>
+                                                            <a class="lec__edit-topic-icon"
+                                                               th:href="@{'/lecturer/resource_types/' + ${rtype.id} +'/update'}">
+                                                                <i class="fa-solid fa-edit"></i>
+                                                            </a>
+                                                            <a class="lec__edit-topic-icon"
+                                                               th:href="@{'/lecturer/resource_types/' + ${rtype.id} +'/delete'}">
+                                                                <i class="fa-solid fa-trash"></i>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </h3>

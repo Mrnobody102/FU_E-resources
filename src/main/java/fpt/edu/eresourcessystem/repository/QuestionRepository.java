@@ -1,5 +1,7 @@
 package fpt.edu.eresourcessystem.repository;
 
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.model.Question;
@@ -13,9 +15,9 @@ import java.util.Optional;
 @Repository("questionRepository")
 public interface QuestionRepository extends MongoRepository<Question, String> {
     List<Question> findAll();
-    Optional<Question> findById(String id);
-    List<Question> findByDocumentId(Document document);
-    List<Question> findByDocumentIdAndStudent(Document document, Student student);
-    List<Question> findByStudent(Student student);
+    Question findByIdAndDeleteFlg(String id, CommonEnum.DeleteFlg status);
+    List<Question> findByDocumentIdAndDeleteFlg(Document document, CommonEnum.DeleteFlg status);
+    List<Question> findByDocumentIdAndStudentAndDeleteFlg(Document document, Student student, CommonEnum.DeleteFlg status);
+    List<Question> findByStudentAndDeleteFlg(Student student, CommonEnum.DeleteFlg status);
 
 }

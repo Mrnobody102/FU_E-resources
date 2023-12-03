@@ -50,12 +50,7 @@ public class DocumentEnum {
 
     public enum DocumentFormat {
         PDF,
-        DOC,
-        DOCX,
-        PPT,
-        PPTX,
-        XLS,
-        XLSX,
+        MS_DOC,
         MD,
         HTML,
         TXT,
@@ -66,18 +61,15 @@ public class DocumentEnum {
 
         IMAGE,
 
+        OTHER,
+
 
         UNKNOWN;
 
         public static DocumentFormat getDocType(String suffixName) {
             return switch (suffixName) {
                 case "pdf" -> DocumentFormat.PDF;
-                case "doc" -> DocumentFormat.DOC;
-                case "docx" -> DocumentFormat.DOCX;
-                case "ppt" -> DocumentFormat.PPT;
-                case "pptx" -> DocumentFormat.PPTX;
-                case "xls" -> DocumentFormat.XLS;
-                case "xlsx" -> DocumentFormat.XLSX;
+                case "doc", "xls", "docx", "ppt", "pptx", "xlsx" -> DocumentFormat.MS_DOC;
                 case "md" -> DocumentFormat.MD;
                 case "html" -> DocumentFormat.HTML;
                 case "txt" -> DocumentFormat.TXT;
@@ -87,6 +79,8 @@ public class DocumentEnum {
                 case "mp4", "mov", "avi", "flv", "mkv", "webm" -> VIDEO;
 
                 case "jpg", "jpeg", "gif", "png", "svg" -> IMAGE;
+
+                case "exe", "psd", "eps", "jar", "zip", "rar" -> OTHER;
 
                 default -> DocumentFormat.UNKNOWN;
             };

@@ -3,88 +3,93 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>New note | FPT University E-resources</title>
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
-  <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>New note | FPT University E-resources</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
-  <link rel="stylesheet" th:href="@{/css/base.css}"/>
-  <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-  <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
 
-  <!-- CK Editor-->
-  <script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
-  <script th:src="@{/ckfinder/static/ckfinder.js}"></script>
+    <!-- CK Editor-->
+    <script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
 
-  <!-- SweetAlert từ CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+    <!-- SweetAlert từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 </head>
 
 <body class="app_container">
 <!-- Header -->
 <div class="row" th:replace="~{fragments/header::studentHeaderSection}"></div>
 <div class="main_content">
-  <div class="container-content-wrapper">
-    <!--  Main-->
-    <div class="container-content">
-      <div class="main-content stu_course-saved">
-        <div class="stu_course-saved-content d-flex">
-          <div class="stu_sidebar">
-            <div th:replace="~{fragments/sidebar:: studentSidebar('my-note')}"></div>
-          </div>
+    <div class="container-content-wrapper">
+        <!--  Main-->
+        <div class="container-content">
+            <div class="main-content stu_course-saved">
+                <div class="stu_course-saved-content d-flex">
+                    <div class="stu_sidebar">
+                        <div th:replace="~{fragments/sidebar:: studentSidebar('my-note')}"></div>
+                    </div>
 
-          <div class="stu_student-notes-content main" id="main">
-            <div class="document-details-head">
-              <a th:href="@{/student}">Home</a>
-              <span> &gt; <a th:href="@{/student/my_library/my_notes/1}">My notes</a></span>
-              <span> &gt; Add new notes</span>
-            </div>
-            <div>
-              <form class="form-student-add-notes" method="post" role="form"
-                    th:action="@{/student/my_note/student_notes/add}"
-                    th:object="${studentNote}"
-                    th:id="add-form" enctype="multipart/form-data">
-                <!--Title-->
-                <label class="student_input-label student_input-title-note" th:for="noteTitle">Title<span class="require-input">*</span>:</label>
-                <input type="text" th:id="noteTitle"
-                       class="student_input form-control student__input-note"
-                       th:field="*{title}" placeholder="Enter note title" required>
-                <!--Description-->
-                <label class="student_input-label student_input-label-note" th:for="description">Description:</label>
-                <textarea type="text" th:id="description"
-                          class="student_textarea form-control student__input-note"
-                          th:field="*{description}" placeholder="Enter description"></textarea>
-                <div id="editorWrapper">
-                  <div class="d-flex justify-content-between">
-                    <label for="editor" class="student_input-label student_input-label-doc">Content:</label>
-                  </div>
+                    <div class="stu_student-notes-content main" id="main">
+                        <div class="document-details-head">
+                            <a th:href="@{/student}">Home</a>
+                            <span> &gt; <a th:href="@{/student/my_library/my_notes/1}">My notes</a></span>
+                            <span> &gt; Add new notes</span>
+                        </div>
+                        <div>
+                            <form class="form-student-add-notes" method="post" role="form"
+                                  th:action="@{/student/my_note/student_notes/add}"
+                                  th:object="${studentNote}"
+                                  th:id="add-new-mmy-note" enctype="multipart/form-data">
+                                <!--Title-->
+                                <label class="student_input-label student_input-title-note"
+                                       th:for="noteTitle">Title<span class="require-input">*</span>:</label>
+                                <input type="text" th:id="noteTitle"
+                                       class="student_input form-control student__input-note"
+                                       th:field="*{title}" placeholder="Enter note title" required>
+                                <p class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+                                <p class="error-input">Title can not be empty.</p>
+                                <!--Description-->
+                                <label class="student_input-label student_input-label-note" th:for="description">Description:</label>
+                                <textarea type="text" th:id="description"
+                                          class="student_textarea form-control student__input-note"
+                                          th:field="*{description}" placeholder="Enter description"></textarea>
+                                <div id="editorWrapper">
+                                    <div class="d-flex justify-content-between">
+                                        <label for="editor"
+                                               class="student_input-label student_input-label-doc">Content:</label>
+                                    </div>
+                                    <p class="error" th:if="${#fields.hasErrors('editorContent')}" th:errors="*{editorContent}"></p>
+                                    <p class="error-input">Content can not be empty.</p>
+                                    <textarea id="editor"
+                                              th:field="*{editorContent}" minlength="1"></textarea>
+                                </div>
+                                <!--                <div id="uploadFileInput" class="mt-2">-->
+                                <!--                  <div class="d-flex justify-content-between lecturer__input-doc">-->
+                                <!--                    <label th:for="file" class="lecturer_input-label-doc">File Upload:</label>-->
+                                <!--                  </div>-->
+                                <!--                  <input type="file" th:name="file" id="fileUploadInput"-->
+                                <!--                         class="file-input form-control student__input-note" style="font-size: 1.3rem">-->
+                                <!--                </div>-->
+                                <div class="stu__save-note">
+                                    <button type="button" class="btn btn-save student_btn-save"
+                                            onclick="submitFormCreateNote()">Add note
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
 
-                  <textarea id="editor"
-                            th:field="*{editorContent}" minlength="1"></textarea>
+                    </div>
                 </div>
-<!--                <div id="uploadFileInput" class="mt-2">-->
-<!--                  <div class="d-flex justify-content-between lecturer__input-doc">-->
-<!--                    <label th:for="file" class="lecturer_input-label-doc">File Upload:</label>-->
-<!--                  </div>-->
-<!--                  <input type="file" th:name="file" id="fileUploadInput"-->
-<!--                         class="file-input form-control student__input-note" style="font-size: 1.3rem">-->
-<!--                </div>-->
-
-                <button type="submit" class="btn btn-save student_btn-save"
-                        id="submitAllData">Save
-                </button>
-              </form>
             </div>
-
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
@@ -99,47 +104,56 @@
 <!--Custom script-->
 <script th:src="@{/js/student/student.js}"></script>
 <script th:inline="javascript">
-  var successParam = [[${param.success}]];
-  if (successParam) {
-    Swal.fire(
+    var successParam = [[${param.success}]];
+    if (successParam) {
+        Swal.fire(
             'Success!',
             'Save note successful!',
             'success'
-    );
-  }
-  var errorParam = [[${param.error}]];
-  if (errorParam) {
-    Swal.fire(
+        );
+    }
+    var errorParam = [[${param.error}]];
+    if (errorParam) {
+        Swal.fire(
             'Error!',
             'Please check note information again!',
             'error'
-    );
-  }
+        );
+    }
 
-  let newEditor;
+    let newEditor;
 
-  // CK editor
-  ClassicEditor
-          .create(document.querySelector('#editor'), {
+    // CK editor
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
             ckfinder: {
-              uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
+                uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
             },
-          })
-          .then(editor => {
+        })
+        .then(editor => {
             newEditor = editor;
             editor.editing.view.change(writer => {
-              writer.setStyle('height', '400px', editor.editing.view.document.getRoot());
+                writer.setStyle('height', '400px', editor.editing.view.document.getRoot());
             });
             console.log(Array.from(editor.ui.componentFactory.names()));
-          })
-          .catch(error => {
+        })
+        .catch(error => {
             console.error(error);
-          });
+        });
 
-  // submit
-  document.querySelector( '#submitAllData' ).addEventListener( 'click', () => {
-    console.log(newEditor.getData());
-  });
+    // submit
+    document.querySelector('#submitAllData').addEventListener('click', () => {
+        console.log(newEditor.getData());
+    });
+    function submitFormCreateNote(){
+        var content = newEditor.getData();
+        var title = $("#noteTitle");
+        if($.trim(title) == "" || $.trim(content) == ''){
+            $(".error-input").css("display", "block");
+        }else {
+            $("#add-new-mmy-note").submit();
+        }
+    }
 </script>
 </body>
 
