@@ -114,13 +114,13 @@ public class StudentController {
             return "exception/404";
         }
         //
-        List<DocumentResponseDto> documentResponseDtoList
-                = documentService.findAllDocumentsByCourseAndResourceType(courseId,"65609a30382c4a70ca46f263");
-        System.out.println("student -controller - "+documentResponseDtoList.size());
-        for (int i = 0; i < documentResponseDtoList.size(); i++) {
-            System.out.println(documentResponseDtoList.get(i).toString());
-        }
-        model.addAttribute("documentResponseDtoList",documentResponseDtoList);
+//        List<DocumentResponseDto> documentResponseDtoList
+//                = documentService.findAllDocumentsByCourseAndResourceType(courseId,"65609a30382c4a70ca46f263");
+//        System.out.println("student -controller - "+documentResponseDtoList.size());
+//        for (int i = 0; i < documentResponseDtoList.size(); i++) {
+//            System.out.println(documentResponseDtoList.get(i).toString());
+//        }
+//        model.addAttribute("documentResponseDtoList",documentResponseDtoList);
         // add course log
         CourseLog courseLog = new CourseLog(course, CommonEnum.Action.VIEW);
         courseLog = courseLogService.addCourseLog(courseLog);
