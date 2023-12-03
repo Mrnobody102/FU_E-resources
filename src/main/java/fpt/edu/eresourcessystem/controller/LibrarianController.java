@@ -193,7 +193,6 @@ public class LibrarianController {
                 librarian.getCreatedCourses().add(course);
                 librarianService.updateLibrarian(librarian);
                 trainingTypeService.addCourseToTrainingType(courseDTO.getTrainingType().getId(), addedCourse);
-                emailService.sendCourseAssignmentEmail(lecturer, course.getCourseName());
                 if (null != addedCourse) {
                     return "redirect:/librarian/courses/add?success";
                 }

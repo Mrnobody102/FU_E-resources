@@ -76,7 +76,7 @@ public class AdminController {
     public String listAllAccount(final Model model) {
         model.addAttribute("roles", AccountEnum.Role.values());
         List<Account> all = accountService.findAll();
-        model.addAttribute("accounts",all);
+        model.addAttribute("accounts", all);
         return "admin/account/admin_accounts";
     }
 
@@ -115,19 +115,12 @@ public class AdminController {
     @GetMapping("/course_creator/list")
     String findCourseByLibrarianList(final Model model) {
 
-        List<Account> librarianList = accountService.findAllLibrarian();
-        for (int i = 0; i < librarianList.size(); i++) {
-            String librarianId = librarianList.get(i).getId();
+//        List<Account> librarianList = accountService.findAllLibrarian();
 
-            Librarian librarian = librarianService.findByAccountId(librarianId);
-            if (null == librarian) {
-                return "exception/404";
-            }
-            List<Course> courses = librarian.getCreatedCourses();
-            model.addAttribute("librarianList", librarianList);
-            model.addAttribute("librarians", librarian);
-            model.addAttribute("courses", courses);
-        }
+        List<Lecturer> librarians = lecturerService.findAll();
+        model.addAttribute("librarians", librarians);
+//        model.addAttribute("librarians", librarian);
+//        model.addAttribute("courses", courses);
 
         return "admin/course_creator/admin_course_creators";
     }
