@@ -11,11 +11,13 @@ import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -50,6 +52,9 @@ public class LibrarianController {
     private final CourseService courseService;
     private final LecturerCourseService lecturerCourseService;
     private final TrainingTypeService trainingTypeService;
+
+    @Autowired
+    private final EmailService emailService;
 
     private Librarian getLoggedInLibrarian() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -98,7 +103,7 @@ public class LibrarianController {
      */
     @PostMapping("/courses/add")
     public String addCourseProcess(@ModelAttribute CourseDto courseDTO,
-                                   @RequestParam(value = "lecturer") String lecturer) {
+                                   @RequestParam(value = "lecturer") String lecturer) throws MessagingException {
         Course course = new Course(courseDTO, CourseEnum.Status.HIDE);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
@@ -112,6 +117,7 @@ public class LibrarianController {
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
 
         if (null == checkExist) {
+
             // check lecturer param exist
             if (lecturer != null && !"".equals(lecturer.trim())) {
                 // get account by EMAIL
@@ -125,6 +131,7 @@ public class LibrarianController {
                         // Xử lý sau khi add course
                         // check lecturer exist
                         if (result != null) {
+
                             // Add log lecturer_course
                             // create new lecturerCourseId
                             LecturerCourseId lecturerCourseId = new LecturerCourseId();
@@ -149,28 +156,44 @@ public class LibrarianController {
                                 result.setLecturer(foundLecturer);
                                 // update course lecturers
                                 result = courseService.updateCourse(result);
-                                foundLecturer.getCourses().add(course);
+//                                foundLecturer.getCourses().add(course);
                                 librarian.getCreatedCourses().add(course);
                                 // Thêm course vào danh sách tạo của librarian
                                 librarianService.updateLibrarian(librarian);
                                 // Thêm course vào danh sách quản lý của lecturer
-                                lecturerService.updateLecturer(foundLecturer);
-
+                                lecturerService.updateCourseForLecturer(foundLecturer, result);
+                                trainingTypeService.addCourseToTrainingType(courseDTO.getTrainingType().getId(), result);
+                                emailService.sendCourseAssignmentEmail(lecturer, course.getCourseName());
                                 if (null != result) {
                                     return "redirect:/librarian/courses/add?success";
+
                                 }
                             }
                         }
                     }
                 } else {
-                    return "redirect:/librarian/courses/add?error";
+                    Lecturer savedLecturer;
+                    Account accoutnew = new Account();
+                    accoutnew.setEmail(lecturer);
+                    Account account1 = accountService.saveAccount(accoutnew);
+                        // save account
+                    Lecturer lecturer1 = new Lecturer();
+                    lecturer1.setAccount(account1);
+                    savedLecturer = lecturerService.addLecturer(lecturer1);
+
+                    Course result = courseService.addCourse(course);
+                    lecturerService.updateCourseForLecturer(savedLecturer, result);
+                    trainingTypeService.addCourseToTrainingType(courseDTO.getTrainingType().getId(), result);
+                    emailService.sendCourseAssignmentEmail(lecturer, course.getCourseName());
+                    return "redirect:/librarian/courses/add?success";
                 }
 
             } else {
                 Course addedCourse = courseService.addCourse(course);
-
                 librarian.getCreatedCourses().add(course);
                 librarianService.updateLibrarian(librarian);
+                trainingTypeService.addCourseToTrainingType(courseDTO.getTrainingType().getId(), addedCourse);
+                emailService.sendCourseAssignmentEmail(lecturer, course.getCourseName());
                 if (null != addedCourse) {
                     return "redirect:/librarian/courses/add?success";
                 }
@@ -340,7 +363,7 @@ public class LibrarianController {
 
     @PostMapping({"/courses/{courseId}/add-lecture"})
     public String addLecturer(@PathVariable String courseId,
-                              @RequestParam String lecturerEmail) {
+                              @RequestParam String lecturerEmail) throws MessagingException {
         Account account = accountService.findByEmail(lecturerEmail);
 
         Lecturer savedLecturer;
@@ -366,25 +389,7 @@ public class LibrarianController {
             return "redirect:/courses/" + courseId + "/add-lecture?error";
         } else {
             lecturerService.addCourseToLecturer(savedLecturer.getId(), new ObjectId(courseId));
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("maihoa362001@gmail.com");
-            message.setTo("huypq1801@gmail.com"); // Change to lecturer mail
-            String subject = "Notification: Course Management Assignment";
-            message.setSubject(subject);
-
-            // Compose the body of the email
-            String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
-            String body = String.format(
-                    "Kính gửi Giảng viên,\n\n" +
-                            "Chúng tôi xin thông báo bạn đã được phân công quản lý khóa học '%s' từ thời điểm %s. " +
-                            "Đây là một cơ hội tuyệt vời để bạn thể hiện khả năng và đóng góp vào sự phát triển của khóa học.\n\n" +
-                            "Vui lòng đăng nhập vào hệ thống quản lý khóa học để cập nhật nội dung, tài liệu và thông tin liên quan đến khóa học. " +
-                            "Nếu bạn có bất kỳ thắc mắc hoặc cần sự hỗ trợ, đừng ngần ngại liên hệ với chúng tôi.\n\n" +
-                            "Chúc bạn một ngày làm việc hiệu quả và nhiều niềm vui!\n\n" +
-                            "Trân trọng,\nThư viện FPT",
-                    course.getCourseName(), dateTime);
-            message.setText(body);
-            javaMailSender.send(message);
+            emailService.sendCourseAssignmentEmail(savedLecturer.getAccount().getEmail(), course.getCourseName());
             return "redirect:/librarian/courses/" + courseId + "?success";
         }
 

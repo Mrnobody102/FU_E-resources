@@ -22,9 +22,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document("lecturers")
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id")
 public class Lecturer {
     @Id
     private String id;
@@ -33,10 +30,12 @@ public class Lecturer {
     @DocumentReference(lazy = true)
     private Account account;
 
+
     private List<String> lecturerCourses;
+
     @DocumentReference (lazy = true)
-//    @DBRef(lazy = true)
     private List<Course> courses;
+
     @DocumentReference(lazy = true)
     private List<String> documents;
     @DocumentReference(lazy = true)
