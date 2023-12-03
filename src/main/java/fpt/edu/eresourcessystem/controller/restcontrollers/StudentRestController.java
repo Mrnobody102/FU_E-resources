@@ -404,6 +404,7 @@ public class StudentRestController {
                                                                                   @PathVariable String courseId){
         List<DocumentResponseDto> documents = documentService.findAllDocumentsByCourseAndResourceType(courseId,resourceId);
         ResponseEntity<List<DocumentResponseDto>> responseEntity = new ResponseEntity<>(documents, HttpStatus.OK);
+        System.out.println(documents.size());
         return responseEntity;
     }
 
