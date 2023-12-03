@@ -287,7 +287,7 @@
                                                             onclick="submitFormEditNote(this.getAttribute('document-id'))">
                                                         Save changes
                                                     </button>
-                                                    <button class="btn-danger delete-note" type="button" title="Send" id="send-delete-note-button"
+                                                    <button class="btn-danger delete-note" th:classappend="${documentNote.id == null} ? 'display-none' : ''" type="button" title="Send" id="send-delete-note-button"
                                                             th:document-id="${document.id}"
                                                             onclick="submitDeleteDocumentNote(this.getAttribute('document-id'))">
                                                         Delete
