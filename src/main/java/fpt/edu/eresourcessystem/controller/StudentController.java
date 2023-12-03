@@ -458,7 +458,7 @@ public class StudentController {
             // Save the feedback to the database
             Feedback feedback1 = feedbackService.saveFeedback(new Feedback(feedback));
 
-            return "redirect:/admin/feedbacks/list"; // Redirect to a success page
+            return "redirect:/student/feedbacks/add"; // Redirect to a success page
         } else {
             return "redirect:/login"; // Redirect to the login page if the user is not logged in
         }

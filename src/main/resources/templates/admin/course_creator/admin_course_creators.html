@@ -7,7 +7,6 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
-
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
@@ -70,11 +69,21 @@
                                     <td th:text="${librarian.account.name}"></td>
                                     <td th:text="${librarian.account.email}"></td>
                                     <td>
-                                        <div th:each="course, item : ${courses}">
-                                            <span><a th:href="@{'/admin/course/' + ${course.getId}}"
-                                                     th:text="${course.courseCode} "> </a></span>
-                                            <span th:if="${!item.last}">&nbsp;</span>
+                                        <!-- Kiểm tra nếu librarian và createdCourses không null và thực hiện vòng lặp -->
+                                        <div th:if="${librarian != null and librarian.createdCourses != null}">
+                                            <div th:each="course, item : ${librarian.createdCourses}">
+                                                <span><a th:href="@{'/admin/course/' + ${course.getId}}"
+                                                         th:text="${course.courseCode}"></a></span>
+                                                <span th:if="${!item.last}">&nbsp;</span>
+                                            </div>
                                         </div>
+
+                                        <!-- Xử lý trường hợp null -->
+                                        <div th:if="${librarian == null or librarian.createdCourses == null}">
+                                            <p>Không có khóa học nào được tạo.</p>
+                                        </div>
+
+
                                     </td>
                                 </tr>
                             </th:block>
