@@ -12,8 +12,8 @@ function viewQuestionWaiting() {
                 var html = "";
                 for (let i = 0; i < data.length; i++) {
                     html +="<div class=lec__question-content-wrapper>\n" +
-                        "                        <span class=\"lec__question-date\">"+data[i].lastModifiedDate+"</span>\n" +
-                        "                    <a class=\"lec__question-title\">"+ data[i].studentName +" asked on" + data[i].documentTitle+"</a>\n" +
+                        "                        <span class=\"lec__question-date\">"+data[i].lastModifiedDate+"</span><br>\n" +
+                        "                    <a class=\"lec__question-title\">"+ data[i].studentName +" asked on " + data[i].documentTitle+"</a>\n" +
                         "                    <p class=\"lecturer-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
                         "                        <a class=\"link-view-detailed\"\n" +
                         "                              href=\"/lecturer/documents/" + data[i].documentId + "#"+ data[i].questionId+ "\">view <i\n" +
@@ -46,8 +46,8 @@ function viewQuestionReplied(){
                 var html = "";
                 for (let i = 0; i < data.length; i++) {
                     html +="<div class=lec__question-content-wrapper>\n" +
-                        "                        <span class=\"lec__question-date\">"+data[i].lastModifiedDate+"</span>\n" +
-                        "                    <a class=\"lec__question-title\">"+ data[i].studentName +" asked on" + data[i].documentTitle+"</a>\n" +
+                        "                        <span class=\"lec__question-date\">"+data[i].lastModifiedDate+"</span><br>\n" +
+                        "                    <a class=\"lec__question-title\">"+ data[i].studentName +" asked on " + data[i].documentTitle+"</a>\n" +
                         "                    <p class=\"lecturer-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
                         "                        <a class=\"link-view-detailed\"\n" +
                         "                              href=\"/lecturer/documents/" + data[i].documentId + "#"+ data[i].questionId+ "\">view <i\n" +

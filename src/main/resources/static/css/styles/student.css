@@ -138,6 +138,7 @@
 .doc-content-view, .doc-content-list{
     padding-top: 0.7rem;
     padding-bottom: 0.7rem;
+    padding-left: 2rem;
 }
 .doc-info-head a{
     color: var(--checked-background-color);

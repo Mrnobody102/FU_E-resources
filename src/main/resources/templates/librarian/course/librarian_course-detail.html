@@ -79,7 +79,7 @@
                             <!--                            </p>-->
                         </th>
                         <td th:if="${checkLecturerCourse}">
-                            <p th:text="${course.getLecturer().getAccount().getName()} + ' - ' + ${course.getLecturer().getAccount().getEmail()} "></p>
+                            <p th:text="${course.getLecturer().getAccount().getName() == null ? 'Assigned lecturer' : course.getLecturer().getAccount().getName()} + ' - ' + ${course.getLecturer().getAccount().getEmail()} "></p>
                             <p><a href="#"
                                   class="btn-info remove-lecturer"
                                   data-course-id="${course.getId()}"

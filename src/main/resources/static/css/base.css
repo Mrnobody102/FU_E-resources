@@ -474,7 +474,7 @@ li {
     display: -webkit-box;
     /*line-height: 24px; !* fallback *!*/
     /*max-height: 72px; !* fallback *!*/
-    -webkit-line-clamp: 1; /* number of lines to show */
+    -webkit-line-clamp: 3; /* number of lines to show */
     -webkit-box-orient: vertical;
 }
 .table-view{

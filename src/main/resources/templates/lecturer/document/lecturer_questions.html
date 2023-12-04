@@ -114,10 +114,13 @@
                                                      th:each="studentQuestion : ${studentQuestions}">
                                                     <!--                          <h2 class="home__note-title" th:text="${studentNote.title}"-->
                                                     <!--                              href=""></h2>-->
+
                                                     <span class="home__note-date"
-                                                              th:text="${studentQuestion.lastModifiedDate}"></span>
+                                                          th:text="${studentQuestion.lastModifiedDate}"></span>
+                                                    <br>
                                                     <a class="lec__question-title"
                                                        th:text="${studentQuestion.student.account.name}+' asked on '+${studentQuestion.documentId.title}"></a>
+
                                                     <p class="lecturer-content-view-brief">
                                                         <span th:text="${studentQuestion.content}"></span>
                                                         <a class="link-view-detailed"

@@ -100,9 +100,14 @@
     color: white;
     background: var(--checked-background-color);
 }
+.document-wrapper {
+    margin-top: 2rem;
+    padding-left: 1rem;
+}
 
 .doc-content-view, .doc-content-list{
-    padding-bottom: 2rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
 }
 .doc-info-title{
     font-size: var(--medium-font-size);
