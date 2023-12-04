@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
+import static fpt.edu.eresourcessystem.utils.CommonUtils.convertToPlainText;
 import static fpt.edu.eresourcessystem.utils.CommonUtils.extractTextFromFile;
 
 @Controller
@@ -444,6 +445,8 @@ public class LecturerController {
             } else {
                 documentDTO.setDisplayWithFile(false);
             }
+        } else {
+            documentDTO.setContent(convertToPlainText(documentDTO.getEditorContent()));
         }
         Document document = documentService.addDocument(documentDTO, id);
 
@@ -487,7 +490,8 @@ public class LecturerController {
             String id = "fileNotFound";
             String message = "";
             if(checkExist.isDisplayWithFile() == false){
-                checkExist.setContent(document.getContent());
+                checkExist.setEditorContent(document.getEditorContent());
+                checkExist.setContent(convertToPlainText(document.getEditorContent()));
                 documentService.updateDocument(checkExist, null, id);
             } else {
                 if (file != null && !file.isEmpty() && file.getSize() < 104857600) {

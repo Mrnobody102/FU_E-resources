@@ -71,11 +71,11 @@
                                     <td>
                                         <!-- Kiểm tra nếu librarian và createdCourses không null và thực hiện vòng lặp -->
                                         <div th:if="${librarian != null and librarian.createdCourses != null}">
-                                            <div th:each="course, item : ${librarian.createdCourses}">
+                                            <th:block th:each="course, item : ${librarian.createdCourses}">
                                                 <span><a th:href="@{'/admin/course/' + ${course.getId}}"
                                                          th:text="${course.courseCode}"></a></span>
                                                 <span th:if="${!item.last}">&nbsp;</span>
-                                            </div>
+                                            </th:block>
                                         </div>
 
                                         <!-- Xử lý trường hợp null -->

@@ -8,8 +8,13 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
+import org.apache.tika.parser.html.HtmlParser;
 import org.apache.tika.parser.microsoft.ooxml.OOXMLParser;
 import org.apache.tika.sax.BodyContentHandler;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.apache.tika.parser.txt.TXTParser;
@@ -44,5 +49,20 @@ public class CommonUtils {
         ParseContext context = new ParseContext();
         parser.parse(fileBytes, handler, metadata, context);
         return handler.toString();
+    }
+
+    public static String convertToPlainText(String html) {
+        Document doc = Jsoup.parse(html);
+        Elements elements = doc.body().getAllElements();
+        StringBuilder sb = new StringBuilder();
+
+        for (Element element : elements) {
+            String text = element.ownText();
+            if (!text.isEmpty()) {
+                sb.append(text).append("\n");
+            }
+        }
+
+        return sb.toString();
     }
 }

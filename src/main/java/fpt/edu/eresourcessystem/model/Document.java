@@ -81,6 +81,7 @@ public class Document {
         this.description = documentDTO.getDescription();
         this.contentId = documentDTO.getContentId();
         this.content = documentDTO.getContent();
+        this.editorContent = documentDTO.getEditorContent();
         this.cloudFileLink = documentDTO.getCloudFileLink();
         this.fileName = documentDTO.getFileName();
         this.displayWithFile = documentDTO.isDisplayWithFile();

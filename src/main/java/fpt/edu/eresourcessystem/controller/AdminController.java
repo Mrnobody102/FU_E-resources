@@ -117,7 +117,7 @@ public class AdminController {
 
 //        List<Account> librarianList = accountService.findAllLibrarian();
 
-        List<Lecturer> librarians = lecturerService.findAll();
+        List<Librarian> librarians = librarianService.findAll();
         model.addAttribute("librarians", librarians);
 //        model.addAttribute("librarians", librarian);
 //        model.addAttribute("courses", courses);

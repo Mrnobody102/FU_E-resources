@@ -90,7 +90,7 @@
 
                                 <div style="display: flex">
                                     <th:block th:unless="${document.displayWithFile == true}">
-                                        <div class="doc-content-view ck-content" th:utext="${document.getContent}"
+                                        <div class="doc-content-view ck-content" th:utext="${document.editorContent}"
                                              style="height: 500px; flex: 3; overflow: auto">
                                         </div>
                                     </th:block>

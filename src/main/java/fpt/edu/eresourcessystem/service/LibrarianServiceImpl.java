@@ -18,6 +18,11 @@ public class LibrarianServiceImpl implements LibrarianService {
     }
 
     @Override
+    public List<Librarian> findAll() {
+        return librarianRepository.findAll();
+    }
+
+    @Override
     public Librarian addLibrarian(Librarian librarian) {
         return librarianRepository.insert(librarian);
     }

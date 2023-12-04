@@ -151,10 +151,15 @@ public class StudentController {
         } else if (DocumentEnum.DocumentStatusEnum.HIDE == document.getDocStatus()) {
             return "exception/404";
         }
-        if (document.isDisplayWithFile()) {
-            byte[] file = documentService.getGridFSFileContent(document.getContentId());
-            String base64EncodedData = Base64.getEncoder().encodeToString(file);
-            model.addAttribute("data", base64EncodedData);
+        if (document.isDisplayWithFile() == true) {
+            String data;
+            if(document.getCloudFileLink() != null) {
+                data = document.getCloudFileLink();
+            } else {
+                byte[] file = documentService.getGridFSFileContent(document.getContentId());
+                data = Base64.getEncoder().encodeToString(file);
+            }
+            model.addAttribute("data", data);
         }
 
         // Need to optimize
