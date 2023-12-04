@@ -16,10 +16,7 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <!-- FlatPickr  -->
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" th:href="@{/css/base.css}"/>
-    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
-    <link rel="stylesheet" th:href="@{/css/styles/admin.css}">
+
 
 
     <!-- SweetAlert từ CDN -->
@@ -27,33 +24,21 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
 
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+
     <style>
-        .dataTables_wrapper .dataTables_length {
-            display: none;
+       .export {
             float: right;
-        }
-
-        #filterTable_filter {
-            float: left;
-            padding-bottom: 25px;
-        }
-
-        select.lib_show-all-btn {
-            display: inline;
-            width: 200px;
-            margin-left: 25px;
-            padding: 5px;
-        }
-
-        .dataTables_info {
-            display: none;
-        }
-
-        .dataTables_wrapper .dataTables_paginate {
-            text-align: center;
-            float: none;
-        }
+       }
+       .dt-buttons {
+           /*padding-bottom: 50px;*/
+       }
     </style>
+
 </head>
 <body class="app_container">
 <header th:replace="~{fragments/header::headerAdminSection}"></header>
@@ -87,6 +72,7 @@
                         <!--                                Statistics-->
                         <!--                            </a>-->
                         <!--                        </li>-->
+
                     </ul>
                 </div>
             </div>
@@ -187,6 +173,25 @@
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<!-- jQuery -->
+<!--<script th:src="@{https://code.jquery.com/jquery-3.7.0.js}"></script>-->
+
+<!-- DataTables -->
+<!--<script th:src="@{https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js}"></script>-->
+
+<!-- DataTables Buttons -->
+<script th:src="@{https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js}"></script>
+
+<!-- JSZip -->
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js}"></script>
+
+<!-- pdfmake -->
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js}"></script>
+
+<!-- DataTables Buttons Functionalities -->
+<script th:src="@{https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js}"></script>
+<script th:src="@{https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js}"></script>
 
 <script type="text/javascript">
     $(function () {
@@ -202,6 +207,7 @@
         var table = $("#filterTable").DataTable({
             searching: true,
             ordering: true,
+            dom: 'Bfrtip',
             pagingType: "simple_numbers",
             pageLength: 10,
             language: {
@@ -211,7 +217,19 @@
                     next: ">>",
                     previous: "<<",
                 }
-            }
+            },
+            buttons: [
+                {
+                    text: 'Export to Excel',
+                    extend: 'excel',
+                    className: 'btn btn-success border export',
+                    title: 'UserLogs',
+                    extension: '.xlsx',
+                    exportOptions: {
+                        // Các tùy chọn xuất
+                    }
+                },
+            ]
         });
 
         $.fn.dataTable.ext.search.push(
@@ -230,10 +248,18 @@
             }
         );
 
-        window.filterByRole = function () {
-            var selectedRole = $('#role').val();
-            table.columns(3).search(selectedRole).draw();
-        };
+        function filterByRole(selectedRole) {
+            table.column(3).search(selectedRole).draw(); // Assuming the role is in the 4th column (index 3)
+        }
+
+        $('#role').on('change', function () {
+            var selectedRole = $(this).val();
+            if (selectedRole === 'all') {
+                table.column(3).search('').draw();
+            } else {
+                filterByRole(selectedRole);
+            }
+        });
 
         // Redraw the table when the date range changes
         $('#datepicker, #datepicker2').change(function () {
