@@ -91,10 +91,16 @@
 .lib_input {
     height: 30px;
     font-size: 1.3rem;
+    width: 800px;
 }
 
 .lib_textarea {
-    font-size: 1.3rem;
+        /*width: 100%;*/
+        min-height: 100px;
+        font-size: 1.3rem;
+        resize: none;
+        overflow-y: hidden;
+    width: 800px;
 }
 
 .lib_course-info-topic {

@@ -84,7 +84,7 @@ a {
   box-shadow: 0 0px 20px 0 rgba(0, 0, 0, 0.2); }
   .contact-wrap .col-form-label {
     font-size: 14px;
-    color: #b3b3b3;
+    /*color: #b3b3b3;*/
     margin: 0 0 10px 0;
     display: inline-block;
     padding: 0; }
@@ -138,3 +138,23 @@ label.error {
   font-weight: bold;
   font-size: 12px;
   color: #000; }
+
+
+/*button{*/
+/*  cursor: pointer;*/
+/*  outline: 0;*/
+/*  color: #AAA;*/
+
+/*}*/
+
+/*.btn:focus {*/
+/*  outline: none;*/
+/*}*/
+
+.green{
+  color: green;
+}
+
+.red{
+  color: red;
+}

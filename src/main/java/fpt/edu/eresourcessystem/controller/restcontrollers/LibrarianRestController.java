@@ -38,7 +38,6 @@ public class LibrarianRestController {
         // Xử lý yêu cầu từ DataTables và trả về dữ liệu tương ứng
         Page<Lecturer> page = lecturerService.findLecturers(start, length, searchValue);
 
-        // Convert to DTOs
         Page<LecturerDto> lecturers = page.map(LecturerDto::new);
 
         // Prepare the response for DataTables

@@ -90,15 +90,15 @@
                     <form class="d-flex" th:action="@{/librarian/courses/list}" th:method="get">
                         <div class="d-flex">
                             <div class="manager_search-box">
-                                <label for="search-text">Search course:</label>
+                                <label for="search-text">Search course code, name:</label>
                                 <div class="d-flex">
-                                    <input class="lib_search-content" type="text" placeholder="Search course.."
+                                    <input class="lib_search-content" type="text" placeholder="Search course .."
                                            name="search"
                                            th:value="${search}" id="search-text"/>
                                     <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
                                         <i class="lib_search-btn-icon fas fa-search"></i>
                                     </button>
-                                    <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list/1}">Show All</a>
+                                    <a class="btn lib_show-all-btn" th:href="@{/librarian/courses/list}">Show all</a>
                                 </div>
                             </div>
 

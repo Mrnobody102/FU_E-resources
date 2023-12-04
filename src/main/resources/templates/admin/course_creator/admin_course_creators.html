@@ -20,6 +20,19 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 
+    <style>
+        .course-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .course-link {
+            flex-basis: calc(10% - 10px); /* 20% width per course with 10px margin-right */
+            margin-right: 2px;
+            margin-bottom: 2px;
+        }
+    </style>
+
 </head>
 <body class="app_container">
 <header th:replace="~{fragments/header::headerAdminSection}"></header>
@@ -28,10 +41,10 @@
         <div class="app__container-content">
             <div class="course-details-head">
                 <a th:href="@{/admin}">Home</a>
-                <span> > Librarians management</span>
+                <span> > Course creator management</span>
             </div>
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Librarians management</h1>
+                <h1 class="h2">Course creator management</h1>
 
             </div>
             <div class="d-flex justify-content-center">
@@ -39,7 +52,7 @@
                     <div class="lib_search-container">
                         <form class="d-flex" th:action="@{/admin/course_creator/list}" method="get" th:id="search-form">
                             <div class="manager_search-box">
-                                <label>Search librarian:</label>
+                                <label>Search creator, course:</label>
                                 <div class="d-flex">
                                     <input class="lib_search-content" type="text" placeholder="Enter here..."
                                            th:name="search" th:id="search-text" th:value="${search}"/>
@@ -47,7 +60,7 @@
                                     <button type="submit" class="lib_search-btn-wrapper lib_search-btn">
                                         <i class="lib_search-btn-icon fas fa-search"></i>
                                     </button>
-                                    <a class="btn lib_show-all-btn" th:href="@{/admin/course_creator/list}">Show AlL</a>
+                                    <a class="btn lib_show-all-btn" th:href="@{/admin/course_creator/list}">Show all</a>
                                 </div>
                             </div>
                         </form>
@@ -69,21 +82,14 @@
                                     <td th:text="${librarian.account.name}"></td>
                                     <td th:text="${librarian.account.email}"></td>
                                     <td>
-                                        <!-- Kiểm tra nếu librarian và createdCourses không null và thực hiện vòng lặp -->
                                         <div th:if="${librarian != null and librarian.createdCourses != null}">
-                                            <th:block th:each="course, item : ${librarian.createdCourses}">
-                                                <span><a th:href="@{'/admin/course/' + ${course.getId}}"
-                                                         th:text="${course.courseCode}"></a></span>
-                                                <span th:if="${!item.last}">&nbsp;</span>
-                                            </th:block>
+                                            <div class="course-container">
+                                                <th:block th:each="course, item : ${librarian.createdCourses}">
+                    <span class="course-link"><a  th:href="@{'/librarian/courses/' + ${course.getId}}"
+                                         th:text="${course.courseCode}"></a></span>
+                                                </th:block>
+                                            </div>
                                         </div>
-
-                                        <!-- Xử lý trường hợp null -->
-                                        <div th:if="${librarian == null or librarian.createdCourses == null}">
-                                            <p>Không có khóa học nào được tạo.</p>
-                                        </div>
-
-
                                     </td>
                                 </tr>
                             </th:block>

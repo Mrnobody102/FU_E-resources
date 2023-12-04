@@ -55,7 +55,7 @@
                     <div class="lib_form-content">
                         <form method="post" role="form" th:action="@{/librarian/courses/add}"
                               th:object="${course}" th:id="add-form">
-                            <table class="table-form lib_table">
+                            <table >
 
                                 <tr>
                                     <td class="lib_input-label"><label th:for="courseCode">Course Code: </label></td>
@@ -74,7 +74,7 @@
 
                                 <tr>
                                     <td class="lib_input-label"><label for="description">Description: </label></td>
-                                    <td><textarea class="lib_textarea form-control" placeholder="Enter course description"
+                                    <td><textarea class="lib_textarea form-control" placeholder="Enter course description" rows="5" cols="50"
                                                   id="description" th:field="*{description}"></textarea>
                                     </td>
                                 </tr>
@@ -147,6 +147,10 @@
             'error'
         );
     }
+
+    document.getElementById('description').addEventListener('input', function () {
+        resizeTextarea('description');
+    });
 
 </script>
 </body>

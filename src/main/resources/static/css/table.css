@@ -26,4 +26,5 @@ select.lib_show-all-btn {
 }
 .table-responsive {
     overflow-x: unset;
+    width: 100%;
 }

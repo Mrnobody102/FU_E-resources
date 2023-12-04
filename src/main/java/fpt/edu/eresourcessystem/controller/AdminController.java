@@ -75,7 +75,7 @@ public class AdminController {
     @GetMapping({"/accounts/list"})
     public String listAllAccount(final Model model) {
         model.addAttribute("roles", AccountEnum.Role.values());
-        List<Account> all = accountService.findAll();
+        List<Account> all = accountService.getAccountsExcludeStudent();
         model.addAttribute("accounts", all);
         return "admin/account/admin_accounts";
     }

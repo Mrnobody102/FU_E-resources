@@ -54,7 +54,7 @@
                 <div class="add-form">
 
                     <div class="add-form-content">
-                        <table class="table-form lib_table m-5">
+                        <table>
                             <h2>Information of lecturer:</h2>
                             <form method="post" th:object="${lecturer}"
                                   th:action="@{/librarian/lectures/update}">
@@ -63,16 +63,6 @@
                                     <td>
                                         <input type="text" id="name" name="name" class="lib_input form-control"
                                                th:value="${lecturer.account.name}" placeholder="Enter name" readonly>
-                                    </td>
-                                </tr>
-
-
-                                <tr class="lib_input-wrapper">
-                                    <td class="lib_input-label"><label for="campus">Campus:</label></td>
-                                    <td>
-                                        <input type="text" id="campus" name="campus" class="lib_input form-control"
-                                               th:value="${lecturer.account.campus}" placeholder="Enter campus"
-                                               readonly>
                                     </td>
                                 </tr>
 
@@ -150,20 +140,19 @@
                             <tr>
                                 <th>Course Name</th>
                                 <th>Course Code</th>
-                                <th>Created Date</th>
+                                <th>Assigned Date</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="course : ${lecturer.courses}">
                                 <td th:text="${course.getCourseName()}"></td>
                                 <td th:text="${course.getCourseCode()}"></td>
-                                <td th:text="${#dates.format(course.getCreatedDate(), 'dd/MM/yyyy HH:mm')}"></td>
+                                <td th:text="${#dates.format(course.getLastModifiedDate(), 'dd/MM/yyyy HH:mm')}"></td>
                             </tr>
 
                             </tbody>
 
                         </table>
-                        <button type="submit" class="btn lib_show-all-btn">Add Course</button>
                     </div>
                 </div>
             </div>

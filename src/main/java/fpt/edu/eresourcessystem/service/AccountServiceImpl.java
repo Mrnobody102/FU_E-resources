@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.service;
 
 import fpt.edu.eresourcessystem.dto.AccountDto;
+import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.repository.AccountRepository;
@@ -117,5 +118,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Page<Account> findAll(int pageIndex, int pageSize) {
         return null;
+    }
+
+    @Override
+    public List<Account> getAccountsExcludeStudent() {
+        return accountRepository.findByRoleNot(AccountEnum.Role.STUDENT);
     }
 }

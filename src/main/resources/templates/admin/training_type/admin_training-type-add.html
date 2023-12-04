@@ -44,6 +44,14 @@
             .btn {
                 font-size: 1.3rem;
             }
+
+            textarea {
+                width: 100%;
+                min-height: 100px;
+                font-size: 16px;
+                resize: none;
+                overflow-y: hidden;
+            }
         </style>
 </head>
 <body class="app_container">
@@ -70,7 +78,7 @@
                             <div class="add-form-content">
                                 <form method="post" role="form" th:action="@{/admin/trainingtypes/add}"
                                       th:object="${trainingType}" th:id="add-trainingType">
-                                    <table class="table-form lib_table">
+                                    <table>
 
 
                                         <tr class="lib_input-wrapper">
@@ -86,7 +94,7 @@
                                             <td class="lib_input-label"><label th:for="trainingTypeDescription">
                                                 Training type description*</label>
                                             </td>
-                                            <td><textarea class="lib_textarea form-control paragraph"
+                                            <td><textarea class="lib_textarea form-control  paragraph"
                                                           th:id="trainingTypeDescription"
                                                           th:field="*{trainingTypeDescription}"
                                                        placeholder="Enter training type description" required >
@@ -95,19 +103,19 @@
                                             </td>
                                         </tr>
 
-                                        <tr class="lib_input-wrapper">
-                                            <td class="lib_input-label"><label th:for="trainingTypeDescription">
-                                                Courses of training type</label>
-                                            </td>
-                                            <td>
+<!--                                        <tr class="lib_input-wrapper">-->
+<!--                                            <td class="lib_input-label"><label th:for="trainingTypeDescription">-->
+<!--                                                Courses of training type</label>-->
+<!--                                            </td>-->
+<!--                                            <td>-->
 
-                                                <select id="select-multiple-course" th:field="*{courses}"  class="form-control selectpicker show-tick"  data-style="btn-white" multiple data-live-search="true"  >
-                                                    <option selected disabled th:value="0">Choose a course</option>
-                                                    <option th:each="course : ${allCourses}" th:value="${course.getId()}"
-                                                            th:text="${course.getCourseName()}"></option>
-                                                </select>
-                                            </td>
-                                        </tr>
+<!--                                                <select id="select-multiple-course" th:field="*{courses}"  class="form-control selectpicker show-tick"  data-style="btn-white" multiple data-live-search="true"  >-->
+<!--                                                    <option selected disabled th:value="0">Choose a course</option>-->
+<!--                                                    <option th:each="course : ${allCourses}" th:value="${course.getId()}"-->
+<!--                                                            th:text="${course.getCourseName()}"></option>-->
+<!--                                                </select>-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
 
                                         <tr>
                                             <td></td>
@@ -163,6 +171,12 @@
                 confirmButtonText: 'Ok'
             });
         }
+    });
+
+    const textarea = document.getElementById('trainingTypeDescription');
+    textarea.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
     });
 </script>
 </body>

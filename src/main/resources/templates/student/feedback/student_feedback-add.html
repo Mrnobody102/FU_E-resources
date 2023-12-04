@@ -24,7 +24,6 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 
-
     <style>
         label.error {
             margin-top: 5px;
@@ -58,31 +57,21 @@
                                     <form class="mb-5" th:action="@{/student/feedbacks/add}" method="post"
                                           th:object="${feedback}">
                                         <div class="row">
-                                            <div class="col-md-6 form-group mb-5">
+                                            <div class="col-md-4 form-group mb-5">
                                                 <label for="name" class="col-form-label">Name</label>
                                                 <input type="text" th:value="${loggedInUser.name}" class="form-control"
-                                                       name="name" id="name" placeholder="Your name">
+                                                       name="name" id="name" placeholder="Your name" readonly>
                                             </div>
                                             <!-- Email Field -->
-                                            <div class="col-md-6 form-group mb-5">
+                                            <div class="col-md-4 form-group mb-5">
                                                 <label for="email" class="col-form-label">Email *</label>
                                                 <input type="text" th:value="${loggedInUser.email}" class="form-control"
-                                                       name="email" id="email" placeholder="Your email">
+                                                       name="email" id="email" placeholder="Your email" readonly>
                                             </div>
-                                        </div>
-
-                                        <!-- Role and Campus Fields -->
-                                        <div class="row">
-                                            <div class="col-md-6 form-group mb-5">
+                                            <div class="col-md-4 form-group mb-5">
                                                 <label for="role" class="col-form-label">Role</label>
                                                 <input type="text" th:value="${loggedInUser.role}" class="form-control"
-                                                       name="role" id="role" placeholder="Role #">
-                                            </div>
-                                            <div class="col-md-6 form-group mb-5">
-                                                <label for="campus" class="col-form-label">Campus</label>
-                                                <input type="text" th:value="${loggedInUser.campus}"
-                                                       class="form-control" name="campus" id="campus"
-                                                       placeholder="Campus name">
+                                                       name="role" id="role" placeholder="Role #" readonly>
                                             </div>
                                         </div>
 
@@ -92,6 +81,8 @@
                                                     Emotion</label>
                                                 <input type="text" class="form-control" th:field="*{feedbackEmotion}"
                                                        id="feedbackEmotion" placeholder="Emotion">
+                                                <button class="btn" id="green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                                                <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
                                             </div>
                                         </div>
 
@@ -163,6 +154,15 @@
 <!--Custom script-->
 <script th:src="@{/js/student/student.js}"></script>
 <script th:src="@{/js/student/feedback.js}"></script>
+
+<script th:inline="javascript">
+    var btn1 = document.querySelector('#green');
+    var btn2 = document.querySelector('#red');
+
+
+
+
+</script>
 
 </body>
 </html>

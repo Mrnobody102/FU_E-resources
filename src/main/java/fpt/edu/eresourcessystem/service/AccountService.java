@@ -26,4 +26,6 @@ public interface AccountService {
     boolean delete(Account account);
     Page<Account> findAll(int pageIndex, int pageSize);
 
+     List<Account> getAccountsExcludeStudent() ;
+
 }

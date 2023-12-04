@@ -154,3 +154,11 @@ function confirmAddLecturer() {
         }
     });
 }
+
+
+function resizeTextarea(id) {
+    var element = document.getElementById(id);
+    element.style.height = 'auto';
+    element.style.height = (element.scrollHeight) + 'px';
+}
+

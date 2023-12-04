@@ -55,7 +55,7 @@
           <div class="add-form-content">
             <form method="post" role="form" th:action="@{/librarian/courses/update}"
                   th:object="${course}" th:id="update-form">
-              <table class="table-form lib_table">
+              <table class="table-responsive">
                 <tr>
 <!--                  <td class="lib_input-label"><label th:for="courseCode">Course ID:</label></td>-->
                   <td><input type="text" th:id="courseCode" hidden="hidden"
@@ -82,12 +82,13 @@
                   <td class="lib_input-label"><label th:for="description">Description:</label></td>
                   <td><textarea type="text" th:id="description"
                                 class="lib_textarea form-control" th:field="*{description}"
-                                placeholder="Enter description" ></textarea>
+                                placeholder="Enter description"
+                                rows="10" cols="50"></textarea>
                   </td>
                 </tr>
                 <tr>
                   <td class="lib_input-label"><label th:for="trainingTypes">Training Type:</label></td>
-                  <td><select  th:field="*{trainingType}" name="status" th:id="trainingTypes">
+                  <td><select class="form-control"  th:field="*{trainingType}" name="status" th:id="trainingTypes">
 
                     <option th:each="trainingType : ${trainingTypes}"
                             th:text="${trainingType.getTrainingTypeName()}"
@@ -99,7 +100,7 @@
                 <tr>
                   <td></td>
                   <td>
-                    <button type="submit" class="btn lib_btn-save">Save</button>
+                    <button type="submit" class="btn lib_btn-save">Update</button>
                   </td>
                 </tr>
               </table>
@@ -135,7 +136,7 @@
   if (successParam) {
     Swal.fire(
             'Success!',
-            'Save course successful!',
+            'Update course successful!',
             'success'
     );
   }
@@ -148,6 +149,10 @@
             'error'
     );
   }
+
+  document.getElementById('description').addEventListener('input', function () {
+      resizeTextarea('description');
+  });
 </script>
 </body>
 </html>

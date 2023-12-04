@@ -48,6 +48,7 @@
                                     <option value="all">All
                                     </option>
                                     <option th:each="role : ${roles}"
+                                            th:if="${role.getDisplayValue() != 'STUDENT'}"
                                             th:selected="(${roleSearch} == ${role.getDisplayValue()})"
                                             th:text="${role}"
                                             th:value="${role}">
@@ -55,10 +56,10 @@
                                 </select>
                             </div>
                             <div class="manager_search-box">
-                                <label>Search user: </label>
+                                <label>Search user name, email: </label>
                                 <div class="d-flex">
 
-                                    <input class="lib_search-content" placeholder="Search user.." th:id="search-text"
+                                    <input class="lib_search-content" placeholder="Search name, email.." th:id="search-text"
                                            th:name="search" th:value="${search}" type="text"/>
                                     <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
                                         <i class="lib_search-btn-icon fas fa-search"></i>
@@ -86,7 +87,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Role</th>
-                            <th>Campus</th>
+<!--                            <th>Campus</th>-->
                             <!--                                <th></th>-->
                             </thead>
                             <tbody>
@@ -95,9 +96,10 @@
                                     <td th:text="${iterStart.index +1}"></td>
                                     <td><a th:href="@{'/admin/accounts/' + ${account.getId} + '/update'}"
                                            th:text="${account.name}"></a></td>
-                                    <td th:text="${account.email}"></td>
+                                    <td ><a th:href="@{'/admin/accounts/' + ${account.getId} + '/update'}"
+                                            th:text="${account.email}"></a></td>
                                     <td th:text="${account.role}"></td>
-                                    <td th:text="${account.campus}"></td>
+<!--                                    <td th:text="${account.campus}"></td>-->
                                     <!--                                    <td colspan="2">-->
                                     <!--                                        <a class="update-account"-->
                                     <!--                                           th:href="@{'/admin/accounts/'+${account.accountId} + '/update'}">Update</a>-->

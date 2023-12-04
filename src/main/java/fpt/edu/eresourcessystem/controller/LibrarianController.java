@@ -383,10 +383,39 @@ public class LibrarianController {
                 savedLecturer = lecturerService.addLecturer(lecturer);
             }
         }
+
         Course course = courseService.updateLectureId(courseId, savedLecturer);
+
+
         if (course == null) {
             return "redirect:/courses/" + courseId + "/add-lecture?error";
         } else {
+            // Add log lecturer_course
+            // create new lecturerCourseId
+            LecturerCourseId lecturerCourseId = new LecturerCourseId();
+            lecturerCourseId.setLecturerId(savedLecturer.getId());
+            // set course Id that added
+            lecturerCourseId.setCourseId(course.getId());
+            lecturerCourseId.setCreatedDate(LocalDate.now());
+
+            // save new lecturer manage to the course
+            LecturerCourse lecturerCourse = new LecturerCourse();
+            lecturerCourse.setId(lecturerCourseId);
+
+            LecturerCourse addLecturerCourseResult = lecturerCourseService.add(lecturerCourse);
+            // check save lecturerCourse to database
+            if (null != addLecturerCourseResult) {
+
+                // add lecturer to  course
+                List<LecturerCourseId> lecturerCourseIds = new ArrayList<>();
+                lecturerCourseIds.add(addLecturerCourseResult.getId());
+
+                course.setLecturerCourseIds(lecturerCourseIds);
+                course.setLecturer(savedLecturer);
+                // update course lecturers
+                course = courseService.updateCourse(course);
+            }
+
             lecturerService.addCourseToLecturer(savedLecturer.getId(), new ObjectId(courseId));
             emailService.sendCourseAssignmentEmail(savedLecturer.getAccount().getEmail(), course.getCourseName());
             return "redirect:/librarian/courses/" + courseId + "?success";

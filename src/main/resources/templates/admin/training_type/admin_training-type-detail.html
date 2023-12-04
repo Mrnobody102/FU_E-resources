@@ -28,11 +28,16 @@
             display: block;
             color: red;
         }
-        .lib_input, .lib_textarea {
-            width: 800px;
-        }
-        .lib_textarea {
+
+        /*.lib_textarea {*/
+        /*    min-height: 100px;*/
+        /*}*/
+        textarea {
+            width: 100%;
             min-height: 100px;
+            font-size: 16px;
+            resize: none;
+            overflow-y: hidden;
         }
 
     </style>
@@ -73,7 +78,7 @@
                                 <label th:for="trainingTypeName">Training type name:</label>
                             </td>
                             <td>
-                                <input type="text" th:id="trainingTypeName" class="lib_input "
+                                <input type="text" th:id="trainingTypeName" class="lib_input form-control"
                                        th:field="*{trainingTypeName}" placeholder="Enter Training Type Name"
                                        required>
                             </td>
@@ -84,41 +89,13 @@
                                 <label th:for="trainingTypeDescription">Training type description:</label>
                             </td>
                             <td>
-                            <textarea type="text" th:id="trainingTypeDescription" class="lib_textarea paragraph"
-                                      th:field="*{trainingTypeDescription}"
+                            <textarea th:id="trainingTypeDescription" class="lib_textarea form-control paragraph"
+                                      th:field="*{trainingTypeDescription}" rows="7" cols="50"
                                       placeholder="Enter Training Type Description" required></textarea>
                             </td>
                         </tr>
 
-                        <!--                    <tr class="lib_input-wrapper">-->
-                        <!--                        <td class="lib_input-label">-->
-                        <!--                            <label th:for="createdBy">Created By</label>-->
-                        <!--                        </td>-->
-                        <!--                        <td>-->
-                        <!--                            <input type="text" th:id="createdBy" class="lib_input form-control"-->
-                        <!--                                   th:field="*{createdBy}" placeholder="Enter Created By" required>-->
-                        <!--                        </td>-->
-                        <!--                    </tr>-->
 
-                        <!--                    <tr class="lib_input-wrapper">-->
-                        <!--                        <td class="lib_input-label">-->
-                        <!--                            <label th:for="createdDate">Created Date</label>-->
-                        <!--                        </td>-->
-                        <!--                        <td>-->
-                        <!--                            <input type="text" th:id="createdDate" class="lib_input form-control"-->
-                        <!--                                   th:field="*{createdDate}" placeholder="Enter Created Date" required>-->
-                        <!--                        </td>-->
-                        <!--                    </tr>-->
-
-                        <!--                    <tr class="lib_input-wrapper">-->
-                        <!--                        <td class="lib_input-label">-->
-                        <!--                            <label th:for="lastModifiedBy">Last Modified By</label>-->
-                        <!--                        </td>-->
-                        <!--                        <td>-->
-                        <!--                            <input type="text" th:id="lastModifiedBy" class="lib_input form-control"-->
-                        <!--                                   th:field="*{lastModifiedBy}" placeholder="Enter Last Modified By" required>-->
-                        <!--                        </td>-->
-                        <!--                    </tr>-->
 
                         <tr class="lib_input-wrapper">
                             <td class="lib_input-label">
@@ -131,15 +108,6 @@
                             </td>
                         </tr>
 
-                        <!--                    <tr class="lib_input-wrapper">-->
-                        <!--                        <td class="lib_input-label">-->
-                        <!--                            <label th:for="lastModifiedBy">Last Modified By</label>-->
-                        <!--                        </td>-->
-                        <!--                        <td>-->
-                        <!--                            <input type="text" th:id="lastModifiedBy" class="lib_input form-control"-->
-                        <!--                                   th:field="*{lastModifiedBy}" placeholder="Enter Last Modified By" required>-->
-                        <!--                        </td>-->
-                        <!--                    </tr>-->
 
                         <tr class="lib_input-wrapper">
                             <td></td>
@@ -167,7 +135,7 @@
                     <tr th:each="course : ${trainingType.courses}">
                         <td th:text="${course.getCourseName()}"></td>
                         <td th:text="${course.getCourseCode()}"></td>
-                        <td class="code-archive-except" th:text="${course.getDescription()}"></td>
+                        <td  class="code-archive-except" th:text="${course.getDescription()}"></td>
                         <td th:text="${#dates.format(course.getCreatedDate(), 'dd/MM/yyyy HH:mm')}"></td>
                     </tr>
                     </tbody>
@@ -195,23 +163,41 @@
 
 <script th:inline="javascript">
 
-    var successParam = [[${param.success}]];
-    if (successParam) {
-        Swal.fire(
-            'Success!',
-            successParam,
-            'success'
-        );
+    function showUpdateNotification() {
+        var successMessage = [[${success}]];
+        var errorMessage = [[${error}]];
+
+        if (successMessage) {
+            Swal.fire(
+                'Success!',
+                successMessage,
+                'success'
+            );
+        } else if (errorMessage) {
+            Swal.fire(
+                'Error!',
+                errorMessage,
+                'error'
+            );
+        }
     }
 
-    var errorParam = [[${param.error}]];
-    if (errorParam) {
-        Swal.fire(
-            'Error!',
-            errorParam,
-            'error'
-        );
+    // Call the function when the page loads
+    $(document).ready(function() {
+        showUpdateNotification();
+
+    });
+
+    function resizeTextarea(id) {
+        var element = document.getElementById(id);
+        element.style.height = 'auto';
+        element.style.height = (element.scrollHeight) + 'px';
     }
+
+    document.getElementById('trainingTypeDescription').addEventListener('input', function () {
+        resizeTextarea('trainingTypeDescription');
+    });
+
 
 </script>
 </body>

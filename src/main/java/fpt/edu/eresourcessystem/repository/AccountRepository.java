@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.repository;
 
 import com.mongodb.lang.NonNull;
+import fpt.edu.eresourcessystem.enums.AccountEnum;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,4 +49,6 @@ public interface AccountRepository extends
     Page<Account> filterRole(String role, String username, String email, Pageable pageable);
 
     void removeAccountById(String id);
+
+    List<Account> findByRoleNot(AccountEnum.Role role);
 }
