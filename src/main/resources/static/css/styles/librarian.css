@@ -164,3 +164,11 @@
 .d-flex.justify-content-between{
     margin-top: 10px;
 }
+
+label.error {
+    margin-top: 5px;
+    margin-left: 5px;
+    display: block;
+    color: red;
+    /*font-size: smaller;*/
+}

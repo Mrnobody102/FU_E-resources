@@ -19,41 +19,12 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
-
+    <link th:href="@{/css/table.css}" rel="stylesheet">
 
     <!-- SweetAlert từ CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
-
-
-    <style>
-        .dataTables_wrapper .dataTables_length {
-            display: none;
-            float: right;
-        }
-
-        #filterTable_filter {
-            float: left;
-            padding-bottom: 25px;
-        }
-
-        select.lib_show-all-btn {
-            display: inline;
-            width: 200px;
-            margin-left: 25px;
-            padding: 5px;
-        }
-
-        .dataTables_info {
-            display: none;
-        }
-
-        .dataTables_wrapper .dataTables_paginate {
-            text-align: center;
-            float: none;
-        }
-    </style>
 
 
 </head>
@@ -98,7 +69,7 @@
                             </div>
 
                             <div class="manager_search-box">
-                                <label class="mb-2">Search feedback: </label>
+                                <label class="mb-2">Search email, content: </label>
                                 <div class="d-flex">
                                     <input class="lib_search-content" type="text" placeholder="Enter here..."
                                            th:name="search" th:id="search-text" th:value="${search}"/>
@@ -113,12 +84,12 @@
                     </div>
 
                     <div class="table-responsive" th:if="${feedbacks ne null}">
-                        <table class="table table-striped table-sm" id="filterTable-feedback">
+                        <table class="table table-striped table-sm border-1" id="filterTable-feedback">
                             <thead>
                             <tr class="n8">
                                 <th>STT</th>
                                 <th>Email</th>
-                                <th>Feedback emotion</th>
+                                <th>Satisfaction level</th>
                                 <th>Feedback content</th>
                                 <th>Created date</th>
                                 <th>Status</th>
@@ -130,7 +101,7 @@
                                     <td th:text="${iterStart.index +1}"></td>
                                     <td th:text="${feedback.getAccount().getEmail()}"></td>
                                     <td th:text="${feedback.getFeedbackEmotion()}"></td>
-                                    <td><a th:href="@{'/admin/feedbacks/' + ${feedback.getId}}"
+                                    <td><a class="a-link" th:href="@{'/admin/feedbacks/' + ${feedback.getId}}"
                                            th:text="${feedback.getFeedbackContent()}"> </a></td>
                                     <td th:text="${feedback.getCreatedDate()}"></td>
                                     <td th:text="${feedback.getStatus()}"></td>
@@ -167,6 +138,7 @@
         var table = $("#filterTable-feedback").DataTable({
             searching: true,
             ordering: false,
+            responsive: true,
             pagingType: "simple_numbers",
             pageLength: 3,
             language: {

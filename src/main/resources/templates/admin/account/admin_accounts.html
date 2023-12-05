@@ -59,7 +59,7 @@
                                 <label>Search user name, email: </label>
                                 <div class="d-flex">
 
-                                    <input class="lib_search-content" placeholder="Search name, email.." th:id="search-text"
+                                    <input class="lib_search-content" placeholder="Enter here.." th:id="search-text"
                                            th:name="search" th:value="${search}" type="text"/>
                                     <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
                                         <i class="lib_search-btn-icon fas fa-search"></i>
@@ -80,7 +80,7 @@
 
                     </div>
 
-                    <div class="table-responsive" th:if="${accounts ne null}">
+                    <div class="table-view" th:if="${accounts ne null}">
                         <table class="table table-striped table-sm" id="filterTable">
                             <thead class="table-head">
                             <th>STT</th>

@@ -114,7 +114,7 @@
                             <td>
                                 <button type="submit" class="btn lib_btn-save">Update</button>
                                 <button type="button" class="delete-training-type btn lib_btn-delete "
-                                        th:id="${trainingType.getId()}">Delete
+                                        th:id="${trainingType.id}">Delete
                                 </button>
                             </td>
                         </tr>
@@ -132,11 +132,15 @@
                     </tr>
                     </thead>
                     <tbody>
+
                     <tr th:each="course : ${trainingType.courses}">
                         <td th:text="${course.getCourseName()}"></td>
                         <td th:text="${course.getCourseCode()}"></td>
                         <td  class="code-archive-except" th:text="${course.getDescription()}"></td>
                         <td th:text="${#dates.format(course.getCreatedDate(), 'dd/MM/yyyy HH:mm')}"></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(trainingType.courses)}">
+                        <td colspan="4" class="text-center">No courses available</td>
                     </tr>
                     </tbody>
                 </table>
@@ -150,7 +154,7 @@
 <div th:replace="~{fragments/footer :: footerSection}"></div>
 
 <!--Bootstrap script-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 
 <!--Custom script-->
@@ -163,6 +167,7 @@
 
 <script th:inline="javascript">
 
+    validateUpdateTrainingType();
     function showUpdateNotification() {
         var successMessage = [[${success}]];
         var errorMessage = [[${error}]];

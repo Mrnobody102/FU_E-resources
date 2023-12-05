@@ -39,7 +39,7 @@ function handleDeletion(url, successRedirectUrl, successMessage) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                type: "POST", // or "DELETE"
+                type: "GET", // or "DELETE"
                 url: url,
                 // include CSRF token if necessary
                 success: function () {
