@@ -8,12 +8,21 @@ import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
+import fpt.edu.eresourcessystem.service.security.CustomizeUserDetailsService;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -28,6 +37,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
+import static fpt.edu.eresourcessystem.constants.Constants.VERIFICATION_CODE;
 import static fpt.edu.eresourcessystem.constants.UrlConstants.ERROR_PARAM;
 import static fpt.edu.eresourcessystem.constants.UrlConstants.SUCCESS_PARAM;
 
@@ -35,8 +45,10 @@ import static fpt.edu.eresourcessystem.constants.UrlConstants.SUCCESS_PARAM;
 @AllArgsConstructor
 @RequestMapping("/admin")
 public class AdminController {
-
     private final GlobalControllerAdvice globalControllerAdvice;
+    private final AuthenticationController authenticationController;
+
+    private final CustomizeUserDetailsService customizeUserDetailsService;
     private final AccountService accountService;
     private final AdminService adminService;
     private final LibrarianService librarianService;
@@ -46,6 +58,9 @@ public class AdminController {
     private final UserLogService userLogService;
     private final FeedbackService feedbackService;
     private final TrainingTypeService trainingTypeService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     /*
     DASHBOARD
@@ -518,50 +533,30 @@ public class AdminController {
         return "admin/system_log/admin_document_logs";
     }
 
-
     /*
         Login as
      */
 
-    @GetMapping("/login_as_student")
-    public String loginAsStudent() {
-        Account loggedInAccount = globalControllerAdvice.getLoggedInAccount();
-        if (loggedInAccount != null) {
-            Student existStudent = studentService.findByAccountId(loggedInAccount.getId());
-            if (existStudent == null) {
-                Student student = new Student();
-                student.setAccount(loggedInAccount);
-                studentService.addStudent(student);
-            }
-        }
-        return "redirect:/student";
+    @GetMapping("/login_as_another_account")
+    public String loginAs() {
+        return "admin/admin_login-as";
     }
 
-    @GetMapping("/login_as_lecturer")
-    public String loginAsLecturer() {
-        Account loggedInAccount = globalControllerAdvice.getLoggedInAccount();
-        if (loggedInAccount != null) {
-            Lecturer existLecturer = lecturerService.findByAccountId(loggedInAccount.getId());
-            if (existLecturer == null) {
-                Lecturer lecturer = new Lecturer();
-                lecturer.setAccount(loggedInAccount);
-                lecturerService.addLecturer(lecturer);
-            }
-        }
-        return "redirect:/lecturer";
+    @GetMapping("/login_as_another_account_redirect/{email}")
+    public String loginAs(@PathVariable String email) {
+        //Log out
+        SecurityContextHolder.getContext().setAuthentication(null);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        Account account = accountService.findByEmail(email);
+        Authentication authenticationRequest =
+                UsernamePasswordAuthenticationToken.unauthenticated(email, VERIFICATION_CODE);
+        Authentication authentication = this.authenticationManager.authenticate(authenticationRequest);
+        // Đặt xác thực mới vào Security Context
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        System.out.println(SecurityContextHolder.getContext());
+
+        return authenticationController.goHomePage();
     }
 
-    @GetMapping("/login_as_librarian")
-    public String loginAsLibrarian() {
-        Account loggedInAccount = globalControllerAdvice.getLoggedInAccount();
-        if (loggedInAccount != null) {
-            Librarian existLibrarian = librarianService.findByAccountId(loggedInAccount.getId());
-            if (existLibrarian == null) {
-                Librarian librarian = new Librarian();
-                librarian.setAccount(loggedInAccount);
-                librarianService.addLibrarian(librarian);
-            }
-        }
-        return "redirect:/librarian";
-    }
+
 }

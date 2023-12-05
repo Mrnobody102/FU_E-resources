@@ -6,11 +6,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -20,7 +29,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableWebMvc
-public class SecurityConfig implements WebMvcConfigurer {
+public class SecurityConfig implements WebMvcConfigurer{
 
     private CustomizeUserDetailsService customizeUserDetailsService;
 
@@ -28,12 +37,23 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private CustomOAuth2UserService customOAuth2UserService;
 
+    @Bean
+    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService,
+                                                       PasswordEncoder passwordEncoder){
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        return new ProviderManager(authenticationProvider);
+    }
+
+
     @Autowired
     public SecurityConfig(CustomizeUserDetailsService customizeUserDetailsService, CustomizeAuthenticationSuccessHandler customAuthenticationSuccessHandler, CustomOAuth2UserService customOAuth2UserService) {
         this.customizeUserDetailsService = customizeUserDetailsService;
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
         this.customOAuth2UserService = customOAuth2UserService;
     }
+
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -44,14 +64,13 @@ public class SecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         // Disable  csrf
-//        http.csrf(AbstractHttpConfigurer::disable);
+        http.csrf(AbstractHttpConfigurer::disable);
 
-        // Authentication
+//        // Authentication
         http.formLogin(auth -> auth.loginPage("/login")
                 .loginProcessingUrl("/login")
                 .successHandler(customAuthenticationSuccessHandler)
                 .failureUrl("/login?error"));
-
 
 
         http.oauth2Login(auth -> auth.loginPage("/login")

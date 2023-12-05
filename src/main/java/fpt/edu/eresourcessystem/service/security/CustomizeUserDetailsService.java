@@ -38,13 +38,4 @@ public class CustomizeUserDetailsService implements UserDetailsService {
         authorities.add(authority);
         return new User(account.getEmail(), account.getPassword(), true, true, true, true, authorities);
     }
-
-    private UserDetailsCustom getUserDetailsCustom(Account user, List<GrantedAuthority> authorities){
-        return new UserDetailsCustom(
-                user.getUsername(),
-                user.getPassword(),
-                true, true, true, true,
-                authorities
-        );
-    }
 }

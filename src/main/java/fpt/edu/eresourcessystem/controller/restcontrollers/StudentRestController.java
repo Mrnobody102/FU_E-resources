@@ -315,7 +315,6 @@ public class StudentRestController {
             } else {
                 return new ResponseEntity(HttpStatus.BAD_REQUEST);
             }
-
         }
 
     }

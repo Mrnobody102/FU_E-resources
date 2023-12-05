@@ -100,13 +100,15 @@
                                                            th:href="@{'/student/courses/' + ${course.id}}"></a>
                                                         <p class="home__course-description" th:text="${course.description}"></p>
                                                         <ul class="home__course-lecturer-list">
-                                                            <li class="home__course-lecturer-item" th:if="${course.lecturer ne null}">
-                                                                <a class="home__course-lecturer-link"
-                                                                   href="">
-                                                                    <span>Lecturer: </span>
-                                                                    <span th:text="${course.lecturer.account.name}"></span>
-                                                                </a>
-                                                            </li>
+<!--                                                            <th:block th:if="${course.lecturer ne null}">-->
+<!--                                                                <li class="home__course-lecturer-item" >-->
+<!--                                                                    <a class="home__course-lecturer-link"-->
+<!--                                                                       href="">-->
+<!--                                                                        <span>Lecturer: </span>-->
+<!--                                                                        <span th:text="${course.lecturer.account.name}"></span>-->
+<!--                                                                    </a>-->
+<!--                                                                </li>-->
+<!--                                                            </th:block>-->
                                                         </ul>
                                                     </div>
                                                 </li>

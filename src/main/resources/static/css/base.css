@@ -204,6 +204,16 @@ li {
     width: 220px;
 }
 
+.btn--size-s-2 {
+    height: 30px;
+    width: 100px;
+    border: none;
+    border-radius: 2px;;
+}
+.btn--size-s-2:hover {
+    background-color: var(--bg-hover-color);
+}
+
 .btn.btn--hover {
     background-color: var(--second-back-ground);
 }
@@ -560,7 +570,15 @@ li {
     margin-right: 2rem;
 }
 
-.manager_homepage-title {
+.manager_left-side {
+    flex: 1;
+}
 
+.manager_right-side {
+    flex: 4;
+}
+
+.manager_right-side_element {
+    width: 60%;
 }
 

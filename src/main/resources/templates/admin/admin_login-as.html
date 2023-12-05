@@ -1,0 +1,171 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      lang="en" charset="UTF-8">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin | Login as another account</title>
+
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link th:href="@{/css/styles/admin.css}" rel="stylesheet">
+
+
+    <!-- SweetAlert từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
+    <style>
+        label.error {
+            margin-top: 5px;
+            margin-left: 5px;
+            display: block;
+            color: red;
+            /*font-size: smaller;*/
+        }
+    </style>
+
+</head>
+<body class="app_container">
+
+<header th:replace="~{fragments/header::headerAdminSection}"></header>
+<div class="main_content">
+    <div class="grid app__container-content-wrapper">
+        <div class="app__container-content">
+            <div class="course-details-head">
+                <a th:href="@{/admin}">Home</a>
+                <span> &gt; Login as another account</span>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Login as an another account</h1>
+
+            </div>
+            <div class="lib_content">
+                <div class="add-form">
+                    <div class="add-form-content">
+                        <div>
+                            <div>
+                                <div class="d-flex">
+                                    <div class="lib_input-label manager_left-side"><label th:for="email">Email: </label>
+                                    </div>
+                                    <div class="manager_right-side"><input type="text" th:id="email"
+                                                                           class="manager_right-side_element lib_input form-control"
+                                                                           placeholder="Enter email" required>
+                                        <div class="mt-2">
+                                            <button type="submit" class="btn--size-s-2"
+                                                    onclick="checkAccount()">Check account</button>
+                                            <div id="loadingAnimation" style="display: none;">
+                                                <!-- Add your loading animation here -->
+                                                Loading...
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="accountInfo" class="mt-4" style="display: none;">
+                                    <div class="d-flex">
+                                        <div class="lib_input-label manager_left-side">
+                                            <label for="username">Username:</label>
+                                        </div>
+                                        <div class="manager_right-side">
+                                            <input type="text" id="username" class="lib_input form-control manager_right-side_element" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="lib_input-label manager_left-side">
+                                            <label for="name">Full name:</label>
+                                        </div>
+                                        <div class="manager_right-side">
+                                            <input type="text" id="name" class="lib_input form-control manager_right-side_element" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="lib_input-label manager_left-side">
+                                            <label>Role:</label>
+                                        </div>
+                                        <div class="manager_right-side">
+                                            <input type="text" id="role" class="lib_input form-control manager_right-side_element" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="lib_input-label manager_left-side"></div>
+                                        <div class="manager_right-side">
+                                            <button type="submit" class="btn lib_btn-save" onclick="loginAccount()">Login as this account</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footerSection}"></div>
+
+
+<!--Bootstrap script-->
+<script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"
+
+        crossorigin="anonymous"></script>
+
+
+
+<!--Validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+
+<script th:inline="javascript">
+    function checkAccount() {
+        let email = $('#email').val();
+        const loadingAnimation = $('#loadingAnimation');
+        loadingAnimation.show();
+
+        $.ajax({
+            url: '/api/admin/account', // Replace with your server-side API endpoint
+            method: 'GET',
+            data: { email: email },
+            success: function(response) {
+                loadingAnimation.hide();
+                // Update the fields with the retrieved account information
+                $('#username').val(response.username);
+                $('#name').val(response.fullName);
+                $('#role').val(response.role);
+
+                // Show the account information section
+                $('#accountInfo').show();
+            },
+            error: function() {
+                loadingAnimation.hide();
+                // Handle error cases
+                Swal.fire(
+                    'Not found account!',
+                    'Cannot found account that has email: ' + email + ".",
+                    'error'
+                );
+            }
+        });
+    }
+
+    function loginAccount() {
+        var email = $('#email').val();
+        window.location.href = '/admin/login_as_another_account_redirect/' + email;
+    }
+</script>
+<!--Custom script-->
+<script th:src="@{/js/validation.js}"></script>
+<script th:src="@{/js/admin/admin.js}"></script>
+
+</body>
+</html>
