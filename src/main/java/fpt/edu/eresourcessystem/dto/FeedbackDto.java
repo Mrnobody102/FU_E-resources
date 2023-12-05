@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.dto;
 
 
+import fpt.edu.eresourcessystem.enums.FeedbackEnum;
 import fpt.edu.eresourcessystem.model.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,8 +19,8 @@ public class FeedbackDto {
     private Account account;
     private String feedbackEmotion;
     private String feedbackContent;
+    private String status;
 
-    // Only use when response, no need in requests
     private String createdBy;
     private String createdDate;
     private String lastModifiedBy;

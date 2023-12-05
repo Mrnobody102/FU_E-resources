@@ -77,14 +77,50 @@
 
                                         <div class="row">
                                             <div class="col-md-12 form-group mb-5">
-                                                <label for="feedbackEmotion" class="col-form-label">Feedback
-                                                    Emotion</label>
-                                                <input type="text" class="form-control" th:field="*{feedbackEmotion}"
-                                                       id="feedbackEmotion" placeholder="Emotion">
-                                                <button class="btn" id="green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                                                <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                                                <label class="col-form-label">How was your experience with the E-resource site? </label>
+                                                <div class="emoji">
+                                                    <div class="container">
+                                                        <div class="item">
+                                                            <label for="0">
+                                                                <input th:field="*{feedbackEmotion}" class="radio" type="radio" name="feedback" id="0" value="Bad">
+                                                                <span>🤬</span>
+                                                            </label>
+                                                        </div>
+
+                                                        <div class="item">
+                                                            <label for="1">
+                                                                <input th:field="*{feedbackEmotion}" class="radio"  type="radio" name="feedback" id="1" value="Good">
+                                                                <span>🙁</span>
+                                                            </label>
+                                                        </div>
+
+                                                        <div class="item">
+                                                            <label for="2">
+                                                                <input th:field="*{feedbackEmotion}" class="radio" type="radio" name="feedback" id="2" value="Very Good">
+                                                                <span>😶</span>
+                                                            </label>
+                                                        </div>
+
+                                                        <div class="item">
+                                                            <label for="3">
+                                                                <input th:field="*{feedbackEmotion}" class="radio" type="radio" name="feedback" id="3" value="Satisfied">
+                                                                <span>😁</span>
+                                                            </label>
+                                                        </div>
+
+                                                        <div class="item">
+                                                            <label for="4">
+                                                                <input th:field="*{feedbackEmotion}" class="radio" type="radio" name="feedback" id="4" value="Very Satisfied">
+                                                                <span>😍</span>
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
+                                        <input type="hidden" th:value="Pending" th:field="*{status}" >
 
                                         <!-- Feedback Content Field -->
                                         <div class="row">

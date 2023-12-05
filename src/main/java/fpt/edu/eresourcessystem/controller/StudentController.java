@@ -445,9 +445,9 @@ public class StudentController {
     @PostMapping("/feedbacks/add")
     public String processFeedbackForm(@ModelAttribute("feedback") @Valid FeedbackDto feedback,
                                       BindingResult result) {
-//        if (result.hasErrors()) {
-//            return "student/feedback/student_feedback-add"; // Return to the form with validation errors
-//        }
+        if (result.hasErrors()) {
+            return "student/feedback/student_feedback-add"; // Return to the form with validation errors
+        }
 
         // Get the logged-in user (you need to implement your user authentication mechanism)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -460,7 +460,7 @@ public class StudentController {
 
         if (loggedInUser != null) {
             feedback.setAccount(loggedInUser);
-            // Save the feedback to the database
+            feedback.setStatus("Pending");
             Feedback feedback1 = feedbackService.saveFeedback(new Feedback(feedback));
 
             return "redirect:/student/feedbacks/add"; // Redirect to a success page
