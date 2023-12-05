@@ -7,17 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Librarian | Course detail</title>
 
-    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css">
 
     <!-- Custom styles for this template -->
-
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
 
@@ -39,8 +35,14 @@
         .btn {
             font-size: 1.3rem;
         }
-        .lib_input {
-            width: 300px;
+
+        #lecturerEmail {
+            width: 40%;
+        }
+        .lib_show-all-btn {
+            float: right; margin-right: 40%;
+            background-color: #0a429d;
+            color: white;
         }
     </style>
 
@@ -62,58 +64,68 @@
                 <h1 class="h2">Course Detail </h1>
 
             </div>
-            <div class="table-responsive">
-                <table class="table table-bordered" th:if="course ne null">
-                    <tr>
-                        <th>Course Code</th>
-                        <td th:text="${course.courseCode}"></td>
-                    </tr>
-                    <tr>
-                        <th>Course Name</th>
-                        <td th:text="${course.courseName}"></td>
-                    </tr>
-                    <tr>
-                        <th>Description</th>
-                        <td class="paragraph" th:text="${course.description}"></td>
-                    </tr>
-                    <tr>
-                        <th>Lecturer
-                            <!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>-->
-                            <!--                            </p>-->
-                        </th>
-                        <td th:if="${checkLecturerCourse}">
-                            <p th:text="${course.getLecturer().getAccount().getName() == null ? 'Assigned lecturer' : course.getLecturer().getAccount().getName()} + ' - ' + ${course.getLecturer().getAccount().getEmail()} "></p>
-                            <p><a href="#"
-                                  class="btn-info remove-lecturer"
-                                  data-course-id="${course.getId()}"
-                                  th:data-course-id="${course.getId()}">Remove</a>
-                            </p>
-                        </td>
-                        <td th:unless="${checkLecturerCourse}">
-                            <form id="addLecturerForm" method="post" th:field="*{accounts}"
-                                  th:action="@{'/librarian/courses/' + ${course.getId()} + '/add-lecture'}">
-                                <input class="lib_input form-control" type="text" id="lecturerEmail" name="lecturerEmail" placeholder="Email"/>
-                                <input type="hidden" id="courseName" th:value="${course.getCourseName()}"/>
-                                <input type="hidden" id="courseID" th:value="${course.getId()}"/>
-                                <button type="button" onclick="confirmAddLecturer()" class="btn-info">Add</button>
-                            </form>
-                        </td>
+            <div class="lib_content">
+                <div class="add-form">
+                    <div class="add-form-content">
+                        <table class="table-responsive" th:if="course ne null">
+                            <tr>
+                                <td class="lib_input-label"><label th:for="courseCode">Course Code:</label></td>
+                                <td class="lib_input form-control" th:text="${course.courseCode}"></td>
+                            </tr>
+                            <tr>
+                                <td class="lib_input-label"><label th:for="courseName">Course Name:</label></td>
+                                <td class="lib_input form-control" th:text="${course.courseName}"></td>
+                            </tr>
+                            <tr>
+                                <td class="lib_input-label"><label th:for="description">Description:</label></td>
+                                <td class="paragraph form-control lib_textarea" th:text="${course.description}"></td>
+                            </tr>
+                            <tr>
+                                <td class="lib_input-label">Lecturer:
+                                    <br>
+                                    <!--                            <p><a class="update-course-topic" th:href="@{'/librarian/courses/addLecturers/'+${course.courseId}}">Edit</a>-->
+                                    <!--                            </p>-->
+                                </td>
+                                <td th:if="${checkLecturerCourse}">
+                                    <p th:text="${course.getLecturer().getAccount().getName() == null ? 'Assigned lecturer' : course.getLecturer().getAccount().getName()} + ' - ' + ${course.getLecturer().getAccount().getEmail()} "></p>
+                                    <p><a href="#"
+                                          class="btn-info remove-lecturer"
+                                          data-course-id="${course.getId()}"
+                                          th:data-course-id="${course.getId()}">Remove</a>
+                                    </p>
+                                </td>
+                                <td th:unless="${checkLecturerCourse}">
+                                    <form id="addLecturerForm" method="post" th:field="*{accounts}"
+                                          th:action="@{'/librarian/courses/' + ${course.getId()} + '/add-lecture'}">
+                                        <button type="button" onclick="confirmAddLecturer()" class="btn lib_show-all-btn ">Add
+                                        </button>
+                                        <input class="lib_input form-control " type="text" id="lecturerEmail"
+                                               name="lecturerEmail" placeholder="Email"/>
 
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <td>
-                            <button type="button" class="btn lib_btn-save"><a class="link-light"
-                                                                              th:href="@{'/librarian/courses/'+${course.getId}+'/update'}">Edit
-                                course information</a>
-                            </button>
-                            <button type="button" class="btn lib_btn-delete delete-course" th:id="${course.getId}">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                </table>
+                                        <input type="hidden" id="courseName" th:value="${course.getCourseName()}"/>
+                                        <input type="hidden" id="courseID" th:value="${course.getId()}"/>
 
+                                    </form>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button type="button" class="btn lib_btn-save"><a class="link-light"
+                                                                                      th:href="@{'/librarian/courses/'+${course.getId}+'/update'}">Edit
+                                        course information</a>
+                                    </button>
+                                    <button type="button" class="btn lib_btn-delete delete-course"
+                                            th:id="${course.getId}">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -131,10 +143,15 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
+<!--Validate-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script th:src="@{/js/validation.js}"></script>
+
 
 <script th:inline="javascript">
 
-
+    validateAddLecturerForm();
     var successParam = [[${param.success}]];
     if (successParam) {
         Swal.fire(

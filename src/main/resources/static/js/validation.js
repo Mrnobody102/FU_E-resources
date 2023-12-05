@@ -251,7 +251,86 @@ function validate_addTopic() {
         }
     });
 }
+function validateAddLecturerForm() {
+    $("#addLecturerForm").validate({
+        rules: {
+            lecturerEmail: {
+                required: true,
+                email: true
+            }
+        },
+        messages: {
+            lecturerEmail: {
+                required: "Please enter the lecturer's email.",
+                email: "Please enter a valid email address."
+            }
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+            error.addClass('invalid-feedback');
+            error.insertAfter(element);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid').removeClass('is-valid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid').addClass('is-valid');
+        }
+    });
+}
 
+function validateAddTrainingTypeForm() {
+    $("#add-trainingType").validate({
+        rules: {
+            // Rules for the training type name
+            trainingTypeName: {
+                required: true,
+                minlength: 2
+            },
+            // Rules for the training type description
+            trainingTypeDescription: {
+                required: true,
+                minlength: 10
+            }
+        },
+        messages: {
+            trainingTypeName: {
+                required: "Please enter the training type name.",
+                minlength: "The training type name must be at least 2 characters long."
+            },
+            trainingTypeDescription: {
+                required: "Please enter a description for the training type.",
+                minlength: "The description must be at least 10 characters long."
+            }
+        }
+    });
+}
+function validateUpdateTrainingType() {
+    $("#update-trainingType").validate({
+        rules: {
+            // Validation rules for the training type name
+            trainingTypeName: {
+                required: true,
+                minlength: 2
+            },
+            // Validation rules for the training type description
+            trainingTypeDescription: {
+                required: true,
+                minlength: 10
+            }
+        },
+        messages: {
+            trainingTypeName: {
+                required: "Please enter the training type name.",
+                minlength: "The training type name must be at least 2 characters long."
+            },
+            trainingTypeDescription: {
+                required: "Please enter a description for the training type.",
+                minlength: "The description must be at least 10 characters long."
+            }
+        }
+    });
+}
 function validate_updateTopic(){
     // bổ sung
 }

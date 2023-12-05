@@ -86,9 +86,9 @@
                     <th:block th:each="course, iterStat  : ${coursesPage}">
                         <tr>
                             <td th:text="${iterStat.index +1}"> 1</td>
-                            <td><a th:href="@{'/librarian/courses/' + ${course.getId}}"
+                            <td><a class="a-link" th:href="@{'/librarian/courses/' + ${course.getId}}"
                                    th:text="${course.courseCode}"></a></td>
-                            <td><a class="link" th:href="@{'/librarian/courses/' + ${course.getId}}"
+                            <td><a class="a-link" th:href="@{'/librarian/courses/' + ${course.getId}}"
                                    th:text="${course.courseName}"></a></td>
                             <td><span class="code-archive-except" th:text="${course.description}"></span></td>
                             <!--                            <td colspan="2">-->
