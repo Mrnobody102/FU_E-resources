@@ -121,7 +121,7 @@
                                 <th>Feedback emotion</th>
                                 <th>Feedback content</th>
                                 <th>Created date</th>
-                                <!--                <th>Status</th>-->
+                                <th>Status</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -133,7 +133,7 @@
                                     <td><a th:href="@{'/admin/feedbacks/' + ${feedback.getId}}"
                                            th:text="${feedback.getFeedbackContent()}"> </a></td>
                                     <td th:text="${feedback.getCreatedDate()}"></td>
-                                    <!--                  <td th:text="${feedback.getStatus()}"></td>-->
+                                    <td th:text="${feedback.getStatus()}"></td>
                                 </tr>
                             </th:block>
                             </tbody>

@@ -34,36 +34,73 @@
                                 <h3>Send feedback</h3>
                                 <form class="mb-5" th:action="@{/student/feedbacks/add}" method="post"  th:object="${feedback}" >
                                     <div class="row">
-                                        <div class="col-md-6 form-group mb-5">
+                                        <div class="col-md-4 form-group mb-5">
                                             <label for="name" class="col-form-label">Name</label>
-                                            <input type="text" th:value="${loggedInUser.name}" class="form-control" name="name" id="name" placeholder="Your name">
+                                            <input type="text" th:value="${loggedInUser.name}" class="form-control"
+                                                   name="name" id="name" placeholder="Your name" readonly>
                                         </div>
                                         <!-- Email Field -->
-                                        <div class="col-md-6 form-group mb-5">
+                                        <div class="col-md-4 form-group mb-5">
                                             <label for="email" class="col-form-label">Email *</label>
-                                            <input type="text" th:value="${loggedInUser.email}" class="form-control" name="email" id="email" placeholder="Your email">
+                                            <input type="text" th:value="${loggedInUser.email}" class="form-control"
+                                                   name="email" id="email" placeholder="Your email" readonly>
+                                        </div>
+                                        <div class="col-md-4 form-group mb-5">
+                                            <label for="role" class="col-form-label">Role</label>
+                                            <input type="text" th:value="${loggedInUser.role}" class="form-control"
+                                                   name="role" id="role" placeholder="Role #" readonly>
                                         </div>
                                     </div>
 
                                     <!-- Role and Campus Fields -->
-                                    <div class="row">
-                                        <div class="col-md-6 form-group mb-5">
-                                            <label for="role" class="col-form-label">Role</label>
-                                            <input type="text" th:value="${loggedInUser.role}" class="form-control" name="role" id="role" placeholder="Role #">
-                                        </div>
-                                        <div class="col-md-6 form-group mb-5">
-                                            <label for="campus" class="col-form-label">Campus</label>
-                                            <input type="text" th:value="${loggedInUser.campus}" class="form-control" name="campus" id="campus" placeholder="Campus name">
-                                        </div>
-                                    </div>
+
 
                                     <div class="row">
                                         <div class="col-md-12 form-group mb-5">
-                                            <label for="feedbackEmotion" class="col-form-label">Feedback Emotion</label>
-                                            <input type="text" class="form-control" th:field="*{feedbackEmotion}" id="feedbackEmotion" placeholder="Emotion">
+                                            <label class="col-form-label">How was your experience with the E-resource site? </label>
+                                            <div class="emoji">
+                                                <div class="container">
+                                                    <div class="item">
+                                                        <label for="0">
+                                                            <input th:field="*{feedbackEmotion}" class="radio" type="radio" name="feedback" id="0" value="Bad">
+                                                            <span>🤬</span>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="item">
+                                                        <label for="1">
+                                                            <input th:field="*{feedbackEmotion}" class="radio"  type="radio" name="feedback" id="1" value="Good">
+                                                            <span>🙁</span>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="item">
+                                                        <label for="2">
+                                                            <input th:field="*{feedbackEmotion}" class="radio" type="radio" name="feedback" id="2" value="Very Good">
+                                                            <span>😶</span>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="item">
+                                                        <label for="3">
+                                                            <input th:field="*{feedbackEmotion}" class="radio" type="radio" name="feedback" id="3" value="Satisfied">
+                                                            <span>😁</span>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="item">
+                                                        <label for="4">
+                                                            <input th:field="*{feedbackEmotion}" class="radio" type="radio" name="feedback" id="4" value="Very Satisfied">
+                                                            <span>😍</span>
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
-
+                                    <input type="hidden" th:value="Pending" th:field="*{status}" >
                                     <!-- Feedback Content Field -->
                                     <div class="row">
                                         <div class="col-md-12 form-group mb-5">

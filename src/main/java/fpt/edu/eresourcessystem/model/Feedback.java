@@ -45,7 +45,7 @@ public class Feedback {
         this.feedbackEmotion = feedbackDTO.getFeedbackEmotion();
         this.feedbackContent = feedbackDTO.getFeedbackContent();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;;
-//        this.status = status;
+        this.status = feedbackDTO.getStatus();
     }
 
     @LastModifiedDate
