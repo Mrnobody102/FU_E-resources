@@ -7,6 +7,7 @@ import fpt.edu.eresourcessystem.dto.CourseDto;
 import fpt.edu.eresourcessystem.dto.AccountDto;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
+import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
@@ -367,9 +368,13 @@ public class LibrarianController {
 
         Lecturer savedLecturer;
         if (account == null) {
-            Account a = new Account();
-            a.setEmail(lecturerEmail);
-            Account account1 = accountService.saveAccount(a);
+            Account acc = new Account();
+            acc.setEmail(lecturerEmail);
+            acc.setRole(AccountEnum.Role.LECTURER);
+            acc.setDeleteFlg(CommonEnum.DeleteFlg.PRESERVED);
+            acc.setStatus(AccountEnum.Status.ACTIVE);
+            acc.setAccountType(AccountEnum.AccountType.SYSTEM_ACC);
+            Account account1 = accountService.saveAccount(acc);
             // save account
             Lecturer lecturer = new Lecturer();
             lecturer.setAccount(account1);

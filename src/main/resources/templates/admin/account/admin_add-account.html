@@ -69,7 +69,7 @@
                                         <!--                                        </tr>-->
 
                                         <tr class="lib_input-wrapper d-none">
-                                            <td class="lib_input-label"><label th:for="username">Username</label></td>
+                                            <td class="lib_input-label"><label th:for="username">Username:</label></td>
                                             <td><input type="text"  th:id="username" value=""
                                                        class="lib_input form-control" th:field="*{username}"
                                                        placeholder="Enter username" required>
@@ -86,7 +86,7 @@
                                         </tr>
 
                                         <tr class="lib_input-wrapper">
-                                            <td class="lib_input-label"><label th:for="email">Email</label></td>
+                                            <td class="lib_input-label"><label th:for="email">Email*:</label></td>
                                             <td><input type="text" th:id="email"
                                                        class="lib_input form-control" th:field="*{email}"
                                                        placeholder="Enter email" required>
@@ -94,7 +94,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="lib_input-label"><label th:for="name">Full Name</label></td>
+                                            <td class="lib_input-label"><label th:for="name">Full Name:</label></td>
                                             <td ><input type="text" th:id="name"
                                                        class="lib_input form-control" th:field="*{name}"
                                                        placeholder="Enter name" required>
@@ -133,7 +133,7 @@
 <!--                                            </td>-->
 <!--                                        </tr>-->
                                         <tr>
-                                            <td class="lib_input-label"><label for="role">Role</label></td>
+                                            <td class="lib_input-label"><label for="role">Role:</label></td>
                                             <td>
                                                 <select class="lib_input" name="role" id="role">
                                                     <option th:each="role : ${roles}"

@@ -67,7 +67,7 @@
 
                     </div>
 
-                    <div class="table-responsive" th:if="${librarians ne null}">
+                    <div class="table-view" th:if="${librarians ne null}">
                         <table class="table table-striped table-sm" id="filterTable">
                             <thead class="table-head">
                             <th>STT</th>
@@ -85,8 +85,9 @@
                                         <div th:if="${librarian != null and librarian.createdCourses != null}">
                                             <div class="course-container">
                                                 <th:block th:each="course, item : ${librarian.createdCourses}">
-                    <span class="course-link"><a  th:href="@{'/librarian/courses/' + ${course.getId}}"
-                                         th:text="${course.courseCode}"></a></span>
+                                                <span class="course-link">
+                                                    <a class="a-link" th:href="@{'/librarian/courses/' + ${course.getId}}"
+                                                th:text="${course.courseCode}"></a></span>
                                                 </th:block>
                                             </div>
                                         </div>

@@ -28,3 +28,14 @@ select.lib_show-all-btn {
     overflow-x: unset;
     width: 100%;
 }
+table.dataTable, table.dataTable th, table.dataTable td {
+    box-sizing: unset;
+}
+.table-responsive tr td:first-child {
+    width: 5%;
+    text-align: center;
+}
+.table-responsive tr td:last-child {
+    /*width: 5%;*/
+    /*text-align: center;*/
+}

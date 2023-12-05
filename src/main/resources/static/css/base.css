@@ -485,6 +485,7 @@ li {
 }
 .table-view tr td:first-child{
     width: 5%;
+    text-align: center
 }
 .table-view tr td:last-child{
     width: 55%;
@@ -564,3 +565,6 @@ li {
 
 }
 
+.a-link {
+    color:var(--link-color) ;
+}

@@ -473,17 +473,7 @@ public class AdminController {
 
 
     //
-    @PostMapping("/trainingtypes/delete/{id}")
-    public String deleteTrainingType(@PathVariable("id") String id,
-                                     RedirectAttributes redirectAttributes) {
-        try {
-            trainingTypeService.deleteById(String.valueOf(id));
-            redirectAttributes.addFlashAttribute("success", "Training type deleted successfully");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error deleting training type: " + e.getMessage());
-        }
-        return "redirect:/admin/trainingtypes/list";
-    }
+
 
     @GetMapping("/trainingtypes/delete/{id}")
     public String softDeleteTrainingType(@PathVariable("id") String id,
@@ -502,7 +492,7 @@ public class AdminController {
         return "redirect:/admin/trainingtypes/list";
     }
 
-    @DeleteMapping("/feedbacks/delete/{id}")
+    @PostMapping("/feedbacks/delete/{id}")
     public String softDeleteFeedback(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
         boolean isDeleted = feedbackService.softDelete(id);
         if (isDeleted) {

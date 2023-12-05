@@ -16,40 +16,12 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link th:href="@{/css/styles/librarian.css}" rel="stylesheet">
+    <link th:href="@{/css/table.css}" rel="stylesheet">
 
     <!-- SweetAlert từ CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
-
-
-    <style>
-        .dataTables_wrapper .dataTables_length {
-            display: none;
-            float: right;
-        }
-
-        #filterTable_filter {
-            float: left;
-            padding-bottom: 25px;
-        }
-
-        select.lib_show-all-btn {
-            display: inline;
-            width: 200px;
-            margin-left: 25px;
-            padding: 5px;
-        }
-
-        .dataTables_info {
-            display: none;
-        }
-
-        .dataTables_wrapper .dataTables_paginate {
-            text-align: center;
-            float: none;
-        }
-    </style>
 
 
 </head>
@@ -72,7 +44,7 @@
 <!--                        <form class="d-flex" th:action="@{/admin/trainingtypes/list/1}" method="get" th:id="search-form">-->
                             <div class="d-flex">
                                 <div class="manager_search-box">
-                                    <label th:for="search-text">Search training type:</label>
+                                    <label th:for="search-text">Search name, description:</label>
                                     <div class="d-flex">
                                         <input class="lib_search-content" type="text" placeholder="Enter here..."
                                                th:name="search" th:id="search-text" th:value="${search}"/>
@@ -110,7 +82,7 @@
                             <tbody>
                             <tr th:each="trainingType,iterStat : ${trainingTypes}">
                                 <td th:text="${iterStat.index+1}">1</td>
-                                <td><a th:href="@{'/admin/trainingtypes/' + ${trainingType.id}}"
+                                <td><a class="a-link" th:href="@{'/admin/trainingtypes/' + ${trainingType.id}}"
                                        th:text="${trainingType.trainingTypeName}"></a></td>
                                 <td><span class="code-archive-except" th:text="${trainingType.trainingTypeDescription}"> </span></td>
                                 <td th:text="${trainingType.getCourses().size()}">
