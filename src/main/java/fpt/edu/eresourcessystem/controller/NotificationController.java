@@ -67,7 +67,7 @@ public class NotificationController {
         headerAccessor.setLeaveMutable(true);
         // Gửi thông điệp đến người dùng có địa chỉ email là "thuongdthe150682@gmail.com"
 //        simpMessagingTemplate.convertAndSend( "/student/chat", chatMessage);
-        messagingTemplate.convertAndSendToUser("myntthe150427@fpt.edu.vn", "/student/chat", chatMessage, headerAccessor.getMessageHeaders());
+        messagingTemplate.convertAndSendToUser("hungnt31@fpt.edu.vn", "/student/chat", chatMessage, headerAccessor.getMessageHeaders());
         System.out.println("notificationController-80: " + principal);
         return chatMessage;
     }

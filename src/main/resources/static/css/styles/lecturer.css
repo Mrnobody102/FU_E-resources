@@ -415,3 +415,8 @@
 .edit-reply-div input:focus {
     height: 2.5em; /* Chiều cao khi ô input được focus */
 }
+
+.lec__div-content-recent-title {
+    margin-top: 2rem;
+    margin-left: 2rem;
+}

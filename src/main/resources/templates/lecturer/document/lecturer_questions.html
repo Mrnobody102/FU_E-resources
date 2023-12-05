@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Lecturer | lecdent questions </title>
+    <title>Lecturer | Student questions </title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -30,49 +30,49 @@
 
                     <div class="lec__courses-content main" id="main-lecturer">
 
-                        <div class="header__search">
-                            <!--Label-->
-                            <div class="search-label">
-                                <label th:for="search">Search documents</label>
-                            </div>
-                            <!-- Input  -->
-                            <div class="header__search-input-wrap">
-                                <input type="text" class="header__search-input"
-                                       placeholder="Enter course ..."
-                                       name="search"
-                                       th:id="search" th:value="${search}">
-                                <!-- Header-search-history -->
-                                <div class="header__search-history">
-                                    <h3 class="header__search-history-heading">
-                                        Search history
-                                    </h3>
-                                    <ul class="header__search-history-list">
+<!--                        <div class="header__search">-->
+<!--                            &lt;!&ndash;Label&ndash;&gt;-->
+<!--                            <div class="search-label">-->
+<!--                                <label th:for="search">Search documents</label>-->
+<!--                            </div>-->
+<!--                            &lt;!&ndash; Input  &ndash;&gt;-->
+<!--                            <div class="header__search-input-wrap">-->
+<!--                                <input type="text" class="header__search-input"-->
+<!--                                       placeholder="Enter course ..."-->
+<!--                                       name="search"-->
+<!--                                       th:id="search" th:value="${search}">-->
+<!--                                &lt;!&ndash; Header-search-history &ndash;&gt;-->
+<!--                                <div class="header__search-history">-->
+<!--                                    <h3 class="header__search-history-heading">-->
+<!--                                        Search history-->
+<!--                                    </h3>-->
+<!--                                    <ul class="header__search-history-list">-->
 
-                                        <li class="header__search-history-item">
-                                            <a href="">Software</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- Select-find-scope -->
-                            <div class="header__search-select">
-                                <span class="header__search-select-label">All results</span>
-                                <i class="header__search-select-icon fas fa-angle-down"></i>
-                                <ul class="header__search-option">
-                                    <li class="header__search-option-item header__search-option-item--active">
-                                        <span class="">By Name</span>
-                                        <i class="fas fa-check"></i>
-                                    </li>
-                                    <li class="header__search-option-item">
-                                        <span class="">By Code</span>
-                                        <i class="fas fa-check"></i>
-                                    </li>
-                                </ul>
-                            </div>
-                            <button class="header__search-btn">
-                                <i class="header__search-btn-icon fas fa-search"></i>
-                            </button>
-                        </div>
+<!--                                        <li class="header__search-history-item">-->
+<!--                                            <a href="">Software</a>-->
+<!--                                        </li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            &lt;!&ndash; Select-find-scope &ndash;&gt;-->
+<!--                            <div class="header__search-select">-->
+<!--                                <span class="header__search-select-label">All results</span>-->
+<!--                                <i class="header__search-select-icon fas fa-angle-down"></i>-->
+<!--                                <ul class="header__search-option">-->
+<!--                                    <li class="header__search-option-item header__search-option-item&#45;&#45;active">-->
+<!--                                        <span class="">By Name</span>-->
+<!--                                        <i class="fas fa-check"></i>-->
+<!--                                    </li>-->
+<!--                                    <li class="header__search-option-item">-->
+<!--                                        <span class="">By Code</span>-->
+<!--                                        <i class="fas fa-check"></i>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                            <button class="header__search-btn">-->
+<!--                                <i class="header__search-btn-icon fas fa-search"></i>-->
+<!--                            </button>-->
+<!--                        </div>-->
                         <div class="lec__navbar-favourite">
                             <ul class="lec__navbar-list border-bottom">
                                 <li class="lec__navbar-item lec__navbar-active" onclick="viewAllQuestion(this)">
