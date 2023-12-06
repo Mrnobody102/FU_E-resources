@@ -192,13 +192,13 @@
                 {
                     "targets": 1, // Target the description column
                     "render": function (data, type, row) {
-                        return '<a href="/librarian/courses/' + row.id + '">' + data + '</a>';
+                        return '<a  class="a-link" href="/librarian/courses/' + row.id + '">' + data + '</a>';
                     }
                 },
                 {
                     "targets": 2, // Target the description column
                     "render": function (data, type, row) {
-                        return '<a href="/librarian/courses/' + row.id + '">' + data + '</a>';
+                        return '<a  class="a-link" href="/librarian/courses/' + row.id + '">' + data + '</a>';
                     }
                 }
             ],
@@ -245,23 +245,23 @@
         });
     });
 
-    var successParam = [[${param.success}]];
-    if (successParam) {
-        Swal.fire(
-            'Success!',
-            'Delete course successful!',
-            'success'
-        );
-    }
-
-    var errorParam = [[${param.error}]];
-    if (errorParam) {
-        Swal.fire(
-            'Error!',
-            'Please check course information again!',
-            'error'
-        );
-    }
+    // var successParam = [[${param.success}]];
+    // if (successParam) {
+    //     Swal.fire(
+    //         'Success!',
+    //         'Delete course successful!',
+    //         'success'
+    //     );
+    // }
+    //
+    // var errorParam = [[${param.error}]];
+    // if (errorParam) {
+    //     Swal.fire(
+    //         'Error!',
+    //         'Please check course information again!',
+    //         'error'
+    //     );
+    // }
 
 </script>
 

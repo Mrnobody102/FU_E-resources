@@ -127,7 +127,7 @@
             "serverSide": true,
             "ordering": false,
             "pagingType": "simple_numbers",
-            "pageLength": 2,
+            "pageLength": 5,
             "language": {
                 "paginate": {
                     "first": "<<",
@@ -211,13 +211,13 @@
             }
         });
 
-
+        dataTable.draw();
         // Bắt sự kiện khi người dùng click vào phân trang
-        dataTable.on('click', 'a.paginate_button', function (e) {
-            e.preventDefault();
-            var page = $(this).attr('data-dt-idx');
-            dataTable.page(page).draw('page');
-        });
+        // dataTable.on('click', 'a.paginate_button', function (e) {
+        //     e.preventDefault();
+        //     var page = $(this).attr('data-dt-idx');
+        //     dataTable.page(page).draw('page');
+        // });
 
     });
 </script>

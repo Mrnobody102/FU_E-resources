@@ -52,7 +52,7 @@
                                 <div class="add-form">
                                     <div class="add-form-content">
                                         <form method="post" role="form" th:action="@{/lecturer/topics/add_topic}"
-                                              th:object="${topic}" th:id="add-form">
+                                              th:object="${topic}" th:id="add-topic">
                                             <table class="table-form add-table" style="width: 60%">
                                                 <tr class="d-none">
                                                     <td><label th:for="courseId">Course ID</label></td>
@@ -147,9 +147,13 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 <script src="/js/lecturer/lecturer.js"></script>
+<!--Validate-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script th:src="@{/js/validation.js}"></script>
 
 <script th:inline="javascript">
-    // validate_addTopic();
+     validate_addTopic();
 
     var successParam = [[${param.success}]];
     if (successParam) {

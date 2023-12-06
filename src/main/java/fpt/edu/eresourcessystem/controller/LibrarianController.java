@@ -118,75 +118,80 @@ public class LibrarianController {
         Course checkExist = courseService.findByCourseCode(course.getCourseCode());
 
         if (null == checkExist) {
-
             // check lecturer param exist
             if (lecturer != null && !"".equals(lecturer.trim())) {
                 // get account by EMAIL
                 Account account = accountService.findByEmail(lecturer);
-                if (null != account) {
-                    // get lecturer by account
-                    Lecturer foundLecturer = lecturerService.findByAccountId(account.getId());
-                    if (null != foundLecturer) {
-                        // ADD COURSE
-                        Course result = courseService.addCourse(course);
-                        // Xử lý sau khi add course
-                        // check lecturer exist
-                        if (result != null) {
-
-                            // Add log lecturer_course
-                            // create new lecturerCourseId
-                            LecturerCourseId lecturerCourseId = new LecturerCourseId();
-                            lecturerCourseId.setLecturerId(foundLecturer.getId());
-                            // set course Id that added
-                            lecturerCourseId.setCourseId(result.getId());
-                            lecturerCourseId.setCreatedDate(LocalDate.now());
-
-                            // save new lecturer manage to the course
-                            LecturerCourse lecturerCourse = new LecturerCourse();
-                            lecturerCourse.setId(lecturerCourseId);
-
-                            LecturerCourse addLecturerCourseResult = lecturerCourseService.add(lecturerCourse);
-                            // check save lecturerCourse to database
-                            if (null != addLecturerCourseResult) {
-
-                                // add lecturer to  course
-                                List<LecturerCourseId> lecturerCourseIds = new ArrayList<>();
-                                lecturerCourseIds.add(addLecturerCourseResult.getId());
-
-                                result.setLecturerCourseIds(lecturerCourseIds);
-                                result.setLecturer(foundLecturer);
-                                // update course lecturers
-                                result = courseService.updateCourse(result);
-//                                foundLecturer.getCourses().add(course);
-                                librarian.getCreatedCourses().add(course);
-                                // Thêm course vào danh sách tạo của librarian
-                                librarianService.updateLibrarian(librarian);
-                                // Thêm course vào danh sách quản lý của lecturer
-                                lecturerService.updateCourseForLecturer(foundLecturer, result);
-                                trainingTypeService.addCourseToTrainingType(courseDTO.getTrainingType().getId(), result);
-                                emailService.sendCourseAssignmentEmail(lecturer, course.getCourseName());
-                                if (null != result) {
-                                    return "redirect:/librarian/courses/add?success";
-
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    Lecturer savedLecturer;
+                Lecturer foundLecturer;
+                if (null != account) { // co account
+                     foundLecturer = lecturerService.findByAccountId(account.getId());
+                     if (foundLecturer== null) {
+                         account.setRole(AccountEnum.Role.LECTURER);
+                         accountService.updateAccount(account);
+                         Lecturer lecturer2 = new Lecturer();
+                         lecturer2.setAccount(account);
+                         foundLecturer = lecturerService.addLecturer(lecturer2);
+                     }
+                } else { // k co account
                     Account accoutnew = new Account();
                     accoutnew.setEmail(lecturer);
+                    accoutnew.setRole(AccountEnum.Role.LECTURER);
+                    accoutnew.setDeleteFlg(CommonEnum.DeleteFlg.PRESERVED);
+                    accoutnew.setStatus(AccountEnum.Status.ACTIVE);
+                    accoutnew.setAccountType(AccountEnum.AccountType.SYSTEM_ACC);
                     Account account1 = accountService.saveAccount(accoutnew);
                         // save account
                     Lecturer lecturer1 = new Lecturer();
                     lecturer1.setAccount(account1);
-                    savedLecturer = lecturerService.addLecturer(lecturer1);
-
+                    foundLecturer = lecturerService.addLecturer(lecturer1);
+                }
+                if (null != foundLecturer) {
+                    // ADD COURSE
+                    course.setLecturer(foundLecturer);
                     Course result = courseService.addCourse(course);
-                    lecturerService.updateCourseForLecturer(savedLecturer, result);
-                    trainingTypeService.addCourseToTrainingType(courseDTO.getTrainingType().getId(), result);
-                    emailService.sendCourseAssignmentEmail(lecturer, course.getCourseName());
-                    return "redirect:/librarian/courses/add?success";
+                    // Xử lý sau khi add course
+                    // check lecturer exist
+                    if (result != null) {
+                        // Add log lecturer_course
+                        // create new lecturerCourseId
+                        LecturerCourseId lecturerCourseId = new LecturerCourseId();
+                        lecturerCourseId.setLecturerId(foundLecturer.getId());
+                        // set course Id that added
+                        lecturerCourseId.setCourseId(result.getId());
+                        lecturerCourseId.setCreatedDate(LocalDate.now());
+
+                        // save new lecturer manage to the course
+                        LecturerCourse lecturerCourse = new LecturerCourse();
+                        lecturerCourse.setId(lecturerCourseId);
+
+                        LecturerCourse addLecturerCourseResult = lecturerCourseService.add(lecturerCourse);
+                        // check save lecturerCourse to database
+                        if (null != addLecturerCourseResult) {
+
+                            // add lecturer to  course
+                            List<LecturerCourseId> lecturerCourseIds = new ArrayList<>();
+                            lecturerCourseIds.add(addLecturerCourseResult.getId());
+
+                            result.setLecturerCourseIds(lecturerCourseIds);
+                            result.setLecturer(foundLecturer);
+                            // update course lecturers
+
+//                                result = courseService.updateCourse(result);
+                            courseService.updateLectureId(result.getId(), foundLecturer);
+//                                foundLecturer.getCourses().add(course);
+                            librarian.getCreatedCourses().add(course);
+                            // Thêm course vào danh sách tạo của librarian
+                            librarianService.updateLibrarian(librarian);
+                            // Thêm course vào danh sách quản lý của lecturer
+                            lecturerService.updateCourseForLecturer(foundLecturer, result);
+                            trainingTypeService.addCourseToTrainingType(courseDTO.getTrainingType().getId(), result);
+                            emailService.sendCourseAssignmentEmail(lecturer, course.getCourseName());
+                            if (null != result) {
+                                return "redirect:/librarian/courses/add?success";
+
+                            }
+                        }
+                    }
                 }
 
             } else {
@@ -347,13 +352,15 @@ public class LibrarianController {
     }
 
     @GetMapping({"/courses/{courseId}/remove-lecture"})
-    public String removeLecture(@PathVariable String courseId, final Model model) {
+    public String removeLecture(@PathVariable String courseId) {
         Course course = courseService.findByCourseId(courseId);
-        boolean removed = lecturerService.removeCourse(course.getLecturer().getId(), course);
         boolean removed1 = courseService.removeLecture(courseId);
+        boolean removed = lecturerService.removeCourse(course.getLecturer().getId(), new ObjectId(courseId));
         if (removed1 && removed) {
             return "redirect:/librarian/courses/{courseId}/add-lecture?success";
-        } else return "redirect:/librarian/courses/{courseId}/add-lecture?error";
+        } else {
+            return "redirect:/librarian/courses/{courseId}/add-lecture?error";
+        }
     }
 
     /**
@@ -383,6 +390,8 @@ public class LibrarianController {
         } else {
             savedLecturer = lecturerService.findByAccountId(account.getId());
             if (savedLecturer == null) {
+                account.setRole(AccountEnum.Role.LECTURER);
+                accountService.updateAccount(account);
                 Lecturer lecturer = new Lecturer();
                 lecturer.setAccount(account);
                 savedLecturer = lecturerService.addLecturer(lecturer);
@@ -418,7 +427,8 @@ public class LibrarianController {
                 course.setLecturerCourseIds(lecturerCourseIds);
                 course.setLecturer(savedLecturer);
                 // update course lecturers
-                course = courseService.updateCourse(course);
+      //          course = courseService.updateCourse(course);
+                course = courseService.updateLectureId(course.getId(),savedLecturer);
             }
 
             lecturerService.addCourseToLecturer(savedLecturer.getId(), new ObjectId(courseId));
