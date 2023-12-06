@@ -204,6 +204,10 @@ li {
     width: 220px;
 }
 
+.btn-login {
+    width: 80%;
+}
+
 .btn--size-s-2 {
     height: 30px;
     width: 100px;

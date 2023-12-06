@@ -67,13 +67,14 @@ public class SecurityConfig implements WebMvcConfigurer{
         http.csrf(AbstractHttpConfigurer::disable);
 
 //        // Authentication
-        http.formLogin(auth -> auth.loginPage("/login")
+        http.formLogin(auth -> auth
+                .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .successHandler(customAuthenticationSuccessHandler)
                 .failureUrl("/login?error"));
 
-
-        http.oauth2Login(auth -> auth.loginPage("/login")
+        http.oauth2Login(auth -> auth
+                .loginPage("/login")
                 .userInfoEndpoint(userInfo -> userInfo
                         .userService(customOAuth2UserService)
 			    )

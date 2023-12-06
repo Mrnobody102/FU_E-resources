@@ -7,36 +7,36 @@
     </div>
     <div class="modal__body">
         <form id="loginForm" class="auth-form mt-5" method="post" role="form" th:action="@{/login}"
-              th:object="${account}" th:id="login-form">
+              th:id="login-form">
             <div class="auth-form__container">
                 <div class="auth-form__header">
-                    <h3 class="auth-form__heading">
+                    <div class="auth-form__heading">
                         Login
-                    </h3>
+                    </div>
                 </div>
 
                 <div class="auth-form__form">
                     <div th:if="${param.error}" class="alert alert-danger" role="alert">Invalid account
                     </div>
 
-                                        <div class="auth-form__group">
-                                            <input type="email" name="username" class="auth-form__input" placeholder="Your Email">
-                                        </div>
-                                        <div class="auth-form__group">
-                                            <input type="password" name="password" class="auth-form__input" placeholder="Enter Password">
-                                        </div>
+                    <div class="auth-form__group d-none">
+                        <input type="email" name="username" class="auth-form__input" placeholder="Your Email">
+                    </div>
+                    <div class="auth-form__group d-none">
+                        <input type="password" name="password" class="auth-form__input" placeholder="Enter Password">
+                    </div>
                     <div class="auth-form__socials">
                         <a th:href="@{/oauth2/authorization/google}"
-                           class="btn btn--size-s btn-primary auth-form__socials--google">
+                           class="btn btn-login btn-primary auth-form__socials--google">
                             <i class="auth-form__socials-google-icon fab fa-google"></i>
                             <span class="auth-form__socials-title">
                         Login with Google
                         </span>
                         </a>
-                        <a href="" class="btn btn--size-s btn--with-icon auth-form__socials--feid">
+                        <a href="" class="btn btn-login btn--with-icon auth-form__socials--feid">
                             <i class="auth-form__socials-feid-icon fa-solid fa-envelope"></i>
                             <span class="auth-form__socials-title">
-                        Login with FeID
+                        Login with FEID
                         </span>
                         </a>
 
@@ -50,21 +50,22 @@
                     <!--                            </option>-->
                     <!--                        </select>-->
                     <!--                    </div>-->
-                    <div class="auth-form__aside">
-                        <div class="auth-form__help">
-                            <a href="" class="auth-form__help-link auth-form__help-forgot-password">Forgot
-                                Password</a>
-                            <span class="auth-form__help-separate-line">|</span>
-                            <a href="" class="auth-form__help-link auth-form__help-need-help">Need Help?</a>
-                        </div>
-                    </div>
+                    <!--                    <div class="auth-form__aside">-->
+                    <!--                        <div class="auth-form__help">-->
+                    <!--                            <a href="" class="auth-form__help-link auth-form__help-forgot-password">Forgot-->
+                    <!--                                Password</a>-->
+                    <!--                            <span class="auth-form__help-separate-line">|</span>-->
+                    <!--                            <a href="" class="auth-form__help-link auth-form__help-need-help">Need Help?</a>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
 
-                    <div class="auth-form__controls mb-3">
-                        <a href="/" id="closeLoginForm" class="btn btn--hover auth-form__controls-back">Back</a>
-                                                <button type="submit" class="btn btn--primary">Login</button>
-                    </div>
+                                        <div class="auth-form__controls mb-5">
+                                            <a href="/" id="closeLoginForm" class="btn btn--hover auth-form__controls-back">Back</a>
+                                                                    <button type="submit" class="btn btn--primary d-none">Login</button>
+                                        </div>
                 </div>
             </div>
+
 
         </form>
     </div>
