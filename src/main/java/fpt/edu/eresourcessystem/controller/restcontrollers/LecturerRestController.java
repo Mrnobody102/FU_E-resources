@@ -55,55 +55,56 @@ public class LecturerRestController {
     @Transactional
     public ResponseEntity<AnswerResponseDto> addQuestion(@ModelAttribute AnswerDto answerDTO,
                                                          @RequestParam String docId,
-                                                         @RequestParam String quesId){
+                                                         @RequestParam String quesId) {
         Lecturer lecturer = getLoggedInLecturer();
         Document document = documentService.findById(docId);
         Question question = questionService.findById(quesId);
-        if(null == lecturer || null == answerDTO || null==document || null == question){
+        if (null == lecturer || null == answerDTO || null == document || null == question) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         answerDTO.setLecturer(lecturer);
         answerDTO.setQuestionId(question);
         answerDTO.setDocumentId(document);
         Answer answer = answerService.addAnswer(new Answer(answerDTO));
-        if(null!= answer){
+        if (null != answer) {
             // update list answer of the question
             question.getAnswers().add(answer);
             question.setStatus(QuestionAnswerEnum.Status.REPLIED);
             questionService.updateQuestion(question);
             // add log
-            addUserLog("/api/lecturer/answers/add/"+answer.getId());
+            addUserLog("/api/lecturer/answers/add/" + answer.getId());
             AnswerResponseDto answerResponseDTO = new AnswerResponseDto(answer);
             return new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
-        }else {
+        } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping(value = "/answers/get/{questionId}", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
-    public ResponseEntity<List<AnswerResponseDto>> getAnswerOfQuestion(@PathVariable String questionId){
+    public ResponseEntity<List<AnswerResponseDto>> getAnswerOfQuestion(@PathVariable String questionId) {
         Question question = questionService.findById(questionId);
         List<Answer> answers = answerService.findByQuestion(question);
         List<AnswerResponseDto> answerResponseDtos = new ArrayList<>();
-        if(null!= answers){
-            for (Answer answer: answers) {
+        if (null != answers) {
+            for (Answer answer : answers) {
                 answerResponseDtos.add(new AnswerResponseDto(answer));
 //                System.out.println(new AnswerResponseDto(answer));
             }
             ResponseEntity<List<AnswerResponseDto>> responseEntity = new ResponseEntity<>(answerResponseDtos, HttpStatus.OK);
             // add log
-            addUserLog("/api/lecturer/answers/get/"+questionId);
+            addUserLog("/api/lecturer/answers/get/" + questionId);
             return responseEntity;
-        }else {
+        } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping(value = "/my_question/new_question", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
-    public ResponseEntity<List<QuestionResponseDto>> getNewReplyQuestion(){
+    public ResponseEntity<List<QuestionResponseDto>> getNewReplyQuestion() {
         Lecturer lecturer = getLoggedInLecturer();
-        if(null == lecturer){
+        if (null == lecturer) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }else{
+        } else {
             List<QuestionResponseDto> questionResponseDto = questionService.findNewQuestionForLecturer(lecturer.getAccount().getEmail());
             // add log
             addUserLog("/api/lecturer/my_question/new_question");
@@ -114,11 +115,11 @@ public class LecturerRestController {
     }
 
     @GetMapping(value = "/my_question/replied_question", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
-    public ResponseEntity<List<QuestionResponseDto>> getRepliedQuestion(){
+    public ResponseEntity<List<QuestionResponseDto>> getRepliedQuestion() {
         Lecturer lecturer = getLoggedInLecturer();
-        if(null == lecturer){
+        if (null == lecturer) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }else{
+        } else {
             List<QuestionResponseDto> questionResponseDto = questionService.findRepliedQuestionForLecturer(lecturer.getAccount().getEmail());
             // add log
             addUserLog("/api/lecturer/my_question/replied_question");
@@ -140,7 +141,7 @@ public class LecturerRestController {
                 answer.setStatus(QuestionAnswerEnum.Status.READ);
                 answer = answerService.updateAnswer(answer);
                 // add log
-                addUserLog("/api/lecturer/my_question/replies/"+answerId+"/update");
+                addUserLog("/api/lecturer/my_question/replies/" + answerId + "/update");
                 ResponseEntity<AnswerResponseDto> responseEntity = new ResponseEntity<>(new AnswerResponseDto(answer), HttpStatus.OK);
                 return responseEntity;
             } else {
@@ -159,7 +160,7 @@ public class LecturerRestController {
             boolean check = answerService.deleteAnswer(answer);
             if (check) {
                 // add log
-                addUserLog("/api/lecturer/my_question/replies/"+answerId+"/delete");
+                addUserLog("/api/lecturer/my_question/replies/" + answerId + "/delete");
                 //chage list answer
                 Question question = questionService.findById(answer.getQuestion().getId());
                 question.getAnswers().remove(answer);
@@ -186,7 +187,6 @@ public class LecturerRestController {
             return responseData;
         }
     }
-
 
 
 }

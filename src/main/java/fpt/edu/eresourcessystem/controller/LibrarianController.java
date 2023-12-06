@@ -579,4 +579,9 @@ public class LibrarianController {
         return "redirect:/lecturer";
     }
 
+    @GetMapping({"/courses_report"})
+    public String getCoursesLog(final Model model) {
+        return "librarian/course/librarian_courses-report";
+    }
+
 }
