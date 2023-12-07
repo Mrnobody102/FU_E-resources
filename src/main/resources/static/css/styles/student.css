@@ -335,7 +335,8 @@ stu__navbar-view-doc-item:hover a{
 
 .form-student-add-doc-new-question{
     margin-top: 0.2rem;
-    border-radius: 2rem;
+    border-radius: 0.22rem;
+    margin-left: 1.5rem;
     border: 1px solid #888888;
     display: none;
     padding: 1rem;
