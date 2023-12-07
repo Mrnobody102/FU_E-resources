@@ -227,30 +227,6 @@ function validate_updateAccount() {
 
 }
 
-function validate_addTopic() {
-    $('#add-topic').validate({
-        rules: {
-            topicTitle: {
-                required: true,
-                minlength: 3, // Change this as needed
-                maxlength: 50  // Change this as needed
-            },
-            topicDescription: {
-                maxlength: 2000 // Change this as needed
-            }
-        },
-        messages: {
-            topicTitle: {
-                required: "Topic Title is required!",
-                minlength: "Topic Title must have at least 3 characters!", // Change this as needed
-                maxlength: "Topic Title can have at most 50 characters!"  // Change this as needed
-            },
-            topicDescription: {
-                maxlength: "Topic Description can have at most 2000 characters!" // Change this as needed
-            }
-        }
-    });
-}
 function validateAddLecturerForm() {
     $("#addLecturerForm").validate({
         rules: {
@@ -331,9 +307,94 @@ function validateUpdateTrainingType() {
         }
     });
 }
-function validate_updateTopic(){
-    // bổ sung
+function validate_updateTopic() {
+    $("#add-form").validate({
+        rules: {
+            topicTitle: {
+                required: true,
+                minlength: 3,
+                maxlength: 50
+            },
+            topicDescription: {
+                required: true,
+                minlength: 5
+            }
+        },
+        messages: {
+            topicTitle: {
+                required: "Please enter a topic title",
+                minlength: "Topic title must be at least 3 characters!",
+                maxlength: "Topic Title can have at most 50 characters!"
+            },
+            topicDescription: {
+                required: "Please enter a topic description",
+                minlength: "Topic description must be at least 5 characters!"
+            }
+        }
+    });
 }
+
+function validate_addTopic() {
+    $('#add-topic').validate({
+        rules: {
+            topicTitle: {
+                required: true,
+                minlength: 3, // Change this as needed
+                maxlength: 50  // Change this as needed
+            },
+            topicDescription: {
+                minlength: 5,// Change this as needed
+                required: true,
+            }
+        },
+        messages: {
+            topicTitle: {
+                required: "Topic Title is required!",
+                minlength: "Topic Title must have at least 3 characters!", // Change this as needed
+                maxlength: "Topic Title can have at most 50 characters!"  // Change this as needed
+            },
+            topicDescription: {
+                required: "Please enter a topic description",
+                minlength: "Topic Description can have at least 5 characters!" // Change this as needed
+            }
+        }
+    });
+}
+function validate_addResourceType() {
+    $("#add-resource-type").validate({
+        rules: {
+            resourceTypeName: {
+                required: true,
+                minlength: 3 // Example: minimum length of 3 characters
+            }
+        },
+        messages: {
+            resourceTypeName: {
+                required: "Please enter a resource type name",
+                minlength: "Resource type name must be at least 3 characters long"
+            }
+        }
+    });
+}
+
+function validate_updateresourceType() {
+    $("#update-resource-type").validate({
+        rules: {
+            resourceTypeName: {
+                required: true,
+                minlength: 3 // Example: minimum length of 3 characters
+            }
+        },
+        messages: {
+            resourceTypeName: {
+                required: "Please enter a resource type name",
+                minlength: "Resource type name must be at least 3 characters long"
+            }
+        }
+    });
+}
+
+
 
 // VALIDATE DOCUMENTS
 function validate_addDocument(){

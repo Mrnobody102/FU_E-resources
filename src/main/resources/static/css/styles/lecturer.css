@@ -420,3 +420,10 @@
     margin-top: 2rem;
     margin-left: 2rem;
 }
+label.error {
+    margin-top: 5px;
+    margin-left: 5px;
+    display: block;
+    color: red;
+    /*font-size: smaller;*/
+}

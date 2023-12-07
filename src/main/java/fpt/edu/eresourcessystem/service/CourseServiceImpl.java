@@ -72,7 +72,6 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public Course updateCourse(Course course){
         Optional<Course> savedCourseOpt = courseRepository.findById(course.getId());
-
         if (savedCourseOpt.isPresent()) {
             Course savedCourse = savedCourseOpt.get();
             savedCourse.setCourseCode(course.getCourseCode());

@@ -42,10 +42,11 @@ public class LibrarianRestController {
 
         // Prepare the response for DataTables
         DataTablesResponse<LecturerDto> response = new DataTablesResponse<>();
-        response.setData(lecturers.getContent());
+
         response.setDraw(draw);
-        response.setRecordsTotal(lecturerService.getTotalLecturers()); // Total records
+        response.setRecordsTotal(lecturers.getTotalElements()); // Total records
         response.setRecordsFiltered(lecturers.getTotalElements());
+        response.setData(lecturers.getContent());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

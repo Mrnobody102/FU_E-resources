@@ -61,7 +61,7 @@ function handleDeletion(url, successMessage) {
                 type: "GET",
                 url: url + "?currentPage=" + encodeURIComponent(currentPageWithoutSuccess),
                 success: function () {
-                    window.location.href = "list/1" + "?success";
+                    window.location.href = "list" + "?success";
                     Swal.fire('Deleted!', successMessage, 'success');
                 },
                 error: function () {

@@ -33,7 +33,7 @@ public interface LecturerService {
     void addCourseToLecturer(String lecturerId, ObjectId courseId);
 
 
-    boolean removeCourse(String lecturerId, Course courseId);
+    boolean removeCourse(String lecturerId, ObjectId courseId);
 
     Page<Course> findListManagingCourse(Lecturer lecturer, String status, int pageIndex, int pageSize);
 
@@ -48,7 +48,7 @@ public interface LecturerService {
 
     public boolean softDelete(Lecturer lecturer);
 
-    int getTotalLecturers();
+    long getTotalLecturers();
 
 
     Page<Lecturer> findLecturers(int start, int length, String searchValue);
