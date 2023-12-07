@@ -590,3 +590,10 @@ li {
 .a-link {
     color:var(--link-color) ;
 }
+.form-control{
+    font-size: var(--font-medium);
+    width: 100%;
+}
+textarea.form-control {
+    min-height: calc(15em + (.75rem + 2px));
+}

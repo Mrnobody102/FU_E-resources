@@ -28,9 +28,9 @@ function submitFormReplyQuestion(param) {
                         "                     <h6 class=\"lec__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data.lecturerName + "(You)</span></h6>\n" +
                         "                     <p class=\"lec__question-content\" id=\"reply-content-"+ data.answerId +"\">" + data.answerContent + "</p>";
                     // edit section
-                    html+="<div class=\"edit-reply-div\" id=\"update-reply"+ data.answerId+ "\"style=\"display: none\">\n" +
+                    html+="<div class=\"edit-reply-div\" id=\"update-reply"+ data.answerId+ "\" style=\"display: none\">\n" +
                         "                                                    <label id=\"update-reply-error"+ data.answerId+"\" class=\"display-none\">Please enter something to update.</label>\n" +
-                        "                                                    <input class=\"update-reply\" value=\"" + data.answerContent+ "\" id=\"update-reply-content-"+ data.answerId +"\">\n" +
+                        "                                                    <input class=\"update-reply\" id=\"update-reply-content-"+ data.answerId +"\">\n" +
                         "                                                    <button id=\"close-update-reply-" + data.answerId+ "\" type=\"button\" title=\"exist\"\n" +
                         "                                                            reply-id=\""+ data.answerId+"\" onclick=existFormEditReply(\"" +data.answerId+"\")\n" +
                         "                                                            class=\"exist-form-edit-reply btn-danger\"><i class=\"fa-solid fa-xmark\"></i> Close</button> " +
@@ -54,7 +54,10 @@ function submitFormReplyQuestion(param) {
                         "                     <a class=\"lec__like-reply view-question-link-item\" reply-id=\"" + data.answerId + "\" onclick=likeReply(\"" + data.answerId + "\")><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
                         "                     </div>";
                 }
+                var answer = data.answerContent;
+                let modified_val = answer.replace(/"/g, '&quot;')
                 $("#list-reply-content-" + param).append(html);
+                $("#update-reply-content-"+ data.answerId).val(modified_val);
                 // change total of answer
                 var totalReply = $('#number-reply-' + param).text();
                 var intValue = parseInt(totalReply);
@@ -93,19 +96,20 @@ function viewMoreReply(param) {
         url: '/api/lecturer/answers/get/' + param,
         dataType: 'json',
         success: function (data) {
+            $(viewDiv).html("");
             $("#new-reply-content").val("");
             var html = "";
             for (let i = 0; i < data.length; i++) {
                 if (data[i].studentName == null) {
                     // content
-                    html += "<div class=\"reply-content border-bottom\" id=\"" + data[i].answerId + "\">\n" +
+                    html = "<div class=\"reply-content border-bottom\" id=\"" + data[i].answerId + "\">\n" +
                         "                     <h6 class=\"lec__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].lecturerName + "(You)</span></h6>\n" +
                         "                     <p class=\"lec__question-content\"  id=\"reply-content-"+ data[i].answerId +"\">" + data[i].answerContent + "</p>";
 
                     // edit section
                     html+="<div class=\"edit-reply-div\" id=\"update-reply"+ data[i].answerId+ "\"style=\"display: none\">\n" +
                         "                                                    <label id=\"update-reply-error"+ data[i].answerId+"\" class=\"display-none\">Please enter something to update.</label>\n" +
-                        "                                                    <input class=\"update-reply\" value=\"" + data[i].answerContent+ "\" id=\"update-reply-content-"+ data[i].answerId +"\">\n" +
+                        "                                                    <textarea class=\"update-reply\" id=\"update-reply-content-"+ data[i].answerId +"\"></textarea>\n" +
                         "                                                    <button id=\"close-update-reply-" + data[i].answerId+ "\" type=\"button\" title=\"exist\"\n" +
                         "                                                            reply-id=\""+ data[i].answerId+"\" onclick=existFormEditReply(\"" +data[i].answerId+"\")\n" +
                         "                                                            class=\"exist-form-edit-reply btn-danger\"><i class=\"fa-solid fa-xmark\"></i> Close</button> " +
@@ -122,17 +126,19 @@ function viewMoreReply(param) {
                         "                     <a class=\"lec__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data[i].answerId + "\" onclick=deleteReply(\"" + data[i].answerId + "\",\"" + data[i].questionId + "\")>Delete</a>\n" +
                         "                     </div>";
                 } else {
-                    html += "<div class=\"reply-content  border-bottom\"  id=\"" + data[i].answerId + "\">\n" +
+                    html = "<div class=\"reply-content  border-bottom\"  id=\"" + data[i].answerId + "\">\n" +
                         "                     <h6 class=\"lec__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].studentName + "</span></h6>\n" +
                         "                     <p class=\"lec__question-content\">" + data[i].answerContent + "</p>\n" +
                         "                     <p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
                         "                     <a class=\"lec__like-reply view-question-link-item\" reply-id=\"" + data[i].answerId + "\"onclick=likeReply(\"" + data[i].answerId + "\")><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
                         "                     </div>";
                 }
-
+                $(viewDiv).append(html);
+                let modified_val = data[i].answerContent .replace(/"/g, '&quot;')
+                $('#update-reply-content-' + data[i].answerId).val(modified_val);
             }
             $(loadingDiv).css("display", "none");
-            $(viewDiv).html(html);
+            // $(viewDiv).html(html);
             $(seeLessDiv).css("display", "block");
         },
         error: function (xhr) {
