@@ -116,14 +116,6 @@ public class StudentController {
         } else if (CourseEnum.Status.PUBLISH != course.getStatus()) {
             return "exception/404";
         }
-        //
-//        List<DocumentResponseDto> documentResponseDtoList
-//                = documentService.findAllDocumentsByCourseAndResourceType(courseId,"65609a30382c4a70ca46f263");
-//        System.out.println("student -controller - "+documentResponseDtoList.size());
-//        for (int i = 0; i < documentResponseDtoList.size(); i++) {
-//            System.out.println(documentResponseDtoList.get(i).toString());
-//        }
-//        model.addAttribute("documentResponseDtoList",documentResponseDtoList);
         // add course log
         CourseLog courseLog = new CourseLog(course, CommonEnum.Action.VIEW);
         courseLog = courseLogService.addCourseLog(courseLog);
@@ -183,18 +175,18 @@ public class StudentController {
             }
         }
 
-        // get others doc
-        if (null != document.getTopic()) {
-            List<DocumentResponseDto> relevantDocuments = documentService
-                    .findRelevantDocument(document.getTopic().getId(), docId);
-            if (null != relevantDocuments && relevantDocuments.size() > 0) {
-                model.addAttribute("relevantDocuments", relevantDocuments);
-            } else {
-                relevantDocuments = new ArrayList<>();
-                relevantDocuments.add(new DocumentResponseDto(document));
-                model.addAttribute("relevantDocuments", relevantDocuments);
-            }
-        }
+//        // get others doc
+//        if (null != document.getTopic()) {
+//            List<DocumentResponseDto> relevantDocuments = documentService
+//                    .findRelevantDocument(document.getTopic().getId(), docId);
+//            if (null != relevantDocuments && relevantDocuments.size() > 0) {
+//                model.addAttribute("relevantDocuments", relevantDocuments);
+//            } else {
+//                relevantDocuments = new ArrayList<>();
+//                relevantDocuments.add(new DocumentResponseDto(document));
+//                model.addAttribute("relevantDocuments", relevantDocuments);
+//            }
+//        }
         model.addAttribute("questions", questionResponseDtos);
         model.addAttribute("myQuestions", myQuestionResponseDtos);
         model.addAttribute("document", document);

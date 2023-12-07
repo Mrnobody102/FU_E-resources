@@ -15,7 +15,7 @@
             </a>
             <ul class="header__navbar-list grid__column-9">
                 <li class="header__navbar-item header__notify-appearance">
-                    <p class="notification-number">1</p>
+                    <p class="notification-number" id="notification-number">1</p>
                     <a class="header__navbar-item-link">
                         <i class="header__navbar-icon fas fa-bell"></i>
                     </a>
@@ -77,7 +77,7 @@
             </a>
             <ul class="header__navbar-list  grid__column-9">
                 <li class="header__navbar-item header__notify-appearance">
-                    <p class="notification-number">1</p>
+                    <p class="notification-number"  id="notification-number-admin">1</p>
                     <a class="header__navbar-item-link">
                         <i class="header__navbar-icon fas fa-bell"></i>
                     </a>
@@ -145,35 +145,36 @@
 
             <div class="header__link-list col-md-8">
                 <ul class="header__navbar-list">
-                    <li class="header__navbar-item header__notify-appearance">
-                        <p class="notification-number">1</p>
+                    <li class="header__navbar-item header__notify-appearance"
+                        th:notification-email="${loggedInUser.email}"
+                        onclick="getNotifications(this.getAttribute('notification-email'))">
+                        <th:block th:unless="${notificationNumber == null || notificationNumber eq '0'}">
+                        <p class="notification-number" id="notification-number-lecturer" th:text="${notificationNumber}"></p>
+                        </th:block>
                         <a class="header__navbar-item-link">
                             <i class="header__navbar-icon fas fa-bell"></i>
                             <!--                            Notifications-->
                         </a>
                         <!--Notifications Header-->
-                        <div class="header__notify header__bridge">
+                        <div class="header__notify header__bridge" id="notificationBox" style="z-index: 111">
                             <header class="header__notify-header">
                                 <h3>Received Notifications</h3>
                             </header>
-                            <ul class="header__notify-list">
-                                <li class="header__notify-item header__notify-item--seen">
-                                    <a href="" class="header__notify-link">
-                                        <img src="" alt="" class="header__notify-img">
-                                        <div class="header__notify-info">
-                                            <span class="header__notify-name">User huypqhe151329 has been sent a request</span>
-                                            <span class="header__notify-description">
-                                            Type: document request, Course: HCM202
-                                        </span>
-                                        </div>
-                                    </a>
-                                </li>
+                            <div th:unless="${notificationNumber == null || notificationNumber eq '0'}">
+                                <ul class="header__notify-list">
 
-                            </ul>
-                            <footer class="header__notify-footer">
-                                <a href="" class="header__notify-footer-btn">See all</a>
-                            </footer>
+                                </ul>
+                                <footer class="header__notify-footer">
+                                    <a href="" class="header__notify-footer-btn">See all</a>
+                                </footer>
+                            </div>
+                            <div th:if="${notificationNumber == null || notificationNumber eq '0'}">
+                                <div class="d-flex justify-content-center">
+                                    No notifications
+                                </div>
+                            </div>
                         </div>
+
                     </li>
                     <li class="header__navbar-item header__navbar-item-icon">
                         <a href="" class="header__navbar-item-link">
@@ -222,6 +223,12 @@
         </nav>
     </div>
 </header>
+<!--jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--Notification-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script th:src="@{/js/lecturer/notification-lecturer.js}"></script>
 </body>
 
 <!--STUDENT HEADER-->
@@ -245,7 +252,7 @@
             <div class="header__link-list col-8">
                 <ul class="header__navbar-list">
                     <li class="header__navbar-item header__notify-appearance">
-                        <p class="notification-number">1</p>
+                        <p class="notification-number" id="notification-number-student">1</p>
                         <a class="header__navbar-item-link">
                             <i class="header__navbar-icon fas fa-bell"></i>
                             <!--                            Notifications-->
@@ -262,7 +269,7 @@
                                         <div class="header__notify-info">
                                             <span class="header__notify-name">User huypqhe151329 has been sent a request</span>
                                             <span class="header__notify-description">
-                                            Type: document request, Course: HCM202
+                                                <span></span>
                                         </span>
                                         </div>
                                     </a>

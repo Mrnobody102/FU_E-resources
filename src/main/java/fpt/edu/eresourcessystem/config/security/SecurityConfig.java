@@ -96,7 +96,7 @@ public class SecurityConfig implements WebMvcConfigurer{
         // Authorization
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/","/contact_us", "/faq", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**", "/oauth2/authorization/**").permitAll()
+                        .requestMatchers("/", "/ws/**", "/notifications/**","/contact_us", "/faq", "/home", "/guest", "/login", "/css/**", "/js/**", "/images/**", "/assets/**", "/oauth2/authorization/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyRole(AccountEnum.Role.ADMIN.name())
                         .requestMatchers("/librarian/**").hasAnyRole(AccountEnum.Role.ADMIN.name(), AccountEnum.Role.LIBRARIAN.name())
                         .requestMatchers("/lecturer/**").hasAnyRole(AccountEnum.Role.ADMIN.name(), AccountEnum.Role.LIBRARIAN.name(), AccountEnum.Role.LECTURER.name())

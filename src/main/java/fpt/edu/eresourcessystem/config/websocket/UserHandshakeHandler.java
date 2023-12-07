@@ -25,9 +25,6 @@ public class UserHandshakeHandler extends DefaultHandshakeHandler {
     @Override
     protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        System.out.println(authentication.getName());
-        Collection<? extends GrantedAuthority> auth = authentication.getAuthorities();
-        System.out.println("HandshakeHandler -27: "+ new UserPrincipal(authentication.getName()));
         return new UserPrincipal(authentication.getName());
     }
 }

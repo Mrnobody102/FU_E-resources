@@ -174,9 +174,9 @@
     top: -9px;
 }
 
-.header__notify-appearance:hover .header__notify {
-    display: block;
-}
+/*.header__notify-appearance:hover .header__notify {*/
+/*    display: block;*/
+/*}*/
 
 .header__notify-header {
     height: 35px;
@@ -446,8 +446,8 @@
     justify-content: flex-end;
 }
 
-.auth-form__controls-back {
-    margin-right: 8px;
+.auth-form__controls-login {
+    margin-left: 8px;
 }
 
 .auth-form__socials {

@@ -21,16 +21,14 @@ public class CourseLog {
     private String oldContent;
     private String newContent;
     private CommonEnum.Action action;
+
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
+
     @CreatedBy
     private String createdBy;
     @CreatedDate
     private String createdDate;
-    @LastModifiedBy
-    private String lastModifiedBy;
-    @LastModifiedDate
-    private String lastModifiedDate;
     public CourseLog(Course course,CommonEnum.Action action ) {
         this.course = course;
         this.action = action;
