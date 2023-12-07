@@ -88,7 +88,7 @@
                         </div>
                         <div class="stu__courses-list-view">
                             <div class="stu__view-saved-courses">
-                                <div th:if="${param.search} AND ${coursesSaved == null} OR ${coursesSaved.size()} == 0"
+                                <div th:if="${coursesSaved == null} OR ${coursesSaved.size()} == 0"
                                      class="list-content-not-found">
                                     <p class="h3">No courses found.</p>
                                 </div>

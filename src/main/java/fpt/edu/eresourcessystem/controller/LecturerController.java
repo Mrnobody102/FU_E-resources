@@ -571,9 +571,9 @@ public class LecturerController {
         // get account authorized
         Lecturer lecturer = getLoggedInLecturer();
         List<Question> questions = questionService.findByLecturer(lecturer);
-        for (Question q : questions) {
-            q.setAnswers(new HashSet<>(answerService.findByQuestion(q)));
-        }
+//        for (Question q : questions) {
+//            q.setAnswers(new HashSet<>(answerService.findByQuestion(q)));
+//        }
         model.addAttribute("studentQuestions", questions);
         // add log
 //        addUserLog("/my_library/my_questions/history");

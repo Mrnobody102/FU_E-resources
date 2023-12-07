@@ -396,9 +396,9 @@ public class StudentController {
     public String viewMyQuestions(final Model model) {
         Student student = getLoggedInStudent();
         List<Question> questions = questionService.findByStudent(student);
-        for (Question q : questions) {
-            q.setAnswers(new HashSet<>(answerService.findByStudentAnsQuestion(student, q)));
-        }
+//        for (Question q : questions) {
+//            q.setAnswers(new HashSet<>(answerService.findByStudentAnsQuestion(student, q)));
+//        }
         model.addAttribute("studentQuestions", questions);
         // add log
         addUserLog("/my_library/my_questions/history");

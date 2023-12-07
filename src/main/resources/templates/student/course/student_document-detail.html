@@ -375,7 +375,8 @@
                                                    th:id="'view-more-reply-'+${myQuestion.questionId}"
                                                    th:question-id="${myQuestion.questionId}"
                                                    onclick="viewMoreReply(this.getAttribute('question-id'))"
-                                                   class="view-question-reply stu__question-content">View all <span
+                                                   class="view-question-reply stu__question-content"
+                                                   th:classappend="${myQuestion.totalAnswers} == 0 ? 'display-none':''">View all <span
                                                         th:id="'number-reply-'+ ${myQuestion.questionId}"
                                                         th:text="${myQuestion.totalAnswers}"></span> reply</p>
                                                 <p style="display:none;"

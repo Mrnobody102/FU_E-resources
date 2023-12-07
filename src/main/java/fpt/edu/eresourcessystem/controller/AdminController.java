@@ -209,9 +209,9 @@ public class AdminController {
         if (null == account) {
             return "exception/404";
         } else {
-            if (AccountEnum.Role.LIBRARIAN.equals(account.getRole())) {
-                Librarian librarian = librarianService.findByAccountId(accountId);
-            }
+//            if (AccountEnum.Role.LIBRARIAN.equals(account.getRole())) {
+//                Librarian librarian = librarianService.findByAccountId(accountId);
+//            }
             model.addAttribute("roles", AccountEnum.Role.values());
             model.addAttribute("campuses", AccountEnum.Campus.values());
             model.addAttribute("genders", AccountEnum.Gender.values());
@@ -328,8 +328,10 @@ public class AdminController {
 
         }
         foundAccount.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
-        accountService.updateAccount(foundAccount);
-
+        Account account = accountService.updateAccount(foundAccount);
+        if(null == account){
+            return "redirect: /admin/accounts/updated/" + accountId + "?error";
+        }
         return "redirect: /admin/accounts/list?success";
     }
 

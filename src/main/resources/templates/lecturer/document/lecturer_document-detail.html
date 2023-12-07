@@ -210,7 +210,9 @@
                                             <p th:id="'view-more-reply-'+${question.getId()}"
                                                th:question-id="${question.id}"
                                                onclick="viewMoreReply(this.getAttribute('question-id'))"
-                                               class="view-question-reply lec__question-content">View all <span
+                                               class="view-question-reply lec__question-content"
+                                               th:classappend="${question.answers.size()} == 0 ? 'display-none':''"
+                                            >View all <span
                                                     th:id="'number-reply-'+ ${question.id}"
                                                     th:text="${question.answers.size()}"></span> reply</p>
                                             <p style="display:none;" th:if="${question.answers.size()} > 0"
