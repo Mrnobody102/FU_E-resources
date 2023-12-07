@@ -38,6 +38,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
+import static fpt.edu.eresourcessystem.constants.Constants.VERIFICATION_CODE;
 
 @Controller
 @RequiredArgsConstructor
@@ -133,13 +134,11 @@ public class LibrarianController {
                          foundLecturer = lecturerService.addLecturer(lecturer2);
                      }
                 } else { // k co account
-                    Account accoutnew = new Account();
-                    accoutnew.setEmail(lecturer);
-                    accoutnew.setRole(AccountEnum.Role.LECTURER);
-                    accoutnew.setDeleteFlg(CommonEnum.DeleteFlg.PRESERVED);
-                    accoutnew.setStatus(AccountEnum.Status.ACTIVE);
-                    accoutnew.setAccountType(AccountEnum.AccountType.SYSTEM_ACC);
-                    Account account1 = accountService.saveAccount(accoutnew);
+                    AccountDto accountDto = new AccountDto();
+                    accountDto.setEmail(lecturer);
+                    accountDto.setPassword(VERIFICATION_CODE);
+                    accountDto.setRole(AccountEnum.Role.LECTURER);
+                    Account account1 = accountService.addAccount(accountDto);
                         // save account
                     Lecturer lecturer1 = new Lecturer();
                     lecturer1.setAccount(account1);
@@ -375,13 +374,11 @@ public class LibrarianController {
 
         Lecturer savedLecturer;
         if (account == null) {
-            Account acc = new Account();
-            acc.setEmail(lecturerEmail);
-            acc.setRole(AccountEnum.Role.LECTURER);
-            acc.setDeleteFlg(CommonEnum.DeleteFlg.PRESERVED);
-            acc.setStatus(AccountEnum.Status.ACTIVE);
-            acc.setAccountType(AccountEnum.AccountType.SYSTEM_ACC);
-            Account account1 = accountService.saveAccount(acc);
+            AccountDto accountDto = new AccountDto();
+            accountDto.setEmail(lecturerEmail);
+            accountDto.setPassword(VERIFICATION_CODE);
+            accountDto.setRole(AccountEnum.Role.LECTURER);
+            Account account1 = accountService.addAccount(accountDto);
             // save account
             Lecturer lecturer = new Lecturer();
             lecturer.setAccount(account1);

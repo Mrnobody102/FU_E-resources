@@ -61,7 +61,7 @@ public class Account {
     // Constructor DTO
     public Account(AccountDto accountDTO) {
         this.id = accountDTO.getId();
-        this.username = accountDTO.getUsername();
+        this.username = getEmailUsername(accountDTO.getEmail());
         this.password = accountDTO.getPassword();
         this.email = accountDTO.getEmail();
         this.name = accountDTO.getName();
@@ -74,5 +74,13 @@ public class Account {
         // Add - Self system account
         this.accountType = AccountEnum.AccountType.SYSTEM_ACC;
 
+    }
+
+    public static String getEmailUsername(String email) {
+        int atIndex = email.indexOf("@");
+        if (atIndex != -1) {
+            return email.substring(0, atIndex);
+        }
+        return "";
     }
 }

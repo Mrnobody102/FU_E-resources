@@ -30,10 +30,10 @@ function sendMessage(qId, content) {
     stompClient.send('/app/private', {}, JSON.stringify({id: qId, type: "1", content: content}));
     console.log(notificationCount)
 }
-var isAJAXCalled = false;
+var notificationDisplay = 0;
 
 function getNotifications(param) {
-    if (!isAJAXCalled) {
+    if (notificationDisplay === 0) {
         $('#notificationBox').show();
         $.ajax({
             type: 'GET',
@@ -41,6 +41,7 @@ function getNotifications(param) {
             dataType: 'json',
             success: function (data) {
                 var ul = $('.header__notify-list');
+                ul.empty();
                 data.forEach(function(notification) {
                     var li = $('<li class="header__notify-item header__notify-item--seen"></li>');
                     var a = $('<a class="header__notify-link"></a>').attr('href', notification.link);
@@ -56,15 +57,15 @@ function getNotifications(param) {
                     li.append(a);
                     ul.append(li);
                 });
-
-                isAJAXCalled = true;
+                notificationDisplay++;
             },
             error: function (xhr) {
                 // Handle errors
             }
         });
     } else {
-        $('#notificationBox').toggle();
+        $('#notificationBox').hide();
+        notificationDisplay = 0;
     }
 }
 $(document).ready(function () {
