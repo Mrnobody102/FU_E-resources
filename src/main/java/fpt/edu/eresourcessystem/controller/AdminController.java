@@ -38,8 +38,7 @@ import java.util.Optional;
 
 import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
 import static fpt.edu.eresourcessystem.constants.Constants.VERIFICATION_CODE;
-import static fpt.edu.eresourcessystem.constants.UrlConstants.ERROR_PARAM;
-import static fpt.edu.eresourcessystem.constants.UrlConstants.SUCCESS_PARAM;
+import static fpt.edu.eresourcessystem.constants.UrlConstants.*;
 
 @Controller
 @AllArgsConstructor
@@ -180,6 +179,7 @@ public class AdminController {
     @PostMapping("/accounts/add")
     public String addAccount(@ModelAttribute AccountDto accountDTO) {
         String email = accountDTO.getEmail();
+        accountDTO.setPassword(VERIFICATION_CODE);
         AccountEnum.Role role = accountDTO.getRole();
         if (accountService.findByEmail(email) != null) {
             return "redirect:/admin/accounts/add?error";
@@ -242,7 +242,7 @@ public class AdminController {
         Account checkExist = accountService.findById(accountDTO.getId());
         if (null == checkExist) {
             model.addAttribute("errorMessage", "account not exist.");
-            return UrlConstants.ACCESS_DENIED;
+            return ACCESS_DENIED;
         } else {
             Account checkEmailDuplicate = accountService.findByEmail(accountDTO.getEmail());
             if (checkEmailDuplicate != null &&

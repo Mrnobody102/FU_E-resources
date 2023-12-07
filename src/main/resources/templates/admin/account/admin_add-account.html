@@ -8,7 +8,6 @@
 
 
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
 
@@ -16,6 +15,7 @@
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link th:href="@{/css/styles/admin.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
 
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -68,22 +68,22 @@
                                         <!--                                            </td>-->
                                         <!--                                        </tr>-->
 
-                                        <tr class="lib_input-wrapper d-none">
-                                            <td class="lib_input-label"><label th:for="username">Username:</label></td>
-                                            <td><input type="text"  th:id="username" value=""
-                                                       class="lib_input form-control" th:field="*{username}"
-                                                       placeholder="Enter username" required>
+<!--                                        <tr class="lib_input-wrapper d-none">-->
+<!--                                            <td class="lib_input-label"><label th:for="username">Username:</label></td>-->
+<!--                                            <td><input type="text"  th:id="username" value=""-->
+<!--                                                       class="lib_input form-control" th:field="*{username}"-->
+<!--                                                       placeholder="Enter username" required>-->
 
-                                            </td>
-                                        </tr>
-                                        <tr class="lib_input-wrapper d-none">
-                                            <td class="lib_input-label"><label th:for="password">Password</label></td>
-                                            <td><input type="text" th:id="password" value="1"
-                                                       class="lib_input form-control" th:field="*{password}"
-                                                       placeholder="Enter password" required>
+<!--                                            </td>-->
+<!--                                        </tr>-->
+<!--                                        <tr class="lib_input-wrapper d-none">-->
+<!--                                            <td class="lib_input-label"><label th:for="password">Password</label></td>-->
+<!--                                            <td><input type="text" th:id="password" value="1"-->
+<!--                                                       class="lib_input form-control" th:field="*{password}"-->
+<!--                                                       placeholder="Enter password" required>-->
 
-                                            </td>
-                                        </tr>
+<!--                                            </td>-->
+<!--                                        </tr>-->
 
                                         <tr class="lib_input-wrapper">
                                             <td class="lib_input-label"><label th:for="email">Email*:</label></td>

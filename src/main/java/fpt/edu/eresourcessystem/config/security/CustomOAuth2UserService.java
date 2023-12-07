@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static fpt.edu.eresourcessystem.constants.Constants.VERIFICATION_CODE;
+
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final AccountRepository accountRepository;
@@ -42,6 +44,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             newAccount.setName(user.<String>getAttribute("name"));
             newAccount.setRole(AccountEnum.Role.STUDENT);
             newAccount.setStatus(AccountEnum.Status.ACTIVE);
+            newAccount.setPassword(VERIFICATION_CODE);
             newAccount.setDeleteFlg(CommonEnum.DeleteFlg.PRESERVED);
             newAccount.setAccountType(AccountEnum.AccountType.FPT_MAIL_ACC);
             account = accountRepository.insert(newAccount);

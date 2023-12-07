@@ -20,10 +20,6 @@ public class AccountDto {
     @NotNull
     private String id;
 
-    @NotEmpty()
-    private String username;
-
-    @NotEmpty()
     private String password;
 
     @Email
