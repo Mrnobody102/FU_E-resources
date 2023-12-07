@@ -55,7 +55,7 @@
                             <div class="d-flex">
                                 <input class="lib_search-content" type="text" placeholder="Search lecturer.." name="search"
                                        th:value="${search}" id="search-text"/>
-                                <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
+                                <button class="lib_search-btn-wrapper lib_search-btn">
                                     <i class="lib_search-btn-icon fas fa-search"></i>
                                 </button>
                                 <a class="btn lib_show-all-btn" th:href="@{/librarian/lectures/list}">Show all</a>
@@ -158,12 +158,12 @@
                 }, // For numbering
                 {"data": "accountName",
                     "render": function (data, type, row) {
-                        return '<a href="/librarian/lectures/' + row.id + '">' + data + '</a>';
+                        return '<a class="a-link" href="/librarian/lectures/' + row.id + '">' + data + '</a>';
                     }
                 },
                 {"data": "accountEmail",
                     "render": function (data, type, row) {
-                        return '<a href="/librarian/lectures/' + row.id + '">' + data + '</a>';
+                        return '<a class="a-link" href="/librarian/lectures/' + row.id + '">' + data + '</a>';
                     }
                 },
                 {

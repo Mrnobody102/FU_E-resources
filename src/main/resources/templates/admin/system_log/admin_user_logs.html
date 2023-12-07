@@ -96,7 +96,7 @@
                                     <div class="d-flex">
                                         <input class="lib_search-content" placeholder="Enter here..." th:id="search-text"
                                                th:name="search" th:value="${search}" type="text"/>
-                                        <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
+                                        <button class="lib_search-btn-wrapper lib_search-btn" >
                                             <i class="lib_search-btn-icon fas fa-search"></i>
                                         </button>
                                         <a class="btn lib_show-all-btn" th:href="@{/admin/user_log/tracking}">Show all</a>
@@ -211,7 +211,7 @@
             function (settings, data, dataIndex) {
                 var minDate = $('#datepicker').datepicker("getDate");
                 var maxDate = $('#datepicker2').datepicker("getDate");
-                var createdDate = new Date(data[3]);
+                var createdDate = new Date(data[4]);
 
                 if ((minDate === null && maxDate === null) ||
                     (minDate === null && createdDate <= maxDate) ||
