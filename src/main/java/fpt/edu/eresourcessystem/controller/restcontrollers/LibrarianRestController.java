@@ -6,6 +6,7 @@ import fpt.edu.eresourcessystem.dto.Response.LecturerDto;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.service.CourseService;
+import fpt.edu.eresourcessystem.service.FeedbackService;
 import fpt.edu.eresourcessystem.service.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,10 @@ public class LibrarianRestController {
     @Autowired
     private CourseService courseService;
 
+
+    @Autowired
+    private FeedbackService feedbackService;
+
     @GetMapping("/lectures/list")
     @ResponseBody
     public ResponseEntity<DataTablesResponse<LecturerDto>> getLecturers(
@@ -44,8 +49,8 @@ public class LibrarianRestController {
         DataTablesResponse<LecturerDto> response = new DataTablesResponse<>();
 
         response.setDraw(draw);
-        response.setRecordsTotal(lecturers.getTotalElements()); // Total records
-        response.setRecordsFiltered(lecturers.getTotalElements());
+        response.setRecordsTotal(lecturerService.getTotalLecturers()); // Total records
+        response.setRecordsFiltered(lecturers.getTotalPages());
         response.setData(lecturers.getContent());
 
         return new ResponseEntity<>(response, HttpStatus.OK);

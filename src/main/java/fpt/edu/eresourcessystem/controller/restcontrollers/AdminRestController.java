@@ -68,5 +68,14 @@ public class AdminRestController {
         return new ResponseEntity<>(accountResponseDto, HttpStatus.OK);
     }
 
-
+    @GetMapping("/feedback/respond")
+    public ResponseEntity<?> updateFeedbackStatus(@RequestParam("id") String feedbackId,
+                                                  @RequestParam("status") String status) {
+        try {
+            feedbackService.updateFeedbackStatus(feedbackId, status);
+            return ResponseEntity.ok("Feedback status updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating feedback status.");
+        }
+    }
 }

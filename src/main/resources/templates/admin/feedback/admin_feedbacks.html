@@ -101,7 +101,7 @@
                                     <td th:text="${iterStart.index +1}"></td>
                                     <td th:text="${feedback.getAccount().getEmail()}"></td>
                                     <td th:text="${feedback.getFeedbackEmotion()}"></td>
-                                    <td><a class="a-link" th:href="@{'/admin/feedbacks/' + ${feedback.getId}}"
+                                    <td><a class="a-link code-archive-except" th:href="@{'/admin/feedbacks/' + ${feedback.getId}}"
                                            th:text="${feedback.getFeedbackContent()}"> </a></td>
                                     <td th:text="${feedback.getCreatedDate()}"></td>
                                     <td th:text="${feedback.getStatus()}"></td>

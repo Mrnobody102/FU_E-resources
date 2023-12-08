@@ -201,48 +201,76 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
+    public long getTotalLecturers() {
+        return lecturerRepository.count();
+    }
+
+    @Override
     public Page<Lecturer> findLecturers(int start, int length, String searchValue) {
         int page = start / length;
         Pageable pageable = PageRequest.of(page, length);
 
-        Criteria criteria = new Criteria();
+        Query query = new Query().with(pageable);
+
         if (searchValue != null && !searchValue.isEmpty()) {
-            // Create criteria for search value
-            criteria.orOperator(
+            // Tìm các tài khoản phù hợp
+            Criteria criteria = new Criteria().orOperator(
                     Criteria.where("name").regex(searchValue, "i"),
                     Criteria.where("email").regex(searchValue, "i")
             );
+            Query accountQuery = new Query(criteria);
+            List<Account> matchingAccounts = mongoTemplate.find(accountQuery, Account.class);
 
-            // Find matching accounts
-            List<Account> matchingAccounts = mongoTemplate.find(new Query(criteria), Account.class);
-
-            // Convert to list of account IDs
+            // Chuyển đổi thành danh sách ID tài khoản
             List<ObjectId> accountIds = matchingAccounts.stream()
                     .map(Account::getId)
                     .map(ObjectId::new)
                     .collect(Collectors.toList());
 
-            // Add criteria to filter lecturers by account IDs
+            // Lọc giảng viên theo ID tài khoản
             if (!accountIds.isEmpty()) {
-                criteria.and("account.id").in(accountIds);
+                query.addCriteria(Criteria.where("account.id").in(accountIds));
             }
         }
 
-        Query query = new Query(criteria).with(pageable);
-        List<Lecturer> lecturers = mongoTemplate.find(query, Lecturer.class);
+        // Truy vấn và trả về danh sách giảng viên với phân trang
 
-        // Use the same criteria without pagination for the count
-        long total = mongoTemplate.count(new Query(criteria), Lecturer.class);
-
-        return new PageImpl<>(lecturers, pageable, total);
+        List<Lecturer> lecturerList = mongoTemplate.find(query, Lecturer.class);
+        long total = mongoTemplate.count(query, Lecturer.class);
+        return new PageImpl<>(lecturerList, pageable, total);
     }
 
+//    @Override
+//    public List<Lecturer> findLecturers(int start, int length, String searchValue) {
+//        int page = start / length;
+//        Pageable pageable = PageRequest.of(page, length);
+//        Query query = new Query().with(pageable);
+//
+//        if (searchValue != null && !searchValue.isEmpty()) {
+//            // Tìm các tài khoản phù hợp
+//            Query accountQuery = new Query().addCriteria(new Criteria().orOperator(
+//                    Criteria.where("name").regex(searchValue, "i"),
+//                    Criteria.where("email").regex(searchValue, "i")
+//            ));
+//            List<Account> matchingAccounts = mongoTemplate.find(accountQuery, Account.class);
+//
+//            // Chuyển đổi thành danh sách ID tài khoản
+//            List<ObjectId> accountIds = matchingAccounts.stream()
+//                    .map(Account -> new ObjectId(Account.getId()))
+//                    .collect(Collectors.toList());
+//            // Lọc giảng viên theo ID tài khoản
+//            if (!accountIds.isEmpty()) {
+//                query.addCriteria(Criteria.where("account.id").in(accountIds));
+//            }
+//        }
+//        // Truy vấn và trả về danh sách giảng viên
+//        List<Lecturer> lecturerList = mongoTemplate.find(query, Lecturer.class);
+//        return lecturerList;
+//    }
 
 
-    @Override
-    public long getTotalLecturers() {
-        return lecturerRepository.count();
-    }
+
+
 
 
     @Override

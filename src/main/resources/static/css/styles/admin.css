@@ -192,3 +192,6 @@ label.error {
     color: red;
     /*font-size: smaller;*/
 }
+.a-link {
+    color:var(--link-color) ;
+}

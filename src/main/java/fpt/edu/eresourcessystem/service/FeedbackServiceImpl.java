@@ -83,4 +83,17 @@ public class FeedbackServiceImpl implements FeedbackService {
         }).orElse(false); // Return false if feedback not found
     }
 
+
+    public void updateFeedbackStatus(String feedbackId, String status) {
+        Optional<Feedback> feedbackOpt = feedbackRepository.findById((feedbackId));
+        if (feedbackOpt.isPresent()) {
+            Feedback feedback = feedbackOpt.get();
+            feedback.setStatus(status);
+            feedbackRepository.save(feedback);
+        } else {
+            // Handle the case where feedback is not found
+//            throw new EntityNotFoundException("Feedback not found with ID: " + feedbackId);
+        }
+    }
+
 }
