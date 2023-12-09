@@ -5,6 +5,7 @@ import fpt.edu.eresourcessystem.dto.Response.NotificationResponseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.NotificationEnum;
 import fpt.edu.eresourcessystem.model.Notification;
+import fpt.edu.eresourcessystem.model.Question;
 import fpt.edu.eresourcessystem.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -20,11 +21,23 @@ import java.util.stream.Collectors;
 
 @Service("notificationService")
 @RequiredArgsConstructor
-public class NotificationServiceImpl implements  NotificationService{
+public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final MongoTemplate mongoTemplate;
     private final SimpMessagingTemplate messagingTemplate;
+
+    @Override
+    public Notification findById(String noId) {
+        Notification notification = notificationRepository.findByIdAndDeleteFlg(noId, CommonEnum.DeleteFlg.PRESERVED);
+        return notification;
+    }
+
+    @Override
+    public Notification updateNotification(Notification notification) {
+        Notification result = notificationRepository.save(notification);
+        return result;
+    }
 
     @Override
     public List<NotificationResponseDto> findByToAccount(String email) {
@@ -60,17 +73,17 @@ public class NotificationServiceImpl implements  NotificationService{
 
     @Override
     public Notification addNotification(NotificationDto notificationDto) {
-        Notification added =  notificationRepository.insert(new Notification(
+        Notification added = notificationRepository.insert(new Notification(
                 notificationDto
         ));
-        if(notificationDto.getType().equals("1") || notificationDto.getType().equals("3")) {
-            messagingTemplate.convertAndSendToUser(added.getToAccount(),"/notifications/private", new NotificationResponseDto(added));
+        if (notificationDto.getType().equals("1") || notificationDto.getType().equals("3")) {
+            messagingTemplate.convertAndSendToUser(added.getToAccount(), "/notifications/private", new NotificationResponseDto(added));
         }
-        if(notificationDto.getType().equals("2")) {
-            messagingTemplate.convertAndSendToUser(added.getToAccount(),"/notifications/reply", new NotificationResponseDto(added));
+        if (notificationDto.getType().equals("2")) {
+            messagingTemplate.convertAndSendToUser(added.getToAccount(), "/notifications/reply", new NotificationResponseDto(added));
         }
-        if(notificationDto.getType().equals("4")) {
-            messagingTemplate.convertAndSendToUser(added.getToAccount(),"/notifications/feedback", new NotificationResponseDto(added));
+        if (notificationDto.getType().equals("4")) {
+            messagingTemplate.convertAndSendToUser(added.getToAccount(), "/notifications/feedback", new NotificationResponseDto(added));
         }
         return added;
     }

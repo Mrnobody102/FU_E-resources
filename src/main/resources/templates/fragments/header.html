@@ -173,7 +173,7 @@
                             <header class="header__notify-header">
                                 <h3>Received Notifications</h3>
                             </header>
-                            <div th:unless="${notificationNumber == null || notificationNumber eq '0'}">
+                            <div th:unless="${notificationNumber == null}">
                                 <ul class="header__notify-list">
 
                                 </ul>
@@ -181,7 +181,7 @@
                                     <a href="" class="header__notify-footer-btn">See all</a>
                                 </footer>
                             </div>
-                            <div th:if="${notificationNumber == null || notificationNumber eq '0'}">
+                            <div th:if="${notificationNumber == null}">
                                 <div class="d-flex justify-content-center">
                                     No notifications
                                 </div>
@@ -279,7 +279,7 @@
                             <header class="header__notify-header">
                                 <h3>Received Notifications</h3>
                             </header>
-                            <div th:unless="${notificationNumber == null || notificationNumber eq '0'}">
+                            <div th:unless="${notificationNumber == null}">
                                 <ul class="header__notify-list">
 
                                 </ul>
@@ -287,7 +287,7 @@
                                     <a href="" class="header__notify-footer-btn">See all</a>
                                 </footer>
                             </div>
-                            <div th:if="${notificationNumber == null || notificationNumber eq '0'}">
+                            <div th:if="${notificationNumber == null}">
                                 <div class="d-flex justify-content-center">
                                     No notifications
                                 </div>

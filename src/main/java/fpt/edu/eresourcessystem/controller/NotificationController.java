@@ -1,16 +1,18 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.NotificationDto;
+import fpt.edu.eresourcessystem.dto.QuestionDto;
 import fpt.edu.eresourcessystem.dto.Response.NotificationResponseDto;
+import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
+import fpt.edu.eresourcessystem.enums.NotificationEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.Principal;
@@ -39,7 +41,7 @@ public class NotificationController {
             Answer answer = answerService.findById(notificationDto.getAnswerId());
             notificationDto.setDocument(answer.getDocumentId());
             notificationDto.setTo(answer.getDocumentId().getCreatedBy());
-            notificationDto.setLink("/lecturer/documents/" + answer.getDocumentId().getId() + "#question");
+            notificationDto.setLink("/lecturer/documents/" + answer.getDocumentId().getId() + answer.getQuestion().getId());
         }
         Notification notification = notificationService.addNotification(notificationDto);
         NotificationResponseDto notificationResponseDto = new NotificationResponseDto(
@@ -58,13 +60,20 @@ public class NotificationController {
             notificationDto.setDocument(answer.getDocumentId());
             // mail of lecturer
             notificationDto.setTo(answer.getQuestion().getCreatedBy());
-            notificationDto.setLink("/student/documents/" + answer.getDocumentId().getId() + "#question");
+            notificationDto.setLink("/student/documents/" + answer.getDocumentId().getId() + "#" + answer.getQuestion().getId());
         }
         Notification notification = notificationService.addNotification(notificationDto);
         NotificationResponseDto notificationResponseDto = new NotificationResponseDto(
                 notification
         );
         return notificationResponseDto;
+    }
+
+    @MessageMapping("/question")
+    @SendToUser("/notifications/question")
+    public QuestionResponseDto sendRealtimeQuestion(final String qId) {
+        Question question = questionService.findById(qId);
+        return new QuestionResponseDto(question);
     }
 
     @MessageMapping("/feedback")
@@ -85,5 +94,14 @@ public class NotificationController {
         );
         return notificationResponseDto;
     }
+
+    @GetMapping("/notifications/{nId}")
+    public String viewNotification(@PathVariable String nId) {
+        Notification notification = notificationService.findById(nId);
+        notification.setNotificationStatus(NotificationEnum.NotificationStatus.READ);
+        notificationService.updateNotification(notification);
+        return "redirect:" + notification.getLinkToView();
+    }
+
 
 }

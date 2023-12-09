@@ -85,8 +85,12 @@ function viewSection(sectionId) {
     }
 }
 
-function sendMessage(qId, type, questionContent) {
-    stompClient.send('/app/private', {}, JSON.stringify({questionId: qId, type: type, sendContent: questionContent}));
+function sendMessage(qId, type) {
+    stompClient.send('/app/private', {}, JSON.stringify({questionId: qId, type: type}));
+}
+
+function sendRealtimeQuestion(qId) {
+    stompClient.send('/app/question', {}, qId);
 }
 
 function submitFormAddQuestion(param) {
@@ -116,7 +120,8 @@ function submitFormAddQuestion(param) {
                 $('#exist-new-question-form-button').css("display", "inline");
                 $('#sending-new-question').css("display", "none");
                 $(".form-student-add-doc-new-question").css("display", "none");
-                sendMessage(data.questionId, "1" ,data.questionContent);
+                sendMessage(data.questionId, "1" , data.questionContent);
+                sendRealtimeQuestion(data.questionId);
                 // question content
                 var html = "<div class=\"stu__question-content-wrapper\" id=\"" + data.questionId + "\">\n" +
                     "                                                <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span> " + data.studentName + " (You)</span></h6>\n" +
