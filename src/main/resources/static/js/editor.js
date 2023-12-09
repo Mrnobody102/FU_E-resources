@@ -8,7 +8,7 @@ ClassicEditor
     })
     .then(editor => {
         editor.editing.view.change(writer => {
-            writer.setStyle('height', '400px', editor.editing.view.document.getRoot());
+            writer.setStyle('height', '80vh', editor.editing.view.document.getRoot());
         });
         console.log(Array.from(editor.ui.componentFactory.names()));
     })

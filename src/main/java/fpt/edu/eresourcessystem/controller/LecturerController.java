@@ -27,7 +27,6 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.Base64;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,9 +47,9 @@ public class LecturerController {
     private final ResourceTypeService resourceTypeService;
     private final DocumentService documentService;
     private final QuestionService questionService;
-    private final AnswerService answerService;
     private final FeedbackService feedbackService;
     private final StorageService storageService;
+    private final CourseLogService courseLogService;
 
     private Lecturer getLoggedInLecturer() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -61,6 +60,18 @@ public class LecturerController {
         if (loggedInAccount != null) {
             return lecturerService.findByAccountId(loggedInAccount.getId());
         } else return null;
+    }
+
+    private void addCourseLog(Course course,
+                                   CourseEnum.LecturerAction action,
+                                   CourseEnum.CourseObject object,
+                                   String objectId,
+                                   String objectName,
+                                   String email,
+                                   String oldContent,
+                                   String newContent){
+        CourseLog courseLog = new CourseLog(course,action,object,objectId,objectName,email,oldContent,newContent);
+        courseLogService.addCourseLog(courseLog);
     }
 
     @GetMapping
@@ -115,15 +126,26 @@ public class LecturerController {
     }
 
     @PostMapping("/courses/{courseID}/changeStatus")
+    @Transactional
     public String changeCourseStatus(@PathVariable String courseID, @RequestParam String status) {
         Course course = courseService.findByCourseId(courseID);
+        String oldContent = course.getStatus().toString();
         switch (status.toUpperCase()) {
             case "PUBLISH" -> course.setStatus(CourseEnum.Status.PUBLISH);
             case "DRAFT" -> course.setStatus(CourseEnum.Status.DRAFT);
             case "HIDE" -> course.setStatus(CourseEnum.Status.HIDE);
         }
         courseService.updateCourse(course);
+        //add course log
+        addCourseLog(course,
+                CourseEnum.LecturerAction.CHANGE_STATUS,
+                CourseEnum.CourseObject.COURSE,
+                courseID,
+                course.getCourseName(),
+                getLoggedInLecturer().getAccount().getEmail(),
+                oldContent, status);
         return "redirect:/lecturer/courses/" + courseID;
+
     }
 
     @GetMapping({"/courses/{courseId}/{getBy}", "/courses/{courseId}"})
@@ -164,6 +186,7 @@ public class LecturerController {
     }
 
     @PostMapping({"topics/add_topic"})
+    @Transactional
     public String addTopic(@ModelAttribute Topic topic, final Model model) {
         topic = topicService.addTopic(topic);
         courseService.addTopic(topic);
@@ -171,6 +194,14 @@ public class LecturerController {
         List<Topic> topics = course.getTopics();
         Topic modelTopic = new Topic();
         modelTopic.setCourse(course);
+        //add course log
+        addCourseLog(course,
+                CourseEnum.LecturerAction.ADD,
+                CourseEnum.CourseObject.TOPIC,
+                topic.getId(),
+                topic.getTopicTitle(),
+                getLoggedInLecturer().getAccount().getEmail(),
+                null, null);
         model.addAttribute("course", course);
         model.addAttribute("topics", topics);
         model.addAttribute("topic", modelTopic);
@@ -192,12 +223,21 @@ public class LecturerController {
 
 
     @PostMapping({"/topics/{topicId}/update"})
+    @Transactional
     public String editTopic(@PathVariable String topicId, @ModelAttribute Topic topic) {
         Topic checkTopicExist = topicService.findById(topicId);
         if (null != checkTopicExist) {
             checkTopicExist.setTopicTitle(topic.getTopicTitle());
             checkTopicExist.setTopicDescription(topic.getTopicDescription());
             topicService.updateTopic(checkTopicExist);
+            //add course log
+            addCourseLog(topic.getCourse(),
+                    CourseEnum.LecturerAction.UPDATE,
+                    CourseEnum.CourseObject.TOPIC,
+                    topic.getId(),
+                    topic.getTopicTitle(),
+                    getLoggedInLecturer().getAccount().getEmail(),
+                    null, null);
 
         }
         return "redirect:/lecturer/topics/" + topicId + "/update?success";
@@ -209,6 +249,14 @@ public class LecturerController {
         if (null != topic) {
             courseService.removeTopic(topic.getCourse().getId(), new ObjectId(topicId));
             topicService.softDelete(topic);
+            //add course log
+            addCourseLog(topic.getCourse(),
+                    CourseEnum.LecturerAction.UPDATE,
+                    CourseEnum.CourseObject.DOCUMENT,
+                    topic.getId(),
+                    topic.getTopicTitle(),
+                    getLoggedInLecturer().getAccount().getEmail(),
+                    null, null);
         }
         return "redirect:/lecturer/courses/" + topic.getCourse().getId();
     }
@@ -237,6 +285,7 @@ public class LecturerController {
     }
 
     @PostMapping({"resource_types/add_resource_type"})
+    @Transactional
     public String addResourceType(ResourceType resourceType, final Model model) {
         ResourceType resourcetype = resourceTypeService.addResourceType(resourceType);
         courseService.addResourceType(resourcetype);
@@ -244,6 +293,15 @@ public class LecturerController {
         List<ResourceType> resourceTypes = course.getResourceTypes();
         ResourceType modelResourceType = new ResourceType();
         modelResourceType.setCourse(course);
+        //add course log
+        addCourseLog(course,
+                CourseEnum.LecturerAction.ADD,
+                CourseEnum.CourseObject.RESOURCE_TYPE,
+                resourceType.getId(),
+                resourceType.getResourceTypeName(),
+                getLoggedInLecturer().getAccount().getEmail(),
+                null, null);
+
         model.addAttribute("course", course);
         model.addAttribute("resourceTypes", resourceTypes);
         model.addAttribute("resourceType", modelResourceType);
@@ -264,11 +322,21 @@ public class LecturerController {
 
 
     @PostMapping({"/resource_types/{resourceTypeId}/update"})
+    @Transactional
     public String editResourceType(@PathVariable String resourceTypeId, @ModelAttribute ResourceType resourcetype) {
         ResourceType checkResourceTypeExist = resourceTypeService.findById(resourceTypeId);
         if (null != checkResourceTypeExist) {
+            String oldContent = resourcetype.getResourceTypeName();
             checkResourceTypeExist.setResourceTypeName(resourcetype.getResourceTypeName());
-            resourceTypeService.updateResourceType(checkResourceTypeExist);
+            checkResourceTypeExist =  resourceTypeService.updateResourceType(checkResourceTypeExist);
+            //add course log
+            addCourseLog(resourcetype.getCourse(),
+                    CourseEnum.LecturerAction.UPDATE,
+                    CourseEnum.CourseObject.RESOURCE_TYPE,
+                    checkResourceTypeExist.getId(),
+                    checkResourceTypeExist.getResourceTypeName(),
+                    getLoggedInLecturer().getAccount().getEmail(),
+                    oldContent, null);
             return "redirect:/lecturer/resource_types/" + resourceTypeId + "/update?success";
         }
         return "redirect:/lecturer/resource_types/" + resourceTypeId + "/update?error";
@@ -276,11 +344,20 @@ public class LecturerController {
     }
 
     @GetMapping({"resource_types/{resourceTypeId}/delete"})
+    @Transactional
     public String deleteResourceType(@PathVariable String resourceTypeId) {
         ResourceType resourcetype = resourceTypeService.findById(resourceTypeId);
         if (null != resourcetype) {
             courseService.removeResourceType(resourcetype.getCourse().getId(), new ObjectId(resourceTypeId));
             resourceTypeService.softDelete(resourcetype);
+            //add course log
+            addCourseLog(resourcetype.getCourse(),
+                    CourseEnum.LecturerAction.DELETE,
+                    CourseEnum.CourseObject.RESOURCE_TYPE,
+                    resourceTypeId,
+                    resourcetype.getResourceTypeName(),
+                    getLoggedInLecturer().getAccount().getEmail(),
+                    null, null);
         }
         return "redirect:/lecturer/courses/" + resourcetype.getCourse().getId() + "/resource_types";
     }
@@ -365,6 +442,7 @@ public class LecturerController {
         List<String> resourceTypes = resourceTypesByCourse.stream()
                 .map(ResourceType::getResourceTypeName)
                 .collect(Collectors.toList());
+
         model.addAttribute("resourceTypes", resourceTypes);
 //        System.out.println(DocumentEnum.DefaultTopicResourceTypes.values());
         return "lecturer/document/lecturer_add-document";
@@ -456,6 +534,15 @@ public class LecturerController {
         // Thêm document vào topic
         topicService.addDocumentToTopic(topicId, new ObjectId(document.getId()));
 
+        //add course log
+        addCourseLog(topic.getCourse(),
+                CourseEnum.LecturerAction.ADD,
+                CourseEnum.CourseObject.DOCUMENT,
+                document.getId(),
+                document.getTitle(),
+                getLoggedInLecturer().getAccount().getEmail(),
+                null, null);
+
         return "redirect:/lecturer/topics/" + topicId + "/documents/add?success";
     }
 
@@ -478,6 +565,7 @@ public class LecturerController {
     }
 
     @PostMapping("/documents/update")
+    @Transactional
     public String updateDocument(@ModelAttribute DocumentDto document,
                                  @RequestParam(value = "deleteCurrentFile",  required = false) String deleteCurrentFile,
                                  @RequestParam(value = "file", required = false) MultipartFile file) throws IOException, TikaException, SAXException {
@@ -530,6 +618,14 @@ public class LecturerController {
                     documentService.updateDocument(checkExist, String.valueOf(checkExist.getContentId()), id);
                 }
             }
+            //add course log
+            addCourseLog(document.getTopic().getCourse(),
+                    CourseEnum.LecturerAction.UPDATE,
+                    CourseEnum.CourseObject.DOCUMENT,
+                    document.getId(),
+                    document.getTitle(),
+                    getLoggedInLecturer().getAccount().getEmail(),
+                    null, null);
 
             return "redirect:/lecturer/documents/" + document.getId() + "/update?success";
         }
@@ -542,6 +638,14 @@ public class LecturerController {
             topicService.removeDocumentFromTopic(document.getTopic().getId(), new ObjectId(documentId));
             resourceTypeService.removeDocumentFromResourceType(document.getTopic().getId(), new ObjectId(documentId));
             documentService.softDelete(document);
+            //add course log
+            addCourseLog(document.getTopic().getCourse(),
+                    CourseEnum.LecturerAction.DELETE,
+                    CourseEnum.CourseObject.DOCUMENT,
+                    document.getId(),
+                    document.getTitle(),
+                    getLoggedInLecturer().getAccount().getEmail(),
+                    null, null);
             return "redirect:/lecturer/topics/" + document.getTopic().getId() + "?success";
         }
         return "redirect:/lecturer/documents/{documentId}?error";
@@ -616,7 +720,6 @@ public class LecturerController {
             feedback.setAccount(loggedInUser);
             // Save the feedback to the database
             feedbackService.saveFeedback(new Feedback(feedback));
-
             return "redirect:/admin/feedbacks/list"; // Redirect to a success page
         } else {
             return "redirect:/login"; // Redirect to the login page if the user is not logged in

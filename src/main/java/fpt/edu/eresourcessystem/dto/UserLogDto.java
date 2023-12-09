@@ -20,19 +20,17 @@ public class UserLogDto {
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
 
-    private String account; // email
+    private String createdBy; // email
 
     private LocalDateTime date; // time
 
 
     private AccountEnum.Role role;
+    private String email;
 
-    public UserLogDto(String url, AccountEnum.Role role) {
+    public UserLogDto(String url, String email , AccountEnum.Role role) {
         this.url = url;
         this.role = role;
-    }
-
-    public UserLogDto(String url) {
-        this.url = url;
+        this.email = email;
     }
 }

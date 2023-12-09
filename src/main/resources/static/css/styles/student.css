@@ -335,7 +335,8 @@ stu__navbar-view-doc-item:hover a{
 
 .form-student-add-doc-new-question{
     margin-top: 0.2rem;
-    border-radius: 2rem;
+    border-radius: 0.22rem;
+    margin-left: 1.5rem;
     border: 1px solid #888888;
     display: none;
     padding: 1rem;
@@ -388,7 +389,7 @@ stu__navbar-view-doc-item:hover a{
 .form-student-add-doc-new-reply{
     margin-top: 1rem;
     margin-left: 1.2rem;
-    border-radius: 2rem;
+    border-radius: 0.22rem;
     border: 1px solid #888888;
     padding: 1rem;
 }
@@ -519,4 +520,48 @@ stu__navbar-view-doc-item:hover a{
 .list-doc-by-resource{
     margin-top: 1rem;
     margin-left: 1.5rem;
+}
+.update-reply{
+    height: 10rem;
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 0.22rem;
+}
+.update-reply:focus{
+    border: 1px solid #888888;
+    border-radius: 0.22rem;
+    outline: none;
+    box-shadow: 0 0 4px #9babfc;
+}
+.topic-title-in-view-course{
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+}
+#list-by-resource{
+    margin-top: 2rem;
+}
+.link-view-detail-topic{
+    display: inline;
+    margin-right: 2rem;
+    color: var(--link-color);
+    font-size: var(--font-medium);
+    cursor: pointer;
+}
+.link-view-detail-topic:hover{
+    text-decoration: underline;
+}
+.link-active{
+    text-decoration: underline;
+}
+.topic-view-list-link{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-top: 2rem;
+}
+.links-container {
+    display: flex;
+    align-items: center;
 }

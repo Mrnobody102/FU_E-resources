@@ -2,10 +2,14 @@ package fpt.edu.eresourcessystem.model;
 
 import fpt.edu.eresourcessystem.dto.CourseLogDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.enums.CourseEnum;
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
+
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -20,34 +24,29 @@ public class CourseLog {
     private Course course;
     private String oldContent;
     private String newContent;
-    private CommonEnum.Action action;
+    private CourseEnum.LecturerAction action;
 
     // Delete flag
+    private CourseEnum.CourseObject object;
+    private String objectId;
+    private String objectName;
     private CommonEnum.DeleteFlg deleteFlg;
-
+    private String email;
     @CreatedBy
     private String createdBy;
     @CreatedDate
-    private String createdDate;
-    public CourseLog(Course course,CommonEnum.Action action ) {
+    private LocalDateTime createdDate;
+    public CourseLog(Course course,CourseEnum.LecturerAction action,
+                     CourseEnum.CourseObject object, String objectId, String objectName, String email,
+                     String oldContent, String newContent) {
         this.course = course;
         this.action = action;
-        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
-    }
-    // Constructor DTO
-    public CourseLog(CourseLogDto courseLogDTO) {
-        this.id = courseLogDTO.getId();
-        this.course = courseLogDTO.getCourse();
-        this.action = courseLogDTO.getAction();
-        this.createdBy = courseLogDTO.getCreatedBy();
-        this.createdDate = courseLogDTO.getCreatedDate();
-        this.oldContent = courseLogDTO.getOldContent();
-        this.newContent = courseLogDTO.getNewContent();
-        if(null==courseLogDTO.getAction()){
-            this.action = CommonEnum.Action.VIEW;
-        }else{
-            this.action = courseLogDTO.getAction();
-        }
+        this.object = object;
+        this.objectId = objectId;
+        this.objectName = objectName;
+        this.email = email;
+        this.oldContent = oldContent;
+        this.newContent = newContent;
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
 }

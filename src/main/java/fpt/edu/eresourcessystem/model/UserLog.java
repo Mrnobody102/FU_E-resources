@@ -24,14 +24,13 @@ public class UserLog {
 
     @NotNull
     private String url;
-
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;
-
+    private String email;
     @CreatedBy
-    private String account; // email
+    private String createdBy; // email
     @CreatedDate
-    private LocalDateTime time; // time
+    private LocalDateTime createdDate; // time
 
     private AccountEnum.Role role;
     public UserLog(UserLogDto userLogDto){
@@ -39,5 +38,6 @@ public class UserLog {
         this.url = userLogDto.getUrl();
         this.role = userLogDto.getRole();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+        this.email = userLogDto.getEmail();
     }
 }

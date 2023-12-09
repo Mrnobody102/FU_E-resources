@@ -35,27 +35,13 @@
                             <span> &gt; <a th:href="@{/lecturer/courses/list/all/1}"> Courses management</a> </span>
                             <span> &gt; <a th:text="|${course.courseCode} - ${course.courseName}|"></a> </span>
                         </div>
-                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 course-detail-info-title">
-                            <div style="flex:3 ;">
+                        <div class="align-items-center course-detail-info-title">
+                            <div>
                                 <h1 class="h2" th:text="${course.courseCode} + ' - ' + ${course.courseName}"></h1>
                                 <p id="content" class="doc-info-description"
                                    style="text-align: justify; margin-bottom: 0" th:text="${course.description}"></p>
                                 <span id="readMoreBtn" class="read-more" onclick="toggleContent()">Read more</span>
 
-
-
-                            </div>
-                            <div style="flex: 1; display: flex; justify-content: center;">
-                                <div style="width: 60%; display: flex; justify-content: center; flex-direction: column">
-                                    <a class="btn btn--hover mt-2 mb-2"
-                                       th:href="@{'/lecturer/courses/' + ${course.id} + '/add_topic'}">
-                                        + Add topic
-                                    </a>
-                                    <a class="btn btn--hover"
-                                       th:href="@{'/lecturer/courses/' + ${course.id} + '/add_resource_type'}">
-                                        + Add resource type
-                                    </a>
-                                </div>
                             </div>
                         </div>
                         <p>Course status:
@@ -88,8 +74,18 @@
                             </select>
                             <button type="submit" class="border-0 ms-3">Save</button>
                         </form>
-
-
+                        <div class="add-lick-course-detail">
+                            <div class="d-inline-block">
+                                <a class="btn btn--hover"
+                                   th:href="@{'/lecturer/courses/' + ${course.id} + '/add_topic'}">
+                                    + Add topic
+                                </a>
+                                <a class="btn btn--hover"
+                                   th:href="@{'/lecturer/courses/' + ${course.id} + '/add_resource_type'}">
+                                    + Add resource type
+                                </a>
+                            </div>
+                        </div>
                         </p>
                         <div class="border-bottom">
                             <ul class="mt-4">

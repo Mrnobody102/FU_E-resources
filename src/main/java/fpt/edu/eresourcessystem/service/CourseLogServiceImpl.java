@@ -1,6 +1,8 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.dto.Response.CourseLogResponseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.CourseLog;
 import fpt.edu.eresourcessystem.repository.CourseLogRepository;
@@ -38,40 +40,25 @@ public class CourseLogServiceImpl implements CourseLogService{
     }
 
     @Override
-    public List<Course> findStudentRecentView(String accountId) {
-//        System.out.println(accountId);
-        Criteria criteria = new Criteria();
-
-        // Sort by the "time" in descending order to get the most recent documents
-        criteria.and("createdDate").exists(true); // Ensure "time" field exists
-        criteria.and("action").is(CommonEnum.Action.VIEW);
-        criteria.and("createdBy").is(accountId);
-        Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("createdDate")));
-
-        // Use a Pageable to limit the result set to 5 documents
-        PageRequest pageable = PageRequest.of(0, 5);
-        query.with(pageable);
-        List<ObjectId> listCourseIds = mongoTemplate.findDistinct(query,"course" ,CourseLog.class, ObjectId.class);
-        List<Course> result = mongoTemplate.find(
-                Query.query(Criteria.where("id").in(listCourseIds)),
-                Course.class
-        );
-
-        return result;
-
-
+    public List<CourseLogResponseDto> findAllSortedByCreatedDate() {
+        Sort sortByCreatedDate = Sort.by(Sort.Direction.DESC, "createdDate");
+        List<CourseLogResponseDto> courseLogResponseDtos  = courseLogRepository.findAll(sortByCreatedDate).stream().map(o -> new CourseLogResponseDto(o)).toList();
+        return courseLogResponseDtos;
     }
 
     @Override
-    public List<String> findLecturerRecentView(String accountId) {
-        Criteria criteria = new Criteria();
+    public void deleteCourseLog(CourseLog courseLog) {
+        courseLogRepository.delete(courseLog);
+    }
 
+    @Override
+    public List<String> findByLecturer(String email) {
+        Criteria criteria = new Criteria();
         // Sort by the "time" in descending order to get the most recent documents
         criteria.and("createdDate").exists(true); // Ensure "time" field exists
-        criteria.and("action").is(CommonEnum.Action.VIEW);
-        criteria.and("createdBy").is(accountId);
+//        criteria.and("action").is(CommonEnum.Action.VIEW);
+        criteria.and("email").is(email);
         Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("createdDate")));
-
         // Use a Pageable to limit the result set to 5 documents
         PageRequest pageable = PageRequest.of(0, 5);
         query.with(pageable);

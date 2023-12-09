@@ -1,7 +1,13 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.model.Course;
+import fpt.edu.eresourcessystem.model.CourseLog;
 import fpt.edu.eresourcessystem.model.UserLog;
 import fpt.edu.eresourcessystem.repository.UserLogRepository;
+import org.bson.types.ObjectId;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -28,8 +34,8 @@ public class UserLogServiceImpl implements UserLogService{
     }
 
     @Override
-    public List<UserLog> findByAccount(String email) {
-        List<UserLog> userLogs = userLogRepository.findByAccount(email);
+    public List<UserLog> findByEmail(String email) {
+        List<UserLog> userLogs = userLogRepository.findByEmail(email);
         return userLogs;
     }
 
@@ -56,5 +62,30 @@ public class UserLogServiceImpl implements UserLogService{
             return result;
         }
         return null;
+    }
+
+    @Override
+    public List<Course> findStudentRecentView(String email) {
+        String urlPrefix = "/student/courses/";
+        Criteria criteria = Criteria.where("email").is(email)
+                .and("url").regex("^" + urlPrefix)
+                .and("createdDate").exists(true);
+
+        // Sort by the "time" in descending order to get the most recent documents
+        Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("createdDate")));
+
+        // Use a Pageable to limit the result set to 5 documents
+        PageRequest pageable = PageRequest.of(0, 5);
+        query.with(pageable);
+        List<String> listCourseIds = mongoTemplate.findDistinct(query,"url" , UserLog.class, String.class)
+                .stream().map(o -> o.substring(o.indexOf(urlPrefix) + urlPrefix.length()))
+                .toList();
+        List<Course> result = mongoTemplate.find(
+                Query.query(Criteria.where("id").in(listCourseIds)),
+                Course.class
+        );
+
+        return result;
+
     }
 }

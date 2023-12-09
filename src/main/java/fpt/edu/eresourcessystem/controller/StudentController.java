@@ -1,12 +1,10 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.FeedbackDto;
-import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.dto.StudentNoteDto;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
-import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -14,10 +12,7 @@ import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashSet;
 import java.util.List;
 
 import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
@@ -44,7 +38,7 @@ public class StudentController {
     private final CourseService courseService;
     private final StudentService studentService;
     private final TopicService topicService;
-    private final CourseLogService courseLogService;
+//    private final CourseLogService courseLogService;
     private final DocumentService documentService;
     private final StudentNoteService studentNoteService;
     private final DocumentNoteService documentNoteService;
@@ -72,8 +66,9 @@ public class StudentController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Account loggedInUser = accountService.findByEmail(currentPrincipalName);
-        UserLog userLog = new UserLog(new UserLogDto(url,loggedInUser.getRole()));
+        UserLog userLog = new UserLog(new UserLogDto(url,getLoggedInStudent().getAccount().getEmail(),AccountEnum.Role.STUDENT ));
         userLog = userLogService.addUserLog(userLog);
+        System.out.println(userLog);
         return userLog;
     }
 
@@ -83,9 +78,7 @@ public class StudentController {
         if (null == student) {
             return LOGIN_REQUIRED;
         }
-        List<Course> recentCourses = courseLogService.findStudentRecentView(student.getAccount().getEmail());
-//        System.out.println(courseLogs);
-//        List<Course> recentCourses = courseService.findByListId(courseLogs);
+        List<Course> recentCourses = userLogService.findStudentRecentView(student.getAccount().getEmail());
         model.addAttribute("recentCourses", recentCourses);
         return "student/student_home";
     }
@@ -116,15 +109,12 @@ public class StudentController {
         } else if (CourseEnum.Status.PUBLISH != course.getStatus()) {
             return "exception/404";
         }
-        // add course log
-        CourseLog courseLog = new CourseLog(course, CommonEnum.Action.VIEW);
-        courseLog = courseLogService.addCourseLog(courseLog);
         model.addAttribute("course", course);
         if (studentService.checkCourseSaved(student.getId(), courseId)) {
             model.addAttribute("saved", true);
         } else model.addAttribute("saved", false);
         // add log
-        addUserLog("/student/course/" + courseId);
+        addUserLog("/student/courses/" + courseId);
         return "student/course/student_course-detail";
     }
 

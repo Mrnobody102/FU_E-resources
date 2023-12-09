@@ -383,7 +383,7 @@ function viewMoreReply(param) {
             var html = "";
             for (let i = 0; i < data.length; i++) {
                 if (data[i].studentName == null) {
-                    html += "<div class=\"reply-content border-bottom\">\n" +
+                    html = "<div class=\"reply-content border-bottom\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].lecturerName + "</span></h6>\n" +
                         "                     <p class=\"stu__question-content\">" + data[i].answerContent + "</p>\n" +
                         "                     <p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
@@ -392,13 +392,13 @@ function viewMoreReply(param) {
                         "                     </div>";
                 } else {
                     // content
-                    html += "<div class=\"reply-content border-bottom\"  id=\"" + data[i].answerId + "\">\n" +
+                    html = "<div class=\"reply-content border-bottom\"  id=\"" + data[i].answerId + "\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].studentName + "(You)</span></h6>\n" +
                         "                     <p class=\"stu__question-content\" id=\"reply-content-"+ data[i].answerId +"\">" + data[i].answerContent + "</p>";
                     // edit section
                     html+="<div class=\"edit-reply-div\" id=\"update-reply"+ data[i].answerId+ "\"style=\"display: none\">\n" +
                         "                                                    <label id=\"update-reply-error"+ data[i].answerId+"\" class=\"display-none\">Please enter something to update.</label>\n" +
-                        "                                                    <input class=\"update-reply\" value=\"" + data[i].answerContent+ "\" id=\"update-reply-content-"+ data[i].answerId +"\">\n" +
+                        "                                                    <textarea class=\"update-reply\"  id=\"update-reply-content-"+ data[i].answerId +"\"></textarea>\n" +
                         "                                                    <button id=\"close-update-reply-" + data[i].answerId+ "\" type=\"button\" title=\"exist\"\n" +
                         "                                                            reply-id=\""+ data[i].answerId+"\" onclick=existFormEditReply(\"" +data[i].answerId+"\")\n" +
                         "                                                            class=\"exist-form-edit-reply btn-danger\"><i class=\"fa-solid fa-xmark\"></i> Close</button> " +
@@ -415,10 +415,12 @@ function viewMoreReply(param) {
                         "                     <a class=\"stu__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data[i].answerId + "\" onclick=deleteReply(\"" + data[i].answerId + "\",\"" + data[i].questionId + "\")>Delete</a>\n" +
                         "                     </div>";
                 }
-
+                $(viewDiv).append(html);
+                let modified_val = data[i].answerContent .replace(/"/g, '&quot;')
+                $('#update-reply-content-' + data[i].answerId).val(modified_val);
             }
             $(loadingDiv).css("display", "none");
-            $(viewDiv).html(html);
+
             $(seeLessDiv).css("display", "block");
         },
         error: function (xhr) {

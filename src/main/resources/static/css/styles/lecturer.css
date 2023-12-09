@@ -298,7 +298,7 @@
 .form-lecturer-add-doc-new-reply{
     margin-top: 0.2rem;
     margin-left: 1.2rem;
-    border-radius: 2rem;
+    border-radius: 0.22rem;
     border: 1px solid #888888;
     padding: 1rem;
 }
@@ -426,4 +426,19 @@ label.error {
     display: block;
     color: red;
     /*font-size: smaller;*/
+}
+.update-reply{
+    height: 10rem;
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 0.22rem;
+}
+.update-reply:focus{
+    border: 1px solid #888888;
+    border-radius: 0.22rem;
+    outline: none;
+    box-shadow: 0 0 4px #9babfc;
+}
+.add-lick-course-detail{
+    margin-top: 1rem;
 }
