@@ -30,7 +30,7 @@ public class AuthenticationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Account loggedInUser = accountService.findByEmail(currentPrincipalName);
-        UserLog userLog = new UserLog(new UserLogDto(url,loggedInUser.getRole()));
+        UserLog userLog = new UserLog(new UserLogDto(url,authentication.getName(),loggedInUser.getRole()));
         userLog = userLogService.addUserLog(userLog);
         return userLog;
     }
@@ -69,7 +69,7 @@ public class AuthenticationController {
             // log user action
             String currentPrincipalName = authentication.getName();
             Account loggedInUser = accountService.findByEmail(currentPrincipalName);
-            UserLogDto userLogDto = new UserLogDto("/login", loggedInUser.getRole());
+            UserLogDto userLogDto = new UserLogDto("/login",authentication.getName(), loggedInUser.getRole());
             UserLog userLog = userLogService.addUserLog(new UserLog(userLogDto));
             return redirect;
         }
@@ -83,7 +83,7 @@ public class AuthenticationController {
         Account loggedInUser = accountService.findByEmail(currentPrincipalName);
 
         // log user action
-        UserLogDto userLogDto = new UserLogDto("/logout", loggedInUser.getRole());
+        UserLogDto userLogDto = new UserLogDto("/logout",authentication.getName(), loggedInUser.getRole());
         UserLog userLog = userLogService.addUserLog(new UserLog(userLogDto) );
         return "redirect:/login";
     }

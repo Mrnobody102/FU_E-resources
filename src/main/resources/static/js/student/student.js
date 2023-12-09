@@ -20,12 +20,12 @@ function viewQuestionWaiting() {
                 console.log(data.length)
                 var html = "";
                 for (let i = 0; i < data.length; i++) {
-                    html +="<div class=stu__question-content-wrapper>\n" +
-                        "                        <span class=\"stu__question-content stu__question-date\">"+data[i].lastModifiedDate+"</span>\n" +
-                        "                    <a class=\"stu__question-title\">You asked on"+ data[i].documentTitle+"</a>\n" +
-                        "                    <p class=\"student-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
+                    html += "<div class=stu__question-content-wrapper>\n" +
+                        "                        <span class=\"stu__question-content stu__question-date\">" + data[i].lastModifiedDate + "</span>\n" +
+                        "                    <a class=\"stu__question-title\">You asked on" + data[i].documentTitle + "</a>\n" +
+                        "                    <p class=\"student-content-view-brief\"><span>" + data[i].questionContent + "</span>\n" +
                         "                        <a class=\"link-view-detailed\"\n" +
-                        "                              href=\"/student/documents/" + data[i].documentId + "#"+ data[i].questionId +"\">view <i\n" +
+                        "                              href=\"/student/documents/" + data[i].documentId + "#" + data[i].questionId + "\">view <i\n" +
                         "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
                         "                    </div>";
 
@@ -56,12 +56,12 @@ function viewNewReplyQuestion() {
                 console.log(data.length)
                 var html = "";
                 for (let i = 0; i < data.length; i++) {
-                    html +="<div class=stu__question-content-wrapper>\n" +
-                        "                        <span class=\"stu__question-content stu__question-date\">"+data[i].lastModifiedDate+"</span>\n" +
-                        "                    <a class=\"stu__question-title\">New reply for your question at "+ data[i].documentTitle+"</a>\n" +
-                        "                    <p class=\"student-content-view-brief\"><span>"+data[i].questionContent+"</span>\n" +
+                    html += "<div class=stu__question-content-wrapper>\n" +
+                        "                        <span class=\"stu__question-content stu__question-date\">" + data[i].lastModifiedDate + "</span>\n" +
+                        "                    <a class=\"stu__question-title\">New reply for your question at " + data[i].documentTitle + "</a>\n" +
+                        "                    <p class=\"student-content-view-brief\"><span>" + data[i].questionContent + "</span>\n" +
                         "                        <a class=\"link-view-detailed\"\n" +
-                        "                              href=\"/student/documents/" + data[i].documentId + "#"+ data[i].questionId +"\">view <i\n" +
+                        "                              href=\"/student/documents/" + data[i].documentId + "#" + data[i].questionId + "\">view <i\n" +
                         "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
                         "                    </div>";
                 }
@@ -364,25 +364,27 @@ $(document).ready(function () {
         $(this).addClass("stu__navbar-active");
     })
     // Add event listeners to input and textarea
-    $('#noteTitle').on('input', function() {
+    $('#noteTitle').on('input', function () {
         $('#send-edit-note-button').removeClass('disabled');
     });
-    $('#description').on('input', function() {
+    $('#description').on('input', function () {
         $('#send-edit-note-button').removeClass('disabled');
     });
 });
 
-function viewDocumentNote(){
+function viewDocumentNote() {
     console.log("view my note")
     $("#documentNote").removeClass('display-none');
     $("#myNote").addClass('display-none');
 }
-function viewMyNote(){
+
+function viewMyNote() {
     console.log("view document note")
     $("#documentNote").addClass('display-none');
     $("#myNote").removeClass('display-none');
 }
-function submitDeleteMyNote(){
+
+function submitDeleteMyNote() {
     var result = window.confirm("Do you want to delete your note?");
     if (result) {
         $("#send-edit-note-button").addClass("disabled");
@@ -392,40 +394,73 @@ function submitDeleteMyNote(){
         console.log("submited.")
     }
 }
-function choseResourceType(label){
+
+function choseResourceType(label) {
+    $(".link-view-detail-topic").removeClass("link-active");
     $("#list-by-topic").addClass("display-none");
     var resourceId = $(label).attr('for').slice(0, -12);
     var courseId = $(label).attr('course-id');
     $("#loading-by-resource").css("display", "block");
-    console.log(resourceId)
-    console.log(courseId)
+    $("#list-by-resource").html("");
     $.ajax({
         type: 'GET',
-        url: '/api/student/documents/get_by_resource/' + resourceId +"/" + courseId,
+        url: '/api/student/documents/get_by_resource/' + resourceId + "/" + courseId,
+        dataType: 'json',
+        success: function (data) {
+            displayDocumentsByResource(data);
+        },
+        error: function (xhr) {
+            console.log("Fail")
+        }
+    });
+}
+
+function displayDocumentsByResource(dataMap) {
+    var html = "";
+    $.each(dataMap, function (topic, documents) {
+        html += "<h2 class='topic-info-title topic-title-in-view-course' onclick= getByTopic(\"" + documents[0].topicId + "\")>" + documents[0].topicTitle + "</h2>";
+        html += "<ul>";
+        $.each(documents, function (index, document) {
+            html += "<div class=\"d-flex document-view-info border-bottom\">\n" +
+                "                                                    <div class=\"doc-info-head grid__column-8\">\n" +
+                "                                                        <p class=\"doc-info-title\"><a\n" +
+                "                                                                href=\"/student/documents/" + document.id + "\">\n" +
+                "                                                            <span>" + document.title + "</span></a>\n" +
+                "                                                        </p>\n" +
+                "                                                        <p class=\"doc-info-description\">\n" +
+                "                                                            <span>" + document.description + "</span>\n" +
+                "                                                        </p>\n" +
+                "                                                    </div>\n" +
+                "                                                    <div class=\"doc-info grid__column-2\">\n" +
+                "                                                        <p><span class=\"doc-info-date\">" + document.lastModifiedDate + "</span></p>\n" +
+                "                                                    </div>\n" +
+                "                                                </div>"
+
+
+        });
+        html += "</ul>";
+    });
+    $("#list-by-resource").html(html);
+    $("#loading-by-resource").css("display", "none");
+    $("#list-by-resource").removeClass("display-none");
+}
+
+function getByTopic(param) {
+    $(".link-view-detail-topic").removeClass("link-active");
+    $("#link-view-detail-" + param).addClass("link-active");
+    $("#formChoseResourceTypeBot input[type='radio']").prop("checked", false);
+    $("#formChoseResourceTypeTop input[type='radio']").prop("checked", false);
+    console.log(param)
+    $("#list-by-resource").html("");
+    $("#list-by-topic").addClass("display-none");
+    $("#loading-by-resource").css("display", "block");
+    $.ajax({
+        type: 'GET',
+        url: '/api/student/documents/get_by_topic/' + param,
         dataType: 'json',
         success: function (data) {
             console.log(data)
-            var html = "";
-            for (let i = 0; i < data.length; i++) {
-                html += "<div class=\"d-flex document-view-info border-bottom\">\n" +
-                    "                                                    <div class=\"doc-info-head grid__column-8\">\n" +
-                    "                                                        <p class=\"doc-info-title\"><a\n" +
-                    "                                                                href=\"/student/documents/" + data[i].id + "\">\n" +
-                    "                                                            <span>" + data[i].title + "</span></a>\n" +
-                    "                                                        </p>\n" +
-                    "                                                        <p class=\"doc-info-description\">\n" +
-                    "                                                            <span>" + data[i].description + "</span>\n" +
-                    "                                                        </p>\n" +
-                    "                                                    </div>\n" +
-                    "                                                    <div class=\"doc-info grid__column-2\">\n" +
-                    "                                                        <p><span class=\"doc-info-date\">" + data[i].lastModifiedDate + "</span></p>\n" +
-                    "                                                    </div>\n" +
-                    "                                                </div>"
-
-            }
-            $("#list-by-resource").html(html);
-            $("#loading-by-resource").css("display", "none");
-            $("#list-by-resource").removeClass("display-none");
+            displayDocumentsByTopic(data);
         },
         error: function (xhr) {
             // Handle errors
@@ -433,7 +468,44 @@ function choseResourceType(label){
         }
     });
 }
-function listByTopic(){
+
+function displayDocumentsByTopic(data) {
+    var html = ""
+    var count = 1;
+    $.each(data, function (index, document) {
+        if (count == 1) {
+            html += "<h2 class='topic-info-title topic-title-in-view-course' onclick= getByTopic(" + document.topicId + ")>" + document.topicTitle + "</h2>";
+            html += "<ul>";
+        }
+        html += "<div class=\"d-flex document-view-info border-bottom\">\n" +
+            "                                                    <div class=\"doc-info-head grid__column-8\">\n" +
+            "                                                        <p class=\"doc-info-title\"><a\n" +
+            "                                                                href=\"/student/documents/" + document.id + "\">\n" +
+            "                                                            <span>" + document.title + "</span></a>\n" +
+            "                                                        </p>\n" +
+            "                                                        <p class=\"doc-info-description\">\n" +
+            "                                                            <span>" + document.description + "</span>\n" +
+            "                                                        </p>\n" +
+            "                                                    </div>\n" +
+            "                                                    <div class=\"doc-info grid__column-2\">\n" +
+            "                                                        <p><span class=\"doc-info-date\">" + document.lastModifiedDate + "</span></p>\n" +
+            "                                                    </div>\n" +
+            "                                                </div>"
+        if (count == 1) {
+            html += "<ul>";
+            count = 2;
+        }
+    });
+
+    $("#list-by-resource").html(html);
+    $("#loading-by-resource").css("display", "none");
+    $("#list-by-resource").removeClass("display-none");
+
+
+}
+
+function listByTopic() {
+    $(".link-view-detail-topic").removeClass("link-active");
     $("#list-by-topic").removeClass("display-none");
     $("#list-by-resource").addClass("display-none");
 }
