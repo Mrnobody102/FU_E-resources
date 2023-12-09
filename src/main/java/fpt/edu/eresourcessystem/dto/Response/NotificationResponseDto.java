@@ -20,7 +20,6 @@ public class NotificationResponseDto {
     public NotificationResponseDto(Notification notification) {
         this.id = notification.getId();
         this.notificationContent = notification.getNotificationContent();
-        this.questionContent = notification.getContent();
         this.link = notification.getLinkToView();
         this.lastModifiedDate = notification.getLastModifiedDate();
     }

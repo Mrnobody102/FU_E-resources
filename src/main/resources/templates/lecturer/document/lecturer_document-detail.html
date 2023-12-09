@@ -192,8 +192,8 @@
                                             </a>
                                         </li>
                                     </ul>
-                                    <div class="lec__question-in-doc-content"
-                                         th:if="${questions ne null } AND ${questions.size} > 0">
+                                    <div class="lec__question-in-doc-content" id="lecturer-questions"
+                                         th:if="${questions ne null }">
                                         <div class="lec__question-content-wrapper" th:each="question : ${questions}"
                                              th:id="${question.id}">
                                             <h6 class="lec__question-creater-name"><i class="fa-solid fa-user"></i>

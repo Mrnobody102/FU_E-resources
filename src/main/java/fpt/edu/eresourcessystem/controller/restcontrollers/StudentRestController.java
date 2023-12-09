@@ -15,6 +15,9 @@ import fpt.edu.eresourcessystem.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeTypeUtils;
@@ -37,6 +40,7 @@ public class StudentRestController {
     private final UserLogService userLogService;
     private final AccountService accountService;
     private final TopicService topicService;
+    private final SimpMessagingTemplate messagingTemplate;
     private final LecturerService lecturerService;
 
     private void addUserLog(String url){
@@ -102,6 +106,7 @@ public class StudentRestController {
             // add log
             addUserLog("/api/student/question/add" + question.getId());
             QuestionResponseDto questionResponseDTO = new QuestionResponseDto(question);
+            messagingTemplate.convertAndSendToUser(document.getCreatedBy(), "/notifications/question", questionResponseDTO);
             return new ResponseEntity<>(questionResponseDTO, HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -12,6 +12,10 @@ import java.util.List;
 
 
 public interface NotificationService {
+    Notification findById(String noId);
+
+    Notification updateNotification(Notification notification);
+
     List<NotificationResponseDto> findByToAccount(String email);
 
     List<NotificationResponseDto> findAllByToAccount(String email);

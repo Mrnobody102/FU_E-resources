@@ -22,8 +22,6 @@ public class Notification {
 
     private String toAccount;
 
-    @NotNull
-    private String content;
     private String notificationContent;
 
 
@@ -58,7 +56,6 @@ public class Notification {
         this.fromAccount = notificationDto.getFrom();
         this.toAccount = notificationDto.getTo();
         this.notificationType = NotificationEnum.NotificationType.getType(notificationDto.getType());
-        this.content = notificationDto.getSendContent();
 //        if (NotificationEnum.NotificationType.getType(notificationDto.getType())
 //                == NotificationEnum.NotificationType.ASSIGN_LECTURER_TO_COURSE
 //                || NotificationEnum.NotificationType.getType(notificationDto.getType())
