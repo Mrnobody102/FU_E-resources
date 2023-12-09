@@ -40,7 +40,7 @@ public class StudentRestController {
     private final LecturerService lecturerService;
 
     private void addUserLog(String url){
-        UserLog userLog = new UserLog(new UserLogDto(url,  AccountEnum.Role.STUDENT ));
+        UserLog userLog = new UserLog(new UserLogDto(url,getLoggedInStudent().getAccount().getEmail(),  AccountEnum.Role.STUDENT ));
         userLogService.addUserLog(userLog);
     }
 
@@ -401,10 +401,10 @@ public class StudentRestController {
     }
 
     @GetMapping(value ="/documents/get_by_resource/{resourceId}/{courseId}", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
-    public ResponseEntity<HashMap<TopicResponseDto, List<DocumentResponseDto>>> findCourseDocumentByResource(@PathVariable String resourceId,
+    public ResponseEntity<HashMap<String, List<DocumentResponseDto>>> findCourseDocumentByResource(@PathVariable String resourceId,
                                                                                   @PathVariable String courseId){
-        HashMap<TopicResponseDto, List<DocumentResponseDto>> documents = documentService.findAllDocumentsByCourseAndResourceType(courseId,resourceId);
-        ResponseEntity<HashMap<TopicResponseDto, List<DocumentResponseDto>>> responseEntity = new ResponseEntity<>(documents, HttpStatus.OK);
+        HashMap<String, List<DocumentResponseDto>> documents = documentService.findAllDocumentsByCourseAndResourceType(courseId,resourceId);
+        ResponseEntity<HashMap<String, List<DocumentResponseDto>>> responseEntity = new ResponseEntity<>(documents, HttpStatus.OK);
 //        for (TopicResponseDto key : documents.keySet()) {
 //            System.out.println("Key: " + key.getId() + "-" + key.getTopicTitle() + ", Value: " );
 //            for (DocumentResponseDto d:

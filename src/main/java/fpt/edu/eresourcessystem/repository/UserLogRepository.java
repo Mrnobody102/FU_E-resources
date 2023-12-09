@@ -12,6 +12,6 @@ public interface UserLogRepository extends MongoRepository<UserLog, String> {
     @Override
     List<UserLog> findAll();
 
-    List<UserLog> findByAccount(String email);
+    List<UserLog> findByEmail(String email);
     List<UserLog> findByUrl(String url);
 }

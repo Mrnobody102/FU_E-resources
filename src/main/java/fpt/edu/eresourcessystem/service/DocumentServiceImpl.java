@@ -263,7 +263,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public HashMap<TopicResponseDto, List<DocumentResponseDto>> findAllDocumentsByCourseAndResourceType(String courseId, String resourceTypeId) {
+    public HashMap<String, List<DocumentResponseDto>> findAllDocumentsByCourseAndResourceType(String courseId, String resourceTypeId) {
         Course course = courseRepository.findByIdAndDeleteFlg(courseId, CommonEnum.DeleteFlg.PRESERVED);
         List<ObjectId> topics = course.getTopics().stream().map(o -> new ObjectId(o.getId())).toList();
         Criteria criteria = Criteria.where("topic.id").in(topics)
@@ -278,16 +278,16 @@ public class DocumentServiceImpl implements DocumentService {
                 .include("createdDate")
                 .include("lastModifiedBy")
                 .include("lastModifiedDate");
-        HashMap<TopicResponseDto, List<DocumentResponseDto>> topicResponseDtos = new HashMap<>();
+        HashMap<String, List<DocumentResponseDto>> topicResponseDtos = new HashMap<>();
         mongoTemplate.find(query, Document.class, "documents").stream().forEach(o -> {
-            TopicResponseDto topic = new TopicResponseDto(o.getTopic().getId(), o.getTopic().getTopicTitle());
-            if(topicResponseDtos.containsKey(topic)){
-                if(topicResponseDtos.get(topic) != null){
-                    topicResponseDtos.get(topic).add(new DocumentResponseDto(o));
+            String topicKey = o.getTopic().getId();
+            if(topicResponseDtos.containsKey(topicKey)){
+                if(topicResponseDtos.get(topicKey) != null){
+                    topicResponseDtos.get(topicKey).add(new DocumentResponseDto(o));
                 }
             }else {
-                topicResponseDtos.put(topic,new ArrayList<>());
-                topicResponseDtos.get(topic).add(new DocumentResponseDto(o));
+                topicResponseDtos.put(topicKey,new ArrayList<>());
+                topicResponseDtos.get(topicKey).add(new DocumentResponseDto(o));
             }
         });
 

@@ -123,10 +123,10 @@
                             <th:block th:each="userLog, iterStart : ${userLogs}">
                                 <tr>
                                     <td th:text="${iterStart.index +1}"></td>
-                                    <td th:text="${userLog.account}"></td>
+                                    <td th:text="${userLog.email}"></td>
                                     <td th:text="${userLog.url}"></td>
                                     <td th:text="${userLog.role}"></td>
-                                    <td th:text="${userLog.time}"></td>
+                                    <td th:text="${userLog.createdDate}"></td>
                                 </tr>
                             </th:block>
                             </tbody>

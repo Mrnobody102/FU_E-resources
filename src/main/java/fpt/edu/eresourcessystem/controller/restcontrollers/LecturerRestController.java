@@ -4,6 +4,7 @@ package fpt.edu.eresourcessystem.controller.restcontrollers;
 import fpt.edu.eresourcessystem.dto.AnswerDto;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
+import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
@@ -39,7 +40,7 @@ public class LecturerRestController {
     private final ImageService imageService;
 
     private UserLog addUserLog(String url) {
-        UserLog userLog = new UserLog(new UserLogDto(url));
+        UserLog userLog = new UserLog(new UserLogDto(url, getLoggedInLecturer().getAccount().getEmail(), AccountEnum.Role.LECTURER));
         userLog = userLogService.addUserLog(userLog);
         return userLog;
     }

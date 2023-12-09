@@ -49,5 +49,5 @@ public interface DocumentService {
 
     List<DocumentResponseDto> findRelevantDocument(String topicId, String docId);
 
-    HashMap<TopicResponseDto, List<DocumentResponseDto>> findAllDocumentsByCourseAndResourceType(String courseId, String resourceTypeId);
+    HashMap<String, List<DocumentResponseDto>> findAllDocumentsByCourseAndResourceType(String courseId, String resourceTypeId);
 }
