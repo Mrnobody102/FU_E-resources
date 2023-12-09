@@ -393,6 +393,7 @@ function submitDeleteMyNote(){
     }
 }
 function choseResourceType(label){
+    $(".link-view-detail-topic").removeClass("link-active");
     $("#list-by-topic").addClass("display-none");
     var resourceId = $(label).attr('for').slice(0, -12);
     var courseId = $(label).attr('course-id');
@@ -405,27 +406,28 @@ function choseResourceType(label){
         dataType: 'json',
         success: function (data) {
             console.log(data)
-            var html = "";
-            for (let i = 0; i < data.length; i++) {
-                html += "<div class=\"d-flex document-view-info border-bottom\">\n" +
-                    "                                                    <div class=\"doc-info-head grid__column-8\">\n" +
-                    "                                                        <p class=\"doc-info-title\"><a\n" +
-                    "                                                                href=\"/student/documents/" + data[i].id + "\">\n" +
-                    "                                                            <span>" + data[i].title + "</span></a>\n" +
-                    "                                                        </p>\n" +
-                    "                                                        <p class=\"doc-info-description\">\n" +
-                    "                                                            <span>" + data[i].description + "</span>\n" +
-                    "                                                        </p>\n" +
-                    "                                                    </div>\n" +
-                    "                                                    <div class=\"doc-info grid__column-2\">\n" +
-                    "                                                        <p><span class=\"doc-info-date\">" + data[i].lastModifiedDate + "</span></p>\n" +
-                    "                                                    </div>\n" +
-                    "                                                </div>"
-
-            }
-            $("#list-by-resource").html(html);
-            $("#loading-by-resource").css("display", "none");
-            $("#list-by-resource").removeClass("display-none");
+            // var html = "";
+            // for (let i = 0; i < data.length; i++) {
+            //     html += "<div class=\"d-flex document-view-info border-bottom\">\n" +
+            //         "                                                    <div class=\"doc-info-head grid__column-8\">\n" +
+            //         "                                                        <p class=\"doc-info-title\"><a\n" +
+            //         "                                                                href=\"/student/documents/" + data[i].id + "\">\n" +
+            //         "                                                            <span>" + data[i].title + "</span></a>\n" +
+            //         "                                                        </p>\n" +
+            //         "                                                        <p class=\"doc-info-description\">\n" +
+            //         "                                                            <span>" + data[i].description + "</span>\n" +
+            //         "                                                        </p>\n" +
+            //         "                                                    </div>\n" +
+            //         "                                                    <div class=\"doc-info grid__column-2\">\n" +
+            //         "                                                        <p><span class=\"doc-info-date\">" + data[i].lastModifiedDate + "</span></p>\n" +
+            //         "                                                    </div>\n" +
+            //         "                                                </div>"
+            //
+            // }
+            // $("#list-by-resource").html(html);
+            // $("#loading-by-resource").css("display", "none");
+            // $("#list-by-resource").removeClass("display-none");
+            displayDocumentsByResource(data);
         },
         error: function (xhr) {
             // Handle errors
@@ -433,7 +435,94 @@ function choseResourceType(label){
         }
     });
 }
+function displayDocumentsByResource(dataMap) {
+    var html = "";
+    $.each(dataMap, function(topic, documents) {
+        $.each(documents, function(index, document) {
+            html += "<h2 class='topic-info-title topic-title-in-view-course' onclick= getByTopic(\""+document.topicId+ "\")>" + document.topicTitle + "</h2>";
+            html += "<ul>";
+            html += "<div class=\"d-flex document-view-info border-bottom\">\n" +
+                "                                                    <div class=\"doc-info-head grid__column-8\">\n" +
+                "                                                        <p class=\"doc-info-title\"><a\n" +
+                "                                                                href=\"/student/documents/" + document.id + "\">\n" +
+                "                                                            <span>" + document.title + "</span></a>\n" +
+                "                                                        </p>\n" +
+                "                                                        <p class=\"doc-info-description\">\n" +
+                "                                                            <span>" + document.description + "</span>\n" +
+                "                                                        </p>\n" +
+                "                                                    </div>\n" +
+                "                                                    <div class=\"doc-info grid__column-2\">\n" +
+                "                                                        <p><span class=\"doc-info-date\">" + document.lastModifiedDate + "</span></p>\n" +
+                "                                                    </div>\n" +
+                "                                                </div>"
+
+            html += "</ul>";
+        });
+
+    });
+    $("#list-by-resource").html(html);
+    $("#loading-by-resource").css("display", "none");
+    $("#list-by-resource").removeClass("display-none");
+}
+function getByTopic(param){
+    $(".link-view-detail-topic").removeClass("link-active");
+    $("#link-view-detail-" + param).addClass("link-active");
+    $("#formChoseResourceTypeBot input[type='radio']").prop("checked", false);
+    $("#formChoseResourceTypeTop input[type='radio']").prop("checked", false);
+    console.log(param)
+    $("#list-by-resource").html("");
+    $("#list-by-topic").addClass("display-none");
+    $("#loading-by-resource").css("display", "block");
+    $.ajax({
+        type: 'GET',
+        url: '/api/student/documents/get_by_topic/' + param,
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+            displayDocumentsByTopic(data);
+        },
+        error: function (xhr) {
+            // Handle errors
+            console.log("Fail")
+        }
+    });
+}
+function displayDocumentsByTopic(data){
+    var html = ""
+    var count = 1;
+    $.each(data, function(index, document) {
+        if(count == 1){
+            html += "<h2 class='topic-info-title topic-title-in-view-course' onclick= getByTopic("+document.topicId+ ")>" + document.topicTitle + "</h2>";
+            html += "<ul>";
+        }
+        html += "<div class=\"d-flex document-view-info border-bottom\">\n" +
+            "                                                    <div class=\"doc-info-head grid__column-8\">\n" +
+            "                                                        <p class=\"doc-info-title\"><a\n" +
+            "                                                                href=\"/student/documents/" + document.id + "\">\n" +
+            "                                                            <span>" + document.title + "</span></a>\n" +
+            "                                                        </p>\n" +
+            "                                                        <p class=\"doc-info-description\">\n" +
+            "                                                            <span>" + document.description + "</span>\n" +
+            "                                                        </p>\n" +
+            "                                                    </div>\n" +
+            "                                                    <div class=\"doc-info grid__column-2\">\n" +
+            "                                                        <p><span class=\"doc-info-date\">" + document.lastModifiedDate + "</span></p>\n" +
+            "                                                    </div>\n" +
+            "                                                </div>"
+        if(count == 1){
+            html += "<ul>";
+            count = 2;
+        }
+    });
+
+    $("#list-by-resource").html(html);
+    $("#loading-by-resource").css("display", "none");
+    $("#list-by-resource").removeClass("display-none");
+
+
+}
 function listByTopic(){
+    $(".link-view-detail-topic").removeClass("link-active");
     $("#list-by-topic").removeClass("display-none");
     $("#list-by-resource").addClass("display-none");
 }

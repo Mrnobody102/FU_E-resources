@@ -5,6 +5,7 @@ import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
+import fpt.edu.eresourcessystem.dto.Response.TopicResponseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -32,9 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service("documentService")
@@ -183,7 +182,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document updateDocument(Document document, String currentFileId, String id) throws IOException {
         //search file
-        if(null != currentFileId) {
+        if (null != currentFileId) {
             template.delete(new Query(Criteria.where("_id").is(currentFileId)));
         }
         if (null != document.getId()) {
@@ -220,7 +219,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public Document updateDoc(Document document){
+    public Document updateDoc(Document document) {
         Document updateDoc = documentRepository.save(document);
         return updateDoc;
     }
@@ -262,8 +261,9 @@ public class DocumentServiceImpl implements DocumentService {
         }
         return false;
     }
+
     @Override
-    public List<DocumentResponseDto> findAllDocumentsByCourseAndResourceType(String courseId, String resourceTypeId) {
+    public HashMap<TopicResponseDto, List<DocumentResponseDto>> findAllDocumentsByCourseAndResourceType(String courseId, String resourceTypeId) {
         Course course = courseRepository.findByIdAndDeleteFlg(courseId, CommonEnum.DeleteFlg.PRESERVED);
         List<ObjectId> topics = course.getTopics().stream().map(o -> new ObjectId(o.getId())).toList();
         Criteria criteria = Criteria.where("topic.id").in(topics)
@@ -272,12 +272,25 @@ public class DocumentServiceImpl implements DocumentService {
         Query query = new Query(criteria);
         query.fields().include("id")
                 .include("title")
+                .include("topic")
                 .include("description")
                 .include("createdBy")
-                .include("createdDate").include("lastModifiedBy")
+                .include("createdDate")
+                .include("lastModifiedBy")
                 .include("lastModifiedDate");
-        List<DocumentResponseDto> documents = mongoTemplate.find(query, Document.class, "documents").stream().map(o -> new DocumentResponseDto(o)).toList();
+        HashMap<TopicResponseDto, List<DocumentResponseDto>> topicResponseDtos = new HashMap<>();
+        mongoTemplate.find(query, Document.class, "documents").stream().forEach(o -> {
+            TopicResponseDto topic = new TopicResponseDto(o.getTopic().getId(), o.getTopic().getTopicTitle());
+            if(topicResponseDtos.containsKey(topic)){
+                if(topicResponseDtos.get(topic) != null){
+                    topicResponseDtos.get(topic).add(new DocumentResponseDto(o));
+                }
+            }else {
+                topicResponseDtos.put(topic,new ArrayList<>());
+                topicResponseDtos.get(topic).add(new DocumentResponseDto(o));
+            }
+        });
 
-        return documents;
+        return topicResponseDtos;
     }
 }

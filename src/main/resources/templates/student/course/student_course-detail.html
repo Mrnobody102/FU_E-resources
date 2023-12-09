@@ -62,6 +62,17 @@
                                     </form>
                                 </div>
                             </div>
+                            <!-- List chose topic-->
+                            <div class="topic-view-list-link">
+                                <div class="links-container">
+                                    <a th:each="topic : ${course.topics}" class='link-view-detail-topic'
+                                           th:topic-id="${topic.id}"
+                                           th:id="'link-view-detail-' + ${topic.id}"
+                                           onclick=getByTopic(this.getAttribute("topic-id"))
+                                       th:text="${topic.topicTitle}"></a>
+                                    </li>
+                                </div>
+                            </div>
 
                             <!--List by topics-->
                             <div class="doc-content-list" th:id="list-by-topic">
@@ -70,7 +81,8 @@
                                         <!--Topic view-->
                                         <div class="topic-item">
                                             <div class="topic-title">
-                                                <h3 class="topic-info-title" th:topic-id="${topic.id}"
+                                                <h3 class="topic-info-title topic-title-in-view-course"
+                                                    th:topic-id="${topic.id}"
                                                     onclick="viewTopicDocument(this.getAttribute('topic-id'))">
                                                     <span th:text="${topic.topicTitle}"></span>
                                                     <i th:id="'view-less-' + ${topic.id}" class="fa-solid fa-chevron-up"

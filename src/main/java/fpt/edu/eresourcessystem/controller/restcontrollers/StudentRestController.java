@@ -6,6 +6,7 @@ import fpt.edu.eresourcessystem.dto.QuestionDto;
 import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
+import fpt.edu.eresourcessystem.dto.Response.TopicResponseDto;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -398,11 +400,18 @@ public class StudentRestController {
         }
     }
 
-    @GetMapping("/documents/get_by_resource/{resourceId}/{courseId}")
-    public ResponseEntity<List<DocumentResponseDto>> findCourseDocumentByResource(@PathVariable String resourceId,
+    @GetMapping(value ="/documents/get_by_resource/{resourceId}/{courseId}", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    public ResponseEntity<HashMap<TopicResponseDto, List<DocumentResponseDto>>> findCourseDocumentByResource(@PathVariable String resourceId,
                                                                                   @PathVariable String courseId){
-        List<DocumentResponseDto> documents = documentService.findAllDocumentsByCourseAndResourceType(courseId,resourceId);
-        ResponseEntity<List<DocumentResponseDto>> responseEntity = new ResponseEntity<>(documents, HttpStatus.OK);
+        HashMap<TopicResponseDto, List<DocumentResponseDto>> documents = documentService.findAllDocumentsByCourseAndResourceType(courseId,resourceId);
+        ResponseEntity<HashMap<TopicResponseDto, List<DocumentResponseDto>>> responseEntity = new ResponseEntity<>(documents, HttpStatus.OK);
+//        for (TopicResponseDto key : documents.keySet()) {
+//            System.out.println("Key: " + key.getId() + "-" + key.getTopicTitle() + ", Value: " );
+//            for (DocumentResponseDto d:
+//                 documents.get(key)) {
+//                System.out.print(d.getTitle()+"\t");
+//            }
+//        }
         return responseEntity;
     }
 

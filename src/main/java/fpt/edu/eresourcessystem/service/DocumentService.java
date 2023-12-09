@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.service;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
+import fpt.edu.eresourcessystem.dto.Response.TopicResponseDto;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.Document;
 import fpt.edu.eresourcessystem.model.Lecturer;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 public interface DocumentService {
@@ -47,5 +49,5 @@ public interface DocumentService {
 
     List<DocumentResponseDto> findRelevantDocument(String topicId, String docId);
 
-    List<DocumentResponseDto> findAllDocumentsByCourseAndResourceType(String courseId, String resourceTypeId);
+    HashMap<TopicResponseDto, List<DocumentResponseDto>> findAllDocumentsByCourseAndResourceType(String courseId, String resourceTypeId);
 }
