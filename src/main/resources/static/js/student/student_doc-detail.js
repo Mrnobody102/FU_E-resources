@@ -85,39 +85,8 @@ function viewSection(sectionId) {
     }
 }
 
-var stompClient = null;
-var notificationCount = 0;
-
-function connect() {
-    var socket = new SockJS('/ws');
-    stompClient = Stomp.over(socket);
-
-    stompClient.connect({}, onConnected, onError);
-}
-
-const notificationNumber = document.getElementById('notification-number-student');
-
-function onConnected() {
-
-    // // Subscribe to the Public Topic
-    // stompClient.subscribe('/user/notifications/private', function (result) {
-    //     notificationCount = notificationCount + 1;
-    //     notificationNumber.innerText = notificationCount;
-    //
-    //     console.log("No one "+result)
-    //     console.log(notificationCount)
-    // });
-
-    // stompClient.subscribe(`/user/public`, onMessageReceived);
-}
-
-function onError(error) {
-    console.log("Lỗi")
-}
-
-function sendMessage(qId, questionContent) {
-    stompClient.send('/app/private', {}, JSON.stringify({questionId: qId, type: "1", questionContent: questionContent}));
-    console.log(notificationCount)
+function sendMessage(qId, type, questionContent) {
+    stompClient.send('/app/private', {}, JSON.stringify({questionId: qId, type: type, sendContent: questionContent}));
 }
 
 function submitFormAddQuestion(param) {
@@ -147,10 +116,10 @@ function submitFormAddQuestion(param) {
                 $('#exist-new-question-form-button').css("display", "inline");
                 $('#sending-new-question').css("display", "none");
                 $(".form-student-add-doc-new-question").css("display", "none");
-                sendMessage(data.questionId, data.questionContent);
+                sendMessage(data.questionId, "1" ,data.questionContent);
                 // question content
                 var html = "<div class=\"stu__question-content-wrapper\" id=\"" + data.questionId + "\">\n" +
-                    "                                                <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span> " + data.studentName + "(You)</span></h6>\n" +
+                    "                                                <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span> " + data.studentName + " (You)</span></h6>\n" +
                     "                                                <p class=\"stu__question-content question-content\" id=\"question-content-" + data.questionId + "\">" + data.questionContent + "</p>\n";
                     // edit section
                     html+="<div class=\"edit-question-div\" id=\"update-question"+ data.questionId+ "\"style=\"display: none\">\n" +
@@ -282,6 +251,8 @@ function existFormAddQuestion() {
     $('#form-add-new-question').css("display", "none")
 }
 
+
+
 function submitFormReplyQuestion(param) {
     var content = $('#new-reply-content-' + param).val();
     var trimmedString = $.trim(content);
@@ -306,6 +277,7 @@ function submitFormReplyQuestion(param) {
                 $('#exist-reply-form-button-' + param).css("display", "inline");
                 $('#sending-reply-' + param).css("display", "none");
                 $('#reply-form' + param).css("display", "none");
+                sendMessage(data.answerId, "3" ,data.answerContent);
                 var html = "";
                 if (data.studentName == null) {
                     html = "<div class=\"reply-content border-bottom\">\n" +
@@ -447,8 +419,7 @@ function showReplyForm(questionId) {
     $("#reply-form" + questionIdParam).css("display", "block");
 }
 
-$(document).ready(function () {
-    connect();
+function readyStudent() {
     // add scroll to fragment identifier if id exist in URL
     var hash = window.location.hash;
     if (hash) {
@@ -504,7 +475,7 @@ $(document).ready(function () {
         $("#reply-content-" + replyId).css("display", "none");
     })
 
-});
+};
 
 function submitFormEditQuestion(param) {
     var content = $('#update-question-content-' + param).val();

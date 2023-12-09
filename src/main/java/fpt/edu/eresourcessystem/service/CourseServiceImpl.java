@@ -175,7 +175,7 @@ public class CourseServiceImpl implements CourseService{
     public List<Course> findNewCoursesByLecturer(Lecturer lecturer) {
         Criteria criteria = new Criteria();
 
-        // Sort by the "time" in descending order to get the most recent documents
+        // Sort by the "time" in descending order to get the most recent courses
         criteria.and("createdDate").exists(true);
         criteria.and("lecturer.id").is(lecturer.getId());
         criteria.and("status").is("NEW");

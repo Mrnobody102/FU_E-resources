@@ -16,12 +16,12 @@ public class NotificationEnum {
     }
 
     public enum NotificationType {
-        ASSIGN_LECTURER_TO_COURSE("0", " assigned you to course "), // implement added
-        REMOVE_LECTURER_FROM_COURSE("1", " removed you from course "),
-        USER_SEND_FEEDBACK("2", " sent a feedback."),
-        STUDENT_SEND_REQUEST_DOCUMENT("3", " sent a request in "),
-        STUDENT_ASK_ON_DOCUMENT("4", " asked on "),
-        LECTURER_ANSWER_ON_DOCUMENT("5", " replied on ");
+        STUDENT_ASK_ON_DOCUMENT("1", " asked on "),
+        LECTURER_REPLY_ON_DOCUMENT("2", " replied on "),
+        STUDENT_REPLY_ON_DOCUMENT("3", " replied on "),
+        USER_SEND_FEEDBACK("4", " sent a feedback."),
+        STUDENT_SEND_REQUEST_DOCUMENT("5", " sent a request in ");
+
         private final String displayValue;
 
         private final String toString;
@@ -34,7 +34,10 @@ public class NotificationEnum {
         public static NotificationType getType(String type) {
             return switch (type) {
                 case "1" -> NotificationType.STUDENT_ASK_ON_DOCUMENT;
-                case "2" -> NotificationType.LECTURER_ANSWER_ON_DOCUMENT;
+                case "2" -> NotificationType.LECTURER_REPLY_ON_DOCUMENT;
+                case "3" -> NotificationType.STUDENT_REPLY_ON_DOCUMENT;
+                case "4" -> NotificationType.USER_SEND_FEEDBACK;
+                case "5" -> NotificationType.STUDENT_SEND_REQUEST_DOCUMENT;
 
                 default -> throw new IllegalStateException("Unexpected value: " + type);
             };
@@ -43,7 +46,9 @@ public class NotificationEnum {
         public static String getStringType(String type) {
             return switch (type) {
                 case "1" -> NotificationType.STUDENT_ASK_ON_DOCUMENT.toString;
-                case "2" -> NotificationType.LECTURER_ANSWER_ON_DOCUMENT.toString;
+                case "2" -> NotificationType.LECTURER_REPLY_ON_DOCUMENT.toString;
+                case "3" -> NotificationType.USER_SEND_FEEDBACK.toString;
+                case "4" -> NotificationType.STUDENT_SEND_REQUEST_DOCUMENT.toString;
 
                 default -> throw new IllegalStateException("Unexpected value: " + type);
             };
