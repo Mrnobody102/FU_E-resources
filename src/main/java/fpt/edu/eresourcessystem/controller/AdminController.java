@@ -262,24 +262,28 @@ public class AdminController {
                 case LIBRARIAN -> {
                     Librarian librarian = librarianService.findByAccountId(accountDTO.getId());
                     if (librarian == null) {
-                        librarian = new Librarian();
+                        Librarian newLibrarian = new Librarian();
                         librarian.setAccount(account);
-                        librarianService.addLibrarian(librarian);
+                        librarianService.addLibrarian(newLibrarian);
                     } else {
                         librarianService.updateLibrarian(librarian);
                     }
                 }
                 case STUDENT -> {
-                    if (null == studentService.findByAccountId(account.getId())) {
-                        Student student = new Student();
+                    Student student = studentService.findByAccountId(account.getId());
+                    if (null == student) {
+                        Student newStudent = new Student();
                         student.setAccount(account);
-                        studentService.updateStudent(student);
+                        studentService.updateStudent(newStudent);
                     }
                 }
                 case LECTURER -> {
-                    if (null == lecturerService.findByAccountId(account.getId())) {
-                        Lecturer lecturer = new Lecturer();
+                    Lecturer lecturer = lecturerService.findByAccountId(account.getId());
+                    if (null == lecturer) {
+                        Lecturer newLecturer = new Lecturer();
                         lecturer.setAccount(account);
+                        lecturerService.addLecturer(newLecturer);
+                    } else {
                         lecturerService.updateLecturer(lecturer);
                     }
                 }

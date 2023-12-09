@@ -63,7 +63,7 @@
                         <form method="post" role="form" th:action="@{/admin/accounts/update}"
                               th:object="${account}" th:id="update-account">
                             <table class="table-form lib_table ">
-                                <tr class="lib_input-wrapper d-none">
+                                <tr class="lib_input-wrapper">
                                     <td class="lib_input-label"><label th:for="id">Account ID</label></td>
                                     <td><input type="text"
                                                class="lib_input form-control" th:field="*{id}"

@@ -1,13 +1,10 @@
 package fpt.edu.eresourcessystem.controller;
 
 
-import fpt.edu.eresourcessystem.dto.Response.LecturerDto;
 import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
-import fpt.edu.eresourcessystem.dto.CourseDto;
 import fpt.edu.eresourcessystem.dto.AccountDto;
-import fpt.edu.eresourcessystem.dto.DocumentDto;
+import fpt.edu.eresourcessystem.dto.CourseDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
-import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
@@ -16,11 +13,8 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
-import lombok.AllArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,12 +24,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
 import static fpt.edu.eresourcessystem.constants.Constants.VERIFICATION_CODE;
@@ -100,7 +91,7 @@ public class LibrarianController {
 
     /**
      * @param courseDTO course service model
-     * @param lecturer lecturer
+     * @param lecturer  lecturer
      * @return add course successfully page
      */
     @PostMapping("/courses/add")
@@ -125,21 +116,21 @@ public class LibrarianController {
                 Account account = accountService.findByEmail(lecturer);
                 Lecturer foundLecturer;
                 if (null != account) { // co account
-                     foundLecturer = lecturerService.findByAccountId(account.getId());
-                     if (foundLecturer== null) {
-                         account.setRole(AccountEnum.Role.LECTURER);
-                         accountService.updateAccount(account);
-                         Lecturer lecturer2 = new Lecturer();
-                         lecturer2.setAccount(account);
-                         foundLecturer = lecturerService.addLecturer(lecturer2);
-                     }
+                    foundLecturer = lecturerService.findByAccountId(account.getId());
+                    if (foundLecturer == null) {
+                        account.setRole(AccountEnum.Role.LECTURER);
+                        accountService.updateAccount(account);
+                        Lecturer lecturer2 = new Lecturer();
+                        lecturer2.setAccount(account);
+                        foundLecturer = lecturerService.addLecturer(lecturer2);
+                    }
                 } else { // k co account
                     AccountDto accountDto = new AccountDto();
                     accountDto.setEmail(lecturer);
                     accountDto.setPassword(VERIFICATION_CODE);
                     accountDto.setRole(AccountEnum.Role.LECTURER);
                     Account account1 = accountService.addAccount(accountDto);
-                        // save account
+                    // save account
                     Lecturer lecturer1 = new Lecturer();
                     lecturer1.setAccount(account1);
                     foundLecturer = lecturerService.addLecturer(lecturer1);
@@ -397,7 +388,6 @@ public class LibrarianController {
 
         Course course = courseService.updateLectureId(courseId, savedLecturer);
 
-
         if (course == null) {
             return "redirect:/courses/" + courseId + "/add-lecture?error";
         } else {
@@ -424,8 +414,8 @@ public class LibrarianController {
                 course.setLecturerCourseIds(lecturerCourseIds);
                 course.setLecturer(savedLecturer);
                 // update course lecturers
-      //          course = courseService.updateCourse(course);
-                course = courseService.updateLectureId(course.getId(),savedLecturer);
+                //          course = courseService.updateCourse(course);
+                course = courseService.updateLectureId(course.getId(), savedLecturer);
             }
 
             lecturerService.addCourseToLecturer(savedLecturer.getId(), new ObjectId(courseId));
@@ -448,7 +438,7 @@ public class LibrarianController {
 //                .collect(Collectors.toList());
 //
 //        model.addAttribute("lecturers", lecturerDtos);
-    //    return "redirect:/api/librarian/lectures/list?start=0&length=2&draw=1";
+        //    return "redirect:/api/librarian/lectures/list?start=0&length=2&draw=1";
         return "librarian/lecture/librarian_lectures";
     }
 
@@ -528,6 +518,7 @@ public class LibrarianController {
 //        model.addAttribute("accounts", accounts);
 //        return "librarian/lecture/librarian_lecture-course-detail";
 //    }
+
     @GetMapping("/lectures/delete/{id}")
     public String softDeleteLecturer(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
         Optional<Lecturer> lecturer = Optional.ofNullable(lecturerService.findLecturerById(id));
@@ -564,7 +555,7 @@ public class LibrarianController {
         Account loggedInAccount = globalControllerAdvice.getLoggedInAccount();
         if (loggedInAccount != null) {
             Student existStudent = studentService.findByAccountId(loggedInAccount.getId());
-            if(existStudent == null){
+            if (existStudent == null) {
                 Student student = new Student();
                 student.setAccount(loggedInAccount);
                 studentService.addStudent(student);
@@ -572,12 +563,13 @@ public class LibrarianController {
         }
         return "redirect:/student";
     }
+
     @GetMapping("/login_as_lecturer")
     public String loginAsLecturer() {
         Account loggedInAccount = globalControllerAdvice.getLoggedInAccount();
         if (loggedInAccount != null) {
             Lecturer existLecturer = lecturerService.findByAccountId(loggedInAccount.getId());
-            if(existLecturer == null){
+            if (existLecturer == null) {
                 Lecturer lecturer = new Lecturer();
                 lecturer.setAccount(loggedInAccount);
                 lecturerService.addLecturer(lecturer);

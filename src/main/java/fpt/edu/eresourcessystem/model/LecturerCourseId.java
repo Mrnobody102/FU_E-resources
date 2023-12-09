@@ -14,6 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LecturerCourseId {
+
     @NotNull
     private String lecturerId;
 

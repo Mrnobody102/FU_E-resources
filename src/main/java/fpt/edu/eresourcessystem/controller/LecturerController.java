@@ -27,7 +27,6 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.Base64;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,7 +77,7 @@ public class LecturerController {
 
     /**
      * @param pageIndex page index
-     * @param model model
+     * @param model     model
      * @return lecturer courses
      */
     @GetMapping({"/courses/list/{status}/{pageIndex}"})
@@ -338,7 +337,7 @@ public class LecturerController {
 
             if (document.isDisplayWithFile() == true) {
                 String data;
-                if(document.getCloudFileLink() != null) {
+                if (document.getCloudFileLink() != null) {
                     data = document.getCloudFileLink();
                 } else {
                     byte[] file = documentService.getGridFSFileContent(document.getContentId());
@@ -411,7 +410,7 @@ public class LecturerController {
         }
 
         String id = "fileNotFound";
-        if(String.valueOf(documentDTO.isDisplayWithFile()).equalsIgnoreCase("true")) {
+        if (String.valueOf(documentDTO.isDisplayWithFile()).equalsIgnoreCase("true")) {
             documentDTO.setDisplayWithFile(true);
             // Xử lý file
             // thêm check file trước khi add
@@ -422,12 +421,12 @@ public class LecturerController {
                 String fileExtension = StringUtils.getFilenameExtension(filename);
                 DocumentEnum.DocumentFormat docType = DocumentEnum.DocumentFormat.getDocType(fileExtension);
 
-                if(docType != DocumentEnum.DocumentFormat.OTHER) {
+                if (docType != DocumentEnum.DocumentFormat.OTHER) {
                     documentDTO.setContent(extractTextFromFile(file.getInputStream()));
                 } else {
                     documentDTO.setContent(null);
                 }
-                if(file.getSize() < 1048576 && docType != DocumentEnum.DocumentFormat.MS_DOC
+                if (file.getSize() < 1048576 && docType != DocumentEnum.DocumentFormat.MS_DOC
                         && docType != DocumentEnum.DocumentFormat.OTHER && docType != DocumentEnum.DocumentFormat.AUDIO) {
                     id = documentService.addFile(file);
                 } else {
@@ -466,11 +465,11 @@ public class LecturerController {
             return "redirect:lecturer/documents/update?error";
         } else {
             model.addAttribute("document", document);
-            if(document.getTopic() != null) {
+            if (document.getTopic() != null) {
                 model.addAttribute("resourceTypes", document.getTopic().getCourse().getResourceTypes());
                 model.addAttribute("topics", document.getTopic());
             }
-            if(document.getFileName() != null) {
+            if (document.getFileName() != null) {
                 model.addAttribute("file", document.getFileName());
             }
             return "lecturer/document/lecturer_update-document";
@@ -479,7 +478,7 @@ public class LecturerController {
 
     @PostMapping("/documents/update")
     public String updateDocument(@ModelAttribute DocumentDto document,
-                                 @RequestParam(value = "deleteCurrentFile",  required = false) String deleteCurrentFile,
+                                 @RequestParam(value = "deleteCurrentFile", required = false) String deleteCurrentFile,
                                  @RequestParam(value = "file", required = false) MultipartFile file) throws IOException, TikaException, SAXException {
         Document checkExist = documentService.findById(document.getId());
         if (null == checkExist) {
@@ -489,22 +488,22 @@ public class LecturerController {
             checkExist.setDescription(document.getDescription());
             String id = "fileNotFound";
             String message = "";
-            if(checkExist.isDisplayWithFile() == false){
+            if (checkExist.isDisplayWithFile() == false) {
                 checkExist.setEditorContent(document.getEditorContent());
                 checkExist.setContent(convertToPlainText(document.getEditorContent()));
                 documentService.updateDocument(checkExist, null, id);
             } else {
                 if (file != null && !file.isEmpty() && file.getSize() < 104857600) {
-                    String filename = System.currentTimeMillis() + "_" +file.getOriginalFilename();
+                    String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
                     String fileExtension = StringUtils.getFilenameExtension(filename);
                     DocumentEnum.DocumentFormat docType = DocumentEnum.DocumentFormat.getDocType(fileExtension);
                     checkExist.setFileName(file.getOriginalFilename());
-                    if(docType != DocumentEnum.DocumentFormat.OTHER) {
+                    if (docType != DocumentEnum.DocumentFormat.OTHER) {
                         checkExist.setContent(extractTextFromFile(file.getInputStream()));
                     } else {
                         checkExist.setContent(null);
                     }
-                    if(file.getSize() < 1048576  && docType != DocumentEnum.DocumentFormat.MS_DOC
+                    if (file.getSize() < 1048576 && docType != DocumentEnum.DocumentFormat.MS_DOC
                             && docType != DocumentEnum.DocumentFormat.OTHER && docType != DocumentEnum.DocumentFormat.AUDIO) {
                         checkExist.setCloudFileLink(null);
                         id = documentService.addFile(file);
@@ -523,7 +522,7 @@ public class LecturerController {
                         }
                     }
                 }
-                if(checkExist.getCloudFileLink() != null && checkExist.getContentId() == null) {
+                if (checkExist.getCloudFileLink() != null && checkExist.getContentId() == null) {
                     storageService.deleteFile(checkExist.getFileName());
                     documentService.updateDocument(checkExist, null, id);
                 } else {
