@@ -1,3 +1,7 @@
+function sendMessage(aId, type, questionContent) {
+    stompClient.send('/app/reply', {}, JSON.stringify({answerId: aId, type: type, sendContent: questionContent}));
+}
+
 function submitFormReplyQuestion(param) {
     var content = $('#new-reply-content-' + param).val();
     var trimmedString = $.trim(content);
@@ -22,6 +26,7 @@ function submitFormReplyQuestion(param) {
                 $('#exist-reply-form-button-' + param).css("display", "inline");
                 $('#sending-reply-' + param).css("display", "none");
                 $('#reply-form' + param).css("display", "none");
+                sendMessage(data.answerId, "2", data.answerContent);
                 var html = "";
                 if (data.studentName == null) {
                     html = "<div class=\"reply-content border-bottom\"  id=\"" + data.answerId + "\">\n" +
@@ -149,10 +154,8 @@ function viewMoreReply(param) {
 
 
 function submitFormEditReply(param) {
-    console.log(param)
     var content = $('#update-reply-content-' + param).val();
     var trimmedString = $.trim(content);
-    console.log(content);
     if (trimmedString == '') {
         $('#update-reply-error' + param).addClass('error');
     } else {
@@ -166,7 +169,6 @@ function submitFormEditReply(param) {
             data: {'answerContent': content},
             dataType: 'json',
             success: function (data) {
-                console.log(data.answerContent);
                 $("#update-reply" + param).css("display", "none");
                 $("#update-reply-content-" + param).val(data.answerContent);
                 $("#reply-content-" + param).html(data.answerContent);

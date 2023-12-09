@@ -15,8 +15,10 @@ public class NotificationDto {
     @Id
     private String id;
     private String questionId;
+    private String answerId;
+    private String feedbackId;
     private String from;
-    private String questionContent;
+    private String sendContent;
     private String type;
     private String to;
     private String link;

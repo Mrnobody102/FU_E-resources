@@ -58,18 +58,18 @@ public class Notification {
         this.fromAccount = notificationDto.getFrom();
         this.toAccount = notificationDto.getTo();
         this.notificationType = NotificationEnum.NotificationType.getType(notificationDto.getType());
-        this.content = notificationDto.getQuestionContent();
-        if (NotificationEnum.NotificationType.getType(notificationDto.getType())
-                == NotificationEnum.NotificationType.ASSIGN_LECTURER_TO_COURSE
-                || NotificationEnum.NotificationType.getType(notificationDto.getType())
-                == NotificationEnum.NotificationType.REMOVE_LECTURER_FROM_COURSE) {
-            this.course = notificationDto.getCourse();
-            this.notificationContent = notificationDto.getFrom()
-                    + NotificationEnum.NotificationType.getStringType(notificationDto.getType())
-                    + notificationDto.getCourse().getCourseCode();
-        }
+        this.content = notificationDto.getSendContent();
+//        if (NotificationEnum.NotificationType.getType(notificationDto.getType())
+//                == NotificationEnum.NotificationType.ASSIGN_LECTURER_TO_COURSE
+//                || NotificationEnum.NotificationType.getType(notificationDto.getType())
+//                == NotificationEnum.NotificationType.REMOVE_LECTURER_FROM_COURSE) {
+//            this.course = notificationDto.getCourse();
+//            this.notificationContent = notificationDto.getFrom()
+//                    + NotificationEnum.NotificationType.getStringType(notificationDto.getType())
+//                    + notificationDto.getCourse().getCourseCode();
+//        }
         if (NotificationEnum.NotificationType.getType(notificationDto.getType()) == NotificationEnum.NotificationType.STUDENT_ASK_ON_DOCUMENT
-                || NotificationEnum.NotificationType.getType(notificationDto.getType()) == NotificationEnum.NotificationType.LECTURER_ANSWER_ON_DOCUMENT) {
+                || NotificationEnum.NotificationType.getType(notificationDto.getType()) == NotificationEnum.NotificationType.LECTURER_REPLY_ON_DOCUMENT) {
             this.document = notificationDto.getDocument();
             // question
             this.notificationContent = notificationDto.getFrom()

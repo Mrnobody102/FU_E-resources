@@ -584,7 +584,7 @@ li {
 }
 
 .manager_right-side_element {
-    width: 60%;
+    width: 60% !important;
 }
 
 .a-link {
