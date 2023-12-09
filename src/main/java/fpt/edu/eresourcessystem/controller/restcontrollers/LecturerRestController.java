@@ -5,6 +5,7 @@ import fpt.edu.eresourcessystem.dto.AnswerDto;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
+import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.dto.Response.AnswerResponseDto;
@@ -38,11 +39,24 @@ public class LecturerRestController {
     private final AccountService accountService;
     private final UserLogService userLogService;
     private final ImageService imageService;
+    private final CourseLogService courseLogService;
 
     private UserLog addUserLog(String url) {
         UserLog userLog = new UserLog(new UserLogDto(url, getLoggedInLecturer().getAccount().getEmail(), AccountEnum.Role.LECTURER));
         userLog = userLogService.addUserLog(userLog);
         return userLog;
+    }
+
+    private void addCourseLog(Course course,
+                              CourseEnum.LecturerAction action,
+                              CourseEnum.CourseObject object,
+                              String objectId,
+                              String objectName,
+                              String email,
+                              String oldContent,
+                              String newContent){
+        CourseLog courseLog = new CourseLog(course,action,object,objectId,objectName,email,oldContent,newContent);
+        courseLogService.addCourseLog(courseLog);
     }
 
     public Lecturer getLoggedInLecturer() {
@@ -74,6 +88,15 @@ public class LecturerRestController {
             questionService.updateQuestion(question);
             // add log
             addUserLog("/api/lecturer/answers/add/" + answer.getId());
+
+            //add course log
+            addCourseLog(document.getTopic().getCourse(),
+                    CourseEnum.LecturerAction.UPDATE,
+                    CourseEnum.CourseObject.DOCUMENT,
+                    document.getId(),
+                    document.getTitle(),
+                    getLoggedInLecturer().getAccount().getEmail(),
+                    null, null);
             AnswerResponseDto answerResponseDTO = new AnswerResponseDto(answer);
             return new ResponseEntity<>(answerResponseDTO, HttpStatus.OK);
         } else {
