@@ -1,13 +1,11 @@
 package fpt.edu.eresourcessystem.controller;
 
 
-import fpt.edu.eresourcessystem.dto.Response.LecturerDto;
+import fpt.edu.eresourcessystem.dto.Response.CourseLogResponseDto;
 import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
 import fpt.edu.eresourcessystem.dto.CourseDto;
 import fpt.edu.eresourcessystem.dto.AccountDto;
-import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
-import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
@@ -16,11 +14,8 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
-import lombok.AllArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,12 +25,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
 import static fpt.edu.eresourcessystem.constants.Constants.VERIFICATION_CODE;
@@ -54,6 +46,7 @@ public class LibrarianController {
     private final CourseService courseService;
     private final LecturerCourseService lecturerCourseService;
     private final TrainingTypeService trainingTypeService;
+    private final  CourseLogService courseLogService;
 
     @Autowired
     private final EmailService emailService;
@@ -588,6 +581,8 @@ public class LibrarianController {
 
     @GetMapping({"/courses_report"})
     public String getCoursesLog(final Model model) {
+        List<CourseLogResponseDto> listCourseLog = courseLogService.findAllSortedByCreatedDate();
+        model.addAttribute("listCourseLog", listCourseLog);
         return "librarian/course/librarian_courses-report";
     }
 

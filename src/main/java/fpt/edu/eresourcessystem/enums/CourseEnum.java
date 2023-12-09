@@ -52,7 +52,7 @@ public class CourseEnum {
         COURSE("course"),
         TOPIC("topic"),
         RESOURCE_TYPE("resource_type"),
-        DOCUMENT("add"),
+        DOCUMENT("document"),
         ANSWER("answer");
         private final String displayValue;
 

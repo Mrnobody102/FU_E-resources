@@ -1,6 +1,8 @@
 package fpt.edu.eresourcessystem.service;
 
+import fpt.edu.eresourcessystem.dto.Response.CourseLogResponseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
+import fpt.edu.eresourcessystem.model.Account;
 import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.CourseLog;
 import fpt.edu.eresourcessystem.repository.CourseLogRepository;
@@ -38,14 +40,20 @@ public class CourseLogServiceImpl implements CourseLogService{
     }
 
     @Override
+    public List<CourseLogResponseDto> findAllSortedByCreatedDate() {
+        Sort sortByCreatedDate = Sort.by(Sort.Direction.DESC, "createdDate");
+        List<CourseLogResponseDto> courseLogResponseDtos  = courseLogRepository.findAll(sortByCreatedDate).stream().map(o -> new CourseLogResponseDto(o)).toList();
+        return courseLogResponseDtos;
+    }
+
+    @Override
     public void deleteCourseLog(CourseLog courseLog) {
         courseLogRepository.delete(courseLog);
     }
 
     @Override
-    public List<String> findLecturerRecentView(String email) {
+    public List<String> findByLecturer(String email) {
         Criteria criteria = new Criteria();
-
         // Sort by the "time" in descending order to get the most recent documents
         criteria.and("createdDate").exists(true); // Ensure "time" field exists
 //        criteria.and("action").is(CommonEnum.Action.VIEW);

@@ -98,6 +98,7 @@
                             <tr class="n8">
                                 <th>STT</th>
                                 <th>Course Code</th>
+                                <th>Course Name</th>
                                 <th>Email</th>
                                 <th>Action</th>
                                 <th>Time</th>
@@ -105,14 +106,16 @@
                                 <th></th>
 
                             </tr>
-                            <th:block >
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                            <th:block>
+                                <tr th:each="courseLog, iterStat : ${listCourseLog}">
+                                    <td th:text="${iterStat.index+1}">1</td>
+                                    <td><a th:href="@{'/librarian/courses/' + ${courseLog.getCourseId()}}"
+                                           th:text="${courseLog.getCourseCode()}"></a></td>
+                                    <td><a th:href="@{'/librarian/courses/' + ${courseLog.getCourseId()}}"
+                                           th:text="${courseLog.getCourseName()}"></a></td>
+                                    <td><p th:text="${courseLog.getEmail()}"></p></td>
+                                    <td><p th:text="${courseLog.getAction()} + ' ' + ${courseLog.getObjectType()} + ' '+ ${courseLog.objectName}"></p></td>
+                                    <td><p th:text="${courseLog.getCreatedDate()}"></p></td>
                                 </tr>
                             </th:block>
                         </table>
