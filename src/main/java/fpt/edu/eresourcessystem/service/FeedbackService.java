@@ -17,7 +17,6 @@ public interface FeedbackService {
 
      Optional<Feedback> getFeedbackById(String id) ;
 
-     Feedback updateFeedback(String id, Feedback feedbackDetails) ;
      void deleteFeedback(String id);
 
     Page<Feedback> findAll(PageRequest pageRequest);

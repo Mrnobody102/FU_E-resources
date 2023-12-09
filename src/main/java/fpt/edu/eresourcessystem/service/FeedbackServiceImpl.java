@@ -6,7 +6,7 @@ import fpt.edu.eresourcessystem.repository.FeedbackRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.ResourceNotFoundException;
+//import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,15 +39,6 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackRepository.findById(id);
     }
 
-    // Update feedback entry
-    public Feedback updateFeedback(String id, Feedback feedbackDetails) {
-        return feedbackRepository.findById(id)
-                .map(feedback -> {
-                    // Update the feedback properties here
-                    // For example: feedback.setContent(feedbackDetails.getContent());
-                    return feedbackRepository.save(feedback);
-                }).orElseThrow(() -> new ResourceNotFoundException("Feedback not found with id " + id));
-    }
 
     // Delete a feedback entry
     public void deleteFeedback(String id) {

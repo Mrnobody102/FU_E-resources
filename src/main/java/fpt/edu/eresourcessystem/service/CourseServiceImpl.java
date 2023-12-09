@@ -362,7 +362,7 @@ public class CourseServiceImpl implements CourseService{
     public Course updateLectureId(String courseId, Lecturer newLecture) {
         Optional<Course> courseOptional = courseRepository.findById(courseId);
 
-        if (courseOptional.isPresent() &&  courseOptional.get().getLecturer().getId() == null) {
+        if (courseOptional.isPresent() ) {
             Course course = courseOptional.get();
             course.setLecturer(newLecture);
             course.setStatus(CourseEnum.Status.NEW);

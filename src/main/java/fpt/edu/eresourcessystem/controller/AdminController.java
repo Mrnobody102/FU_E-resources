@@ -14,7 +14,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.elasticsearch.ResourceNotFoundException;
+//import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -398,9 +398,12 @@ public class AdminController {
 
     @GetMapping("/feedbacks/{id}")
     public String showFeedbackDetail(@PathVariable("id") String id, Model model) {
-        Feedback feedback = feedbackService.getFeedbackById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Feedback not found for this id :: " + id));
-        model.addAttribute("feedback", feedback);
+        Optional<Feedback> feedback = feedbackService.getFeedbackById(id);
+//                .orElseThrow(() -> new ResourceNotFoundException("Feedback not found for this id :: " + id));
+
+        Feedback feedback1 = feedback.get();
+
+        model.addAttribute("feedback", feedback1);
         return "admin/feedback/admin_feedback-detail"; // Name of your Thymeleaf template for feedback detail
     }
 

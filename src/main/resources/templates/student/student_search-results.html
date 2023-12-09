@@ -278,6 +278,50 @@
             var highlightedText = highlightedLines.join("\n");
             contentElement.innerHTML = highlightedText;
         }
+
+        // thêm
+
+        var keywords = searchKeyword.split(' ');
+
+        // Tạo RegExp để highlight từng từ
+        var regexString = keywords.map(function(keyword) {
+            return keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escape special characters
+        }).join('|');
+
+        var regex = new RegExp(regexString, "gi");
+
+        // Các vòng lặp như trước đây, nhưng sử dụng regex mới
+        // Ví dụ cho titleElements
+        for (var i = 0; i < titleElements.length; i++) {
+            var titleElement = titleElements[i];
+            var highlightedTitle = titleElement.textContent.replace(regex, "<span class='highlight'>$&</span>");
+            titleElement.innerHTML = highlightedTitle;
+        }
+
+        // Đối với descriptionElements
+        for (var i = 0; i < descriptionElements.length; i++) {
+            var descriptionElement = descriptionElements[i];
+            var lines = descriptionElement.textContent.split("\n");
+            var highlightedLines = lines.map(function(line) {
+                return line.replace(regex, "<span class='highlight'>$&</span>");
+            });
+
+            var highlightedText = highlightedLines.join("\n");
+            descriptionElement.innerHTML = highlightedText;
+        }
+
+// Đối với contentElements
+        for (var i = 0; i < contentElements.length; i++) {
+            var contentElement = contentElements[i];
+            var lines = contentElement.textContent.split("\n");
+            var highlightedLines = lines.map(function(line) {
+                return line.replace(regex, "<span class='highlight'>$&</span>");
+            });
+
+            var highlightedText = highlightedLines.join("\n");
+            contentElement.innerHTML = highlightedText;
+        }
+
     }
 </script>
 </body>
