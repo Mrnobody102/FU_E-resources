@@ -95,11 +95,11 @@
 }
 
 .lib_textarea {
-        /*width: 100%;*/
-        min-height: 100px;
-        font-size: 1.3rem;
-        resize: none;
-        overflow-y: hidden;
+    /*width: 100%;*/
+    min-height: 100px;
+    font-size: 1.3rem;
+    resize: none;
+    overflow-y: hidden;
     width: 800px;
 }
 
@@ -152,16 +152,19 @@
     cursor: pointer;
 }
 
-#2{
+#2 {
     margin-left: 12px;
 }
-::placeholder{
+
+::placeholder {
     font-size: 1.4rem;
 }
-.d-flex.justify-content-center{
+
+.d-flex.justify-content-center {
     margin-top: 20px;
 }
-.d-flex.justify-content-between{
+
+.d-flex.justify-content-between {
     margin-top: 10px;
 }
 
@@ -174,5 +177,139 @@ label.error {
 }
 
 .a-link {
-    color:var(--link-color) ;
+    color: var(--link-color);
+}
+
+/* Style for the export form container */
+.export-form-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 30%;
+    min-width: 150px;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+/* Style for the export form labels and inputs */
+.export-form label, .export-form input {
+    margin-bottom: 10px;
+}
+
+/* Style for the export form checkbox and label */
+.export-form input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+#exportButton {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.div-export {
+    text-align: right;
+}
+
+.paginate_button {
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 1.5em;
+    padding: 0.5em 1em;
+    margin-left: 2px;
+    text-align: center;
+    text-decoration: none !important;
+    cursor: pointer;
+    *cursor: hand;
+    color: #333 !important;
+    border: 1px solid transparent;
+    border-radius: 2px;
+}
+
+.paginate_button.current,.paginate_button.current:hover {
+    color: #333 !important;
+    border: 1px solid #979797;
+    background-color: white;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #dcdcdc));
+    background: -webkit-linear-gradient(top, white 0%, #dcdcdc 100%);
+    background: -moz-linear-gradient(top, white 0%, #dcdcdc 100%);
+    background: -ms-linear-gradient(top, white 0%, #dcdcdc 100%);
+    background: -o-linear-gradient(top, white 0%, #dcdcdc 100%);
+    background: linear-gradient(to bottom, white 0%, #dcdcdc 100%)
+}
+
+.paginate_button.disabled:active {
+    cursor: default;
+    color: #666 !important;
+    border: 1px solid transparent;
+    background: transparent;
+    box-shadow: none
+}
+
+.paginate_button:hover {
+    color: white !important;
+    border: 1px solid #111;
+    background-color: #585858;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+    background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+    background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+    background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+    background: -o-linear-gradient(top, #585858 0%, #111 100%);
+    background: linear-gradient(to bottom, #585858 0%, #111 100%)
+}
+
+.paginate_button:hover {
+    color: white !important;
+    border: 1px solid #111;
+    background-color: #585858;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+    background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+    background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+    background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+    background: -o-linear-gradient(top, #585858 0%, #111 100%);
+    background: linear-gradient(to bottom, #585858 0%, #111 100%)
+}
+
+.paginate_button:active {
+    outline: none;
+    background-color: #2b2b2b;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2b2b2b), color-stop(100%, #0c0c0c));
+    background: -webkit-linear-gradient(top, #2b2b2b 0%, #0c0c0c 100%);
+    background: -moz-linear-gradient(top, #2b2b2b 0%, #0c0c0c 100%);
+    background: -ms-linear-gradient(top, #2b2b2b 0%, #0c0c0c 100%);
+    background: -o-linear-gradient(top, #2b2b2b 0%, #0c0c0c 100%);
+    background: linear-gradient(to bottom, #2b2b2b 0%, #0c0c0c 100%);
+    box-shadow: inset 0 0 3px #111
+}
+
+.paginate_button.disabled:hover,.paginate_button.disabled:active {
+    cursor: default;
+    color: #666 !important;
+    border: 1px solid transparent;
+    background: transparent;
+    box-shadow: none
+}
+
+.form-chose-export-type input{
+    font-size: var(--font-medium);
+}
+
+.form-chose-export-type label{
+    margin-left: 1.5rem;
+    /*border-radius: 0.22rem;*/
+    /*padding: 1rem 1.5rem;*/
+    /*border: 1px solid #888888;*/
+    font-size: var(--font-medium);
+}
+
+.form-chose-export-type input:checked + label{
+    /*color: white;*/
+    color: var(--checked-background-color);
+    text-shadow: 0 0 2px #9babfc;
+}
+.form-chose-export-type button{
+    margin-left: 1rem;
 }

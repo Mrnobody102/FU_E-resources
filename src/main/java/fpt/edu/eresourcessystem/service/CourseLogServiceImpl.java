@@ -7,18 +7,21 @@ import fpt.edu.eresourcessystem.model.Course;
 import fpt.edu.eresourcessystem.model.CourseLog;
 import fpt.edu.eresourcessystem.repository.CourseLogRepository;
 import org.bson.types.ObjectId;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @Service("courseLogService")
-public class CourseLogServiceImpl implements CourseLogService{
+public class CourseLogServiceImpl implements CourseLogService {
     private final CourseLogRepository courseLogRepository;
     private final MongoTemplate mongoTemplate;
 
@@ -29,20 +32,20 @@ public class CourseLogServiceImpl implements CourseLogService{
 
     @Override
     public CourseLog addCourseLog(CourseLog courseLog) {
-        if(null == courseLog){
+        if (null == courseLog) {
             return null;
         }
-        if(null == courseLog.getCreatedDate()){
+        if (null == courseLog.getCreatedDate()) {
             courseLog.setCreatedBy(LocalDateTime.now().toString());
         }
-        CourseLog result =  courseLogRepository.save(courseLog);
+        CourseLog result = courseLogRepository.save(courseLog);
         return result;
     }
 
     @Override
     public List<CourseLogResponseDto> findAllSortedByCreatedDate() {
         Sort sortByCreatedDate = Sort.by(Sort.Direction.DESC, "createdDate");
-        List<CourseLogResponseDto> courseLogResponseDtos  = courseLogRepository.findAll(sortByCreatedDate).stream().map(o -> new CourseLogResponseDto(o)).toList();
+        List<CourseLogResponseDto> courseLogResponseDtos = courseLogRepository.findAll(sortByCreatedDate).stream().map(o -> new CourseLogResponseDto(o)).toList();
         return courseLogResponseDtos;
     }
 
@@ -62,7 +65,7 @@ public class CourseLogServiceImpl implements CourseLogService{
         // Use a Pageable to limit the result set to 5 documents
         PageRequest pageable = PageRequest.of(0, 5);
         query.with(pageable);
-        return mongoTemplate.findDistinct(query,"courseId", CourseLog.class, String.class);
+        return mongoTemplate.findDistinct(query, "courseId", CourseLog.class, String.class);
     }
 
     @Override
@@ -75,4 +78,58 @@ public class CourseLogServiceImpl implements CourseLogService{
         return mongoTemplate.find(query, CourseLog.class);
     }
 
+    @Override
+    public Page<CourseLog> getLogsBySearchAndDate(String search, LocalDate startDate, LocalDate endDate, int pageIndex, int pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex, pageSize);
+        Criteria criteria = new Criteria();
+
+        // Match on email, coursename, courseCode, or objectName containing the search string
+        criteria.orOperator(
+                Criteria.where("email").regex(search, "i"),
+                Criteria.where("courseName").regex(search, "i"),
+                Criteria.where("courseCode").regex(search, "i"),
+                Criteria.where("objectName").regex(search, "i")
+        );
+
+        // Match on createdDate greater than or equal to start date and less than or equal to end date
+        if (startDate != null && endDate != null) {
+            // Convert java.util.Date to LocalDateTime
+            criteria.and("createdDate").gte(startDate).lte(endDate);
+        } else if (startDate != null) {
+            criteria.and("createdDate").gte(startDate);
+        } else if (endDate != null) {
+            criteria.and("createdDate").lte(endDate);
+        }
+
+
+        Query query = new Query(criteria).with(pageable);
+        List<CourseLog> result = mongoTemplate.find(query, CourseLog.class, "course_log");
+
+        // Fetch total count without pagination
+        long totalCount = mongoTemplate.count(new Query(criteria), CourseLog.class, "course_log");
+
+        return new PageImpl<>(result, pageable, totalCount);
+        //        return courseLogRepository
+//                .findByEmailLikeAndCourseNameLikeAndCourseCodeLikeAndCreatedDateBetween
+//                        (search, search,search, startDate,endDate, pageable);
+    }
+
+    @Override
+    public List<CourseLog> getLogsBySearchAndDateListAll(String search, LocalDate startDate, LocalDate endDate) {
+        Criteria criteria = new Criteria();
+
+        // Match on email, coursename, courseCode, or objectName containing the search string
+        criteria.orOperator(
+                Criteria.where("email").regex(search, "i"),
+                Criteria.where("courseName").regex(search, "i"),
+                Criteria.where("courseCode").regex(search, "i"),
+                Criteria.where("objectName").regex(search, "i")
+        );
+        Query query = new Query(criteria);
+        List<CourseLog> result = mongoTemplate.find(query, CourseLog.class, "course_log");
+        return result;
+    }
+
 }
+
+

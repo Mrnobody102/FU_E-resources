@@ -1,7 +1,6 @@
 package fpt.edu.eresourcessystem.controller;
 
 
-import fpt.edu.eresourcessystem.dto.Response.CourseLogResponseDto;
 import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
 import fpt.edu.eresourcessystem.dto.CourseDto;
 import fpt.edu.eresourcessystem.dto.AccountDto;
@@ -10,12 +9,15 @@ import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
+import fpt.edu.eresourcessystem.utils.ExportFileExcelUtil;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,13 +26,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
 import static fpt.edu.eresourcessystem.constants.Constants.VERIFICATION_CODE;
@@ -50,6 +52,8 @@ public class LibrarianController {
     private final LecturerCourseService lecturerCourseService;
     private final TrainingTypeService trainingTypeService;
     private final  CourseLogService courseLogService;
+
+    private final ExportFileExcelUtil excelExporter;
 
     @Autowired
     private final EmailService emailService;
@@ -582,11 +586,65 @@ public class LibrarianController {
         return "redirect:/lecturer";
     }
 
-    @GetMapping({"/courses_report"})
-    public String getCoursesLog(final Model model) {
-        List<CourseLogResponseDto> listCourseLog = courseLogService.findAllSortedByCreatedDate();
-        model.addAttribute("listCourseLog", listCourseLog);
+//    @GetMapping({"/courses_report"})
+//    public String getCoursesLog(final Model model) {
+//        List<CourseLogResponseDto> listCourseLog = courseLogService.findAllSortedByCreatedDate();
+//        model.addAttribute("listCourseLog", listCourseLog);
+//        return "librarian/course/librarian_courses-report";
+//    }
+
+    @GetMapping("/courses_report")
+    public String viewCourseLogs(
+            @RequestParam(name = "search", required = false,defaultValue = "") String search,
+            @RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-mm-dd") LocalDate startDate,
+            @RequestParam(name = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-mm-dd")  LocalDate endDate,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue =  "10") int size,
+            Model model
+    ) {
+        Page<CourseLog> listCourseLog = courseLogService
+                .getLogsBySearchAndDate(search, startDate, endDate, page, size);
+
+        model.addAttribute("listCourseLog", listCourseLog.getContent());
+        model.addAttribute("currentPage", listCourseLog.getNumber());
+        model.addAttribute("totalPages", listCourseLog.getTotalPages());
+        model.addAttribute("totalItems", listCourseLog.getTotalElements());
+        model.addAttribute("search", search);
+        System.out.println(listCourseLog.getTotalPages());
+        if(null!=startDate){
+            model.addAttribute("startDate", startDate);
+        }
+        if(null!=endDate){
+        model.addAttribute("endDate", endDate);
+        }
+
+        model.addAttribute("size", size);
         return "librarian/course/librarian_courses-report";
+    }
+
+    @GetMapping("/export-course-logs")
+    public void exportCourseLogs(HttpServletResponse response,
+                                 @RequestParam(name = "search", required = false) String search,
+                                 @RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-mm-dd")  LocalDate startDate,
+                                 @RequestParam(name = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-mm-dd")  LocalDate endDate,
+                                 @RequestParam(name = "page", defaultValue = "0") int page,
+                                 @RequestParam(name = "size", defaultValue = "10") int size,
+                                 @RequestParam(name = "exportAll", defaultValue = "current") String exportAll) throws IOException {
+        if ("all".equals(exportAll)) {
+            Page<CourseLog> logs = courseLogService.getLogsBySearchAndDate(search, startDate, endDate, page, size);
+            response.setContentType("application/octet-stream");
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename=course_logs.xlsx";
+            response.setHeader(headerKey, headerValue);
+            excelExporter.export(response.getOutputStream(), logs.getContent());
+        }else {
+            List<CourseLog> logs = courseLogService.getLogsBySearchAndDateListAll(search, startDate, endDate);
+            response.setContentType("application/octet-stream");
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename=course_logs.xlsx";
+            response.setHeader(headerKey, headerValue);
+            excelExporter.export(response.getOutputStream(), logs);
+        }
     }
 
 }
