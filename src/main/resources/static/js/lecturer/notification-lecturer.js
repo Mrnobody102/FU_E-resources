@@ -76,8 +76,7 @@ function onConnected() {
             " <i class='fa-solid fa-paper-plane'></i>Send</button>" +
             " </div>" +
             " </form>" +
-            " </div>" + " </div>\n";
-        ;
+            " </div>" + " </div>\n";;
 
         $("#lecturer-questions").prepend(html);
     });
@@ -95,12 +94,14 @@ var notificationDisplay = 0;
 function getNotifications(param) {
     if (notificationDisplay === 0) {
         if (numberChange === -1 || numberChange !== notificationCount) {
+            console.log(numberChange)
             $('#notificationBoxLecturer').show();
             $.ajax({
                 type: 'GET',
                 url: '/api/notification/' + param,
                 dataType: 'json',
                 success: function (data) {
+                    console.log(data)
                     var ul = $('.header__notify-list');
                     ul.empty();
                     data.forEach(function (notification) {
@@ -118,7 +119,6 @@ function getNotifications(param) {
                         li.append(a);
                         ul.append(li);
                     });
-
                     notificationDisplay++;
                     numberChange = notificationCount;
                 },
