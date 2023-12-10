@@ -11,6 +11,7 @@ import fpt.edu.eresourcessystem.service.s3.StorageService;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.tika.exception.TikaException;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,6 +52,7 @@ public class LecturerController {
     private final FeedbackService feedbackService;
     private final StorageService storageService;
     private final CourseLogService courseLogService;
+    private final MultiFileService multiFileService;
 
     private Lecturer getLoggedInLecturer() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -63,14 +66,14 @@ public class LecturerController {
     }
 
     private void addCourseLog(Course course,
-                                   CourseEnum.LecturerAction action,
-                                   CourseEnum.CourseObject object,
-                                   String objectId,
-                                   String objectName,
-                                   String email,
-                                   String oldContent,
-                                   String newContent){
-        CourseLog courseLog = new CourseLog(course,action,object,objectId,objectName,email,oldContent,newContent);
+                              CourseEnum.LecturerAction action,
+                              CourseEnum.CourseObject object,
+                              String objectId,
+                              String objectName,
+                              String email,
+                              String oldContent,
+                              String newContent) {
+        CourseLog courseLog = new CourseLog(course, action, object, objectId, objectName, email, oldContent, newContent);
         courseLogService.addCourseLog(courseLog);
     }
 
@@ -328,7 +331,7 @@ public class LecturerController {
         if (null != checkResourceTypeExist) {
             String oldContent = resourcetype.getResourceTypeName();
             checkResourceTypeExist.setResourceTypeName(resourcetype.getResourceTypeName());
-            checkResourceTypeExist =  resourceTypeService.updateResourceType(checkResourceTypeExist);
+            checkResourceTypeExist = resourceTypeService.updateResourceType(checkResourceTypeExist);
             //add course log
             addCourseLog(resourcetype.getCourse(),
                     CourseEnum.LecturerAction.UPDATE,
@@ -464,7 +467,8 @@ public class LecturerController {
     public String addDocumentProcess(@ModelAttribute DocumentDto documentDTO,
                                      @RequestParam(value = "topicId") String topicId,
                                      @RequestParam(value = "respondResourceType") String respondResourceType,
-                                     @RequestParam(value = "file", required = false) MultipartFile file) throws IOException, TikaException, SAXException {
+                                     @RequestParam(value = "file", required = false) MultipartFile file,
+                                     @RequestParam(value = "files", required = false) MultipartFile[] files) throws IOException, TikaException, SAXException {
         // set topic vào document
         Topic topic = topicService.findById(topicId);
         documentDTO.setTopic(topic);
@@ -526,6 +530,33 @@ public class LecturerController {
         } else {
             documentDTO.setContent(convertToPlainText(documentDTO.getEditorContent()));
         }
+
+        List<MultiFile> multiFiles = new ArrayList<>();
+        // Check if files were uploaded
+        if (files != null && files.length > 0) {
+            for (MultipartFile supportFile : files) {
+                // Handle each uploaded file
+                if (!supportFile.isEmpty()) {
+                    try {
+
+                        // Get the original file name
+                        String originalFileName = supportFile.getOriginalFilename();
+                        // Generate a unique file name
+                        String uniqueFileName = System.currentTimeMillis() + "_" + FilenameUtils.getBaseName(originalFileName) + "." + FilenameUtils.getExtension(originalFileName);
+                        // Process the uploaded file as needed
+                        String link = storageService.uploadFile(supportFile);
+                        MultiFile multiFile = new MultiFile(uniqueFileName, link);
+                        MultiFile addedFile = multiFileService.addMultiFile(multiFile);
+                        multiFiles.add(addedFile);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // Handle any exceptions that occur during file upload
+                    }
+                }
+            }
+            documentDTO.setMultiFiles(multiFiles);
+        }
+
         Document document = documentService.addDocument(documentDTO, id);
 
         // Xử lý sau khi add document
@@ -568,7 +599,9 @@ public class LecturerController {
     @Transactional
     public String updateDocument(@ModelAttribute DocumentDto document,
                                  @RequestParam(value = "deleteCurrentFile", required = false) String deleteCurrentFile,
-                                 @RequestParam(value = "file", required = false) MultipartFile file) throws IOException, TikaException, SAXException {
+                                 @RequestParam(value = "file", required = false) MultipartFile file,
+                                @RequestParam(value = "files", required = false) MultipartFile[] files)
+                                throws IOException, TikaException, SAXException {
         Document checkExist = documentService.findById(document.getId());
         if (null == checkExist) {
             return "redirect:/lecturer/documents/" + document.getId() + "/update?error";
@@ -611,6 +644,31 @@ public class LecturerController {
                         }
                     }
                 }
+//                List<MultiFile> multiFiles = new ArrayList<>();
+//                // Check if files were uploaded
+//                if (files != null && files.length > 0) {
+//                    for (MultipartFile supportFile : files) {
+//                        // Handle each uploaded file
+//                        if (!supportFile.isEmpty()) {
+//                            try {
+//
+//                                // Get the original file name
+//                                String originalFileName = supportFile.getOriginalFilename();
+//                                // Generate a unique file name
+//                                String uniqueFileName = System.currentTimeMillis() + "_" + FilenameUtils.getBaseName(originalFileName) + "." + FilenameUtils.getExtension(originalFileName);
+//                                // Process the uploaded file as needed
+//                                String link = storageService.uploadFile(supportFile);
+//                                MultiFile multiFile = new MultiFile(uniqueFileName, link);
+//                                MultiFile addedFile = multiFileService.addMultiFile(multiFile);
+//                                multiFiles.add(addedFile);
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                                // Handle any exceptions that occur during file upload
+//                            }
+//                        }
+//                    }
+//                    documentDTO.setMultiFiles(multiFiles);
+//                }
                 if (checkExist.getCloudFileLink() != null && checkExist.getContentId() == null) {
                     storageService.deleteFile(checkExist.getFileName());
                     documentService.updateDocument(checkExist, null, id);
