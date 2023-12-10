@@ -35,13 +35,13 @@ public class NotificationController {
             Question question = questionService.findById(notificationDto.getQuestionId());
             notificationDto.setDocument(question.getDocumentId());
             notificationDto.setTo(question.getLecturer());
-            notificationDto.setLink("/lecturer/documents/" + question.getDocumentId().getId() + "#question");
+            notificationDto.setLink("/lecturer/documents/" + question.getDocumentId().getId() + "#" + question.getId());
         }
         if (notificationDto.getType().equals("3")) {
             Answer answer = answerService.findById(notificationDto.getAnswerId());
             notificationDto.setDocument(answer.getDocumentId());
             notificationDto.setTo(answer.getDocumentId().getCreatedBy());
-            notificationDto.setLink("/lecturer/documents/" + answer.getDocumentId().getId() + answer.getQuestion().getId());
+            notificationDto.setLink("/lecturer/documents/" + answer.getDocumentId().getId() + "#" + answer.getQuestion().getId());
         }
         Notification notification = notificationService.addNotification(notificationDto);
         NotificationResponseDto notificationResponseDto = new NotificationResponseDto(

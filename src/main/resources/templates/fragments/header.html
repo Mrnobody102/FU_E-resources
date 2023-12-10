@@ -14,7 +14,7 @@
                 </div>
             </a>
             <ul class="header__navbar-list grid__column-9">
-                <li class="header__navbar-item header__notify-appearance"
+                <li class="header__navbar-item header__notify-appearance d-none"
                     th:notification-email="${loggedInUser.email}"
                     onclick="getNotifications(this.getAttribute('notification-email'))">
                     <th:block th:unless="${notificationNumber == null}">
@@ -36,7 +36,7 @@
                                 <a href="" class="header__notify-footer-btn">See all</a>
                             </footer>
                         </div>
-                        <div th:if="${notificationNumber == null || notificationNumber eq '0'}">
+                        <div th:if="${notificationNumber == null}">
                             <div class="d-flex justify-content-center">
                                 No notifications
                             </div>
@@ -82,7 +82,7 @@
                 </div>
             </a>
             <ul class="header__navbar-list  grid__column-9">
-                <li class="header__navbar-item header__notify-appearance"
+                <li class="header__navbar-item header__notify-appearance d-none"
                     th:notification-email="${loggedInUser.email}"
                     onclick="getNotifications(this.getAttribute('notification-email'))">
                     <th:block th:unless="${notificationNumber == null}">
@@ -97,7 +97,7 @@
                         <header class="header__notify-header">
                             <h3>Received Notifications</h3>
                         </header>
-                        <div th:unless="${notificationNumber == null || notificationNumber eq '0'}">
+                        <div th:unless="${notificationNumber == null}">
                             <ul class="header__notify-list">
 
                             </ul>
@@ -105,7 +105,7 @@
                                 <a href="" class="header__notify-footer-btn">See all</a>
                             </footer>
                         </div>
-                        <div th:if="${notificationNumber == null || notificationNumber eq '0'}">
+                        <div th:if="${notificationNumber == null}">
                             <div class="d-flex justify-content-center">
                                 No notifications
                             </div>

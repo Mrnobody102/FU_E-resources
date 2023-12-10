@@ -35,7 +35,7 @@ var notificationDisplay = 0;
 function getStudentNotifications(param) {
     console.log(notificationDisplay)
     if (notificationDisplay === 0) {
-        if (numberChange === -1 || numberChange !== notificationCount) {
+        if (notificationNumber.innerText == "1" || numberChange !== notificationCount) {
             $('#notificationBoxStudent').show();
             $.ajax({
                 type: 'GET',
