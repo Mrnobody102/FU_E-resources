@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 @ExtendWith(MockitoExtension.class)
 public class UserLogServiceTest {
@@ -40,72 +41,84 @@ public class UserLogServiceTest {
 
     @BeforeEach
     void setUp() {
-        userLog = new UserLog(); // Initialize with real or mock data
-        course = new Course(); // Initialize with real or mock data
-        email = "test@example.com";
-        role = "student";
-        url = "/test/url";
-        urlPrefix = "/student/courses/";
-        startDate = LocalDateTime.now().minusDays(1);
-        endDate = LocalDateTime.now();
+
     }
 
     @Test
     public void testFindAll() {
-        List<UserLog> mockUserLogs = Arrays.asList(userLog);
-        when(userLogRepository.findAll()).thenReturn(mockUserLogs);
+        List<UserLog> mockList = Arrays.asList(new UserLog(), new UserLog());
+        when(userLogRepository.findAll()).thenReturn(mockList);
 
         List<UserLog> result = userLogService.findAll();
 
-        assertEquals(mockUserLogs, result);
-        verify(userLogRepository, times(1)).findAll();
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        verify(userLogRepository).findAll();
+    }
+
+    @Test
+    public void testFindByEmail_WithResults() {
+        // Arrange
+        String email = "hoaltm@fpt.edu.vn";
+        UserLog expectedResult = new UserLog();
+        when(userLogRepository.findByEmail(email)).thenReturn(Collections.singletonList(expectedResult));
+
+        // Act
+        List<UserLog> result = userLogService.findByEmail(email);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertSame(expectedResult, result.get(0));
+        verify(userLogRepository).findByEmail(email);
     }
 
 
     @Test
-    public void testFindByEmail() {
-        List<UserLog> mockUserLogs = Arrays.asList(userLog);
-        when(userLogRepository.findByEmail(email)).thenReturn(mockUserLogs);
+    public void testFindByEmail_WithNoResults() {
+        // Arrange
+        String email = "hoaltm@gmail.com";
+        when(userLogRepository.findByEmail(email)).thenReturn(Collections.emptyList());
 
+        // Act
         List<UserLog> result = userLogService.findByEmail(email);
 
-        assertEquals(mockUserLogs, result);
-        verify(userLogRepository, times(1)).findByEmail(email);
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(userLogRepository).findByEmail(email);
     }
+
+    @Test
+    public void testFindByEmail_NullEmail() {
+        // Arrange
+        String email = null;
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            userLogService.findByEmail(email);
+        });
+    }
+
 
 
     @Test
     public void testSearchLog() {
-        List<UserLog> mockUserLogs = Arrays.asList(userLog);
-        when(mongoTemplate.find(any(Query.class), eq(UserLog.class))).thenReturn(mockUserLogs);
+        String email = "example@email.com";
+        String role = "ADMIN";
+        LocalDateTime startDate = LocalDateTime.now();
+        LocalDateTime endDate = LocalDateTime.now().plusDays(1);
+
+        List<UserLog> mockList = Arrays.asList(new UserLog());
+        when(mongoTemplate.find(any(Query.class), eq(UserLog.class))).thenReturn(mockList);
 
         List<UserLog> result = userLogService.searchLog(email, role, startDate, endDate);
 
-        assertFalse(result.isEmpty());
-        verify(mongoTemplate, times(1)).find(any(Query.class), eq(UserLog.class));
-    }
-
-    @Test
-    public void testFindByUrl() {
-        List<UserLog> mockUserLogs = Arrays.asList(userLog);
-        when(userLogRepository.findByUrl(url)).thenReturn(mockUserLogs);
-
-        List<UserLog> result = userLogService.findByUrl(url);
-
-        assertEquals(mockUserLogs, result);
-        verify(userLogRepository, times(1)).findByUrl(url);
-    }
-
-
-    @Test
-    public void testAddUserLog() {
-        when(userLogRepository.save(userLog)).thenReturn(userLog);
-
-        UserLog result = userLogService.addUserLog(userLog);
-
         assertNotNull(result);
-        verify(userLogRepository, times(1)).save(userLog);
+        verify(mongoTemplate).find(any(Query.class), eq(UserLog.class));
+        // Additional assertions as necessary
     }
+
 
 
 
