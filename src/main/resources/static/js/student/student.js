@@ -242,7 +242,7 @@ $(document).ready(function () {
 
     $("body").on("click", ".save-doc", function () {
         var docId = $(this).attr("docId");
-        var loading = "<p><a th:attr=\"docId=${docId}\">\n" +
+        var loading = "<p><a docId=" + docId + ">" +
             "                                        <i class=\"fas fa-spinner fa-spin\"></i>\n" +
             "                                        Bookmarking</a></p>"
         $(".stu_save-doc-link").html(loading);
@@ -255,16 +255,14 @@ $(document).ready(function () {
                     "                                        <i class=\"fa-solid fa-bookmark\"></i>\n" +
                     "                                        Unbookmark</a>\n" +
                     "                                    </p>";
+
+                $(".stu_save-doc-link").html(saved);
+            },
+            error: function (errorData) {
                 var unsaved = "<p><a class=\"save-doc\" docId=" + docId + ">" +
                     "                                        <i class=\"fa-regular fa-bookmark\"></i>\n" +
                     "                                        Bookmark</a></p>";
-                if ('saved' == responseData) {
-                    $(".stu_save-doc-link").html(saved);
-                } else if (unsaved) {
-                    $(".stu_save-doc-link").html(unsaved);
-                }
-            },
-            error: function (errorData) {
+                $(".stu_save-doc-link").html(unsaved);
             }
         })
     });
@@ -279,22 +277,20 @@ $(document).ready(function () {
             url: '/api/student/documents/' + docId + '/unsaved_document',
             success: function (responseData) {
                 console.log(responseData);
-                var saved = "<p><a class=\"unsaved-doc\" docId=" + docId + ">" +
-                    "                                        <i class=\"fa-solid fa-bookmark\"></i>\n" +
-                    "                                        Unbookmark</a>\n" +
-                    "                                    </p>";
+
                 var unsaved = "<p><a class=\"save-doc\" docId=" + docId + ">" +
                     "                                        <i class=\"fa-regular fa-bookmark\"></i>\n" +
                     "                                        Bookmark</a></p>";
 
 
-                if ('saved' == responseData) {
-                    $(".stu_save-doc-link").html(saved);
-                } else if (unsaved) {
-                    $(".stu_save-doc-link").html(unsaved);
-                }
+                $(".stu_save-doc-link").html(unsaved);
             },
             error: function (errorData) {
+                var saved = "<p><a class=\"unsaved-doc\" docId=" + docId + ">" +
+                    "                                        <i class=\"fa-solid fa-bookmark\"></i>\n" +
+                    "                                        Unbookmark</a>\n" +
+                    "                                    </p>";
+                $(".stu_save-doc-link").html(saved);
             }
         })
     });
@@ -314,17 +310,14 @@ $(document).ready(function () {
                     "                                        <i class=\"fa-solid fa-bookmark\"></i>\n" +
                     "                                        Unbookmark</a>\n" +
                     "                                    </p>";
-                var unsaved = "<p><a class=\"save-course\" courseId=" + courseId + ">" +
-                    "                                        <i class=\"fa-regular fa-bookmark\"></i>\n" +
-                    "                                        Bookmark</a></p>";
-                if ('saved' == responseData) {
-                    $(".stu_save-course-link").html(saved);
-                } else if (unsaved) {
-                    $(".stu_save-course-link").html(unsaved);
-                }
+                $(".stu_save-course-link").html(saved);
             },
             error: function (errorData) {
                 console.log(errorData)
+                var unsaved = "<p><a class=\"save-course\" courseId=" + courseId + ">" +
+                    "                                        <i class=\"fa-regular fa-bookmark\"></i>\n" +
+                    "                                        Bookmark</a></p>";
+                $(".stu_save-course-link").html(unsaved);
             }
         })
     })
@@ -339,23 +332,19 @@ $(document).ready(function () {
             type: 'POST',
             url: '/api/student/courses/' + courseId + '/unsaved_course',
             success: function (responseData) {
-                console.log(responseData);
+                var unsaved = "<p><a class=\"save-course\" courseId=" + courseId + ">" +
+                    "                                        <i class=\"fa-regular fa-bookmark\"></i>\n" +
+                    "                                        Bookmark</a></p>";
+                $(".stu_save-course-link").html(unsaved);
+
+            },
+            error: function (errorData) {
                 var saved = "<p><a class=\"unsaved-course\" courseId=" + courseId + ">" +
                     "                                        <i class=\"fa-solid fa-bookmark\"></i>\n" +
                     "                                        Unbookmark</a>\n" +
                     "                                    </p>";
-                var unsaved = "<p><a class=\"save-course\" courseId=" + courseId + ">" +
-                    "                                        <i class=\"fa-regular fa-bookmark\"></i>\n" +
-                    "                                        Bookmark</a></p>";
+                $(".stu_save-course-link").html(saved);
 
-
-                if ('saved' == responseData) {
-                    $(".stu_save-course-link").html(saved);
-                } else if (unsaved) {
-                    $(".stu_save-course-link").html(unsaved);
-                }
-            },
-            error: function (errorData) {
             }
         })
     })
