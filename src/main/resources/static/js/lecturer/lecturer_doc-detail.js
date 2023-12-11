@@ -52,7 +52,7 @@ function submitFormReplyQuestion(param) {
                         "                                                    </div>";
                     // date and link
                     html+="<p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data.lastModifiedDate + "</span> " +
-                        "                     <a class=\"lec__edit-reply view-reply-link-item  edit-reply\" reply-id=\"" + data.answerId + "\">Edit</a> | " +
+                        "                     <a class=\"lec__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data.answerId + "\">Edit</a> | " +
                         "                     <a class=\"lec__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data.answerId + "\" onclick=deleteReply(\"" + data.answerId + "\",\"" + data.questionId + "\")>Delete</a>\n" +
                         "                     </div>";
                 } else {
@@ -116,7 +116,7 @@ function viewMoreReply(param) {
                         "                     <p class=\"lec__question-content\"  id=\"reply-content-"+ data[i].answerId +"\">" + data[i].answerContent + "</p>";
 
                     // edit section
-                    html+="<div class=\"edit-reply-div\" id=\"update-reply"+ data[i].answerId+ "\"style=\"display: none\">\n" +
+                    html+="<div class=\"edit-reply-div\" id=\"update-reply"+ data[i].answerId+ "\" style=\"display: none\">\n" +
                         "                                                    <label id=\"update-reply-error"+ data[i].answerId+"\" class=\"display-none\">Please enter something to update.</label>\n" +
                         "                                                    <textarea class=\"update-reply\" id=\"update-reply-content-"+ data[i].answerId +"\"></textarea>\n" +
                         "                                                    <button id=\"close-update-reply-" + data[i].answerId+ "\" type=\"button\" title=\"exist\"\n" +
@@ -131,7 +131,7 @@ function viewMoreReply(param) {
                         "                                                    </div>";
                     // date and link
                     html+="<p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
-                        "                     <a class=\"lec__edit-reply view-reply-link-item  edit-reply\" reply-id=\"" + data[i].answerId + "\">Edit</a> | " +
+                        "                     <a class=\"lec__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data[i].answerId + "\">Edit</a> | " +
                         "                     <a class=\"lec__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data[i].answerId + "\" onclick=deleteReply(\"" + data[i].answerId + "\",\"" + data[i].questionId + "\")>Delete</a>\n" +
                         "                     </div>";
                 } else {
@@ -258,6 +258,7 @@ $(document).ready(function () {
     $("body").on("click", ".edit-reply", function () {
         // $(this).next(".edit-question-div").toggle();
         var replyId = $(this).attr("reply-id");
+        console.log("update-reply"+ replyId)
         $("#update-reply" + replyId).css("display", "block");
         $("#reply-content-" + replyId).css("display", "none");
     })
