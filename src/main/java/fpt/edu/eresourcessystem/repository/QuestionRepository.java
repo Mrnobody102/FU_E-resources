@@ -19,5 +19,6 @@ public interface QuestionRepository extends MongoRepository<Question, String> {
     List<Question> findByDocumentIdAndDeleteFlg(Document document, CommonEnum.DeleteFlg status);
     List<Question> findByDocumentIdAndStudentAndDeleteFlg(Document document, Student student, CommonEnum.DeleteFlg status);
     List<Question> findByStudentAndDeleteFlg(Student student, CommonEnum.DeleteFlg status);
+    List<Question> findByLecturerAndDeleteFlg(String lecturer, CommonEnum.DeleteFlg status);
 
 }

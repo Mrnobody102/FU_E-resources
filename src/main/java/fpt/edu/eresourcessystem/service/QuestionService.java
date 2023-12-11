@@ -18,7 +18,7 @@ public interface QuestionService {
     List<QuestionResponseDto> findRepliedQuestionForLecturer(String lecturerId);
     List<Question> findByStudent(Student student);
 
-    List<Question> findByLecturer(Lecturer lecturer);
+    List<Question> findByLecturerMail(String lecturerMail);
 
     Question findById(String quesId);
     Question addQuestion(Question question);

@@ -99,11 +99,11 @@
                                 <div>
                                     <input class="btn-check" type="radio" th:field="*{displayWithFile}" th:name="displayWithFile"
                                            value="false" id="displayContentType1" autocomplete="off">
-                                    <label class="btn btn-secondary" for="displayContentType1">Create new content
+                                    <label class="btn btn-success" for="displayContentType1">Create new content
                                     </label>
                                     <input class="btn-check" type="radio" th:field="*{displayWithFile}" th:name="displayWithFile"
                                            value="true" id="displayContentType2" checked="checked" autocomplete="off">
-                                    <label class="btn btn-secondary" for="displayContentType2">Upload available file
+                                    <label class="btn btn-success" for="displayContentType2">Upload available file
                                     </label>
                                 </div>
 
@@ -119,12 +119,12 @@
 
                                 <div id="uploadFileInput" style="display: none; margin-top: 1rem">
                                     <div class="d-flex justify-content-between lecturer__input-doc">
-                                        <label th:for="file" class="lecturer_input-label-doc">File Upload:</label>
+                                        <label th:for="file" class="lecturer_input-label-doc">Display-content file upload:</label>
 
                                         <div id="cancelUploadButton" class="d-flex align-items-center">
                                             <button type="button" class="border-0"
                                                     style="padding: 4px 6px; border-radius: 2px">
-                                                Reset uploading file
+                                                Reset display-content file
                                             </button>
                                         </div>
                                     </div>
@@ -132,8 +132,24 @@
                                            class="file-input form-control lecturer__input-doc" style="font-size: 1.3rem"
                                     >
                                     <div class="mt-3">
-                                        <div id="previewContainer" class="form-control">File will be previewed here.
+                                        <div id="previewContainer" style="font-style: italic" class="form-control">File will be previewed here.
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3">
+                                    <div class="d-flex justify-content-between">
+                                        <label for="supportFileInput" class="lecturer_input-label-doc">Supporting files: </label>
+                                        <div id="cancelSupportFileButton" class="d-flex align-items-center">
+                                            <button type="button" class="border-0"
+                                                    style="padding: 4px 6px; border-radius: 2px">
+                                                Reset uploading supporting files
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <input type="file" class="file-input form-control lecturer__input-doc"
+                                               id="supportFileInput" th:name="files" multiple>
                                     </div>
                                 </div>
 

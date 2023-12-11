@@ -70,6 +70,11 @@ public class LecturerRestController {
         return loggedInLecturer;
     }
 
+    public String getLoggedInLecturerMail() {
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return loggedInEmail;
+    }
+
     @PostMapping(value = "/answer/add", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     @Transactional
     public ResponseEntity<AnswerResponseDto> addQuestion(@ModelAttribute AnswerDto answerDTO,
@@ -136,7 +141,7 @@ public class LecturerRestController {
         if (null == lecturer) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
-            List<QuestionResponseDto> questionResponseDto = questionService.findNewQuestionForLecturer(lecturer.getAccount().getEmail());
+            List<QuestionResponseDto> questionResponseDto = questionService.findNewQuestionForLecturer(getLoggedInLecturerMail());
             // add log
             addUserLog("/api/lecturer/my_question/new_question");
             ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDto, HttpStatus.OK);
@@ -151,7 +156,7 @@ public class LecturerRestController {
         if (null == lecturer) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
-            List<QuestionResponseDto> questionResponseDto = questionService.findRepliedQuestionForLecturer(lecturer.getAccount().getEmail());
+            List<QuestionResponseDto> questionResponseDto = questionService.findRepliedQuestionForLecturer(getLoggedInLecturerMail());
             // add log
             addUserLog("/api/lecturer/my_question/replied_question");
             ResponseEntity<List<QuestionResponseDto>> responseEntity = new ResponseEntity<>(questionResponseDto, HttpStatus.OK);

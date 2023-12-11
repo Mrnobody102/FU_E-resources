@@ -156,7 +156,7 @@ public class StudentController {
         List<QuestionResponseDto> questionResponseDtos = new ArrayList<>();
         List<QuestionResponseDto> myQuestionResponseDtos = new ArrayList<>();
 
-        // Need to optimize - dùng AJAX ik =)))))))))))))))))))))))))))))))))))))))))))))))))))
+        // Need to optimize
         for (Question q : questions) {
             if (!q.getStudent().getId().equals(student.getId())) {
                 questionResponseDtos.add(new QuestionResponseDto(q));
@@ -451,8 +451,4 @@ public class StudentController {
         }
     }
 
-    @GetMapping({"/chat"})
-    public String goHomePage() {
-        return "student/test_notification";
-    }
 }

@@ -182,7 +182,7 @@
                                         </th:block>
                                     </th:block>
                                 </div>
-                                <div class="supporting-file-wrapper">
+                                <div class="supporting-file-wrapper" th:if="${document.multipleFiles ne null} AND ${document.multipleFiles.size() != 0}">
                                     <div class="supporting-file-label">Supporting files:</div>
                                     <div class="d-flex">
                                         <div th:each="supportingFile : ${document.multipleFiles}">
