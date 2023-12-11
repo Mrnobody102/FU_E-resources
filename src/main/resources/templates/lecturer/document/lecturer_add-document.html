@@ -55,7 +55,7 @@
                             <form style="width: 75%; margin-left: 10%" method="post" role="form"
                                   th:action="@{'/lecturer/documents/add?topicId=' + ${topic.id}}"
                                   th:object="${document}"
-                                  th:id="add-form" enctype="multipart/form-data">
+                                  th:id="add-document" enctype="multipart/form-data">
                                 <!--Title-->
                                 <label class="lecturer_input-label-doc" th:for="documentTitle">Title:</label>
                                 <input type="text" th:id="documentTitle"
@@ -173,11 +173,14 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 <script src="/js/lecturer/lecturer.js"></script>
-
+<!--Validate-->
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script th:src="@{/js/validation.js}"></script>
+
 <!-- CK Editor-->
 <script th:src="@{/assets/ckeditor5/build/ckeditor.js}"></script>
 <script th:inline="javascript">
+    validate_addDocument();
     // Resource Type
     $('#defineResourceType').click(function () {
         $('#inputResourceWrapper').fadeIn();

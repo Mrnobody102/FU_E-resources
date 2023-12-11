@@ -88,7 +88,7 @@ public class TrainingTypeServiceTest {
     @Test
     void findById_WithValidId_ReturnsTrainingType() {
         // Arrange
-        String trainingTypeId = "1";
+        String trainingTypeId = "1012345";
         TrainingType expectedTrainingType = new TrainingType();
         expectedTrainingType.setId(trainingTypeId);
 
@@ -103,6 +103,19 @@ public class TrainingTypeServiceTest {
         verify(trainingTypeRepository, times(1)).findById(trainingTypeId);
     }
     @Test
+    void findById_WithEmptyId_ThrowsIllegalArgumentException() {
+        // Arrange
+        String emptyId = "";
+
+        // Act and Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> trainingTypeService.findById(emptyId));
+
+        assertEquals("ID cannot be null or empty", exception.getMessage());
+        verify(trainingTypeRepository, never()).findById(any());
+    }
+
+    @Test
     void findById_WithNullId_ThrowsIllegalArgumentException() {
         // Arrange
         String nullId = null;
@@ -114,6 +127,37 @@ public class TrainingTypeServiceTest {
         assertEquals("ID cannot be null or empty", exception.getMessage());
         verify(trainingTypeRepository, never()).findById(any());
     }
+    @Test
+    void findById_WithInvalidId_ReturnsEmptyOptional() {
+        // Arrange
+        String invalidId = "-123";
+
+        when(trainingTypeRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        // Act
+        Optional<TrainingType> result = trainingTypeService.findById(invalidId);
+
+        // Assert
+        assertFalse(result.isPresent());
+        verify(trainingTypeRepository, times(1)).findById(invalidId);
+    }
+
+    @Test
+    void findById_WithValidIdNoTrainingTypeFound_ReturnsEmptyOptional() {
+        // Arrange
+        String trainingTypeId = "2346";
+
+        when(trainingTypeRepository.findById(trainingTypeId)).thenReturn(Optional.empty());
+
+        // Act
+        Optional<TrainingType> result = trainingTypeService.findById(trainingTypeId);
+
+        // Assert
+        assertFalse(result.isPresent());
+        verify(trainingTypeRepository, times(1)).findById(trainingTypeId);
+    }
+
+
 
     @Test
     void deleteById_NullId_ThrowsIllegalArgumentException() {
@@ -129,7 +173,7 @@ public class TrainingTypeServiceTest {
 
     @Test
     void deleteById_NonExistingId_ThrowsRuntimeException() {
-        String nonExistingId = "abc";
+        String nonExistingId = "-123";
         when(trainingTypeRepository.existsById(nonExistingId)).thenReturn(false);
 
         assertThrows(RuntimeException.class, () -> trainingTypeService.deleteById(nonExistingId));
@@ -148,11 +192,36 @@ public class TrainingTypeServiceTest {
     @Test
     void updateTrainingType_NotFound_ThrowsRuntimeException() {
         TrainingType trainingType = new TrainingType();
-        trainingType.setId("abc");
+        trainingType.setId("-123");
         when(trainingTypeRepository.findById(trainingType.getId())).thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class, () -> trainingTypeService.updateTrainingType(trainingType));
     }
+    @Test
+    void updateTrainingType_WithNullObject_ThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> trainingTypeService.updateTrainingType(null));
+    }
+
+
+
+    @Test
+    void updateTrainingType_WithUnchangedData_ReturnsSameTrainingType() {
+        TrainingType unchangedTrainingType = new TrainingType();
+        unchangedTrainingType.setId("123321");
+        unchangedTrainingType.setTrainingTypeName("Existing Name");
+        unchangedTrainingType.setTrainingTypeDescription("Existing Description");
+
+        when(trainingTypeRepository.findById(unchangedTrainingType.getId())).thenReturn(Optional.of(unchangedTrainingType));
+        when(trainingTypeRepository.save(any(TrainingType.class))).thenReturn(unchangedTrainingType);
+
+        TrainingType result = trainingTypeService.updateTrainingType(unchangedTrainingType);
+
+        assertNotNull(result);
+        assertEquals(unchangedTrainingType.getTrainingTypeName(), result.getTrainingTypeName());
+        assertEquals(unchangedTrainingType.getTrainingTypeDescription(), result.getTrainingTypeDescription());
+    }
+
 
     @Test
     void updateTrainingType_Successful_UpdateTrainingType() {
@@ -196,7 +265,7 @@ public class TrainingTypeServiceTest {
 
     @Test
     void addCourseToTrainingType_WhenTrainingTypeNotFound_ReturnsNull() {
-        String trainingTypeId = "abc";
+        String trainingTypeId = "-123";
         Course course = new Course();
 
         when(trainingTypeRepository.findById(trainingTypeId)).thenReturn(Optional.empty());
@@ -219,7 +288,7 @@ public class TrainingTypeServiceTest {
 
     @Test
     void addCourseToTrainingType_WhenCourseIsNull_ThrowsException() {
-        String trainingTypeId = "existingId";
+        String trainingTypeId = "123654232";
         when(trainingTypeRepository.findById(trainingTypeId)).thenReturn(Optional.of(new TrainingType()));
 
         assertThrows(NullPointerException.class, () -> trainingTypeService.addCourseToTrainingType(trainingTypeId, null));
@@ -229,7 +298,7 @@ public class TrainingTypeServiceTest {
 
     @Test
     void softDelete_WhenTrainingTypeExists_MarksAsDeletedAndReturnsTrue() {
-        String trainingTypeId = "existingId";
+        String trainingTypeId = "123456412";
         TrainingType trainingType = new TrainingType();
         trainingType.setId(trainingTypeId);
 
@@ -244,7 +313,7 @@ public class TrainingTypeServiceTest {
 
     @Test
     void softDelete_WhenTrainingTypeNotFound_ReturnsFalse() {
-        String trainingTypeId = "nonExistingId";
+        String trainingTypeId = "-136542";
         TrainingType trainingType = new TrainingType();
         trainingType.setId(trainingTypeId);
 
