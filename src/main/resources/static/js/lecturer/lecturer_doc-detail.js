@@ -5,6 +5,8 @@ function sendMessage(aId, type, questionContent) {
 function submitFormReplyQuestion(param) {
     var content = $('#new-reply-content-' + param).val();
     var trimmedString = $.trim(content);
+    console.log(content)
+    console.log(param)
 
     if (trimmedString == '') {
         $('#new-reply-content-error-' + param).css("display", "block");
@@ -15,6 +17,8 @@ function submitFormReplyQuestion(param) {
         $('#new-reply-content-error-' + param).css("display", "none");
         var replyForm = 'reply-content-form' + param;
         var formData = $("#" + replyForm).serialize();
+        console.log(replyForm)
+        console.log(formData)
         $.ajax({
             type: 'POST',
             url: '/api/lecturer/answer/add',

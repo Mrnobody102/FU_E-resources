@@ -16,7 +16,6 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -52,6 +51,9 @@ public class Document {
     @Lazy
     private String content;
     private boolean displayWithFile;
+
+    @DocumentReference(lazy = true)
+    private List<MultiFile> multipleFiles;
 
     private List<String> notes;
     private List<String> questions;
@@ -89,6 +91,7 @@ public class Document {
         this.docStatus = documentDTO.getDocStatus();
         this.suffix = documentDTO.getSuffix();
         this.docType = DocumentEnum.DocumentFormat.getDocType(documentDTO.getSuffix());
+        this.multipleFiles = documentDTO.getMultiFiles();
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
 

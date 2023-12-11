@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class QuestionServiceImpl implements QuestionService {
     private final StudentService studentService;
     private final AnswerService answerService;
     private final MongoTemplate mongoTemplate;
+    private final SimpMessagingTemplate messagingTemplate;
 
 
     @Override

@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.dto;
 
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
+import fpt.edu.eresourcessystem.model.MultiFile;
 import fpt.edu.eresourcessystem.model.ResourceType;
 import fpt.edu.eresourcessystem.model.Topic;
 import jakarta.validation.constraints.NotEmpty;
@@ -35,6 +36,8 @@ public class DocumentDto {
     private String content;
     private String fileDescription;
     private boolean displayWithFile;
+    private List<MultiFile> multiFiles;
+
     // Only use when response, no need in requests
     private DocumentEnum.DocumentStatusEnum docStatus;
     private String createdBy;

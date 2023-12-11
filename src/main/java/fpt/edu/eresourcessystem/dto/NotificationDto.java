@@ -18,7 +18,6 @@ public class NotificationDto {
     private String answerId;
     private String feedbackId;
     private String from;
-    private String sendContent;
     private String type;
     private String to;
     private String link;
