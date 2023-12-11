@@ -47,17 +47,18 @@ public class LecturerRestController {
         return userLog;
     }
 
-    private void addCourseLog(Course course,
+    private void addCourseLog(String courseId, String courseCode, String courseName,
                               CourseEnum.LecturerAction action,
                               CourseEnum.CourseObject object,
                               String objectId,
                               String objectName,
                               String email,
                               String oldContent,
-                              String newContent){
-        CourseLog courseLog = new CourseLog(course,action,object,objectId,objectName,email,oldContent,newContent);
+                              String newContent) {
+        CourseLog courseLog = new CourseLog(courseId,courseCode,courseName, action, object, objectId, objectName, email, oldContent, newContent);
         courseLogService.addCourseLog(courseLog);
     }
+
 
     public Lecturer getLoggedInLecturer() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -90,7 +91,10 @@ public class LecturerRestController {
             addUserLog("/api/lecturer/answers/add/" + answer.getId());
 
             //add course log
-            addCourseLog(document.getTopic().getCourse(),
+            Course course = document.getTopic().getCourse();
+            addCourseLog(course.getId(),
+                    course.getCourseCode(),
+                    course.getCourseName(),
                     CourseEnum.LecturerAction.UPDATE,
                     CourseEnum.CourseObject.DOCUMENT,
                     document.getId(),

@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 @Getter
@@ -20,8 +21,9 @@ import java.time.LocalDateTime;
 public class CourseLog {
     @Id
     private String id;
-    @DocumentReference(lazy = true)
-    private Course course;
+    private String courseId;
+    private String courseCode;
+    private String courseName;
     private String oldContent;
     private String newContent;
     private CourseEnum.LecturerAction action;
@@ -36,10 +38,12 @@ public class CourseLog {
     private String createdBy;
     @CreatedDate
     private LocalDateTime createdDate;
-    public CourseLog(Course course,CourseEnum.LecturerAction action,
+    public CourseLog(String courseId, String courseCode, String courseName, CourseEnum.LecturerAction action,
                      CourseEnum.CourseObject object, String objectId, String objectName, String email,
                      String oldContent, String newContent) {
-        this.course = course;
+        this.courseId = courseId;
+        this.courseCode = courseCode;
+        this.courseName = courseName;
         this.action = action;
         this.object = object;
         this.objectId = objectId;
@@ -48,5 +52,8 @@ public class CourseLog {
         this.oldContent = oldContent;
         this.newContent = newContent;
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+    }
+    public String createDateToString(){
+        return this.createdDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }

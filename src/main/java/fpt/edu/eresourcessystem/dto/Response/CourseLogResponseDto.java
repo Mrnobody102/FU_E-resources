@@ -42,9 +42,9 @@ public class CourseLogResponseDto {
 
     public CourseLogResponseDto(CourseLog courseLog) {
         this.id = courseLog.getId();
-        this.courseId = courseLog.getCourse().getId();
-        this.courseCode = courseLog.getCourse().getCourseCode();
-        this.courseName = courseLog.getCourse().getCourseName();
+        this.courseId = courseLog.getCourseId();
+        this.courseCode = courseLog.getCourseCode();
+        this.courseName = courseLog.getCourseName();
         this.oldContent = courseLog.getOldContent();
         this.newContent = courseLog.getNewContent();
         this.action = courseLog.getAction().getDisplayValue();

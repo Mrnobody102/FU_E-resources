@@ -7,16 +7,8 @@
     <title>Librarian | Courses</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
-
-    <!-- SweetAlert từ CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" th:href="@{/css/base.css}"/>
@@ -39,60 +31,132 @@
             </div>
             <div class="d-flex justify-content-center">
                 <div class="lib_data-list-wrapper">
-                    <div class="lib_search-container">
-                        <div class="d-flex">
-                            <div class="manager_search-box">
-                                <label>Filter by role:</label>
-                                <div class="d-flex">
-                                    <select class="lib_filter lib_search-content" onchange="filterByRole()" id="role" th:name="role">
-                                        <option value="all">All</option>
-                                        <option th:each="role : ${roles}"
-                                                th:selected="(${roleSearch} == ${role.getDisplayValue()})"
-                                                th:text="${role.getDisplayValue()}"
-                                                th:value="${role}">
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="manager_search-box">
-                                <label>Filter by date:</label>
-                                <div class="d-flex">
-                                    <div class="input-group date" id="datepicker">
-                                        <input type="text" class="form-control lib_search-content" id="date" placeholder="From date"/>
-                                        <span class="input-group-append">
-                                                <span class="lib_search-btn-wrapper lib_search-btn">
-                                                    <i class="fa-regular fa-calendar-days "></i>
-                                                </span>
-                                                </span>
-                                    </div>
-
-                                    <div class="input-group date" id="datepicker2">
-                                        <input type="text" class="form-control lib_search-content" id="date2" placeholder="To date"/>
-                                        <span class="input-group-append">
-                                       <span class="lib_search-btn-wrapper lib_search-btn">
-                                                    <i class="fa-regular fa-calendar-days "></i>
-                                                </span>
-                                                </span>
-                                    </div>
-                                </div>
-                            </div>
+                    <form th:action="@{/librarian/courses_report}" method="get">
+                        <div class="lib_search-container">
                             <div class="d-flex">
                                 <div class="manager_search-box">
-                                    <label>Search email, url: </label>
+                                    <label>Filter by date (mm/dd/yyyy):</label>
                                     <div class="d-flex">
-                                        <input class="lib_search-content" placeholder="Enter here..." th:id="search-text"
-                                               th:name="search" th:value="${search}" type="text"/>
-                                        <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
-                                            <i class="lib_search-btn-icon fas fa-search"></i>
-                                        </button>
-                                        <a class="btn lib_show-all-btn" th:href="@{/admin/user_log/tracking}">Show all</a>
+                                        <div class="input-group date">
+                                            <input type="date" class="form-control lib_search-content"
+                                                   id="searchStartDate" name="startDate"
+                                                   th:value="${startDate}"
+                                                   placeholder="From date"/>
+<!--                                            <span class="input-group-append">-->
+<!--                                                <span class="lib_search-btn-wrapper lib_search-btn">-->
+<!--                                                    <i class="fa-regular fa-calendar-days "></i>-->
+<!--                                                </span>-->
+<!--                                                </span>-->
+                                        </div>
+
+                                        <div class="input-group date" style="margin-left: 0.5rem">
+                                            <input type="date" class="form-control lib_search-content"
+                                                   id="searchEndDate" name="endDate"
+                                                   th:value="${endDate}"
+                                                   placeholder="To date"/>
+<!--                                            <span class="input-group-append">-->
+<!--                                       <span class="lib_search-btn-wrapper lib_search-btn">-->
+<!--                                                    <i class="fa-regular fa-calendar-days "></i>-->
+<!--                                                </span>-->
+<!--                                                </span>-->
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="d-flex">
+                                    <div class="manager_search-box">
+                                        <label>Page size: </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="lib_search-content"
+                                                   th:name="size" th:value="${size}" min="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="manager_search-box">
+                                        <label>Search course, lecturer email: </label>
+                                        <div class="d-flex">
+                                            <input class="lib_search-content" placeholder="Enter here..."
+                                                   th:id="search-text"
+                                                   th:name="search" th:value="${search}" type="text"/>
+                                            <button class="lib_search-btn-wrapper lib_search-btn" type="submit">
+                                                <i class="lib_search-btn-icon fas fa-search"></i>
+                                            </button>
+                                            <a class="btn lib_show-all-btn" th:href="@{/librarian/courses_report}">Show
+                                                all</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+<!--                                <div class="d-flex">-->
+<!--                                    <div class="manager_search-box">-->
+<!--                                        <div class="d-flex">-->
+<!--                                            <button class="btn btn-save" type="submit">-->
+<!--                                                <i class="lib_search-btn-icon fas fa-search"></i>Search-->
+<!--                                            </button>-->
+<!--                                            <a class="btn lib_show-all-btn" th:href="@{/librarian/course-logs}">Show-->
+<!--                                                all</a>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
                             </div>
+
                         </div>
+                    </form>
+<!--                    <form th:action="@{/librarian/courses_report}" method="get">-->
+<!--                        <label>Search course code, course name, lecturer email:</label>-->
+<!--                        <input type="text" name="search" th:value="${search}">-->
 
+<!--                        <label>Start Date:</label>-->
+<!--                        <input type="date" name="startDate" th:value="${startDate}">-->
+
+<!--                        <label>End Date:</label>-->
+<!--                        <input type="date" name="endDate" th:value="${endDate}">-->
+
+<!--                        <label>Size:</label>-->
+<!--                        <input type="number" name="size" th:value="${size}" min="1">-->
+<!--                        <button type="submit">Search</button>-->
+<!--                        <button type="button" class="btn btn-save export-button" data-toggle="modal" id="exportButton">-->
+<!--                            Export-->
+<!--                        </button>-->
+<!--                    </form>-->
+                    <!-- Button to trigger the modal -->
+                    <div class="div-export">
+                        <button type="button" class="btn btn--hover export-button" data-toggle="modal" id="exportButton">
+                            Export
+                        </button>
                     </div>
+                    <!-- Export Form Container -->
+                    <div id="exportFormContainer" class="export-form-container">
+                        <form th:action="@{/librarian/export-course-logs}" method="get" id="exportForm"
+                              class="export-form form-chose-export-type">
+                            <input type="hidden" name="page" th:value="${currentPage}" readonly hidden>
+                            <input type="hidden" name="size" th:value="${size}" readonly hidden>
+                            <input type="text" id="exportSearch" name="search" th:value="${search}" readonly hidden>
+                            <input type="date" id="startDate" name="startDate" th:value="${startDate}" readonly hidden>
+                            <input type="date" id="endDate" name="endDate" th:value="${endDate}" readonly hidden>
+                            <div>
+                                <input type="radio" id="exportCurrent" name="exportAll" value="current" checked>
+                                <label for="exportCurrent">Export Current page</label>
+                                <br>
+                                <input type="radio" id="exportAll" name="exportAll" value="all">
+                                <label for="exportAll">Export all pages</label>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="button" id="closeButton" class="btn btn--back">Close</button>
+                                <button type="submit" class="btn btn-save">Export to Excel</button>
 
+                            </div>
+                        </form>
+                    </div>
+                    <!--                    <form th:action="@{/librarian/export-course-logs}" method="get">-->
+                    <!--                        <input type="hidden" name="search" th:value="${search}">-->
+                    <!--                        <input type="hidden" name="startDate" th:value="${startDate}">-->
+                    <!--                        <input type="hidden" name="endDate" th:value="${endDate}">-->
+                    <!--                        <input type="hidden" name="page" th:value="${currentPage}">-->
+                    <!--                        <input type="hidden" name="size" th:value="${size}">-->
+                    <!--                        <button class="btn btn-save" type="submit">Export</button>-->
+                    <!--                    </form>-->
                     <div class="table-responsive">
                         <table class="table table-striped table-sm">
                             <tr class="n8">
@@ -109,17 +173,40 @@
                             <th:block>
                                 <tr th:each="courseLog, iterStat : ${listCourseLog}">
                                     <td th:text="${iterStat.index+1}">1</td>
-                                    <td><a th:href="@{'/librarian/courses/' + ${courseLog.getCourseId()}}"
-                                           th:text="${courseLog.getCourseCode()}"></a></td>
-                                    <td><a th:href="@{'/librarian/courses/' + ${courseLog.getCourseId()}}"
-                                           th:text="${courseLog.getCourseName()}"></a></td>
-                                    <td><p th:text="${courseLog.getEmail()}"></p></td>
-                                    <td><p th:text="${courseLog.getAction()} + ' ' + ${courseLog.getObjectType()} + ' '+ ${courseLog.objectName}"></p></td>
-                                    <td><p th:text="${courseLog.getCreatedDate()}"></p></td>
+                                    <td><a th:href="@{'/librarian/courses/' + ${courseLog.courseId}}"
+                                           th:text="${courseLog.courseCode}"></a></td>
+                                    <td><a th:href="@{'/librarian/courses/' + ${courseLog.courseId}}"
+                                           th:text="${courseLog.courseName}"></a></td>
+                                    <td><p th:text="${courseLog.email}"></p></td>
+                                    <td>
+                                        <p th:text="${courseLog.action} + ' ' + ${courseLog.object} + ' '+ ${courseLog.objectName}"></p>
+                                    </td>
+                                    <td><p th:text="${courseLog.createDateToString()}"></p></td>
                                 </tr>
                             </th:block>
                         </table>
                     </div>
+
+                    <div th:if="${totalPages > 1}" class="dataTables_paginate paging_simple_numbers">
+                        <ul class="pagination">
+                            <li th:if="${currentPage > 0}">
+                                <a class="paginate_button"
+                                   th:href="@{/librarian/courses_report(search=${search},size=${size}, startDate=${startDate}, endDate=${endDate}, page=${currentPage - 1})}">&laquo;
+                                    Previous</a>
+                            </li>
+                            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                                <a class="paginate_button"
+                                   th:classappend="${currentPage == i} ? 'current' : ''"
+                                   th:href="@{/librarian/courses_report(search=${search}, size=${size}, startDate=${startDate}, endDate=${endDate}, page=${i})}"
+                                   th:text="${i + 1}">1</a>
+                            </li>
+                            <li th:if="${currentPage < totalPages - 1}">
+                                <a class="paginate_button" th:href="@{/librarian/courses_report(search=${search}, size=${size}, startDate=${startDate}, endDate=${endDate}, page=${currentPage + 1})}">Next
+                                    &raquo;</a>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -128,15 +215,12 @@
 
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+<!--jquery-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!--Bootstrap script-->
-<script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"
-
-        crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"
-        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-
+<script th:src="@{/js/librarian/course-log.js}"></script>
 <!--Custom script-->
 <script th:src="@{/js/librarian/librarian.js}"></script>
 
@@ -159,112 +243,112 @@
     // });
 
 
-    $(document).ready(function () {
-        var showAllBtn = document.querySelector(".lib_show-all-btn");
-
-        showAllBtn.addEventListener("click", function(event) {
-            event.preventDefault(); // Ngăn chặn hành vi mặc định của liên kết
-
-            // Hiển thị bảng
-            var tableView = document.querySelector(".table-view");
-            if (tableView) {
-                tableView.style.display = "inline";
-            }
-        });
-
-
-        var dataTable = $('#coursesTable').DataTable({
-            // "processing": true,
-            "serverSide": true,
-            "ajax": {
-                "url": "/api/librarian/courses/list", // Replace with your server URL
-                "type": "GET",
-                "dataSrc": "data",
-                "data": function (data) {
-                    // Thêm các tham số cần thiết vào yêu cầu Ajax
-                    data.start = data.start || 0;
-                    data.length = data.length || 5;
-                    data.draw = data.draw || 1;
-                    data.search = $("#search-text").val() || "";
-                }
-            },
-            "columns": [
-                {"data": "index"}, // This will be filled in by the script below
-                {"data": "courseCode"},
-                {"data": "courseName"},
-                {"data": "description"}
-            ],
-            "columnDefs": [
-                {
-                "targets": 0,
-                "orderable": false,
-                "searchable": false,
-                "render": function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;  // For index column (STT)
-                }
-                },
-                {
-                    "targets": 3, // Target the description column
-                    "render": function (data, type, row) {
-                        return data.length > 100 ? data.substr(0, 100) + '...' : data;
-                    }
-                }
-                ,
-                {
-                    "targets": 1, // Target the description column
-                    "render": function (data, type, row) {
-                        return '<a href="/librarian/courses/' + row.id + '">' + data + '</a>';
-                    }
-                },
-                {
-                    "targets": 2, // Target the description column
-                    "render": function (data, type, row) {
-                        return '<a href="/librarian/courses/' + row.id + '">' + data + '</a>';
-                    }
-                }
-            ],
-            "ordering": false,
-            "pagingType": "simple_numbers",
-            "pageLength": 5,
-            "language": {
-                "paginate": {
-                    "first": "<<",
-                    "last": ">>",
-                    "next": ">>",
-                    "previous": "<<"
-                }
-            }
-        });
-
-        function debounce(func, delay) {
-            let debounceTimer;
-            return function () {
-                const context = this;
-                const args = arguments;
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(() => func.apply(context, args), delay);
-            };
-        }
-
-        // Enhanced search handler with debounce
-        $('#search-text').on('keyup', debounce(function () {
-            dataTable.search(this.value).draw();
-        }, 100));
-
-        // Ẩn nhãn 'Search:' mà DataTables tự động tạo
-        $("label").each(function () {
-            if ($(this).text().indexOf('Search:') >= 0) {
-                $(this).css('display', 'none');
-            }
-        });
-
-        // Bắt sự kiện khi người dùng click vào phân trang
-        dataTable.on('click', 'a.paginate_button', function (e) {
-            e.preventDefault();
-            var page = $(this).attr('data-dt-idx');
-            dataTable.page(page).draw('page');
-        });
-    });
+    // $(document).ready(function () {
+    //     var showAllBtn = document.querySelector(".lib_show-all-btn");
+    //
+    //     showAllBtn.addEventListener("click", function(event) {
+    //         event.preventDefault(); // Ngăn chặn hành vi mặc định của liên kết
+    //
+    //         // Hiển thị bảng
+    //         var tableView = document.querySelector(".table-view");
+    //         if (tableView) {
+    //             tableView.style.display = "inline";
+    //         }
+    //     });
+    //
+    //
+    //     var dataTable = $('#coursesTable').DataTable({
+    //         // "processing": true,
+    //         "serverSide": true,
+    //         "ajax": {
+    //             "url": "/api/librarian/courses/list", // Replace with your server URL
+    //             "type": "GET",
+    //             "dataSrc": "data",
+    //             "data": function (data) {
+    //                 // Thêm các tham số cần thiết vào yêu cầu Ajax
+    //                 data.start = data.start || 0;
+    //                 data.length = data.length || 5;
+    //                 data.draw = data.draw || 1;
+    //                 data.search = $("#search-text").val() || "";
+    //             }
+    //         },
+    //         "columns": [
+    //             {"data": "index"}, // This will be filled in by the script below
+    //             {"data": "courseCode"},
+    //             {"data": "courseName"},
+    //             {"data": "description"}
+    //         ],
+    //         "columnDefs": [
+    //             {
+    //             "targets": 0,
+    //             "orderable": false,
+    //             "searchable": false,
+    //             "render": function (data, type, row, meta) {
+    //                 return meta.row + meta.settings._iDisplayStart + 1;  // For index column (STT)
+    //             }
+    //             },
+    //             {
+    //                 "targets": 3, // Target the description column
+    //                 "render": function (data, type, row) {
+    //                     return data.length > 100 ? data.substr(0, 100) + '...' : data;
+    //                 }
+    //             }
+    //             ,
+    //             {
+    //                 "targets": 1, // Target the description column
+    //                 "render": function (data, type, row) {
+    //                     return '<a href="/librarian/courses/' + row.id + '">' + data + '</a>';
+    //                 }
+    //             },
+    //             {
+    //                 "targets": 2, // Target the description column
+    //                 "render": function (data, type, row) {
+    //                     return '<a href="/librarian/courses/' + row.id + '">' + data + '</a>';
+    //                 }
+    //             }
+    //         ],
+    //         "ordering": false,
+    //         "pagingType": "simple_numbers",
+    //         "pageLength": 5,
+    //         "language": {
+    //             "paginate": {
+    //                 "first": "<<",
+    //                 "last": ">>",
+    //                 "next": ">>",
+    //                 "previous": "<<"
+    //             }
+    //         }
+    //     });
+    //
+    //     function debounce(func, delay) {
+    //         let debounceTimer;
+    //         return function () {
+    //             const context = this;
+    //             const args = arguments;
+    //             clearTimeout(debounceTimer);
+    //             debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    //         };
+    //     }
+    //
+    //     // Enhanced search handler with debounce
+    //     $('#search-text').on('keyup', debounce(function () {
+    //         dataTable.search(this.value).draw();
+    //     }, 100));
+    //
+    //     // Ẩn nhãn 'Search:' mà DataTables tự động tạo
+    //     $("label").each(function () {
+    //         if ($(this).text().indexOf('Search:') >= 0) {
+    //             $(this).css('display', 'none');
+    //         }
+    //     });
+    //
+    //     // Bắt sự kiện khi người dùng click vào phân trang
+    //     dataTable.on('click', 'a.paginate_button', function (e) {
+    //         e.preventDefault();
+    //         var page = $(this).attr('data-dt-idx');
+    //         dataTable.page(page).draw('page');
+    //     });
+    // });
 
     var successParam = [[${param.success}]];
     if (successParam) {
