@@ -10,6 +10,7 @@ import fpt.edu.eresourcessystem.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -25,11 +26,13 @@ import static fpt.edu.eresourcessystem.constants.Constants.VERIFICATION_CODE;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final AccountRepository accountRepository;
     private final StudentService studentService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public CustomOAuth2UserService(AccountRepository accountRepository, StudentService studentService) {
+    public CustomOAuth2UserService(AccountRepository accountRepository, StudentService studentService, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.studentService = studentService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             newAccount.setName(user.<String>getAttribute("name"));
             newAccount.setRole(AccountEnum.Role.STUDENT);
             newAccount.setStatus(AccountEnum.Status.ACTIVE);
-            newAccount.setPassword(VERIFICATION_CODE);
+            newAccount.setPassword(passwordEncoder.encode(VERIFICATION_CODE));
             newAccount.setDeleteFlg(CommonEnum.DeleteFlg.PRESERVED);
             newAccount.setAccountType(AccountEnum.AccountType.FPT_MAIL_ACC);
             account = accountRepository.insert(newAccount);

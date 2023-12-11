@@ -88,10 +88,10 @@
                             <div class="student__course-document-view">
 
 
-                                <div style="display: flex" class="doc-content-view">
+                                <div style="display: flex">
                                     <th:block th:unless="${document.displayWithFile == true}">
                                         <div class="doc-content-view ck-content" th:utext="${document.editorContent}"
-                                             style="height: 500px; flex: 3; overflow: auto">
+                                             style="height: fit-content; max-height: 600px; flex: 3; overflow: auto">
                                         </div>
                                     </th:block>
                                     <th:block th:if="${document.displayWithFile == true}">
@@ -169,7 +169,8 @@
                                                 <th:block th:if="${document.docType.toString() eq 'OTHER'}">
                                                     <div class="mt-3 mb-3">
                                                         <span>Attached file: </span>
-                                                        <a th:href="${data}" th:text="${document.fileName}" download></a>
+                                                        <a th:href="${data}" th:text="${document.fileName}"
+                                                           download></a>
                                                     </div>
                                                 </th:block>
                                             </th:block>
@@ -180,18 +181,51 @@
                                             </th:block>
                                         </th:block>
                                     </th:block>
+                                </div>
+                                <div class="supporting-file-wrapper">
+                                    <div class="supporting-file-label">Supporting files:</div>
+                                    <div class="d-flex">
+                                        <div th:each="supportingFile : ${document.multipleFiles}">
+                                            <div class="supporting-file-download"
+                                                 th:file-name="${supportingFile.cloudFileName}"
+                                                 onclick="downloadFile(this.getAttribute('file-name'))">
+                                                <icon class="fa fa-download"></icon>
+                                                <span th:text="${supportingFile.fileName}"></span>
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                    <script>
+                                        function downloadFile(fileName) {
+                                            $.ajax({
+                                                url: '/api/lecturer/download',
+                                                method: 'GET',
+                                                data: {fileName: fileName},
+                                                xhrFields: {
+                                                    responseType: 'blob'
+                                                },
+                                                success: function (data) {
+                                                    var downloadLink = document.createElement('a');
+                                                    downloadLink.href = URL.createObjectURL(data);
+                                                    downloadLink.download = fileName;
+                                                    document.body.appendChild(downloadLink);
+                                                    downloadLink.click();
+                                                },
+                                                error: function () {
+                                                    console.log("Error when download file");
+                                                }
+                                            });
+                                        }
+                                    </script>
                                 </div>
 
 
                                 <div class="lec__navbar-view-doc">
-                                    <ul class="lec__navbar-view-doc-list border-bottom">
-                                        <li class="lec__navbar-view-doc-item">
-                                            <a href="#">
-                                                Question & Answer
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <div class="lec__navbar-view-doc-list border-bottom">
+                                            <div class="question-label">
+                                                Students question:
+                                            </div>
+                                    </div>
                                     <div class="lec__question-in-doc-content" id="lecturer-questions"
                                          th:if="${questions ne null }">
                                         <div class="lec__question-content-wrapper" th:each="question : ${questions}"
@@ -285,7 +319,9 @@
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 
 <!--jquery-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!--Bootstrap script-->
 <script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"
 

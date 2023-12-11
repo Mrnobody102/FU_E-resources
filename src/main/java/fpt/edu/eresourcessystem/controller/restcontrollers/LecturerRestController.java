@@ -13,7 +13,9 @@ import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.service.s3.ImageService;
 import fpt.edu.eresourcessystem.service.s3.StorageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,7 @@ public class LecturerRestController {
     private final AccountService accountService;
     private final UserLogService userLogService;
     private final ImageService imageService;
+    private final StorageService storageService;
     private final CourseLogService courseLogService;
 
     private UserLog addUserLog(String url) {
@@ -216,5 +219,13 @@ public class LecturerRestController {
         }
     }
 
+    @GetMapping("/download")
+    public ResponseEntity<byte[]> downloadFile(@RequestParam("fileName") String fileName) {
+        byte[] content = storageService.downloadFile(fileName);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", fileName);
+        return new ResponseEntity<>(content, headers, HttpStatus.OK);
+    }
 
 }

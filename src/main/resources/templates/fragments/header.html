@@ -268,7 +268,7 @@
                         th:notification-email="${loggedInUser.email}"
                         onclick="getStudentNotifications(this.getAttribute('notification-email'))">
                         <th:block th:unless="${notificationNumber == null}">
-                            <p class="notification-number" id="notification-number-student" th:text="${notificationNumber}"></p>
+                            <p style="display: none" class="notification-number" id="notification-number-student" th:text="${notificationNumber}"></p>
                         </th:block>
                         <a class="header__navbar-item-link">
                             <i class="header__navbar-icon fas fa-bell"></i>

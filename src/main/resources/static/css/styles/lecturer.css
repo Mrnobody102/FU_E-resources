@@ -442,3 +442,9 @@ label.error {
 .add-lick-course-detail{
     margin-top: 1rem;
 }
+
+.question-label {
+    font-weight: var(--font-medium);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}

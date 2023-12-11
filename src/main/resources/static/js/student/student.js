@@ -21,7 +21,7 @@ function viewQuestionWaiting() {
                 var html = "";
                 for (let i = 0; i < data.length; i++) {
                     html += "<div class=stu__question-content-wrapper>\n" +
-                        "                        <span class=\"stu__question-content stu__question-date\">" + data[i].lastModifiedDate + "</span>\n" +
+                        "                        <span class=\"stu__question-content stu__question-date\">" + data[i].lastModifiedDate + "</span><br>\n" +
                         "                    <a class=\"stu__question-title\">You asked on" + data[i].documentTitle + "</a>\n" +
                         "                    <p class=\"student-content-view-brief\"><span>" + data[i].questionContent + "</span>\n" +
                         "                        <a class=\"link-view-detailed\"\n" +
@@ -57,7 +57,7 @@ function viewNewReplyQuestion() {
                 var html = "";
                 for (let i = 0; i < data.length; i++) {
                     html += "<div class=stu__question-content-wrapper>\n" +
-                        "                        <span class=\"stu__question-content stu__question-date\">" + data[i].lastModifiedDate + "</span>\n" +
+                        "                        <span class=\"stu__question-content stu__question-date\">" + data[i].lastModifiedDate + "</span><br>\n" +
                         "                    <a class=\"stu__question-title\">New reply for your question at " + data[i].documentTitle + "</a>\n" +
                         "                    <p class=\"student-content-view-brief\"><span>" + data[i].questionContent + "</span>\n" +
                         "                        <a class=\"link-view-detailed\"\n" +

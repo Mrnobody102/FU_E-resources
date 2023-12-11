@@ -506,9 +506,11 @@ public class LecturerController {
         if (checkResourceTypeExist) {
             ResourceType addedResourceType = resourceTypeService.addResourceType(resourceType);
             documentDTO.setResourceType(addedResourceType);
+            courseService.addResourceTypeToCourse(topic.getCourse(), new ObjectId(addedResourceType.getId()));
         } else {
             documentDTO.setResourceType(existedResourceType);
         }
+
 
         String id = "fileNotFound";
         if (String.valueOf(documentDTO.isDisplayWithFile()).equalsIgnoreCase("true")) {
@@ -562,8 +564,8 @@ public class LecturerController {
                         // Generate a unique file name
                         String uniqueFileName = System.currentTimeMillis() + "_" + FilenameUtils.getBaseName(originalFileName) + "." + FilenameUtils.getExtension(originalFileName);
                         // Process the uploaded file as needed
-                        String link = storageService.uploadFile(supportFile);
-                        MultiFile multiFile = new MultiFile(uniqueFileName, link);
+                        String link = storageService.uploadFileWithName(supportFile, uniqueFileName);
+                        MultiFile multiFile = new MultiFile(originalFileName, uniqueFileName, link);
                         MultiFile addedFile = multiFileService.addMultiFile(multiFile);
                         multiFiles.add(addedFile);
                     } catch (Exception e) {

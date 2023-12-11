@@ -73,7 +73,7 @@
                                 <li class="stu__navbar-favourite-item stu__navbar-active"
                                     onclick="viewAllQuestion(this)">
                                     <a>
-                                        My Question&Answer History
+                                        My questions & answers history
                                     </a>
                                 </li>
                                 <li class="stu__navbar-favourite-item" onclick="viewQuestionWaiting(this)">
@@ -112,14 +112,14 @@
                                         <div class="stu__question-content-wrapper"
                                              th:each="studentQuestion : ${studentQuestions}">
                                             <span class="stu__question-content stu__question-date"
-                                                  th:text="${studentQuestion.lastModifiedDate}"></span>
+                                                  th:text="${studentQuestion.lastModifiedDate}"></span><br>
                                             <a class="stu__question-title"
                                                th:text="'You asked on '+${studentQuestion.documentId.title}"></a>
 
                                             <p class="student-content-view-brief"><span
                                                     th:text="${studentQuestion.content}"></span>
                                                 <a class="link-view-detailed"
-                                                      th:href="@{'/student/documents/' + ${studentQuestion.documentId.id} + '#' + ${studentQuestion.id}}">view <i
+                                                      th:href="@{'/student/documents/' + ${studentQuestion.documentId.id} + '#' + ${studentQuestion.id}}"><span>view </span> <i
                                                         class="fa-solid fa-arrow-right"></i></a></p>
 
                                             <!--                                                    <div class="home__note-item stu__list-answers"-->

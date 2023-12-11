@@ -50,6 +50,8 @@ public interface CourseService {
     // Resource type
     boolean addResourceType(ResourceType resourceType);
 
+    void addResourceTypeToCourse(Course course, ObjectId resourceTypeId);
+
     List<Course> findByListId(List<String> courseIds);
 
     Page<Course> findByCodeOrNameOrDescription(String code, String name, String description, int pageIndex, int pageSize);

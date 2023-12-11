@@ -5,7 +5,20 @@ let cancelButton = document.getElementById('cancelUploadButton');
 let file = null;
 let isUploading = false;
 
-const allowedFormats = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx',
+const allowedFileUploadNumber = 3;
+
+let supportFileInput = document.getElementById('supportFileInput');
+let cancelSupportFileButton = document.getElementById('cancelSupportFileButton');
+
+let files = null;
+let isSupportFileUploading = false;
+
+const allowedFormats = ['pdf', 'doc', 'docx', 'ppt', 'pptx',
+    'md', 'html', 'txt', 'm4a', 'flac', 'mp3', 'wav', 'wma', 'aac',
+    'mp4', 'mov', 'avi', 'flv', 'mkv', 'webm',
+    'jpg', 'jpeg', 'gif', 'png', 'svg'];
+
+const supportFileFormats = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx',
     'md', 'html', 'txt', 'm4a', 'flac', 'mp3', 'wav', 'wma', 'aac',
     'mp4', 'mov', 'avi', 'flv', 'mkv', 'webm',
     'jpg', 'jpeg', 'gif', 'png', 'svg',
@@ -94,6 +107,41 @@ fileInput.addEventListener('change', function (event) {
         event.target.value = ''; // Xóa giá trị của phần tử tải lên để ngăn người dùng tải lên tệp tin không hợp lệ
         return;
     }
+});
+
+supportFileInput.addEventListener('change', function (event) {
+    isUploading = true;
+    files = event.target.files;
+    if(files.length === 0) {
+        isUploading = false;
+        supportFileInput.value = '';
+    }
+    for (let i = 0; i < allowedFileUploadNumber; i++) {
+        if (files[i].size / (1024 * 1024) > 50) {
+            Swal.fire(
+                'Each supporting file size not exceeds 50MB!',
+                'Please choose a file with a capacity of less than 50MB.',
+                'error'
+            );
+            event.target.value = ''; // Xóa giá trị của phần tử tải lên để ngăn người dùng tải lên tệp tin vượt quá kích thước
+            return;
+        }
+
+        let supportFileName = files[i].name;
+
+        let spFileExtension = getFileExtension(supportFileName.toLowerCase());
+
+        if (!supportFileFormats.includes(spFileExtension)) {
+            Swal.fire(
+                'File format not supported!',
+                'Please choose another format.',
+                'error'
+            );
+            event.target.value = ''; // Xóa giá trị của phần tử tải lên để ngăn người dùng tải lên tệp tin không hợp lệ
+            return;
+        }
+    }
+
 });
 
 function getFileExtension(filename) {
