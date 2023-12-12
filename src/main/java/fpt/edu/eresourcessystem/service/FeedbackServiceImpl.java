@@ -31,17 +31,34 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     public Feedback saveFeedback(Feedback feedback) {
         // You might want to add additional business logic here
+        if(feedback == null){
+            throw new IllegalArgumentException("Feed back cannot be null");
+        }
         return feedbackRepository.save(feedback);
     }
 
     // Get a single feedback entry by ID
     public Optional<Feedback> getFeedbackById(String id) {
+        if (id == null || id.trim().isEmpty()) {
+            throw new IllegalArgumentException("ID cannot be null or empty");
+        }
         return feedbackRepository.findById(id);
+    }
+
+    @Override
+    public Feedback updateFeedback(String id, Feedback feedbackDetails) {
+        return null;
     }
 
 
     // Delete a feedback entry
     public void deleteFeedback(String id) {
+        if (id == null || id.trim().isEmpty()) {
+            throw new IllegalArgumentException("ID cannot be null or empty");
+        }
+        if (!feedbackRepository.existsById(id)) {
+            throw new RuntimeException("Feedback with ID " + id + " does not exist");
+        }
         feedbackRepository.deleteById(id);
     }
 
