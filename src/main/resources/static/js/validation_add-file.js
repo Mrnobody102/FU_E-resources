@@ -35,6 +35,16 @@ cancelButton.addEventListener('click', function () {
     }
 });
 
+cancelSupportFileButton.addEventListener('click', function () {
+    if (isSupportFileUploading) {
+        isSupportFileUploading = false;
+        files = null;
+        supportFileInput.value = '';
+    } else {
+        console.log('Không có tệp tin đang được tải lên để hủy');
+    }
+});
+
 fileInput.addEventListener('change', function (event) {
     isUploading = true;
     file = event.target.files[0];
@@ -78,7 +88,7 @@ fileInput.addEventListener('change', function (event) {
                     preview = document.createElement('audio');
                     preview.src = e.target.result;
                     preview.controls = true;
-                } else if (file.type === 'application/pdf') {
+                } else if (file.type === 'application/pdf' || file.type.startsWith('text')) {
                     if (fileSizeInMB < 1) {
                         preview = document.createElement('embed');
                         preview.src = e.target.result;
@@ -86,7 +96,7 @@ fileInput.addEventListener('change', function (event) {
                         preview.height = '600px';
                     } else {
                         preview = document.createElement('p');
-                        preview.textContent = 'PDF file larger than 1MB will not be previewed.';
+                        preview.textContent = 'Document file larger than 1MB will not be previewed.';
                     }
                 } else {
                     preview = document.createElement('span');
@@ -110,10 +120,18 @@ fileInput.addEventListener('change', function (event) {
 });
 
 supportFileInput.addEventListener('change', function (event) {
-    isUploading = true;
+    isSupportFileUploading = true;
     files = event.target.files;
     if(files.length === 0) {
-        isUploading = false;
+        isSupportFileUploading = false;
+        supportFileInput.value = '';
+    }
+    if(files.length > allowedFileUploadNumber){
+        Swal.fire(
+            'Only allowed to upload a maximum of 3 files!',
+            'Please choose no more than 3 files.',
+            'error'
+        );
         supportFileInput.value = '';
     }
     for (let i = 0; i < allowedFileUploadNumber; i++) {

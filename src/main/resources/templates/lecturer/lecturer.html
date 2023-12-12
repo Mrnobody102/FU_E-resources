@@ -39,6 +39,10 @@
                                 <div class="stu__view-recent-courses">
                                     <div class="stu__view-list-course-content">
                                         <div class="view-inline-list">
+                                            <span th:unless="${recentCourses ne null} AND ${recentCourses.size() != 0}"
+                                                  class="home__course-item grid__column-2">
+                                                    <span class="lec__no-recent-course">You have not had any new courses recently.</span>
+                                                </span>
                                             <ul class="home__course-list  d-flex">
                                                 <li class="home__course-item grid__column-2"
                                                     th:each="course : ${recentCourses}">
@@ -78,7 +82,9 @@
 <!-- Footer -->
 <div th:replace="~{fragments/footer :: footerSection}"></div>
 <!--jquery-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!--Bootstrap script-->
 <script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"

@@ -78,30 +78,45 @@
                                     th:classappend="${status == 'all' ? 'lec__navbar-active' : ''}">
                                     <a th:href="@{/lecturer/courses/list/all/1}">
                                         All courses
+                                        <th:block th:if="${status == 'all'}">
+                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
+                                        </th:block>
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
                                     th:classappend="${status == 'new' ? 'lec__navbar-active' : ''}">
                                     <a th:href="@{/lecturer/courses/list/new/1}">
                                         New courses
+                                        <th:block th:if="${status == 'new'}">
+                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
+                                        </th:block>
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
                                     th:classappend="${status == 'publish' ? 'lec__navbar-active' : ''}">
                                     <a th:href="@{/lecturer/courses/list/publish/1}">
                                         Published courses
+                                        <th:block th:if="${status == 'publish'}">
+                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
+                                        </th:block>
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
                                     th:classappend="${status == 'draft' ? 'lec__navbar-active' : ''}">
                                     <a th:href="@{/lecturer/courses/list/draft/1}">
                                         Editing courses
+                                        <th:block th:if="${status == 'draft'}">
+                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
+                                        </th:block>
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
                                     th:classappend="${status == 'hide' ? 'lec__navbar-active' : ''}">
                                     <a th:href="@{/lecturer/courses/list/hide/1}">
                                         Hidden courses
+                                        <th:block th:if="${status == 'hide'}">
+                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
+                                        </th:block>
                                     </a>
                                 </li>
                             </ul>

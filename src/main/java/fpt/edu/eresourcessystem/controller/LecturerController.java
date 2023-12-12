@@ -561,7 +561,7 @@ public class LecturerController {
 
         List<MultiFile> multiFiles = new ArrayList<>();
         // Check if files were uploaded
-        if (files != null && files.length > 0) {
+        if (files != null && files.length > 0 && files.length < 4) {
             for (MultipartFile supportFile : files) {
                 // Handle each uploaded file
                 if (!supportFile.isEmpty()) {
@@ -609,7 +609,7 @@ public class LecturerController {
     }
 
     @GetMapping({"/documents/{documentId}/update"})
-    public String updateDocumentProcess(@PathVariable(required = false) String documentId, final Model model) throws IOException {
+    public String updateDocument(@PathVariable(required = false) String documentId, final Model model) throws IOException {
         Document document = documentService.findById(documentId);
         if (null == document) {
             return "redirect:lecturer/documents/update?error";
@@ -628,7 +628,7 @@ public class LecturerController {
 
     @PostMapping("/documents/update")
     @Transactional
-    public String updateDocument(@ModelAttribute DocumentDto document,
+    public String updateDocumentProcess(@ModelAttribute DocumentDto document,
                                  @RequestParam(value = "deleteCurrentFile", required = false) String deleteCurrentFile,
                                  @RequestParam(value = "file", required = false) MultipartFile file,
                                 @RequestParam(value = "files", required = false) MultipartFile[] files)

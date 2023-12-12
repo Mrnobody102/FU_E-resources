@@ -448,3 +448,8 @@ label.error {
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
+
+.lec__no-recent-course {
+    font-weight: var(--font-medium);
+    font-size: 1.5rem;
+}

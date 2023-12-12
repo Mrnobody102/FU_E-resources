@@ -75,20 +75,20 @@
                                           class="lecturer_textarea form-control lecturer__input-doc"
                                           th:field="*{description}" placeholder="Enter description"></textarea>
 
-<!--                                <label for="topic" class="lecturer_input-label-doc">Topic:</label>-->
-<!--                                <div class="d-flex lecturer__input-doc">-->
-<!--                                    <select class="form-select " name="topicId"-->
-<!--                                            style="font-size: 1.3rem"-->
-<!--                                            id="topic">-->
-<!--                                        <option th:each="topic : ${topics}"-->
-<!--                                                th:text="${topic.topicTitle}"-->
-<!--                                                th:value="${topic.id}">-->
-<!--                                        </option>-->
-<!--                                    </select>-->
-<!--                                    &lt;!&ndash;                                    <button type="button" id="defineResourceType"&ndash;&gt;-->
-<!--                                    &lt;!&ndash;                                            class="lecturer_search-btn ms-2 border-0 ps-4 pe-4"><i&ndash;&gt;-->
-<!--                                    &lt;!&ndash;                                            class="fa-solid fa-plus"></i></button>&ndash;&gt;-->
-<!--                                </div>-->
+                                <!--                                <label for="topic" class="lecturer_input-label-doc">Topic:</label>-->
+                                <!--                                <div class="d-flex lecturer__input-doc">-->
+                                <!--                                    <select class="form-select " name="topicId"-->
+                                <!--                                            style="font-size: 1.3rem"-->
+                                <!--                                            id="topic">-->
+                                <!--                                        <option th:each="topic : ${topics}"-->
+                                <!--                                                th:text="${topic.topicTitle}"-->
+                                <!--                                                th:value="${topic.id}">-->
+                                <!--                                        </option>-->
+                                <!--                                    </select>-->
+                                <!--                                    &lt;!&ndash;                                    <button type="button" id="defineResourceType"&ndash;&gt;-->
+                                <!--                                    &lt;!&ndash;                                            class="lecturer_search-btn ms-2 border-0 ps-4 pe-4"><i&ndash;&gt;-->
+                                <!--                                    &lt;!&ndash;                                            class="fa-solid fa-plus"></i></button>&ndash;&gt;-->
+                                <!--                                </div>-->
 
                                 <label for="resourceType" class="lecturer_input-label-doc">Type:</label>
                                 <div class="d-flex lecturer__input-doc">
@@ -100,9 +100,6 @@
                                                 th:value="${resourceType.id}">
                                         </option>
                                     </select>
-                                    <button type="button" id="defineResourceType"
-                                            class="lecturer_search-btn ms-2 border-0 ps-4 pe-4"><i
-                                            class="fa-solid fa-plus"></i></button>
                                 </div>
 
                                 <div id="inputResourceWrapper"
@@ -128,9 +125,9 @@
                                 </div>
 
 
-                                <div id="uploadFileInput" style="margin-top: 2rem" th:if="${document.displayWithFile}">
+                                <div id="uploadFileInput" style="margin-top: 1rem" th:if="${document.displayWithFile}">
                                     <div class="d-flex justify-content-between lecturer__input-doc">
-                                        <label th:for="file" class="lecturer_input-label-doc">File Upload:</label>
+                                        <label th:for="file" class="lecturer_input-label-doc">Display-content file upload:</label>
 
                                         <div id="cancelUploadButton" class="d-flex align-items-center">
                                             <button type="button" class="border-0"
@@ -145,14 +142,43 @@
                                                 th:text="${file}"></span>
                                         </div>
                                         <div id="replaceFileMessage" style="font-style: italic; display: none">
-                                            Current file will be replace
+                                            Current file will be replaced
                                         </div>
                                     </div>
                                     <input type="file" th:name="file" id="fileUploadInput"
                                            class="file-input form-control lecturer__input-doc" style="font-size: 1.3rem"
                                     >
                                     <div class="mt-3">
-                                        <div id="previewContainer" class="form-control">File will be previewed here.
+                                        <div id="previewContainer" class="form-control">
+                                            <i>File will be previewed here.</i>
+                                            <br>
+                                            <br>
+                                            <span>Định dạng file cho phép hiển thị dưới dạng content:</span>
+                                            <br>
+                                            <i>
+                                                <b>- Tài liệu:</b> .pdf, .doc, .docx, .ppt, .pptx, .txt, .html, .md
+                                                <br>
+                                                <b>- Hình ảnh:</b> .jpg, .jpeg, .gif, .png, .svg
+                                                <br>
+                                                <b>- Video:</b> .mp4, .webm, .mov, .avi, .flv, .mkv
+                                                <br>
+                                                <b>- Audio:</b> .mp3, .flac, .aac, .wav
+                                                <br>
+                                            </i>
+
+                                            <br>
+
+                                            <i>
+                                                <span>Định dạng file có thể preview:</span>
+                                                <br>
+                                                <b>- Tài liệu:</b> .pdf, .txt, .html, .md
+                                                <br>
+                                                <b>- Hình ảnh:</b> .jpg, .jpeg, .gif, .png, .svg
+                                                <br>
+                                                <b>- Video:</b> .mp4, .webm, .mov, .avi, .flv, .mkv
+                                                <br>
+                                                <b>- Audio:</b> .mp3, .flac, .aac, .wav
+                                            </i>
                                         </div>
                                     </div>
 
@@ -161,6 +187,12 @@
                                 <button type="submit" class="btn btn-save lecturer_btn-save"
                                         id="submitAllData">Save changes
                                 </button>
+                                <th:block th:if="${param.success}">
+                                    <a class="btn btn--back" href="javascript:void(0);" onclick="history.go(-2);">Back</a>
+                                </th:block>
+                                <th:block th:unless="${param.success}">
+                                    <a class="btn btn--back" href="javascript:void(0);" onclick="history.go(-1);">Back</a>
+                                </th:block>
                             </form>
                         </div>
 
@@ -174,7 +206,9 @@
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 
 <!--jquery-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script
         src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -184,44 +218,6 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 <script th:inline="javascript">
-    // Resource Type
-    $('#defineResourceType').click(function () {
-        $('#inputResourceWrapper').fadeIn();
-    });
-
-    $('#defineButton').click(function () {
-        var inputValue = $('#inputResource').val().trim();
-        var selectResource = $('#resourceType');
-        var isDuplicate = false;
-
-        if (inputValue === '') {
-            alert("Please enter a resource type!");
-            return;
-        }
-
-        selectResource.find('option').each(function () {
-            if ($(this).text() === inputValue) {
-                isDuplicate = true;
-                return false;
-            }
-        });
-
-        if (isDuplicate) {
-            Swal.fire(
-                'Error!',
-                'This resource type already exists!',
-                'error'
-            );
-        } else {
-            var confirmation = confirm("Are you sure you want to add this resource type?");
-            if (confirmation) {
-                var newOption = $('<option>').text(inputValue).val(inputValue);
-                selectResource.append(newOption);
-                selectResource.val(inputValue);
-            }
-        }
-    });
-
     // VALIDATION AND SWAL
     // validate_addDocument();
 
