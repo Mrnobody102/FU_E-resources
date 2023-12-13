@@ -50,4 +50,7 @@ public interface DocumentService {
     List<DocumentResponseDto> findRelevantDocument(String topicId, String docId);
 
     HashMap<String, List<DocumentResponseDto>> findAllDocumentsByCourseAndResourceType(String courseId, String resourceTypeId);
+
+
+    void removeMultiFile(String docId, ObjectId multiFileId);
 }

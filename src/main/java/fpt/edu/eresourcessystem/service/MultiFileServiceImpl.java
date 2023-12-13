@@ -23,6 +23,12 @@ public class MultiFileServiceImpl implements MultiFileService{
     }
 
     @Override
+    public MultiFile findByCloudFileName(String cloudFileName) {
+        Optional<MultiFile> multiFile = multiFileRepository.findByCloudFileNameAndDeleteFlg(cloudFileName);
+        return multiFile.isPresent() ? multiFile.get() : null;
+    }
+
+    @Override
     public MultiFile addMultiFile(MultiFile multiFile) {
         if (null == multiFile.getId()) {
             MultiFile result = multiFileRepository.save(multiFile);
@@ -61,6 +67,17 @@ public class MultiFileServiceImpl implements MultiFileService{
     public boolean hardDeleteMultiFile(MultiFile multiFile) {
         MultiFile check = multiFileRepository
                 .findByIdAndDeleteFlg(multiFile.getId(), CommonEnum.DeleteFlg.PRESERVED).orElse(null);
+        if(null != check){
+            multiFileRepository.delete(check);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hardDeleteMultiFile(String cloudFileName) {
+        MultiFile check = multiFileRepository
+                .findByCloudFileNameAndDeleteFlg(cloudFileName).orElse(null);
         if(null != check){
             multiFileRepository.delete(check);
             return true;

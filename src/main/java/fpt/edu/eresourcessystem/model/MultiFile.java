@@ -27,5 +27,6 @@ public class MultiFile {
         this.fileName = fileName;
         this.cloudFileName = cloudFileName;
         this.cloudFileLink = cloudFileLink;
+        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
 }

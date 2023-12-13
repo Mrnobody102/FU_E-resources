@@ -52,6 +52,7 @@
                                     <div class="doc-info-name d-flex justify-content-between"
                                          style="margin-bottom: 4px">
                                         <div style="flex: 3; margin-right: 2rem">
+                                            <input hidden id="documentId" th:value="${document.getId()}">
                                             <p class="doc-info-name h2" th:text="${document.getTitle()}"></p>
                                             <div style="display: flex; width: 100%">
                                         <span style="flex: 1">Type: <span class="lecturer-name"
@@ -184,18 +185,137 @@
                                 </div>
                                 <div class="supporting-file-wrapper" th:if="${document.multipleFiles ne null} AND ${document.multipleFiles.size() != 0}">
                                     <div class="supporting-file-label">Supporting files:</div>
-                                    <div class="d-flex">
-                                        <div th:each="supportingFile : ${document.multipleFiles}">
-                                            <div class="supporting-file-download"
-                                                 th:file-name="${supportingFile.cloudFileName}"
-                                                 onclick="downloadFile(this.getAttribute('file-name'))">
-                                                <icon class="fa fa-download"></icon>
-                                                <span th:text="${supportingFile.fileName}"></span>
-                                            </div>
+                                    <div id="fileSupport">
+                                        <div class="d-flex">
+                                            <div class="d-flex" th:each="supportingFile : ${document.multipleFiles}">
+                                                <div class="supporting-file-download"
+                                                     th:file-name="${supportingFile.cloudFileName}"
+                                                     onclick="downloadFile(this.getAttribute('file-name'))">
+                                                    <icon class="fa fa-download"></icon>
+                                                    <span th:text="${supportingFile.fileName}"></span>
+                                                    <icon class="fa fa-remove remove-file" style="display: none" onclick="removeFile(this.parentNode)"></icon>
+                                                </div>
 
+                                            </div>
+                                        </div>
+                                        <div id="addSupportFile" class="add-file" style="display: none">
+                                            <icon class="fa fa-add pe-2"></icon>
+                                            <span class="pe-2">Add new supporting files: </span>
+                                            <input type="file" multiple id="newSupportFileInput">
+                                        </div>
+
+                                        <div class="ps-3 pb-4" id="saveUpdateFilesWrap" style="display: none">
+                                            <div id="saveUpdateFiles" class="btn btn-save ps-4 pe-4 pt-2 pb-2 mt-3" onclick="saveFiles()">Save</div>
+                                            <div id="backUpdateFile" class="btn btn--back ps-4 pe-4 pt-2 pb-2 mt-3" onclick="backUpdateFiles()">Back</div>
                                         </div>
                                     </div>
+                                    <div id="updateSupportingFiles" class="btn btn--edit ps-3 pe-3 mt-3" onclick="updateFiles()">Update supporting files</div>
+
                                     <script>
+                                        const addSupportFile = document.getElementById('addSupportFile');
+                                        const updateSupportingFiles = document.getElementById('updateSupportingFiles');
+                                        const saveUpdateFilesWrap = document.getElementById('saveUpdateFilesWrap');
+                                        const saveUpdateFiles = document.getElementById('saveUpdateFiles');
+                                        const backUpdateFile = document.getElementById('backUpdateFile');
+                                        const newSupportFileInput = document.getElementById('newSupportFileInput');
+                                        const removeFiles = document.getElementsByClassName('remove-file');
+                                        const supportingFileDownload = document.getElementsByClassName('supporting-file-download');
+
+                                        const listSupportingFiles = [];
+
+                                        const supportingFileElements = document.getElementsByClassName('supporting-file-download');
+                                        for (let i = 0; i < supportingFileElements.length; i++) {
+                                            const fileName = supportingFileElements[i].getAttribute('file-name');
+                                            listSupportingFiles.push(fileName);
+                                        }
+
+                                        console.log(listSupportingFiles);
+
+                                        newSupportFileInput.addEventListener('change', handleFileSelection);
+
+                                        function handleFileSelection() {
+                                            const selectedFiles = newSupportFileInput.files;
+                                            const totalFiles = selectedFiles.length + listSupportingFiles.length;
+
+                                            if (totalFiles > 3) {
+                                                alert("Total number of files exceeds the limit of 3");
+                                                // Reset the file input by clearing the selected files
+                                                newSupportFileInput.value = null;
+                                            }
+                                        }
+
+                                        function saveFiles() {
+                                            const formData = new FormData();
+
+                                            const documentId = document.getElementById('documentId').value;
+
+                                            // Thêm các tệp đã tải lên vào formData
+                                            const selectedFiles = newSupportFileInput.files;
+                                            for (let i = 0; i < selectedFiles.length; i++) {
+                                                formData.append('files', selectedFiles[i]);
+                                            }
+
+                                            // Thêm các phần tử trong listSupportingFiles vào formData
+                                            for (let i = 0; i < listSupportingFiles.length; i++) {
+                                                formData.append('supportingFiles', listSupportingFiles[i]);
+                                            }
+
+                                            // Gọi AJAX để gửi formData lên phía máy chủ
+                                            $.ajax({
+                                                url: '/lecturer/' + documentId + '/update_supporting_files',
+                                                type: 'POST',
+                                                data: formData,
+                                                processData: false,
+                                                contentType: false,
+                                                success: function() {
+                                                    //
+                                                    window.location.reload();
+                                                },
+                                                error: function(error) {
+                                                    // Xử lý lỗi từ máy chủ
+                                                    console.log(error);
+                                                }
+                                            });
+                                        }
+                                        function backUpdateFiles() {
+                                            window.location.reload();
+                                        }
+                                        function updateFiles() {
+                                            addSupportFile.style.display = 'block';
+                                            updateSupportingFiles.style.display = 'none';
+
+                                            saveUpdateFilesWrap.style.display = 'block';
+                                            saveUpdateFiles.style.display = 'inline';
+                                            backUpdateFile.style.display = 'inline';
+
+                                            for (let i = 0; i < removeFiles.length; i++) {
+                                                const removeFile = removeFiles[i];
+                                                removeFile.style.display = 'inline'; // Thiết lập thuộc tính "display" thành "block"
+                                            }
+                                            for (let i = 0; i < supportingFileDownload.length; i++) {
+                                                let supportingFile = supportingFileDownload[i];
+                                                console.log(supportingFileDownload[i]);
+                                                supportingFile.removeAttribute('onclick');
+                                                supportingFile.classList.add('supporting-file-when-updating');
+                                            }
+                                        }
+                                        function removeFile(element) {
+
+                                            const fileName = element.getAttribute('file-name');
+                                            const index = listSupportingFiles.indexOf(fileName);
+                                            if (index > -1) {
+                                                listSupportingFiles.splice(index, 1);
+                                            }
+
+                                            // Xóa phần tử khỏi DOM
+                                            element.remove();
+
+                                            console.log(listSupportingFiles);
+                                        }
+
+                                        function addFileInput() {
+                                            newSupportFileInput.style.display = 'block';
+                                        }
                                         function downloadFile(fileName) {
                                             $.ajax({
                                                 url: '/api/lecturer/download',

@@ -80,7 +80,6 @@ public class SecurityConfig implements WebMvcConfigurer{
                         .userService(customOAuth2UserService)
 			    )
                 .successHandler(customAuthenticationSuccessHandler)
-//                .defaultSuccessUrl("/student", true)
                 .failureUrl("/login?error"));
 
         http.logout(auth -> auth.logoutUrl("/logout")

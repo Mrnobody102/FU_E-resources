@@ -8,6 +8,8 @@ public interface MultiFileService {
 
     MultiFile findById(String multiFileId);
 
+    MultiFile findByCloudFileName(String cloudFileName);
+
     MultiFile addMultiFile(MultiFile multiFile);
 
     MultiFile updateMultiFile(MultiFile multiFile);
@@ -15,4 +17,6 @@ public interface MultiFileService {
     boolean deleteMultiFile(MultiFile multiFile);
 
     boolean hardDeleteMultiFile(MultiFile multiFile);
+
+    boolean hardDeleteMultiFile(String cloudFileName);
 }

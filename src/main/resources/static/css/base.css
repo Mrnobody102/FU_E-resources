@@ -639,12 +639,13 @@ textarea.form-control {
 }
 
 .supporting-file-label {
+    margin-bottom: 1rem;
     font-weight: var(--font-medium);
 }
 
 .supporting-file-download {
     width: fit-content;
-    margin: 1rem 2rem 1rem 0;
+    margin: 1rem 0 1rem 1rem;
     padding: 0.5rem 1rem;
     border: 1px solid #dbdbdb;
     background-color: var(--second-back-ground);
@@ -656,6 +657,42 @@ textarea.form-control {
     color: var(--primary-color);
 }
 
+.supporting-file-when-updating {
+    width: fit-content;
+    margin: 1rem 0 0 1rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #dbdbdb;
+    background-color: var(--second-back-ground);
+    border-radius: 2px;
+}
+
+.supporting-file-when-updating:hover{
+    color: black;
+}
+
+#fileSupport {
+    border: 1px var(--border-color) dashed;
+}
+
+.remove-file {
+    cursor: pointer;
+    padding-left: 0.5rem;
+    font-size: 1.3rem;
+}
+.remove-file:hover {
+    color: var(--primary-color);
+}
+
+.add-file {
+    width: fit-content;
+    height: auto;
+    margin: 1rem 1rem 1rem 1rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #dbdbdb;
+    background-color: var(--second-back-ground);
+    border-radius: 2px;
+}
+
 .document-details-head {
     padding-left: 1rem;
 }
@@ -663,4 +700,34 @@ textarea.form-control {
 .display-content-wrapper {
     padding: 0 1rem 0 1rem;
     width: 100%;
+}
+
+/* overlay form */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Màu overlay */
+    z-index: 9999; /* Đảm bảo overlay nằm trên các phần tử khác trên trang */
+    display: none; /* Ẩn overlay ban đầu */
+}
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite; /* Animation quay vòng */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

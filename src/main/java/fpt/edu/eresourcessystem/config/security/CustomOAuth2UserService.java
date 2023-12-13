@@ -51,6 +51,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             newAccount.setDeleteFlg(CommonEnum.DeleteFlg.PRESERVED);
             newAccount.setAccountType(AccountEnum.AccountType.FPT_MAIL_ACC);
             account = accountRepository.insert(newAccount);
+
             Student student = new Student();
             student.setAccount(account);
             studentService.addStudent(student);
