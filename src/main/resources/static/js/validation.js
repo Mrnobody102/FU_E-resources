@@ -308,7 +308,7 @@ function validateUpdateTrainingType() {
     });
 }
 function validate_updateTopic() {
-    $("#add-form").validate({
+    $("#update-topic").validate({
         rules: {
             topicTitle: {
                 required: true,
@@ -398,9 +398,43 @@ function validate_updateresourceType() {
 
 // VALIDATE DOCUMENTS
 function validate_addDocument(){
-    // bổ sung
+    $("#add-document").validate({
+        rules: {
+            title: "required",
+            description: {
+                required: true,
+                minlength: 10
+            },
+
+        },
+        messages: {
+            title: "Please enter a title",
+            description: {
+                required: "Please provide a description",
+                minlength: "Your description must be at least 10 characters long"
+            }
+        },
+
+    });
 }
 
 function validate_updateDocument(){
-    // bổ sung
+    $("#update-document").validate({
+        rules: {
+            title: "required",
+            description: {
+                required: true,
+                minlength: 10
+            },
+
+        },
+        messages: {
+            title: "Please enter a title",
+            description: {
+                required: "Please provide a description",
+                minlength: "Your description must be at least 10 characters long"
+            }
+        },
+
+    });
 }

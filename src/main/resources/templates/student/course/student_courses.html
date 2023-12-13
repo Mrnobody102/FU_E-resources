@@ -13,6 +13,11 @@
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
 
+    <!-- SweetAlert từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
 </head>
 <body class="app_container">
 <!-- Header -->
@@ -153,6 +158,8 @@
 <script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"
 
         crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script th:src="@{/js/validation.js}"></script>
 <!--Custom script-->
 <script th:src="@{/js/student/student.js}"></script>
 <script>

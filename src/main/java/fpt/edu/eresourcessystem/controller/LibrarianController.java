@@ -113,6 +113,10 @@ public class LibrarianController {
         }
         String currentPrincipalName = authentication.getName();
         Librarian librarian = librarianService.findByAccountId(accountService.findByEmail(currentPrincipalName).getId());
+
+        if (librarian == null) {
+            return "redirect:/librarian/courses/add?error";
+        }
         course.setLibrarian(librarian);
 
         // check course code duplicate

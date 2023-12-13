@@ -67,6 +67,7 @@ public class StudentServiceTest {
 
         Student student = new Student();
         student.setSavedCourses(Arrays.asList("656d21b95302664d15b91fa2"));
+
         when(studentRepository.findById(studentId)).thenReturn(Optional.of(student));
         boolean result = studentService.checkCourseSaved(studentId, courseId);
         assertTrue(result);

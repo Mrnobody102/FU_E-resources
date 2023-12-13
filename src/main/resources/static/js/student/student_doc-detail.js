@@ -523,22 +523,40 @@ function existFormEditQuestion(param) {
 }
 
 function deleteQuestion(param) {
-    var result = window.confirm("Do you want to delete your question?");
-    if (result) {
-        $.ajax({
-            type: 'POST',
-            url: '/api/student/my_question/' + param + '/delete',
-            success: function (data) {
-                console.log('success-delete-question' + param);
-                $("#" + param).html("");
-                $("#" + param).css("display", "none");
-            },
-            error: function (xhr) {
-                console.log('error-delete-question')
-            }
-        });
-    }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to delete your question?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: 'POST',
+                url: '/api/student/my_question/' + param + '/delete',
+                success: function (data) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your question has been deleted.',
+                        'success'
+                    );
+                    $("#" + param).html("");
+                    $("#" + param).css("display", "none");
+                },
+                error: function (xhr) {
+                    Swal.fire(
+                        'Error!',
+                        'Failed to delete your question.',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
 }
+
 
 
 function submitFormEditReply(param) {

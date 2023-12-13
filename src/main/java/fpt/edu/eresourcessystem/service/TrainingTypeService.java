@@ -10,7 +10,6 @@ import java.util.Optional;
 
 public interface TrainingTypeService {
 
-      List<TrainingType> findPaginated(int start, int length);
 
      TrainingType save(TrainingType trainingType) ;
 
@@ -23,10 +22,6 @@ public interface TrainingTypeService {
      TrainingType updateTrainingType(TrainingType trainingType);
 
      boolean softDelete(TrainingType trainingType);
-
-     long getTotalTrainingTypesCount();
-
-     Page<TrainingType> findAllWithFilter(String search, Pageable pageable);
 
      TrainingType addCourseToTrainingType(String trainingTypeId, Course course);
 }
