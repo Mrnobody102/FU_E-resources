@@ -276,6 +276,13 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
+    public void addResourceTypeToCourse(Course course, ObjectId resourceTypeId) {
+        Query query = new Query(Criteria.where("id").is(course.getId()));
+        Update update = new Update().push("resourceTypes", resourceTypeId);
+        mongoTemplate.updateFirst(query, update, Course.class);
+    }
+
+    @Override
     public List<Course> findByListId(List<String> courseIds) {
         Query query = new Query(Criteria.where("id").in(courseIds));
         List<Course> courses = mongoTemplate.find(query, Course.class);

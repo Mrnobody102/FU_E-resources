@@ -7,6 +7,7 @@
     --text-color: #000;
     --title-color: #e12b1b;
     --border-color: #dbdbdb;
+    --second-border-color: #f5f1f1;
     --hover-color: #5c7af3;
     --header-hover-color: #d5d5d5;
     --bg-hover-color: #e3e6fc;
@@ -15,12 +16,18 @@
     /*--primary-color: white;*/
     --gradient-color: #114a9d;
     --primary-color: #0a429d;
+    --secondary-color: #38a20f;
+
     --background-btn-color-hover: #0a429d;
     --background-btn-color: #0d55c5;
     --second-background-btn-color-hover: #efdada;
     --second-background-btn-color: #efdddd;
+    --add-btn-color: #358f10;
+    --edit-btn-color: #358f10;
+    --delete-btn-color: #358f10;
+
     --primary-color-rgb: 210, 68, 2;
-    --primary-btn-color: #419a1d;
+    --primary-btn-color: #079147;
     --lib-dashboard-color: #0a53be;
     --second-back-ground: rgb(240, 234, 234);
     --content-width: 87.5%;
@@ -235,7 +242,7 @@ li {
 
 .btn-save:hover {
     background-color: var(--primary-btn-color);
-    color: var(--hover-color-2);
+    color: white;
 }
 
 .btn.btn--primary {
@@ -261,6 +268,26 @@ li {
 
 .btn.btn--back:hover {
     background-color: #575656;
+    color: white;
+}
+
+.btn--add {
+    background-color: var(--add-btn-color);
+    color: white;
+}
+
+.btn--add:hover {
+    background-color: var(--primary-btn-color);
+    color: white;
+}
+
+.btn--edit {
+    background-color: var(--edit-btn-color);
+    color: white;
+}
+
+.btn--edit:hover {
+    background-color: var(--primary-btn-color);
     color: white;
 }
 
@@ -569,6 +596,10 @@ li {
     height: 100%;
 }
 
+.distance-from-title {
+    margin-top: 1.5rem;
+}
+
 .manager_search-box {
     display: flex;
     flex-direction: column;
@@ -596,4 +627,40 @@ li {
 }
 textarea.form-control {
     min-height: calc(15em + (.75rem + 2px));
+}
+
+.border-color-primary {
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.supporting-file-wrapper {
+    border-top: 1px solid var(--border-color);
+    padding-top: 2rem;
+}
+
+.supporting-file-label {
+    font-weight: var(--font-medium);
+}
+
+.supporting-file-download {
+    width: fit-content;
+    margin: 1rem 2rem 1rem 0;
+    padding: 0.5rem 1rem;
+    border: 1px solid #dbdbdb;
+    background-color: var(--second-back-ground);
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.supporting-file-download:hover {
+    color: var(--primary-color);
+}
+
+.document-details-head {
+    padding-left: 1rem;
+}
+
+.display-content-wrapper {
+    padding: 0 1rem 0 1rem;
+    width: 100%;
 }

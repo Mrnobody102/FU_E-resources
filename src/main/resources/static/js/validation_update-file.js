@@ -71,7 +71,7 @@ fileInput.addEventListener('change', function (event) {
                     preview = document.createElement('audio');
                     preview.src = e.target.result;
                     preview.controls = true;
-                } else if (file.type === 'application/pdf') {
+                } else if (file.type === 'application/pdf' || file.type.startsWith('text')) {
                     if (fileSizeInMB < 1) {
                         preview = document.createElement('embed');
                         preview.src = e.target.result;
@@ -79,7 +79,7 @@ fileInput.addEventListener('change', function (event) {
                         preview.height = '600px';
                     } else {
                         preview = document.createElement('p');
-                        preview.textContent = 'PDF file larger than 1MB will not be previewed.';
+                        preview.textContent = 'Document file larger than 1MB will not be previewed.';
                     }
                 } else {
                     preview = document.createElement('span');

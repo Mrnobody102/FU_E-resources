@@ -15,6 +15,10 @@
     <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
     <link rel="stylesheet" th:href="@{/css/content-style.css}"/>
 
+    <!-- SweetAlert từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 
     <style>
         label.error {
@@ -56,7 +60,7 @@
                         <div th:replace="~{fragments/sidebar:: studentSidebar('courses')}"></div>
                     </div>
                     <div class="stu_course-content border-start main" id="main">
-                        <div style="width: 100%">
+                        <div class="display-content-wrapper">
                             <div class="document-details-info border-bottom">
                                 <div style="flex: 3">
                                     <div class="doc-info-name h2" style="margin-bottom: 4px">
@@ -64,7 +68,7 @@
                                     <div style="display: flex; width: 100%">
                                     <span class="course-info-lecturer" style="flex: 1; margin-bottom: 4px">
                                         Lecturer:
-                                        <a href="" class="lecturer-name" th:text="${account.name}">
+                                        <a class="lecturer-name" th:text="${account.name}">
                                         </a></span>
                                         <!--                                        <span style="flex: 1">Type: <span class="lecturer-name"-->
                                         <!--                                                                          th:text="${document.resourceType.resourceTypeName}"></span></span>-->
@@ -91,7 +95,7 @@
                                 <div style="display: flex">
                                     <th:block th:unless="${document.displayWithFile == true}">
                                         <div class="doc-content-view ck-content" th:utext="${document.editorContent}"
-                                             style="height: 500px; flex: 3; overflow: auto">
+                                             style="max-height: 600px; flex: 3; overflow-y: auto">
                                         </div>
                                     </th:block>
                                     <th:block th:if="${document.displayWithFile == true}">
@@ -181,6 +185,42 @@
                                         </th:block>
                                     </th:block>
 
+                                </div>
+                                <div class="supporting-file-wrapper">
+                                    <div class="supporting-file-label">Supporting files:</div>
+                                    <div class="d-flex">
+                                        <div th:each="supportingFile : ${document.multipleFiles}">
+                                            <div class="supporting-file-download"
+                                                 th:file-name="${supportingFile.cloudFileName}"
+                                                 onclick="downloadFile(this.getAttribute('file-name'))">
+                                                <icon class="fa fa-download"></icon>
+                                                <span th:text="${supportingFile.fileName}"></span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <script>
+                                        function downloadFile(fileName) {
+                                            $.ajax({
+                                                url: '/api/lecturer/download',
+                                                method: 'GET',
+                                                data: {fileName: fileName},
+                                                xhrFields: {
+                                                    responseType: 'blob'
+                                                },
+                                                success: function (data) {
+                                                    var downloadLink = document.createElement('a');
+                                                    downloadLink.href = URL.createObjectURL(data);
+                                                    downloadLink.download = fileName;
+                                                    document.body.appendChild(downloadLink);
+                                                    downloadLink.click();
+                                                },
+                                                error: function () {
+                                                    console.log("Error when download file");
+                                                }
+                                            });
+                                        }
+                                    </script>
                                 </div>
 
 

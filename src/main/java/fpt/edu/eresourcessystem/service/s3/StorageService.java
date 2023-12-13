@@ -37,6 +37,14 @@ public class StorageService {
         return s3Client.getUrl(bucketName, fileName).toString();
     }
 
+    public String uploadFileWithName(MultipartFile file, String fileName) {
+        File fileObj = convertMultiPartFileToFile(file);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, fileName, fileObj);
+        s3Client.putObject(putObjectRequest);
+        fileObj.delete();
+        return s3Client.getUrl(bucketName, fileName).toString();
+    }
+
 
     public byte[] downloadFile(String fileName) {
         S3Object s3Object = s3Client.getObject(bucketName, fileName);

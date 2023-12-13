@@ -18,12 +18,14 @@ public class MultiFile {
     @Id
     private String id;
     private String fileName;
+    private String cloudFileName;
     private String cloudFileLink;
     private String docId;
     private CommonEnum.DeleteFlg deleteFlg;
 
-    public MultiFile(String fileName, String cloudFileLink) {
+    public MultiFile(String fileName, String cloudFileName, String cloudFileLink) {
         this.fileName = fileName;
+        this.cloudFileName = cloudFileName;
         this.cloudFileLink = cloudFileLink;
     }
 }

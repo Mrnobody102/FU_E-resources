@@ -68,11 +68,11 @@ public class DocumentEnum {
 
         public static DocumentFormat getDocType(String suffixName) {
             return switch (suffixName) {
-                case "pdf" -> DocumentFormat.PDF;
-                case "doc", "xls", "docx", "ppt", "pptx", "xlsx" -> DocumentFormat.MS_DOC;
-                case "md" -> DocumentFormat.MD;
-                case "html" -> DocumentFormat.HTML;
-                case "txt" -> DocumentFormat.TXT;
+                case "pdf" -> PDF;
+                case "doc", "docx", "ppt", "pptx" -> MS_DOC;
+                case "md" -> MD;
+                case "html" -> HTML;
+                case "txt" -> TXT;
 
                 case "m4a", "flac", "mp3", "wav", "wma", "aac" -> AUDIO;
 
@@ -83,6 +83,45 @@ public class DocumentEnum {
                 case "exe", "psd", "eps", "jar", "zip", "rar" -> OTHER;
 
                 default -> DocumentFormat.UNKNOWN;
+            };
+        }
+    }
+
+    public enum DocumentSupportFilesFormat {
+        PDF,
+        MS_DOC,
+        MD,
+        HTML,
+        TXT,
+
+        VIDEO,
+
+        AUDIO,
+
+        IMAGE,
+
+        OTHER,
+
+
+        UNKNOWN;
+
+        public static DocumentSupportFilesFormat getDocType(String suffixName) {
+            return switch (suffixName) {
+                case "pdf" -> PDF;
+                case "doc", "xls", "docx", "ppt", "pptx", "xlsx" -> MS_DOC;
+                case "md" -> MD;
+                case "html" -> HTML;
+                case "txt" -> TXT;
+
+                case "m4a", "flac", "mp3", "wav", "wma", "aac" -> AUDIO;
+
+                case "mp4", "mov", "avi", "flv", "mkv", "webm" -> VIDEO;
+
+                case "jpg", "jpeg", "gif", "png", "svg" -> IMAGE;
+
+                case "exe", "psd", "eps", "jar", "zip", "rar" -> OTHER;
+
+                default -> UNKNOWN;
             };
         }
     }

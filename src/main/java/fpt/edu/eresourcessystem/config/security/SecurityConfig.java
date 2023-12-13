@@ -29,6 +29,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableWebMvc
+
 public class SecurityConfig implements WebMvcConfigurer{
 
     private CustomizeUserDetailsService customizeUserDetailsService;

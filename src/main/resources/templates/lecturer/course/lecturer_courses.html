@@ -78,30 +78,45 @@
                                     th:classappend="${status == 'all' ? 'lec__navbar-active' : ''}">
                                     <a th:href="@{/lecturer/courses/list/all/1}">
                                         All courses
+                                        <th:block th:if="${status == 'all'}">
+                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
+                                        </th:block>
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
                                     th:classappend="${status == 'new' ? 'lec__navbar-active' : ''}">
                                     <a th:href="@{/lecturer/courses/list/new/1}">
                                         New courses
+                                        <th:block th:if="${status == 'new'}">
+                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
+                                        </th:block>
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
                                     th:classappend="${status == 'publish' ? 'lec__navbar-active' : ''}">
                                     <a th:href="@{/lecturer/courses/list/publish/1}">
                                         Published courses
+                                        <th:block th:if="${status == 'publish'}">
+                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
+                                        </th:block>
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
                                     th:classappend="${status == 'draft' ? 'lec__navbar-active' : ''}">
                                     <a th:href="@{/lecturer/courses/list/draft/1}">
                                         Editing courses
+                                        <th:block th:if="${status == 'draft'}">
+                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
+                                        </th:block>
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
                                     th:classappend="${status == 'hide' ? 'lec__navbar-active' : ''}">
                                     <a th:href="@{/lecturer/courses/list/hide/1}">
                                         Hidden courses
+                                        <th:block th:if="${status == 'hide'}">
+                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
+                                        </th:block>
                                     </a>
                                 </li>
                             </ul>
@@ -154,22 +169,33 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <ul class="pagination home-courses__pagination-distance">
-                                        <li class="pagination-item">
-                                            <a href="" class="pagination-item__link">
-                                                <i class="pagination-item__icon fas fa-angle-left"></i>
-                                            </a>
-                                        </li>
-                                        <li class="pagination-item pagination-item--active">
-                                            <a href="" class="pagination-item__link">1</a>
-                                        </li>
+                                    <nav th:if="${totalPage ne null} AND ${totalPage} >1" aria-label="Page navigation example">
+                                        <ul class="pagination home-courses__pagination-distance">
+                                            <li class="pagination-item"
+                                                th:classappend=" ${currentPage == 1} ? 'disabled' : ''">
+                                                <a class="pagination-item__link previous-page-stu-course-number" style="cursor: pointer">
+                                                    <i class="pagination-item__icon fas fa-angle-left"></i>
+                                                </a>
+                                            </li>
 
-                                        <li class="pagination-item">
-                                            <a href="" class="pagination-item__link">
-                                                <i class="pagination-item__icon fas fa-angle-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                            <li th:each="pageIndex: ${pages}" class="pagination-item"
+                                                th:classappend=" (${currentPage == pageIndex}) ? 'pagination-item--active' : '' ">
+                                                <th:block th:if="${pageIndex == -1}">
+                                                    <span class="pagination-item__link">...</span>
+                                                </th:block>
+                                                <th:block th:if="${pageIndex != -1}">
+                                                    <a th:text="${pageIndex}" th:value="${pageIndex}"
+                                                       class="pagination-item__link page-stu-course-number" style="cursor: pointer"></a>
+                                                </th:block>
+                                            </li>
+                                            <li  class="pagination-item"
+                                                 th:classappend="${currentPage == totalPage} ? 'disabled' : ''">
+                                                <a class="pagination-item__link next-page-stu-course-number" style="cursor: pointer">
+                                                    <i class="pagination-item__icon fas fa-angle-right"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>

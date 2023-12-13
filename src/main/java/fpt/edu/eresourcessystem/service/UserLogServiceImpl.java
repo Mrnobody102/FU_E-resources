@@ -35,6 +35,9 @@ public class UserLogServiceImpl implements UserLogService{
 
     @Override
     public List<UserLog> findByEmail(String email) {
+        if (email == null) {
+            throw new IllegalArgumentException("Email cannot be null");
+        }
         List<UserLog> userLogs = userLogRepository.findByEmail(email);
         return userLogs;
     }

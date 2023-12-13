@@ -39,23 +39,20 @@
                             <span> &gt; <a th:href="@{'/lecturer/resource_types/' + ${resourceType.id}}"
                                            th:text="${resourceType.resourceTypeName}"></a> </span>
                         </div>
-                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <div style="flex: 3">
+                        <div class="distance-from-title mb-4 border-bottom">
+                            <div>
                                 <h1 class="h2" th:text="${resourceType.resourceTypeName}"></h1>
                                 <p th:text="${course.courseCode} + ' - ' + ${course.courseName}"></p>
                             </div>
-                            <div style="flex: 1; display: flex; justify-content: center">
-                                <div style="width: 60%; display: flex; justify-content: center; flex-direction: column">
-                                    <a class="btn btn--hover mb-2 mt-2"
-                                       th:href="@{'/lecturer/resource_types/' + ${resourceType.id} +'/update'}">
-                                         <span><i class="fa-regular fa-edit"></i>  Edit resource type name</span>
-                                    </a>
-                                    <a class="btn btn--hover"
-                                       th:href="@{'/lecturer/resource_types/' + ${resourceType.id} +'/documents/add'}">
-                                        + Add document
-                                    </a>
-                                </div>
-
+                            <div class="d-inline-block">
+                                <a class="btn btn--hover"
+                                   th:href="@{'/lecturer/resource_types/' + ${resourceType.id} +'/documents/add'}">
+                                    + Add document
+                                </a>
+                                <a class="btn btn--hover mb-2 mt-2"
+                                   th:href="@{'/lecturer/resource_types/' + ${resourceType.id} +'/update'}">
+                                    <span class="ps-3 pe-3"><i class="fa-regular fa-edit"></i>  Edit resource type name</span>
+                                </a>
                             </div>
                         </div>
                         <div>

@@ -45,7 +45,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     public ResourceType addResourceType(ResourceType ResourceType) {
         ResourceType resourceType = new ResourceType(ResourceType);
         if (null == resourceType.getId()) {
-            ResourceType result = resourceTypeRepository.save(resourceType);
+            ResourceType result = resourceTypeRepository.insert(resourceType);
             return result;
         } else {
             Optional<ResourceType> checkExist = resourceTypeRepository.findById(resourceType.getId());
