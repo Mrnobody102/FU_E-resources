@@ -759,6 +759,7 @@ public class LecturerController {
             topicService.removeDocumentFromTopic(document.getTopic().getId(), new ObjectId(documentId));
             resourceTypeService.removeDocumentFromResourceType(document.getTopic().getId(), new ObjectId(documentId));
             documentService.softDelete(document);
+
             //add course log
             Course course = document.getTopic().getCourse();
             addCourseLog(course.getId(),
