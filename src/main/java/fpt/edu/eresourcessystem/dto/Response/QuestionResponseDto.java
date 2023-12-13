@@ -22,7 +22,7 @@ public class QuestionResponseDto {
     private int totalAnswers;
 
     private String lecturerEmail;
-
+    private String createdDate;
     private String lastModifiedDate;
     public QuestionResponseDto(Question question){
         this.questionId= question.getId();
@@ -38,6 +38,7 @@ public class QuestionResponseDto {
             this.totalAnswers = 0;
         }
         this.lecturerEmail = question.getLecturer();
+        this.createdDate = question.getCreatedDate();
         this.lastModifiedDate = question.getLastModifiedDate();
     }
 }

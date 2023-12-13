@@ -235,7 +235,7 @@
                                             <p class="lec__question-content question-content"
                                                th:utext="${question.content}"></p>
                                             <p class="lec__question-content"><span class="lec__answer-date"
-                                                                                   th:text="${question.lastModifiedDate}"></span>
+                                                                                   th:text="${question.createdDate}"></span>
                                                 <a class="lec__add-reply view-question-link-item"
                                                    th:question-id="${question.id}"
                                                    onclick="showReplyForm(this.getAttribute('question-id'))"> Reply</a>

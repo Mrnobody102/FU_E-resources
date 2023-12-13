@@ -141,7 +141,7 @@ function submitFormAddQuestion(param) {
                     "                                                    </button>\n" +
                     "                                                    </div>";
                     // date and link
-                    html+= "<span class=\"stu__question-date stu__question-content\">" + data.lastModifiedDate +
+                    html+= "<span class=\"stu__question-date stu__question-content\">" + data.createdDate +
                     "                                                </span> <a class=\"view-note-link-item  edit-question\" question-id=\""+data.questionId+"\">Edit</a>" +
                     "                                                  | <a class=\"view-note-link-item delete-question\" question-id=\""+ data.questionId +"\" onclick=deleteQuestion(\"" + data.questionId + "\")>Delete</a>" +
                     "                                                </div>\n";
@@ -288,7 +288,7 @@ function submitFormReplyQuestion(param) {
                     html = "<div class=\"reply-content border-bottom\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data.lecturerName + "</span></h6>\n" +
                         "                     <p class=\"stu__question-content\">" + data.answerContent + "</p>\n" +
-                        "                     <p class=\"stu__question-content\" ><span class=\"lec__answer-date\" >" + data.lastModifiedDate + "</span> " +
+                        "                     <p class=\"stu__question-content\" ><span class=\"lec__answer-date\" >" + data.createdDate + "</span> " +
                         "                     <a class=\"stu__like-reply view-question-link-item\" reply-id=\"" + data.answerId + "\"onclick=likeReply(\"" + data.answerId + "\")><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
                         "                     </div>";
                 } else {
@@ -312,7 +312,7 @@ function submitFormReplyQuestion(param) {
                         "                                                    </button>\n" +
                         "                                                    </div>";
                     // date and link
-                    html+= "<p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data.lastModifiedDate + "</span> " +
+                    html+= "<p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data.createdDate + "</span> " +
                         "                     <a class=\"stu__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data.answerId + "\">Edit</a> |" +
                         "                     <a class=\"stu__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data.answerId + "\" onclick=deleteReply(\"" + data.answerId + "\",\"" + data.questionId + "\")>Delete</a>\n" +
                         "                     </div>";
@@ -363,7 +363,7 @@ function viewMoreReply(param) {
                     html = "<div class=\"reply-content border-bottom\">\n" +
                         "                     <h6 class=\"stu__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].lecturerName + "</span></h6>\n" +
                         "                     <p class=\"stu__question-content\">" + data[i].answerContent + "</p>\n" +
-                        "                     <p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
+                        "                     <p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].createdDate + "</span> " +
                         "                     <a class=\"stu__like-reply view-question-link-item\" reply-id=\"" + data[i].answerId + "\"onclick=likeReply(\"" + data[i].answerId + "\")><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
 
                         "                     </div>";
@@ -387,7 +387,7 @@ function viewMoreReply(param) {
                         "                                                    </button>\n" +
                         "                                                    </div>";
                     // date and link
-                    html+= "<p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
+                    html+= "<p class=\"stu__question-content\" ><span class=\"stu__answer-date\" >" + data[i].createdDate + "</span> " +
                         "                     <a class=\"stu__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data[i].answerId + "\">Edit</a> |" +
                         "                     <a class=\"stu__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data[i].answerId + "\" onclick=deleteReply(\"" + data[i].answerId + "\",\"" + data[i].questionId + "\")>Delete</a>\n" +
                         "                     </div>";

@@ -51,7 +51,7 @@ function submitFormReplyQuestion(param) {
                         "                                                    </button>\n" +
                         "                                                    </div>";
                     // date and link
-                    html+="<p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data.lastModifiedDate + "</span> " +
+                    html+="<p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data.createdDate + "</span> " +
                         "                     <a class=\"lec__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data.answerId + "\">Edit</a> | " +
                         "                     <a class=\"lec__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data.answerId + "\" onclick=deleteReply(\"" + data.answerId + "\",\"" + data.questionId + "\")>Delete</a>\n" +
                         "                     </div>";
@@ -59,7 +59,7 @@ function submitFormReplyQuestion(param) {
                     html = "<div class=\"reply-content border-bottom\">\n" +
                         "                     <h6 class=\"lec__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data.studentName + "</span></h6>\n" +
                         "                     <p class=\"lec__question-content\">" + data.answerContent + "</p>\n" +
-                        "                     <p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data.lastModifiedDate + "</span> " +
+                        "                     <p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data.createdDate + "</span> " +
                         "                     <a class=\"lec__like-reply view-question-link-item\" reply-id=\"" + data.answerId + "\" onclick=likeReply(\"" + data.answerId + "\")><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
                         "                     </div>";
                 }
@@ -130,7 +130,7 @@ function viewMoreReply(param) {
                         "                                                    </button>\n" +
                         "                                                    </div>";
                     // date and link
-                    html+="<p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
+                    html+="<p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data[i].createdDate + "</span> " +
                         "                     <a class=\"lec__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data[i].answerId + "\">Edit</a> | " +
                         "                     <a class=\"lec__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data[i].answerId + "\" onclick=deleteReply(\"" + data[i].answerId + "\",\"" + data[i].questionId + "\")>Delete</a>\n" +
                         "                     </div>";
@@ -138,7 +138,7 @@ function viewMoreReply(param) {
                     html = "<div class=\"reply-content  border-bottom\"  id=\"" + data[i].answerId + "\">\n" +
                         "                     <h6 class=\"lec__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].studentName + "</span></h6>\n" +
                         "                     <p class=\"lec__question-content\">" + data[i].answerContent + "</p>\n" +
-                        "                     <p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data[i].lastModifiedDate + "</span> " +
+                        "                     <p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data[i].createdDate + "</span> " +
                         "                     <a class=\"lec__like-reply view-question-link-item\" reply-id=\"" + data[i].answerId + "\"onclick=likeReply(\"" + data[i].answerId + "\")><i class=\"fa-regular fa-thumbs-up\"></i> Like</a>\n" +
                         "                     </div>";
                 }

@@ -395,9 +395,9 @@
                                                 <!--End Update Question section-->
 
                                                 <div class="justify-content-end link-view-question stu__question-content"
-                                                     th:if="${myQuestion.lastModifiedDate}">
+                                                     th:if="${myQuestion.createdDate}">
                                                     <span class="stu__note-date"
-                                                          th:text="${myQuestion.lastModifiedDate}"></span> <a
+                                                          th:text="${myQuestion.createdDate}"></span> <a
                                                         class="view-note-link-item edit-question"
                                                         th:question-id="${myQuestion.questionId}">Edit</a> |
                                                     <a class="view-note-link-item delete-question"
@@ -495,7 +495,7 @@
                                             <p class="stu__question-content question-content"
                                                th:utext="${question.questionContent}"></p>
                                             <p class="stu__answer-date stu__question-content"
-                                               th:text="${question.lastModifiedDate}">Lecturer: <span
+                                               th:text="${question.createdDate}">Lecturer: <span
                                                     class="stu__answer-lecturer"
                                                     th:if="${question.lecturerName ne null}"
                                                     th:text="${question.lecturerName}"></span></p>
