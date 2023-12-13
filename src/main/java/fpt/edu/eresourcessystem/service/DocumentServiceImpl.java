@@ -5,7 +5,6 @@ import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.Response.DocumentResponseDto;
-import fpt.edu.eresourcessystem.dto.Response.TopicResponseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -25,6 +24,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
@@ -292,5 +292,12 @@ public class DocumentServiceImpl implements DocumentService {
         });
 
         return topicResponseDtos;
+    }
+
+    @Override
+    public void removeMultiFile(String docId, ObjectId multiFileId) {
+        Query query = new Query(Criteria.where("id").is(docId));
+        Update update = new Update().pull("multipleFiles", multiFileId);
+        mongoTemplate.updateFirst(query, update, Document.class);
     }
 }

@@ -45,11 +45,6 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackRepository.findById(id);
     }
 
-    @Override
-    public Feedback updateFeedback(String id, Feedback feedbackDetails) {
-        return null;
-    }
-
 
     // Delete a feedback entry
     public void deleteFeedback(String id) {

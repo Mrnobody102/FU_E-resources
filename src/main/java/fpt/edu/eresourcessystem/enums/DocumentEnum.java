@@ -60,7 +60,6 @@ public class DocumentEnum {
         AUDIO,
 
         IMAGE,
-
         OTHER,
 
 
@@ -73,13 +72,9 @@ public class DocumentEnum {
                 case "md" -> MD;
                 case "html" -> HTML;
                 case "txt" -> TXT;
-
                 case "m4a", "flac", "mp3", "wav", "wma", "aac" -> AUDIO;
-
                 case "mp4", "mov", "avi", "flv", "mkv", "webm" -> VIDEO;
-
                 case "jpg", "jpeg", "gif", "png", "svg" -> IMAGE;
-
                 case "exe", "psd", "eps", "jar", "zip", "rar" -> OTHER;
 
                 default -> DocumentFormat.UNKNOWN;

@@ -13,6 +13,7 @@ import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.service.s3.ImageService;
 import fpt.edu.eresourcessystem.service.s3.StorageService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,6 +44,7 @@ public class LecturerRestController {
     private final ImageService imageService;
     private final StorageService storageService;
     private final CourseLogService courseLogService;
+    private final MultiFileService multiFileService;
 
     private UserLog addUserLog(String url) {
         UserLog userLog = new UserLog(new UserLogDto(url, getLoggedInLecturer().getAccount().getEmail(), AccountEnum.Role.LECTURER));
@@ -232,5 +234,7 @@ public class LecturerRestController {
         headers.setContentDispositionFormData("attachment", fileName);
         return new ResponseEntity<>(content, headers, HttpStatus.OK);
     }
+
+
 
 }

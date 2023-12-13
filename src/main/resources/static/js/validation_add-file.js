@@ -13,8 +13,8 @@ let cancelSupportFileButton = document.getElementById('cancelSupportFileButton')
 let files = null;
 let isSupportFileUploading = false;
 
-const allowedFormats = ['pdf', 'doc', 'docx', 'ppt', 'pptx',
-    'md', 'html', 'txt', 'm4a', 'flac', 'mp3', 'wav', 'wma', 'aac',
+const allowedFormats = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'java',
+    'md', 'html', 'txt', 'm4a', 'flac', 'mp3', 'wav', 'wma', 'aac', 'ogg',
     'mp4', 'mov', 'avi', 'flv', 'mkv', 'webm',
     'jpg', 'jpeg', 'gif', 'png', 'svg'];
 

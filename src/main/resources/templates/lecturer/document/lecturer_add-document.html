@@ -52,10 +52,14 @@
                             </div>
                         </div>
                         <div>
+                            <div id="overlay" class="overlay">
+                                <div class="loader"></div>
+                            </div>
+
                             <form style="width: 75%; margin-left: 10%" method="post" role="form"
                                   th:action="@{'/lecturer/documents/add?topicId=' + ${topic.id}}"
                                   th:object="${document}"
-                                  th:id="add-form" enctype="multipart/form-data">
+                                  id="add-form" enctype="multipart/form-data">
                                 <!--Title-->
                                 <label class="lecturer_input-label-doc" th:for="documentTitle">Title:</label>
                                 <input type="text" th:id="documentTitle"
@@ -155,8 +159,8 @@
 
                                             <br>
 
+                                            <span>Định dạng file có thể preview:</span>
                                             <i>
-                                                <span>Định dạng file có thể preview:</span>
                                                 <br>
                                                 <b>- Tài liệu:</b> .pdf, .txt, .html, .md
                                                 <br>
@@ -299,6 +303,32 @@
         );
     }
 
+    const overlay = document.getElementById('overlay');
+    const form = document.getElementById('add-form');
+    let isSubmitting = false;
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Ngăn chặn form submit mặc định
+
+        if (isSubmitting) {
+            return; // Nếu form đang được submit, không làm gì
+        }
+
+        isSubmitting = true; // Đánh dấu form đang được submit
+
+        // Hiển thị overlay
+        overlay.style.display = 'block';
+
+        // Xử lý logic submit form
+        form.submit(); // Submit form
+        // ...
+
+        // Sau khi hoàn thành submit form, ẩn overlay
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            isSubmitting = false;
+        }, 3000); // Thời gian hiển thị overlay cho đến khi hoàn thành submit form
+    });
 </script>
 <script th:src="@{/js/editor.js}"></script>
 <script th:src="@{/js/validation_add-file.js}"></script>

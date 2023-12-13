@@ -28,6 +28,7 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,7 +82,7 @@ public class LecturerController {
                               String email,
                               String oldContent,
                               String newContent) {
-        CourseLog courseLog = new CourseLog(courseId,courseCode,courseName, action, object, objectId, objectName, email, oldContent, newContent);
+        CourseLog courseLog = new CourseLog(courseId, courseCode, courseName, action, object, objectId, objectName, email, oldContent, newContent);
         courseLogService.addCourseLog(courseLog);
     }
 
@@ -629,10 +630,10 @@ public class LecturerController {
     @PostMapping("/documents/update")
     @Transactional
     public String updateDocumentProcess(@ModelAttribute DocumentDto document,
-                                 @RequestParam(value = "deleteCurrentFile", required = false) String deleteCurrentFile,
-                                 @RequestParam(value = "file", required = false) MultipartFile file,
-                                @RequestParam(value = "files", required = false) MultipartFile[] files)
-                                throws IOException, TikaException, SAXException {
+                                        @RequestParam(value = "deleteCurrentFile", required = false) String deleteCurrentFile,
+                                        @RequestParam(value = "file", required = false) MultipartFile file,
+                                        @RequestParam(value = "files", required = false) MultipartFile[] files)
+            throws IOException, TikaException, SAXException {
         Document checkExist = documentService.findById(document.getId());
         if (null == checkExist) {
             return "redirect:/lecturer/documents/" + document.getId() + "/update?error";
@@ -696,6 +697,59 @@ public class LecturerController {
 
             return "redirect:/lecturer/documents/" + document.getId() + "/update?success";
         }
+    }
+
+    @PostMapping("/{documentId}/update_supporting_files")
+    @Transactional
+    public String updateSupportingFiles(@RequestParam(value = "files", required = false) MultipartFile[] files,
+                              @RequestParam(value = "supportingFiles", required = false) String[] supportingFiles, @PathVariable String documentId) {
+        Document document = documentService.findById(documentId);
+        List<MultiFile> multiFiles = document.getMultipleFiles();
+        if (supportingFiles == null){
+            supportingFiles = new String[]{""};
+        }
+        int supportingFilesNumber = supportingFiles != null ? supportingFiles.length : 0;
+        int filesNumber = files != null ? files.length : 0;
+
+        int total = supportingFilesNumber + filesNumber;
+
+        if(total < 4) {
+            if (supportingFiles != null) {
+                List<MultiFile> existedMultiFiles = document.getMultipleFiles();
+                for (MultiFile existedMultiFile : existedMultiFiles) {
+                    if (!Arrays.asList(supportingFiles).contains(existedMultiFile.getCloudFileName())) {
+                        // xóa id trong document
+                        MultiFile multiFile = multiFileService.findByCloudFileName(existedMultiFile.getCloudFileName());
+                        documentService.removeMultiFile(documentId, new ObjectId(multiFile.getId()));
+
+                        // xóa file có sẵn
+                        storageService.deleteFile(existedMultiFile.getCloudFileName());
+                        multiFileService.hardDeleteMultiFile(existedMultiFile.getCloudFileName());
+
+                    }
+                }
+            }
+
+            if (files != null && filesNumber > 0) {
+                for (MultipartFile file : files) {
+                    // Get the original file name
+                    String originalFileName = file.getOriginalFilename();
+                    // Generate a unique file name
+                    String uniqueFileName = System.currentTimeMillis() + "_" + FilenameUtils.getBaseName(originalFileName) + "." + FilenameUtils.getExtension(originalFileName);
+                    // Process the uploaded file as needed
+                    String link = storageService.uploadFileWithName(file, uniqueFileName);
+                    MultiFile multiFile = new MultiFile(originalFileName, uniqueFileName, link);
+                    MultiFile addedFile = multiFileService.addMultiFile(multiFile);
+                    // push file mới vào doc
+                    multiFiles.add(addedFile);
+                }
+            }
+
+
+            document.setMultipleFiles(multiFiles);
+            documentService.updateDoc(document);
+        }
+        return "redirect:/lecturer/documents/" + documentId;
     }
 
     @GetMapping("/documents/{documentId}/delete")
