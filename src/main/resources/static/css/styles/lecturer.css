@@ -204,11 +204,12 @@
 .lec__navbar-view-doc-item:hover a{
     color: var(--background-btn-color);
 }
+.lec__navbar-active{
+    color: var(--background-btn-color);
+    border-bottom: 2px solid var(--link-color);
+}
 .lec__navbar-active a{
     color: var(--background-btn-color);
-}
-.lec__navbar-active{
-    border-bottom: 2px solid var(--link-color);
 }
 .resource-type-list{
     margin:0 0 1.5rem 0;

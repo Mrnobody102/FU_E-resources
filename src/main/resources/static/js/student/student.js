@@ -240,6 +240,15 @@ $(document).ready(function () {
     });
 
 
+    // add click on <li> also -> click on <a>
+    $('.stu__navbar-favourite-item').on('click', function() {
+        var link = $(this).find('a');
+        if (link.length > 0) {
+            link[0].click();
+        }
+    });
+
+
     $("body").on("click", ".save-doc", function () {
         var docId = $(this).attr("docId");
         var loading = "<p><a docId=" + docId + ">" +
