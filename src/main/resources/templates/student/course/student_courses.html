@@ -79,10 +79,11 @@
 
 
                         <div class="stu__courses-list-view">
-                            <div th:if="${param.search} AND ${totalPage == null} OR ${totalPage == 0}" class="list-content-not-found">
-                                <p class="h3">No courses found.</p>
+                            <div th:if="${param.search} AND ${courses == null} OR ${totalPages == 0}">
+                                <p class="number-count count-courses"> Result: 0 course.</p>
                             </div>
-                            <div th:if="courses ne null" class="list-course-content">
+                            <div th:if="${courses ne null} AND ${courses.size() > 0}" class="list-course-content">
+                                <p class="number-count count-courses">Result: <span th:text="${courses.size()}"></span> course(s).</p>
                                 <div class="home-courses">
                                     <div class="home__course-content">
                                         <ul class="home__course-list">
@@ -107,7 +108,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <nav th:if="${totalPage ne null} AND ${totalPage} >1" aria-label="Page navigation example">
+                                    <nav th:if="${totalPages ne null} AND ${totalPages} >1" aria-label="Page navigation example">
                                         <ul class="pagination home-courses__pagination-distance">
                                             <li class="pagination-item"
                                                 th:classappend=" ${currentPage == 1} ? 'disabled' : ''">
@@ -116,18 +117,21 @@
                                                 </a>
                                             </li>
 
-                                            <li th:each="pageIndex: ${pages}" class="pagination-item"
+                                            <li th:each="pageIndex: ${#numbers.sequence(1, totalPages)}" class="pagination-item"
                                                 th:classappend=" (${currentPage == pageIndex}) ? 'pagination-item--active' : '' ">
-                                                <th:block th:if="${pageIndex == -1}">
+                                                <th:block th:if="${currentPage - pageIndex == 3 }">
                                                     <span class="pagination-item__link">...</span>
                                                 </th:block>
-                                                <th:block th:if="${pageIndex != -1}">
+                                                <th:block th:if="${currentPage - pageIndex <= 2} AND ${currentPage - pageIndex >= -2}">
                                                     <a th:text="${pageIndex}" th:value="${pageIndex}"
                                                        class="pagination-item__link page-stu-course-number" style="cursor: pointer"></a>
                                                 </th:block>
+                                                <th:block th:if="${pageIndex - currentPage == 3 }">
+                                                    <span class="pagination-item__link">...</span>
+                                                </th:block>
                                             </li>
                                             <li  class="pagination-item"
-                                                    th:classappend="${currentPage == totalPage} ? 'disabled' : ''">
+                                                    th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
                                                 <a class="pagination-item__link next-page-stu-course-number" style="cursor: pointer">
                                                     <i class="pagination-item__icon fas fa-angle-right"></i>
                                                 </a>

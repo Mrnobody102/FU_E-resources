@@ -81,7 +81,7 @@
                                     <p class="number-count">No document bookmarked.</p>
                                 </div>
                                 <div class="stu__view-list-course-content view-list-document-saved">
-                                    <p class="number-count">Total documents: <span th:text="${totalPages}"> document(s).</span> </p>
+                                    <p class="number-count">Total documents: <span th:text="${totalItems}"> document(s).</span> </p>
                                     <div class="d-flex justify-content-between document-view-info border-bottom"
                                          th:each="doc: ${documentsSaved}">
 
@@ -120,13 +120,16 @@
 
                                         <li th:each="pageIndex: ${#numbers.sequence(1, totalPages)}" class="pagination-item"
                                             th:classappend=" (${currentPage == pageIndex}) ? 'pagination-item--active' : '' ">
-                                            <th:block th:if="${pageIndex == -1}">
+                                            <th:block th:if="${currentPage - pageIndex == 3 }">
                                                 <span class="pagination-item__link">...</span>
                                             </th:block>
-                                            <th:block th:if="${pageIndex != -1}">
+                                            <th:block th:if="${currentPage - pageIndex <= 2} AND ${currentPage - pageIndex >= -2}">
                                                 <a th:href="@{/student/my_library/saved_documents(search=${search}, pageIndex=${pageIndex})}"
                                                    th:text="${pageIndex}" th:value="${pageIndex}"
                                                    class="pagination-item__link page-stu-course-number" style="cursor: pointer"></a>
+                                            </th:block>
+                                            <th:block th:if="${pageIndex - currentPage == 3 }">
+                                                <span class="pagination-item__link">...</span>
                                             </th:block>
                                         </li>
                                         <li  class="pagination-item"

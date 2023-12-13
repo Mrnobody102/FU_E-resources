@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="stu__view-list-course-content"
                                      th:if="${coursesSaved ne null} AND ${coursesSaved.size()} > 0">
-                                    <p class="number-count">Total course: <span th:text="${totalPages}"> course(s).</span> </p>
+                                    <p class="number-count">Total course: <span th:text="${totalItems}"> course(s).</span> </p>
                                     <div class="view-block-list">
                                         <ul class="home__course-list">
                                             <li class="home__course-item">
@@ -118,13 +118,16 @@
 
                                             <li th:each="pageIndex: ${#numbers.sequence(1, totalPages)}" class="pagination-item"
                                                 th:classappend=" (${currentPage == pageIndex}) ? 'pagination-item--active' : '' ">
-                                                <th:block th:if="${pageIndex == -1}">
+                                                <th:block th:if="${currentPage - pageIndex == 3 }">
                                                     <span class="pagination-item__link">...</span>
                                                 </th:block>
-                                                <th:block th:if="${pageIndex != -1}">
+                                                <th:block th:if="${currentPage - pageIndex <= 2} AND ${currentPage - pageIndex >= -2}">
                                                     <a th:href="@{/student/my_library/saved_courses(search=${search}, pageIndex=${pageIndex})}"
                                                             th:text="${pageIndex}" th:value="${pageIndex}"
                                                        class="pagination-item__link page-stu-course-number" style="cursor: pointer"></a>
+                                                </th:block>
+                                                <th:block th:if="${pageIndex - currentPage == 3 }">
+                                                    <span class="pagination-item__link">...</span>
                                                 </th:block>
                                             </li>
                                             <li  class="pagination-item"

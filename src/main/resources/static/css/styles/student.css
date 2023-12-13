@@ -572,6 +572,13 @@ stu__navbar-view-doc-item:hover a{
     font-size: var(--font-medium);
     font-style: italic;
 }
+.count-questions{
+    margin-left: 2rem;
+}
+.count-courses{
+    margin-top: 2rem;
+    margin-left: 2rem;
+}
 .view-list-document-saved{
     margin-bottom: 2rem;
 }

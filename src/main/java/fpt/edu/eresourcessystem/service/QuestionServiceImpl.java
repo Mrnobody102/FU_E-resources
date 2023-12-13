@@ -6,6 +6,10 @@ import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.repository.QuestionRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -151,5 +155,25 @@ public class QuestionServiceImpl implements QuestionService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Page<Question> findByStudentAndSearch(Student student, String search, QuestionAnswerEnum.Status status, int pageIndex, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex-1, pageSize);
+        Criteria criteria = new Criteria();
+        criteria.and("student").is(student);
+        if (search != null && !search.isEmpty()) {
+            Criteria regexCriteria = Criteria.where("content").regex(search, "i");
+            criteria.andOperator(regexCriteria);
+        }
+        if (status != null) {
+            criteria.and("status").is(status);
+        }
+        Query query = new Query(criteria);
+        query.fields().include("id", "documentId", "createdDate", "content");
+        long total = mongoTemplate.count(query, Question.class);
+        System.out.println(total);
+        List<Question> courses = mongoTemplate.find(query.with(pageable), Question.class);
+        return new PageImpl<>(courses, pageable, total);
     }
 }

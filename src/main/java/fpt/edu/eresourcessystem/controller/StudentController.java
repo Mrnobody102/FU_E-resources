@@ -7,6 +7,7 @@ import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
+import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import fpt.edu.eresourcessystem.service.*;
@@ -208,6 +209,7 @@ public class StudentController {
             Page<Course> courses = courseService.findByListCourseIdAndSearch(search, savedCourses, pageIndex, PAGE_SIZE);
             model.addAttribute("coursesSaved", courses.getContent());
             model.addAttribute("totalPages", courses.getTotalPages());
+            model.addAttribute("totalItems", courses.getTotalElements());
             System.out.println(courses.getContent().size());
         }
         model.addAttribute("search", search);
@@ -225,10 +227,11 @@ public class StudentController {
         if (null != savedDocuments) {
 //            List<Document> documents = documentService.findByListId(savedDocuments);
             Page<Document> documents = documentService.findByListDocumentIdAndSearch(search, savedDocuments, pageIndex, PAGE_SIZE);
-            model.addAttribute("coursesSaved", documents.getContent());
             model.addAttribute("totalPages", documents.getTotalPages());
             System.out.println(documents.getContent().size());
             model.addAttribute("documentsSaved", documents.getContent());
+            model.addAttribute("totalItems", documents.getTotalElements());
+
         }
         model.addAttribute("search", search);
         model.addAttribute("currentPage", pageIndex);
@@ -263,9 +266,9 @@ public class StudentController {
         Page<Course> page = courseService.findByCourseNameOrCourseCode(search, search, pageIndex, PAGE_SIZE);
         // search by elastic search
 //        SearchPage<EsCourse> page = courseService.searchCourse(search, pageIndex, PAGE_SIZE);
-        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-        model.addAttribute("pages", pages);
-        model.addAttribute("totalPage", page.getTotalPages());
+//        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
+//        model.addAttribute("pages", pages);
+        model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
         model.addAttribute("search", search);
         model.addAttribute("roles", AccountEnum.Role.values());
@@ -282,7 +285,8 @@ public class StudentController {
      */
 
     @GetMapping({"/my_library/my_notes/{pageIndex}"})
-    public String viewMyNote(@RequestParam(required = false, defaultValue = "") String search, @PathVariable Integer pageIndex, final Model model) {
+    public String viewMyNote(@RequestParam(required = false, defaultValue = "") String search,
+                             @PathVariable Integer pageIndex, final Model model) {
         // get account authorized
         Student student = getLoggedInStudent();
         Page<StudentNote> page = null;
@@ -396,15 +400,27 @@ public class StudentController {
 
     // tối ưu
     @GetMapping("/my_library/my_questions/history")
-    public String viewMyQuestions(final Model model) {
+    public String viewMyQuestions(@RequestParam(required = false, defaultValue = "1") int pageIndex,
+                                  @RequestParam(required = false, defaultValue = "") String search,
+                                  @RequestParam(required = false, defaultValue = "all") String status,
+                                    final Model model) {
         Student student = getLoggedInStudent();
-        List<Question> questions = questionService.findByStudent(student);
-//        for (Question q : questions) {
-//            q.setAnswers(new HashSet<>(answerService.findByStudentAnsQuestion(student, q)));
-//        }
-        model.addAttribute("studentQuestions", questions);
+        QuestionAnswerEnum.Status findStatus = null;
+        if("new-reply".equals(status)){
+            findStatus = QuestionAnswerEnum.Status.REPLIED;
+        } else if("wait-reply".equals(status)){
+            findStatus = QuestionAnswerEnum.Status.CREATED;
+        }
+        Page<Question> questions = (student != null) ? questionService.findByStudentAndSearch(student, search, findStatus, pageIndex, PAGE_SIZE) : null;
+        model.addAttribute("totalPages", questions.getTotalPages());
+        model.addAttribute("documentsSaved", questions.getContent());
+        model.addAttribute("studentQuestions", questions.getContent());
         // add log
         addUserLog("/my_library/my_questions/history");
+        model.addAttribute("search", search);
+        model.addAttribute("currentPage", pageIndex);
+        model.addAttribute("status", status);
+        model.addAttribute("totalItems", questions.getTotalElements());
         return "student/library/student_my-questions-and-answers";
     }
 
