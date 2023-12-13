@@ -15,6 +15,11 @@
     <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
     <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
 
+    <!-- SweetAlert từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
     <style>
         textarea {
             width: 100%;
@@ -177,6 +182,24 @@
         this.style.height = 'auto';
         this.style.height = (this.scrollHeight) + 'px';
     });
+
+        var successParam = [[${param.success}]];
+        if (successParam) {
+        Swal.fire(
+            'Success!',
+            'Send feedback successful!',
+            'success'
+        );
+    }
+
+        var errorParam = [[${param.error}]];
+        if (errorParam) {
+        Swal.fire(
+            'Error!',
+            'Please check feedback information again!',
+            'error'
+        );
+    }
 </script>
 </body>
 </html>
