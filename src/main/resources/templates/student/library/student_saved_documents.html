@@ -29,49 +29,36 @@
                     </div>
 
                     <div class="stu_courses-content main" id="main">
-                        <div class="header__search">
-                            <!--Label-->
-                            <div class="search-label">
-                                <label th:for="search">Search course</label>
-                            </div>
-                            <!-- Input  -->
-                            <div class="header__search-input-wrap">
-                                <input type="text" class="header__search-input"
-                                       placeholder="Enter course ..."
-                                       name="search"
-                                       th:id="search-text" th:value="${search}">
-                                <!-- Header-search-history -->
-                                <div class="header__search-history">
-                                    <h3 class="header__search-history-heading">
-                                        Search history
-                                    </h3>
-                                    <ul class="header__search-history-list">
-
-                                        <li class="header__search-history-item">
-                                            <a href="">Software</a>
-                                        </li>
-                                    </ul>
+                        <form th:action="@{/student/my_library/saved_documents}" th:method="GET">
+                            <div class="header__search">
+                                <!--Label-->
+                                <div class="search-label">
+                                    <label th:for="search">Search documents</label>
                                 </div>
+                                <!-- Input  -->
+                                <div class="header__search-input-wrap">
+                                    <input type="text" class="header__search-input"
+                                           placeholder="Enter course ..."
+                                           name="search"
+                                           th:id="search-text" th:value="${search}">
+                                    <!-- Header-search-history -->
+                                    <!--                                <div class="header__search-history">-->
+                                    <!--                                    <h3 class="header__search-history-heading">-->
+                                    <!--                                        Search history-->
+                                    <!--                                    </h3>-->
+                                    <!--                                    <ul class="header__search-history-list">-->
+
+                                    <!--                                        <li class="header__search-history-item">-->
+                                    <!--                                            <a href="">Software</a>-->
+                                    <!--                                        </li>-->
+                                    <!--                                    </ul>-->
+                                    <!--                                </div>-->
+                                </div>
+                                <button class="header__search-btn" type="submit">
+                                    <i class="header__search-btn-icon fas fa-search"></i>
+                                </button>
                             </div>
-                            <!-- Select-find-scope -->
-                            <div class="header__search-select">
-                                <span class="header__search-select-label">All results</span>
-                                <i class="header__search-select-icon fas fa-angle-down"></i>
-                                <ul class="header__search-option">
-                                    <li class="header__search-option-item header__search-option-item--active">
-                                        <span class="">By Name</span>
-                                        <i class="fas fa-check"></i>
-                                    </li>
-                                    <li class="header__search-option-item">
-                                        <span class="">By Code</span>
-                                        <i class="fas fa-check"></i>
-                                    </li>
-                                </ul>
-                            </div>
-                            <button class="header__search-btn">
-                                <i class="header__search-btn-icon fas fa-search"></i>
-                            </button>
-                        </div>
+                        </form>
                         <div class="stu__navbar-favourite">
                             <ul class="stu__navbar-favourite-list border-bottom">
                                 <li class="stu__navbar-favourite-item">
@@ -89,14 +76,12 @@
                         </div>
                         <div class="stu__courses-list-view">
                             <div class="stu__view-saved-courses">
-                                <div th:if="${documentsSaved == null} OR ${documentsSaved.size()} == 0 AND ${param.search}"
+                                <div th:if="${documentsSaved == null} OR ${documentsSaved.size()==0}"
                                      class="list-course-content-not-found">
-                                    <p class="h3">No document bookmarked.</p>
+                                    <p class="number-count">No document bookmarked.</p>
                                 </div>
-                                <div class="stu__view-list-course-content">
-                                    <!--                                     th:if="${documentsSaved ne null} AND ${documentsSaved.size()} > 0">-->
-
-                                    <!--Document view list-->
+                                <div class="stu__view-list-course-content view-list-document-saved">
+                                    <p class="number-count">Total documents: <span th:text="${totalPages}"> document(s).</span> </p>
                                     <div class="d-flex justify-content-between document-view-info border-bottom"
                                          th:each="doc: ${documentsSaved}">
 
@@ -108,12 +93,9 @@
                                                 <span th:text="${doc.description}"></span>
                                             </p>
 
-                                            <p class="doc-info-resource-type list-inline-item">
-<!--                                                dang loi resource type a-->
-<!--                                                <th:block th:each="resource : ${doc.resourceType}">-->
-<!--                                                    <a th:href="@{'/student/courses/'+${resource.course.id}}"-->
-<!--                                                       th:text="${resource.course.courseCode}"></a>-->
-<!--                                                </th:block>-->
+                                            <p class="list-inline-item">
+                                                <span class="doc-info-date"
+                                                        th:text="${doc.createdDate}"></span>
                                             </p>
                                         </div>
                                         <div class="stu_save-course-link stu_save-doc-link grid__column-3">
@@ -126,6 +108,36 @@
                                     </div>
                                 </div>
                                 <!--End list doc-->
+                                <nav th:if="${totalPages ne null} AND ${totalPages} >1" aria-label="Page navigation example">
+                                    <ul class="pagination home-courses__pagination-distance">
+                                        <li class="pagination-item"
+                                            th:classappend=" ${currentPage == 1} ? 'disabled' : ''">
+                                            <a th:href="@{/student/my_library/saved_documents(search=${search}, pageIndex=${currentPage}-1)}"
+                                               class="pagination-item__link previous-page-stu-course-number" style="cursor: pointer">
+                                                <i class="pagination-item__icon fas fa-angle-left"></i>
+                                            </a>
+                                        </li>
+
+                                        <li th:each="pageIndex: ${#numbers.sequence(1, totalPages)}" class="pagination-item"
+                                            th:classappend=" (${currentPage == pageIndex}) ? 'pagination-item--active' : '' ">
+                                            <th:block th:if="${pageIndex == -1}">
+                                                <span class="pagination-item__link">...</span>
+                                            </th:block>
+                                            <th:block th:if="${pageIndex != -1}">
+                                                <a th:href="@{/student/my_library/saved_documents(search=${search}, pageIndex=${pageIndex})}"
+                                                   th:text="${pageIndex}" th:value="${pageIndex}"
+                                                   class="pagination-item__link page-stu-course-number" style="cursor: pointer"></a>
+                                            </th:block>
+                                        </li>
+                                        <li  class="pagination-item"
+                                             th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+                                            <a th:href="@{/student/my_library/saved_documents(search=${search}, pageIndex=${currentPage} + 1)}"
+                                               class="pagination-item__link next-page-stu-course-number" style="cursor: pointer">
+                                                <i class="pagination-item__icon fas fa-angle-right"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
@@ -138,7 +150,9 @@
 <div th:replace="~{fragments/footer :: footerSection}"></div>
 
 <!--jquery-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!--Bootstrap script-->
 <script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"

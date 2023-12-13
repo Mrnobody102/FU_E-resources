@@ -446,7 +446,7 @@ stu__navbar-view-doc-item:hover a{
     padding-bottom: 4px;
     font-weight: var(--font-medium);
 }
-.doc-info-rating{
+.doc-info-resource-type{
     margin-left: 0.7rem;
     margin-right: 0.7rem;
 }
@@ -566,4 +566,12 @@ stu__navbar-view-doc-item:hover a{
 .links-container {
     display: flex;
     align-items: center;
+}
+.number-count{
+    color: #888888;
+    font-size: var(--font-medium);
+    font-style: italic;
+}
+.view-list-document-saved{
+    margin-bottom: 2rem;
 }

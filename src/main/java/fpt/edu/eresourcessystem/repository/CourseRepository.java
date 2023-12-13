@@ -67,4 +67,7 @@ public interface CourseRepository extends
     Page<Course> findByStatus(String status, Pageable pageable);
 
     Course findByIdAndDeleteFlg(String courseId, CommonEnum.DeleteFlg preserved);
+
+    Page<Course> findByCourseNameIgnoreCaseContainingOrCourseCodeIgnoreCaseContainingAndIdIn(
+             String courseName, String courseCode, List<String> courseIds, Pageable pageable);
 }

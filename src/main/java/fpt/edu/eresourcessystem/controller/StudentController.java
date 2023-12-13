@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.Doc;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -196,26 +197,41 @@ public class StudentController {
      */
 
     @GetMapping({"/my_library/saved_courses", "/my_library"})
-    public String viewCourseSaved(final Model model) {
+    public String viewCourseSaved(@RequestParam(required = false, defaultValue = "1") int pageIndex,
+                                  @RequestParam(required = false, defaultValue = "") String search,
+                                  final Model model) {
         // get account authorized
         Student student = getLoggedInStudent();
         List<String> savedCourses = student != null ? student.getSavedCourses() : null;
         if (null != savedCourses) {
-            List<Course> courses = courseService.findByListId(savedCourses);
-            model.addAttribute("coursesSaved", courses);
+//            List<Course> courses = courseService.findByListId(savedCourses);
+            Page<Course> courses = courseService.findByListCourseIdAndSearch(search, savedCourses, pageIndex, PAGE_SIZE);
+            model.addAttribute("coursesSaved", courses.getContent());
+            model.addAttribute("totalPages", courses.getTotalPages());
+            System.out.println(courses.getContent().size());
         }
+        model.addAttribute("search", search);
+        model.addAttribute("currentPage", pageIndex);
         return "student/library/student_saved_courses";
     }
 
     @GetMapping({"/my_library/saved_documents"})
-    public String viewDocumentSaved(final Model model) {
+    public String viewDocumentSaved(@RequestParam(required = false, defaultValue = "1") int pageIndex,
+                                    @RequestParam(required = false, defaultValue = "") String search,
+                                    final Model model) {
         // get account authorized
         Student student = getLoggedInStudent();
         List<String> savedDocuments = student != null ? student.getSavedDocuments() : null;
         if (null != savedDocuments) {
-            List<Document> documents = documentService.findByListId(savedDocuments);
-            model.addAttribute("documentsSaved", documents);
+//            List<Document> documents = documentService.findByListId(savedDocuments);
+            Page<Document> documents = documentService.findByListDocumentIdAndSearch(search, savedDocuments, pageIndex, PAGE_SIZE);
+            model.addAttribute("coursesSaved", documents.getContent());
+            model.addAttribute("totalPages", documents.getTotalPages());
+            System.out.println(documents.getContent().size());
+            model.addAttribute("documentsSaved", documents.getContent());
         }
+        model.addAttribute("search", search);
+        model.addAttribute("currentPage", pageIndex);
         return "student/library/student_saved_documents";
     }
 
