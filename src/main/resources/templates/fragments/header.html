@@ -178,7 +178,7 @@
 
                                 </ul>
                                 <footer class="header__notify-footer">
-                                    <a href="" class="header__notify-footer-btn">See all</a>
+                                    <a href="/lecturer/notifications" class="header__notify-footer-btn">See all</a>
                                 </footer>
                             </div>
                             <div th:if="${notificationNumber == null}">
@@ -265,6 +265,7 @@
             <div class="header__link-list col-8">
                 <ul class="header__navbar-list">
                     <li class="header__navbar-item header__notify-appearance"
+                        th:if="${loggedInUser.role.toString().equals('STUDENT')}"
                         th:notification-email="${loggedInUser.email}"
                         onclick="getStudentNotifications(this.getAttribute('notification-email'))">
                         <th:block th:unless="${notificationNumber == null}">

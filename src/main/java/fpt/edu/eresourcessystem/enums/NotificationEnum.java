@@ -20,7 +20,7 @@ public class NotificationEnum {
         LECTURER_REPLY_ON_DOCUMENT("2", " replied on "),
         STUDENT_REPLY_ON_DOCUMENT("3", " replied on "),
         USER_SEND_FEEDBACK("4", " sent a feedback."),
-        STUDENT_SEND_REQUEST_DOCUMENT("5", " sent a request in ");
+        LECTURER_UPDATE_COURSE("5", " updated new document in ");
 
         private final String displayValue;
 
@@ -37,7 +37,7 @@ public class NotificationEnum {
                 case "2" -> NotificationType.LECTURER_REPLY_ON_DOCUMENT;
                 case "3" -> NotificationType.STUDENT_REPLY_ON_DOCUMENT;
                 case "4" -> NotificationType.USER_SEND_FEEDBACK;
-                case "5" -> NotificationType.STUDENT_SEND_REQUEST_DOCUMENT;
+                case "5" -> NotificationType.LECTURER_UPDATE_COURSE;
 
                 default -> throw new IllegalStateException("Unexpected value: " + type);
             };
@@ -47,8 +47,9 @@ public class NotificationEnum {
             return switch (type) {
                 case "1" -> NotificationType.STUDENT_ASK_ON_DOCUMENT.toString;
                 case "2" -> NotificationType.LECTURER_REPLY_ON_DOCUMENT.toString;
-                case "3" -> NotificationType.USER_SEND_FEEDBACK.toString;
-                case "4" -> NotificationType.STUDENT_SEND_REQUEST_DOCUMENT.toString;
+                case "3" -> NotificationType.STUDENT_REPLY_ON_DOCUMENT.toString;
+                case "4" -> NotificationType.USER_SEND_FEEDBACK.toString;
+                case "5" -> NotificationType.LECTURER_UPDATE_COURSE.toString;
 
                 default -> throw new IllegalStateException("Unexpected value: " + type);
             };
