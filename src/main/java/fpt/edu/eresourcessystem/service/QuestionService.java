@@ -13,6 +13,11 @@ import java.util.List;
 public interface QuestionService {
 
     List<Question> findByDocId(Document document);
+    List<QuestionResponseDto> findByStudentLimitAndSkip(Student student, Document document, int limit, int skip);
+
+    List<QuestionResponseDto> findByDocumentLimitAndSkip(Document document, int limit, int skip);
+
+    List<QuestionResponseDto> findByOtherStudentLimitAndSkip(Student student, Document document, int limit, int skip);
     List<Question> findByDocIdAndStudentId(Document document, Student student);
     List<QuestionResponseDto> findWaitReplyQuestionForStudent(String studentId);
     List<QuestionResponseDto> findNewQuestionForLecturer(String lecturerEmail);

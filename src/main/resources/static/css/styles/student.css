@@ -575,10 +575,25 @@ stu__navbar-view-doc-item:hover a{
 .count-questions{
     margin-left: 2rem;
 }
+.stu__note-in-doc-textarea{
+    margin-left: 2rem;
+}
 .count-courses{
     margin-top: 2rem;
     margin-left: 2rem;
 }
 .view-list-document-saved{
     margin-bottom: 2rem;
+}
+.load-more-question-button{
+    display: flex;
+    justify-content: center;
+}
+#load-more-my-question{
+    margin-top: 1.5rem;
+    padding: 1.8rem 2.3rem;
+}
+#load-more-other-question{
+    margin-top: 1.5rem;
+    padding: 1.8rem 2.3rem;
 }

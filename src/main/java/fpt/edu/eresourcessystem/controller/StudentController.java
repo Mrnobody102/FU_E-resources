@@ -124,7 +124,9 @@ public class StudentController {
         DOCUMENT
     */
     @GetMapping({"/documents/{docId}"})
-    public String viewDocumentDetail(@PathVariable String docId, final Model model) throws IOException {
+    public String viewDocumentDetail(@PathVariable String docId,
+                                     @RequestParam(required = false) String questionId,
+                                     final Model model) throws IOException {
         // auth
         Student student = getLoggedInStudent();
         Document document = documentService.findById(docId);
@@ -153,21 +155,18 @@ public class StudentController {
         if (null != documentNote) {
             model.addAttribute("documentNote", documentNote);
         } else model.addAttribute("documentNote", new DocumentNote());
-        // get list questions
-        List<Question> questions = questionService.findByDocId(document);
-        List<QuestionResponseDto> questionResponseDtos = new ArrayList<>();
-        List<QuestionResponseDto> myQuestionResponseDtos = new ArrayList<>();
 
-        // Need to optimize
-        for (Question q : questions) {
-            if (!q.getStudent().getId().equals(student.getId())) {
-                questionResponseDtos.add(new QuestionResponseDto(q));
-            } else {
-                myQuestionResponseDtos.add(new QuestionResponseDto(q));
-            }
+        List<QuestionResponseDto> myQuestionResponseDtos = new ArrayList<>();
+        if(null != questionId){
+
+            myQuestionResponseDtos.add(new QuestionResponseDto(questionService.findById(questionId)));
+        }else {
+            questionService.findByStudentLimitAndSkip(student,document,3, 0);
         }
 
-//        // get others doc
+        List<QuestionResponseDto> questionResponseDtos = questionService.findByOtherStudentLimitAndSkip(student,document,3, 0);
+        System.out.println(questionResponseDtos.size());
+        //        // get others doc
 //        if (null != document.getTopic()) {
 //            List<DocumentResponseDto> relevantDocuments = documentService
 //                    .findRelevantDocument(document.getTopic().getId(), docId);

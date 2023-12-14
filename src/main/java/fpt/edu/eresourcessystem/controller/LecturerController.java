@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.controller;
 import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.FeedbackDto;
+import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -434,14 +435,31 @@ public class LecturerController {
     }
 
     @GetMapping({"/documents/{documentId}"})
-    public String viewDocument(@PathVariable(required = false) String documentId, final Model model) throws IOException {
+    public String viewDocument(@PathVariable(required = false) String documentId,
+                               @RequestParam(required = false) String questionId,
+                               final Model model) throws IOException {
         Document document = documentService.findById(documentId);
         if (null == document) {
             model.addAttribute("errorMessage", "Could not found document.");
             return "exception/404";
         } else {
             // get list question
-            List<Question> questions = questionService.findByDocId(document);
+            List<QuestionResponseDto> questions = questionService.findByDocumentLimitAndSkip(document, 5, 0);
+            if (null != questionId) {
+                QuestionResponseDto question = new QuestionResponseDto(questionService.findById(questionId));
+                if (question != null) {
+                    boolean check = false;
+                    for (int i = 0; i < questions.size(); i++) {
+                        if (questions.get(i).getQuestionId().equals(questionId)) {
+                            check = true;
+                            break;
+                        }
+                    }
+                    if (check) {
+                        questions.add(new QuestionResponseDto(questionService.findById(questionId)));
+                    }
+                }
+            }
 
             if (document.isDisplayWithFile() == true) {
                 String data;
@@ -702,10 +720,10 @@ public class LecturerController {
     @PostMapping("/{documentId}/update_supporting_files")
     @Transactional
     public String updateSupportingFiles(@RequestParam(value = "files", required = false) MultipartFile[] files,
-                              @RequestParam(value = "supportingFiles", required = false) String[] supportingFiles, @PathVariable String documentId) {
+                                        @RequestParam(value = "supportingFiles", required = false) String[] supportingFiles, @PathVariable String documentId) {
         Document document = documentService.findById(documentId);
         List<MultiFile> multiFiles = document.getMultipleFiles();
-        if (supportingFiles == null){
+        if (supportingFiles == null) {
             supportingFiles = new String[]{""};
         }
         int supportingFilesNumber = supportingFiles != null ? supportingFiles.length : 0;
@@ -713,7 +731,7 @@ public class LecturerController {
 
         int total = supportingFilesNumber + filesNumber;
 
-        if(total < 4) {
+        if (total < 4) {
             if (supportingFiles != null) {
                 List<MultiFile> existedMultiFiles = document.getMultipleFiles();
                 for (MultiFile existedMultiFile : existedMultiFiles) {

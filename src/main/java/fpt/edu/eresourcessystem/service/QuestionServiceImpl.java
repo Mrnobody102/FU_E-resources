@@ -6,10 +6,7 @@ import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.repository.QuestionRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -35,6 +32,44 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> findByDocId(Document document) {
         List<Question> questions = questionRepository.findByDocumentIdAndDeleteFlg(document, PRESERVED);
+        return questions;
+    }
+
+    @Override
+    public List<QuestionResponseDto> findByStudentLimitAndSkip(Student student, Document document, int limit, int skip) {
+        Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+                .and("student").is(student)
+                .and("documentId").is(document))
+                .skip(skip)
+                .limit(limit)
+                .with(Sort.by(Sort.Order.desc("createdDate")));
+        List<QuestionResponseDto> questions = mongoTemplate.find(query, Question.class).stream().map(
+                o -> new QuestionResponseDto(o)).toList();
+        return questions;
+    }
+
+    @Override
+    public List<QuestionResponseDto> findByDocumentLimitAndSkip(Document document, int limit, int skip) {
+        Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+                .and("documentId").is(document))
+                .skip(skip)
+                .limit(limit)
+                .with(Sort.by(Sort.Order.desc("createdDate")));
+        List<QuestionResponseDto> questions = mongoTemplate.find(query, Question.class).stream().map(
+                o -> new QuestionResponseDto(o)).toList();
+        return questions;
+    }
+
+    @Override
+    public List<QuestionResponseDto> findByOtherStudentLimitAndSkip(Student student, Document document, int limit, int skip) {
+        Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+                .and("student").ne(student)
+                .and("documentId").is(document))
+                .skip(skip)
+                .limit(limit)
+                .with(Sort.by(Sort.Order.desc("createdDate")));
+        List<QuestionResponseDto> questions = mongoTemplate.find(query, Question.class).stream().map(
+                o -> new QuestionResponseDto(o)).toList();
         return questions;
     }
 
