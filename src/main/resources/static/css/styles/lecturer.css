@@ -469,3 +469,14 @@ label.error {
 .home__course-wrapper:hover .home__course-name{
     color: var(--link-color);
 }
+.load-more-question-button{
+    display: flex;
+    justify-content: center;
+}
+.load-more-question-button i{
+    margin-right: 1.5rem;
+}
+.load-more-question-button button{
+    margin-top: 1.5rem;
+    padding: 1.8rem 2.3rem;
+}

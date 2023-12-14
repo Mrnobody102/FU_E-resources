@@ -615,3 +615,9 @@ stu__navbar-view-doc-item:hover a{
     margin-top: 1.5rem;
     padding: 1.8rem 2.3rem;
 }
+.home__note-wrapper{
+    cursor: pointer;
+}
+.home__note-wrapper:hover .home__note-title{
+    color: var(--link-color);
+}

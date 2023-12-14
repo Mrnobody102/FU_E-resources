@@ -3,21 +3,25 @@ function getAllCourse() {
     $("#pageIndex").val("1");
     $("#form-get-manage-course").submit();
 }
+
 function getNewCourse() {
     $("#setStatus").val("new");
     $("#pageIndex").val("1");
     $("#form-get-manage-course").submit();
 }
+
 function getPublishCourse() {
     $("#setStatus").val("publish");
     $("#pageIndex").val("1");
     $("#form-get-manage-course").submit();
 }
+
 function getDraftCourse() {
     $("#setStatus").val("draft");
     $("#pageIndex").val("1");
     $("#form-get-manage-course").submit();
 }
+
 function getHideCourse() {
     $("#setStatus").val("hide");
     $("#pageIndex").val("1");
@@ -111,17 +115,17 @@ function viewQuestionWaiting() {
     $("#pageIndex").val("1");
     $("#getMyQuestion").submit();
 }
-function viewQuestionReplied(){
+function viewQuestionReplied() {
     $("#setStatus").val("replied");
     $("#pageIndex").val("1");
     $("#getMyQuestion").submit();
 }
-function pagingInMyQuestion(clickedElement){
+function pagingInMyQuestion(clickedElement) {
     var page = $(clickedElement).attr('page');
     $("#pageIndex").val(page);
     $("#getMyQuestion").submit();
 }
-function submitFormGetQuestion(){
+function submitFormGetQuestion() {
     $("#pageIndex").val("1");
     $("#getMyQuestion").submit();
 }
@@ -151,7 +155,6 @@ $(document).ready(function () {
     $('.home__course-wrapper').on('click', function () {
         $(this).find('.home__course-name').click();
     });
-
     // add click on <li> also -> click on <a>
     $('.lec__navbar-item').on('click', function () {
         var link = $(this).find('a');

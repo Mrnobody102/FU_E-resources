@@ -188,13 +188,15 @@
                                     <div id="fileSupport">
                                         <div class="d-flex">
                                             <th:block th:if="${document.multipleFiles.size() > 0}">
-                                                <div class="d-flex" th:each="supportingFile : ${document.multipleFiles}">
+                                                <div class="d-flex"
+                                                     th:each="supportingFile : ${document.multipleFiles}">
                                                     <div class="supporting-file-download"
                                                          th:file-name="${supportingFile.cloudFileName}"
                                                          onclick="downloadFile(this.getAttribute('file-name'))">
                                                         <icon class="fa fa-download"></icon>
                                                         <span th:text="${supportingFile.fileName}"></span>
-                                                        <icon class="fa fa-remove remove-file" style="display: none" onclick="removeFile(this.parentNode)"></icon>
+                                                        <icon class="fa fa-remove remove-file" style="display: none"
+                                                              onclick="removeFile(this.parentNode)"></icon>
                                                     </div>
                                                 </div>
                                             </th:block>
@@ -211,22 +213,27 @@
                                         </div>
 
                                         <div class="ps-3 pb-4" id="saveUpdateFilesWrap" style="display: none">
-                                            <div id="saveUpdateFiles" class="btn btn-save ps-4 pe-4 pt-2 pb-2 mt-3" onclick="saveFiles()">
+                                            <div id="saveUpdateFiles" class="btn btn-save ps-4 pe-4 pt-2 pb-2 mt-3"
+                                                 onclick="saveFiles()">
                                                 <span id="saveWithoutLoading">Save</span>
                                                 <span id="saveWithLoading" style="display: none;"> ◌ Saving...</span>
                                             </div>
-                                            <div id="backUpdateFile" class="btn btn--back ps-4 pe-4 pt-2 pb-2 ms-3 mt-3" onclick="backUpdateFiles()">Back</div>
+                                            <div id="backUpdateFile" class="btn btn--back ps-4 pe-4 pt-2 pb-2 ms-3 mt-3"
+                                                 onclick="backUpdateFiles()">Back
+                                            </div>
                                         </div>
                                     </div>
-                                    <div id="updateSupportingFiles" class="btn btn--edit ps-3 pe-3 mt-3" onclick="updateFiles()">Update supporting files</div>
+                                    <div id="updateSupportingFiles" class="btn btn--edit ps-3 pe-3 mt-3"
+                                         onclick="updateFiles()">Update supporting files
+                                    </div>
                                 </div>
 
 
                                 <div class="lec__navbar-view-doc">
                                     <div class="lec__navbar-view-doc-list border-bottom">
-                                            <div class="question-label">
-                                                Students question(s)
-                                            </div>
+                                        <div class="question-label">
+                                            Students question(s)
+                                        </div>
                                     </div>
                                     <div class="lec__question-in-doc-content" id="lecturer-questions"
                                          th:if="${questions ne null }">
@@ -271,7 +278,8 @@
                                                     <div class="">
                                                         <input type="text" name="docId" th:value="${document.id}"
                                                                readonly hidden>
-                                                        <input type="text" name="quesId" th:value="${question.questionId}"
+                                                        <input type="text" name="quesId"
+                                                               th:value="${question.questionId}"
                                                                readonly hidden>
                                                         <label th:id="'new-reply-content-error-'+${question.questionId}"
                                                                class="lecturer_input-label error-input">Content
@@ -279,9 +287,10 @@
                                                         <div class="form-content">
                                                             <label th:for="'new-reply-content-'+${question.questionId}"
                                                                    class="lec_input-label-reply">Enter answer:</label>
-                                                            <textarea th:id="'new-reply-content-'+${question.questionId}"
-                                                                      class="input-reply-content"
-                                                                      th:field="*{answer}" required></textarea>
+                                                            <textarea
+                                                                    th:id="'new-reply-content-'+${question.questionId}"
+                                                                    class="input-reply-content"
+                                                                    th:field="*{answer}" required></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="submit-reply-button">
@@ -304,6 +313,16 @@
                                                         </button>
                                                     </div>
                                                 </form>
+                                            </div>
+                                        </div>
+                                        <div class="load-more-question-button">
+                                            <div th:if="${questions ne null} AND ${questions.size()} > 0">
+                                                <button class="btn btn--hover" id="load-more-question-lec"
+                                                        th:current-count="${questions.size()} == 1 ? '0': ${questions.size()}"
+                                                        th:docId="${document.id}"
+                                                        onclick="loadMoreQuestion(this.getAttribute('current-count'), this.getAttribute('docId'))">
+                                                    <i id="loading-more-question-lec" class="fas fa-spinner fa-spin"  style="display: none"></i>  Load more
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

@@ -74,12 +74,6 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> findByDocIdAndStudentId(Document document, Student student) {
-        List<Question> questions = questionRepository.findByDocumentIdAndStudentAndDeleteFlg(document, student, PRESERVED);
-        return questions;
-    }
-
-    @Override
     public List<QuestionResponseDto> findWaitReplyQuestionForStudent(String studentId) {
         Query query = new Query(Criteria.where("student.id").is(studentId)
                 .and("status").is(QuestionAnswerEnum.Status.CREATED));

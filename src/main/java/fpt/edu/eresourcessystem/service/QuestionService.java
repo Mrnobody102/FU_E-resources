@@ -18,7 +18,6 @@ public interface QuestionService {
     List<QuestionResponseDto> findByDocumentLimitAndSkip(Document document, int limit, int skip);
 
     List<QuestionResponseDto> findByOtherStudentLimitAndSkip(Student student, Document document, int limit, int skip);
-    List<Question> findByDocIdAndStudentId(Document document, Student student);
     List<QuestionResponseDto> findWaitReplyQuestionForStudent(String studentId);
     List<QuestionResponseDto> findNewQuestionForLecturer(String lecturerEmail);
     List<QuestionResponseDto> findNewReplyQuestionStudent(String studentId);

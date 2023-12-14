@@ -8,6 +8,7 @@ import fpt.edu.eresourcessystem.model.Lecturer;
 import fpt.edu.eresourcessystem.service.CourseService;
 import fpt.edu.eresourcessystem.service.FeedbackService;
 import fpt.edu.eresourcessystem.service.LecturerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,18 +20,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/librarian")
 public class LibrarianRestController {
-
-    @Autowired
-    private LecturerService lecturerService;
-
-    @Autowired
-    private CourseService courseService;
-
-
-    @Autowired
-    private FeedbackService feedbackService;
+    private final LecturerService lecturerService;
+    private final CourseService courseService;
 
     @GetMapping("/lectures/list")
     @ResponseBody
