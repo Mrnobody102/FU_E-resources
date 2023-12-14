@@ -52,7 +52,8 @@
                                 th:classappend="${notification.status eq 'UNREAD'? 'header__notify-item--seen' : ''}">
                                 <input class="ms-3 me-3" type="checkbox" th:value="${notification.id}" th:name="'checkbox-' + ${notification.id}">
                                 <a th:href="'/notifications/' + ${notification.id}" class="header__notify-link">
-                                    <img src="/images/notification_icon/question.png" alt="" class="header__notify-img">
+                                    <img th:if="${notification.type eq 'LECTURER_REPLY_ON_DOCUMENT'}" src="/images/notification_icon/question.png" alt="" class="header__notify-img">
+                                    <img th:if="${notification.type eq 'LECTURER_UPDATE_COURSE'}" src="/images/notification_icon/course.png" alt="" class="header__notify-img">
                                     <div class="header__notify-info">
                                         <span class="header__notify-name"
                                               th:text="${notification.notificationContent}"></span>
