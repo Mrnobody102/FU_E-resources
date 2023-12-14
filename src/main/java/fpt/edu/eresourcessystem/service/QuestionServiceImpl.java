@@ -74,12 +74,6 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> findByDocIdAndStudentId(Document document, Student student) {
-        List<Question> questions = questionRepository.findByDocumentIdAndStudentAndDeleteFlg(document, student, PRESERVED);
-        return questions;
-    }
-
-    @Override
     public List<QuestionResponseDto> findWaitReplyQuestionForStudent(String studentId) {
         Query query = new Query(Criteria.where("student.id").is(studentId)
                 .and("status").is(QuestionAnswerEnum.Status.CREATED));
@@ -206,6 +200,30 @@ public class QuestionServiceImpl implements QuestionService {
         }
         Query query = new Query(criteria);
         query.fields().include("id", "documentId", "createdDate", "content");
+        long total = mongoTemplate.count(query, Question.class);
+        System.out.println(total);
+        List<Question> questions = mongoTemplate.find(query.with(pageable), Question.class);
+        return new PageImpl<>(questions, pageable, total);
+    }
+
+    @Override
+    public Page<Question> findByLecturerAndSearch(String lecturerEmail, String search, QuestionAnswerEnum.Status status, int pageIndex, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex-1, pageSize, Sort.by(Sort.Direction.DESC, "createdDate"));
+        Criteria criteria = new Criteria();
+        criteria.and("lecturer").is(lecturerEmail);
+        if (search != null && !search.isEmpty()) {
+            Criteria regexCriteria = Criteria.where("content").regex(search, "i");
+            criteria.andOperator(regexCriteria);
+        }
+        if (status != null) {
+            if(QuestionAnswerEnum.Status.CREATED == status){
+                criteria.and("status").is(status);
+            }else {
+                criteria.and("status").ne(QuestionAnswerEnum.Status.CREATED);
+            }
+        }
+        Query query = new Query(criteria);
+        query.fields().include("id", "documentId", "createdDate", "content", "student");
         long total = mongoTemplate.count(query, Question.class);
         System.out.println(total);
         List<Question> questions = mongoTemplate.find(query.with(pageable), Question.class);

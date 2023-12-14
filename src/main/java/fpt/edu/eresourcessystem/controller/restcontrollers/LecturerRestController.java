@@ -235,6 +235,17 @@ public class LecturerRestController {
         return new ResponseEntity<>(content, headers, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/load_more_question", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<QuestionResponseDto>> loadMoreOtherQuestion(@RequestParam String docId,
+                                                                           @RequestParam int skip) {
 
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        Document document = documentService.findById(docId);
+        if(null != loggedInEmail && null!= document){
+            List<QuestionResponseDto> questions = questionService.findByDocumentLimitAndSkip(document, 10, skip);
+            return new ResponseEntity<>(questions, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
 }

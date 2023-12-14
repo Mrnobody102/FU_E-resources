@@ -18,7 +18,6 @@ public interface QuestionService {
     List<QuestionResponseDto> findByDocumentLimitAndSkip(Document document, int limit, int skip);
 
     List<QuestionResponseDto> findByOtherStudentLimitAndSkip(Student student, Document document, int limit, int skip);
-    List<Question> findByDocIdAndStudentId(Document document, Student student);
     List<QuestionResponseDto> findWaitReplyQuestionForStudent(String studentId);
     List<QuestionResponseDto> findNewQuestionForLecturer(String lecturerEmail);
     List<QuestionResponseDto> findNewReplyQuestionStudent(String studentId);
@@ -34,4 +33,5 @@ public interface QuestionService {
     boolean deleteQuestion(Question question);
 
     Page<Question> findByStudentAndSearch(Student student, String search, QuestionAnswerEnum.Status status, int pageIndex, Integer pageSize);
+    Page<Question> findByLecturerAndSearch(String lecturerEmail, String search, QuestionAnswerEnum.Status status, int pageIndex, Integer pageSize);
 }

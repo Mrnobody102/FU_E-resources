@@ -35,23 +35,23 @@ function submitFormReplyQuestion(param) {
                 if (data.studentName == null) {
                     html = "<div class=\"reply-content border-bottom\"  id=\"" + data.answerId + "\">\n" +
                         "                     <h6 class=\"lec__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data.lecturerName + "(You)</span></h6>\n" +
-                        "                     <p class=\"lec__question-content\" id=\"reply-content-"+ data.answerId +"\">" + data.answerContent + "</p>";
+                        "                     <p class=\"lec__question-content\" id=\"reply-content-" + data.answerId + "\">" + data.answerContent + "</p>";
                     // edit section
-                    html+="<div class=\"edit-reply-div\" id=\"update-reply"+ data.answerId+ "\" style=\"display: none\">\n" +
-                        "                                                    <label id=\"update-reply-error"+ data.answerId+"\" class=\"display-none\">Please enter something to update.</label>\n" +
-                        "                                                    <input class=\"update-reply\" id=\"update-reply-content-"+ data.answerId +"\">\n" +
-                        "                                                    <button id=\"close-update-reply-" + data.answerId+ "\" type=\"button\" title=\"exist\"\n" +
-                        "                                                            reply-id=\""+ data.answerId+"\" onclick=existFormEditReply(\"" +data.answerId+"\")\n" +
+                    html += "<div class=\"edit-reply-div\" id=\"update-reply" + data.answerId + "\" style=\"display: none\">\n" +
+                        "                                                    <label id=\"update-reply-error" + data.answerId + "\" class=\"display-none\">Please enter something to update.</label>\n" +
+                        "                                                    <textarea class=\"update-reply\" id=\"update-reply-content-" + data.answerId + "\"></textarea>\n" +
+                        "                                                    <button id=\"close-update-reply-" + data.answerId + "\" type=\"button\" title=\"exist\"\n" +
+                        "                                                            reply-id=\"" + data.answerId + "\" onclick=existFormEditReply(\"" + data.answerId + "\")\n" +
                         "                                                            class=\"exist-form-edit-reply btn-danger\"><i class=\"fa-solid fa-xmark\"></i> Close</button> " +
-                        "                                                            <a type=\"button\" class=\"display-none\" title=\"Sending\" id=\"sending-update-reply"+ data.answerId+ "\"><i\n" +
+                        "                                                            <a type=\"button\" class=\"display-none\" title=\"Sending\" id=\"sending-update-reply" + data.answerId + "\"><i\n" +
                         "                                                            class=\"fas fa-spinner fa-spin\"></i> Sending...</a>\n" +
-                        "                                                    <button type=\"button\" title=\"Edit\" id=\"send-update-reply-"+ data.answerId+"\" reply-id=\"" + data.answerId + "\"\n" +
+                        "                                                    <button type=\"button\" title=\"Edit\" id=\"send-update-reply-" + data.answerId + "\" reply-id=\"" + data.answerId + "\"\n" +
                         "                                                            onclick=submitFormEditReply(\"" + data.answerId + "\") class=\"btn-save\">" +
                         "                                                    <i class=\"fa-solid fa-paper-plane\"></i> Edit\n" +
                         "                                                    </button>\n" +
                         "                                                    </div>";
                     // date and link
-                    html+="<p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data.createdDate + "</span> " +
+                    html += "<p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data.createdDate + "</span> " +
                         "                     <a class=\"lec__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data.answerId + "\">Edit</a> | " +
                         "                     <a class=\"lec__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data.answerId + "\" onclick=deleteReply(\"" + data.answerId + "\",\"" + data.questionId + "\")>Delete</a>\n" +
                         "                     </div>";
@@ -65,7 +65,7 @@ function submitFormReplyQuestion(param) {
                 var answer = data.answerContent;
                 let modified_val = answer.replace(/"/g, '&quot;')
                 $("#list-reply-content-" + param).append(html);
-                $("#update-reply-content-"+ data.answerId).val(modified_val);
+                $("#update-reply-content-" + data.answerId).text(modified_val);
                 // change total of answer
                 var totalReply = $('#number-reply-' + param).text();
                 var intValue = parseInt(totalReply);
@@ -86,6 +86,7 @@ function submitFormReplyQuestion(param) {
         });
     }
 }
+
 function existFormReplyQuestion(param) {
     $('#reply-content-form' + param).trigger("reset");
     $('#reply-form' + param).css("display", "none")
@@ -111,24 +112,24 @@ function viewMoreReply(param) {
                     // content
                     html = "<div class=\"reply-content border-bottom\" id=\"" + data[i].answerId + "\">\n" +
                         "                     <h6 class=\"lec__question-creater-name\"><i class=\"fa-solid fa-user\"></i> <span>" + data[i].lecturerName + "(You)</span></h6>\n" +
-                        "                     <p class=\"lec__question-content\"  id=\"reply-content-"+ data[i].answerId +"\">" + data[i].answerContent + "</p>";
+                        "                     <p class=\"lec__question-content\"  id=\"reply-content-" + data[i].answerId + "\">" + data[i].answerContent + "</p>";
 
                     // edit section
-                    html+="<div class=\"edit-reply-div\" id=\"update-reply"+ data[i].answerId+ "\" style=\"display: none\">\n" +
-                        "                                                    <label id=\"update-reply-error"+ data[i].answerId+"\" class=\"display-none\">Please enter something to update.</label>\n" +
-                        "                                                    <textarea class=\"update-reply\" id=\"update-reply-content-"+ data[i].answerId +"\"></textarea>\n" +
-                        "                                                    <button id=\"close-update-reply-" + data[i].answerId+ "\" type=\"button\" title=\"exist\"\n" +
-                        "                                                            reply-id=\""+ data[i].answerId+"\" onclick=existFormEditReply(\"" +data[i].answerId+"\")\n" +
+                    html += "<div class=\"edit-reply-div\" id=\"update-reply" + data[i].answerId + "\" style=\"display: none\">\n" +
+                        "                                                    <label id=\"update-reply-error" + data[i].answerId + "\" class=\"display-none\">Please enter something to update.</label>\n" +
+                        "                                                    <textarea class=\"update-reply\" id=\"update-reply-content-" + data[i].answerId + "\"></textarea>\n" +
+                        "                                                    <button id=\"close-update-reply-" + data[i].answerId + "\" type=\"button\" title=\"exist\"\n" +
+                        "                                                            reply-id=\"" + data[i].answerId + "\" onclick=existFormEditReply(\"" + data[i].answerId + "\")\n" +
                         "                                                            class=\"exist-form-edit-reply btn-danger\"><i class=\"fa-solid fa-xmark\"></i> Close</button> " +
-                        "                                                            <a type=\"button\" class=\"display-none\" title=\"Sending\" id=\"sending-update-reply"+ data[i].answerId+ "\"><i\n" +
+                        "                                                            <a type=\"button\" class=\"display-none\" title=\"Sending\" id=\"sending-update-reply" + data[i].answerId + "\"><i\n" +
                         "                                                            class=\"fas fa-spinner fa-spin\"></i> Sending...</a>\n" +
-                        "                                                    <button type=\"button\" title=\"Edit\" id=\"send-update-reply-"+ data[i].answerId+"\" reply-id=\"" + data[i].answerId + "\"\n" +
+                        "                                                    <button type=\"button\" title=\"Edit\" id=\"send-update-reply-" + data[i].answerId + "\" reply-id=\"" + data[i].answerId + "\"\n" +
                         "                                                            onclick=submitFormEditReply(\"" + data[i].answerId + "\") class=\"btn-save\">" +
                         "                                                    <i class=\"fa-solid fa-paper-plane\"></i> Edit\n" +
                         "                                                    </button>\n" +
                         "                                                    </div>";
                     // date and link
-                    html+="<p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data[i].createdDate + "</span> " +
+                    html += "<p class=\"lec__question-content\" ><span class=\"lec__answer-date\" >" + data[i].createdDate + "</span> " +
                         "                     <a class=\"lec__edit-reply view-reply-link-item edit-reply\" reply-id=\"" + data[i].answerId + "\">Edit</a> | " +
                         "                     <a class=\"lec__delete-reply view-reply-link-item delete-reply\" reply-id=\"" + data[i].answerId + "\" onclick=deleteReply(\"" + data[i].answerId + "\",\"" + data[i].questionId + "\")>Delete</a>\n" +
                         "                     </div>";
@@ -140,7 +141,7 @@ function viewMoreReply(param) {
                         "                     </div>";
                 }
                 $(viewDiv).append(html);
-                let modified_val = data[i].answerContent .replace(/"/g, '&quot;')
+                let modified_val = data[i].answerContent.replace(/"/g, '&quot;')
                 $('#update-reply-content-' + data[i].answerId).val(modified_val);
             }
             $(loadingDiv).css("display", "none");
@@ -223,6 +224,7 @@ function deleteReply(param, param2) {
         });
     }
 }
+
 function seeLessReply(param) {
     var viewDiv = '#list-reply-content-' + param;
     var seeLessDiv = '#see-less-reply-' + param;
@@ -249,13 +251,13 @@ $(document).ready(function () {
         viewMoreReply(sectionId);
     }
     // var element = document.querySelector("#" + sectionId);
-    $("#"+ sectionId).get(0).scrollIntoView();
+    $("#" + sectionId).get(0).scrollIntoView();
 
     // edit reply
     $("body").on("click", ".edit-reply", function () {
         // $(this).next(".edit-question-div").toggle();
         var replyId = $(this).attr("reply-id");
-        console.log("update-reply"+ replyId)
+        console.log("update-reply" + replyId)
         $("#update-reply" + replyId).css("display", "block");
         $("#reply-content-" + replyId).css("display", "none");
     })
@@ -299,7 +301,7 @@ function handleFileSelection() {
 }
 
 function saveFiles() {
-    if(listSupportingFiles.length == supportingFileElements.length && supportingFileElements == null){
+    if (listSupportingFiles.length == supportingFileElements.length && supportingFileElements == null) {
         return;
     }
 
@@ -328,23 +330,25 @@ function saveFiles() {
         data: formData,
         processData: false,
         contentType: false,
-        success: function() {
+        success: function () {
             window.location.reload();
         },
-        error: function(error) {
+        error: function (error) {
             // Xử lý lỗi từ máy chủ
             console.log(error);
         }
     });
 }
+
 function backUpdateFiles() {
     window.location.reload();
 }
+
 function updateFiles() {
 
     addSupportFile.style.display = 'block';
     updateSupportingFiles.style.display = 'none';
-    if(noSupportingFile != null){
+    if (noSupportingFile != null) {
         noSupportingFile.style.display = 'none';
     }
 
@@ -363,6 +367,7 @@ function updateFiles() {
         supportingFile.classList.add('supporting-file-when-updating');
     }
 }
+
 function removeFile(element) {
 
     const fileName = element.getAttribute('file-name');
@@ -380,6 +385,7 @@ function removeFile(element) {
 function addFileInput() {
     newSupportFileInput.style.display = 'block';
 }
+
 function downloadFile(fileName) {
     $.ajax({
         url: '/api/lecturer/download',
@@ -397,6 +403,79 @@ function downloadFile(fileName) {
         },
         error: function () {
             console.log("Error when download file");
+        }
+    });
+}
+
+function loadMoreQuestion(skip, docId) {
+    console.log(skip);
+    console.log(docId)
+    $("#load-more-question-lec").addClass('disabled');
+    $("#loading-more-question-lec").css("display", "inline");
+    $.ajax({
+        url: '/api/lecturer/load_more_question?docId=' + docId + '&skip=' + skip,
+        type: 'GET',
+        contentType: 'application/json',
+        success: function (data) {
+            $("#load-more-question-lec").attr('current-count', skip + 10);
+            if (data.length < 10) {
+                $("#load-more-question-lec").css('display', "none");
+            }
+            var html = '';
+            $.each(data, function (index, question) {
+                var html = '';
+                if ($("#" + question.questionId).length > 0) {
+                } else {
+                    html += "<div class=\"lec__question-content-wrapper\" id=\"" + question.questionId + "\"> <h6 class=\"lec__question-creater-name\"><i class=\"fa-solid fa-user\"></i>\n" +
+                        "                                                <span>" + question.studentName + "</span></h6> <p class=\"lec__question-content question-content\">" + question.questionContent + "</p>\n" +
+                        "                                            <p class=\"lec__question-content\"><span class=\"lec__answer-date\">" + question.createdDate + "</span>\n" +
+                        "                                                <a class=\"lec__add-reply view-question-link-item\" question-id=\"" + question.questionId + "\"\n" +
+                        "                                                   onclick=showReplyForm(\"" + question.questionId + "\")> Reply</a></p>";
+                    if (question.totalAnswers > 0) {
+                        html += "                                            <p id=\"view-more-reply-" + question.questionId + "\" question-id=\"" + question.questionId + "\"\n" +
+                            "                                               onclick=\"viewMoreReply(this.getAttribute('question-id'))\" class=\"view-question-reply lec__question-content\">View " +
+                            "                                           <span id=\"number-reply-" + question.questionId + "\" >" + question.totalAnswers + "</span> reply</p>";
+                    } else {
+                        html += "                                            <p id=\"view-more-reply-" + question.questionId + "\" question-id=\"" + question.questionId + "\"\n" +
+                            "                                               onclick=\"viewMoreReply(this.getAttribute('question-id'))\" class=\"view-question-reply lec__question-content display-none\">View " +
+                            "                                           <span id=\"number-reply-" + question.questionId + "\" >" + question.totalAnswers + "</span> reply</p>";
+                    }
+                    html += "                                            <p style=\"display:none;\" id=\"see-less-reply-" + question.questionId + "\" question-id=\"" + question.questionId + "\"\n" +
+                        "                                               onclick=seeLessReply(\"" + question.questionId + "\") class=\"view-question-reply lec__question-content\">See less</p>\n" +
+                        "                                            <p style=\"display:none;\" id=\"loading-reply-" + question.questionId + "\" question-id=\"" + question.questionId + "\" class=\"view-question-reply lec__question-content\"><i\n" +
+                        "                                                    class=\"fas fa-spinner fa-spin\"></i> Loading more reply...</p>\n" +
+                        "                                            <div class=\"reply-content\" id=\"list-reply-content-" + question.questionId + "\"></div>\n" +
+                        "                                            <div class=\"lec__reply-form\" id=\"reply-form" + question.questionId + "\">\n" +
+                        "                                                <form class=\"form-lecturer-add-doc-new-reply justify-content-between\" method=\"post\" role=\"form\"\n" +
+                        "                                                      id=\"reply-content-form" + question.questionId + "\">\n" +
+                        "                                                    <div class=\"\"> <input type=\"text\" name=\"docId\" value=\"" + docId + "\" readonly hidden>\n" +
+                        "                                                        <input type=\"text\" name=\"quesId\" value=\"" + question.questionId + "\" readonly hidden>\n" +
+                        "                                                        <label id=\"new-reply-content-error-" + question.questionId + "\" class=\"lecturer_input-label error-input\">Content require!</label>\n" +
+                        "                                                        <div class=\"form-content\">\n" +
+                        "                                                            <label for=\"new-reply-content-" + question.questionId + "\" class=\"lec_input-label-reply\">Enter answer:</label>\n" +
+                        "                                                            <textarea id=\"new-reply-content-" + question.questionId + "\" class=\"input-reply-content\"\n" +
+                        "                                                                    name=\"answer\" required></textarea>\n" +
+                        "                                                        </div>\n" +
+                        "                                                    </div>\n" +
+                        "                                                    <div class=\"submit-reply-button\">\n" +
+                        "                                                        <button type=\"button\" title=\"exist\" id=\"exist-reply-form-button-" + question.questionId + "\" question-id=\"" + question.questionId + "\"\n" +
+                        "                                                                onclick=existFormReplyQuestion(\"" + question.questionId + "\") class=\"btn-danger\"><i class=\"fa-solid fa-xmark\"></i>\n" +
+                        "                                                            Close </button> <a type=\"button\" title=\"Sending\" style=\"display:none;\" id=\"sending-reply-" + question.questionId + "\" question-id=\"" + question.questionId + "\"><i\n" +
+                        "                                                                class=\"fas fa-spinner fa-spin\"></i> Sending...</a>\n" +
+                        "                                                        <button type=\"button\" title=\"Send\" id=\"send-reply-button-" + question.questionId + "\" question-id=\"" + question.questionId + "\"\n" +
+                        "                                                                onclick=submitFormReplyQuestion(\"" + question.questionId + "\") class=\"btn-save\"><i class=\"fa-solid fa-paper-plane\"></i>Send\n" +
+                        "                                                        </button>\n" +
+                        "                                                    </div>\n" +
+                        "                                                </form>\n" +
+                        "                                            </div>\n" +
+                        "                                        </div>";
+                    $("#lecturer-questions").append(html);
+                }
+            })
+            $("#loading-more-question-lec").css("display", "none");
+            $("#load-more-question-lec").removeClass('disabled');
+        },
+        error: function (xhr, textStatus, errorThrown) {
         }
     });
 }

@@ -60,7 +60,7 @@
 <!--                                    </ul>-->
 <!--                                </div>-->
                             </div>
-                            <button class="header__search-btn" type="submit">
+                            <button class="header__search-btn" type="button" id="button-form-getMyQuestion" onclick="submitFormGetQuestion()">
                                 <i class="header__search-btn-icon fas fa-search"></i>
                             </button>
                         </div>
@@ -110,7 +110,7 @@
                                         <div class="stu__question-content-wrapper"
                                              th:each="studentQuestion : ${studentQuestions}">
                                             <span class="stu__question-content stu__question-date"
-                                                  th:text="${studentQuestion.lastModifiedDate}"></span><br>
+                                            th:text="${#temporals.format(studentQuestion.createdDate, 'dd-MM-yyyy HH:mm:ss')}"></span><br>
                                             <a class="stu__question-title"
                                                th:text="'You asked on '+${studentQuestion.documentId.title}"></a>
 

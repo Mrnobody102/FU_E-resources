@@ -25,6 +25,10 @@ function pagingInMyQuestion(clickedElement){
     $("#getMyQuestion").submit();
 
 }
+function submitFormGetQuestion(){
+    $("#pageIndex").val("1");
+    $("#getMyQuestion").submit();
+}
 
 
 // function viewQuestionWaiting() {
@@ -153,6 +157,14 @@ function viewTopicDocument(param) {
 }
 
 $(document).ready(function () {
+
+    $("#getMyQuestion :input").keypress(function(event) {
+        // Kiểm tra xem phím được ấn có phải là Enter không (mã ASCII 13)
+        if (event.which === 13) {
+            $("#pageIndex").val("1");
+            $("#getMyQuestion").submit();
+        }
+    });
 
     /*
         NAVBAR

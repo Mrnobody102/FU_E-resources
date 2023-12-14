@@ -37,7 +37,7 @@
                             <div class="header__search">
                                 <!--Label-->
                                 <div class="search-label">
-                                    <label th:for="search">Search course</label>
+                                    <label th:for="search-text">Search course</label>
                                 </div>
                                 <!-- Input  -->
                                 <div class="header__search-input-wrap">
@@ -91,7 +91,7 @@
                                             <li class="home__course-item">
                                                 <div class="home__course-wrapper" th:each="course : ${coursesSaved}">
                                                     <h2 class="home__course-code" th:text="${course.courseCode}"
-                                                        href=""></h2>
+                                                        ></h2>
                                                     <a class="home__course-name" th:text="${course.courseName}"
                                                        th:href="@{'/student/courses/' + ${course.id}}"></a>
                                                     <p class="home__course-description"
@@ -99,8 +99,7 @@
                                                     <ul class="home__course-lecturer-list">
                                                         <li class="home__course-lecturer-item"
                                                             th:if="${course.lecturer ne null}">
-                                                            <a class="home__course-lecturer-link"
-                                                               href="">
+                                                            <a class="home__course-lecturer-link">
                                                                 <span>Lecturer: </span>
                                                                 <span th:text="${course.lecturer.account.name}"></span>
                                                             </a>

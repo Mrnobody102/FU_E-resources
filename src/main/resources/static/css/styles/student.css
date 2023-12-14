@@ -604,6 +604,9 @@ stu__navbar-view-doc-item:hover a{
     display: flex;
     justify-content: center;
 }
+.load-more-question-button i{
+    margin-right: 1.5rem;
+}
 #load-more-my-question{
     margin-top: 1.5rem;
     padding: 1.8rem 2.3rem;
@@ -611,4 +614,10 @@ stu__navbar-view-doc-item:hover a{
 #load-more-other-question{
     margin-top: 1.5rem;
     padding: 1.8rem 2.3rem;
+}
+.home__note-wrapper{
+    cursor: pointer;
+}
+.home__note-wrapper:hover .home__note-title{
+    color: var(--link-color);
 }

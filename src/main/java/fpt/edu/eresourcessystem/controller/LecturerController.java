@@ -8,6 +8,7 @@ import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.NotificationResponseDto;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
+import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.service.s3.StorageService;
@@ -108,20 +109,24 @@ public class LecturerController {
      * @param model     model
      * @return lecturer courses
      */
-    @GetMapping({"/courses/list/{status}/{pageIndex}"})
-    public String viewCourseManaged(@PathVariable(required = false) Integer pageIndex, final Model model, @PathVariable String status) {
+    @GetMapping({"/courses/list"})
+    public String viewCourseManaged(
+            @RequestParam(required = false, defaultValue = "") String search,
+            @RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+            @RequestParam(required = false, defaultValue = "all") String status,
+            final Model model) {
         // get account authorized
         Lecturer lecturer = getLoggedInLecturer();
         if (null == lecturer || "".equalsIgnoreCase(status)) {
             return "common/login";
         }
-        Page<Course> page = lecturerService.findListManagingCourse(lecturer, status, pageIndex, PAGE_SIZE);
-        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-        model.addAttribute("pages", pages);
-        model.addAttribute("totalPage", page.getTotalPages());
+        Page<Course> page = lecturerService.findListManagingCourse(lecturer, search, status, pageIndex, PAGE_SIZE);
+        model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
         model.addAttribute("status", status);
-
+        model.addAttribute("currentPage", pageIndex);
+        model.addAttribute("search", search);
+        model.addAttribute("totalItems", page.getTotalElements());
         return "lecturer/course/lecturer_courses";
     }
 
@@ -422,7 +427,7 @@ public class LecturerController {
     }
 
     @GetMapping({"/documents/{documentId}"})
-    public String viewDocument(@PathVariable(required = false) String documentId,
+    public String viewDocument(@PathVariable String documentId,
                                @RequestParam(required = false) String questionId,
                                final Model model) throws IOException {
         Document document = documentService.findById(documentId);
@@ -431,21 +436,16 @@ public class LecturerController {
             return "exception/404";
         } else {
             // get list question
-            List<QuestionResponseDto> questions = questionService.findByDocumentLimitAndSkip(document, 5, 0);
+            List<QuestionResponseDto> questions = new ArrayList<>();
             if (null != questionId) {
                 QuestionResponseDto question = new QuestionResponseDto(questionService.findById(questionId));
                 if (question != null) {
-                    boolean check = false;
-                    for (int i = 0; i < questions.size(); i++) {
-                        if (questions.get(i).getQuestionId().equals(questionId)) {
-                            check = true;
-                            break;
-                        }
-                    }
-                    if (check) {
-                        questions.add(new QuestionResponseDto(questionService.findById(questionId)));
-                    }
+                    questions.add(new QuestionResponseDto(questionService.findById(questionId)));
+                } else {
+                    questions = questionService.findByDocumentLimitAndSkip(document, 5, 0);
                 }
+            } else {
+                questions = questionService.findByDocumentLimitAndSkip(document, 5, 0);
             }
 
             if (document.isDisplayWithFile() == true) {
@@ -612,13 +612,13 @@ public class LecturerController {
 
         // Notify student that save this course
         Notification notification;
-        for(String student: course.getStudents()){
+        for (String student : course.getStudents()) {
             notification = new Notification(
                     getLoggedInLecturerMail(),
                     student,
                     getLoggedInLecturerMail() + " updated new document in " + course.getCourseName(),
                     "/student/courses/" + course.getId()
-                    );
+            );
             notificationService.addNotificationWhenUpdateDocument(notification);
         }
 
@@ -719,10 +719,10 @@ public class LecturerController {
     @PostMapping("/{documentId}/update_supporting_files")
     @Transactional
     public String updateSupportingFiles(@RequestParam(value = "files", required = false) MultipartFile[] files,
-                              @RequestParam(value = "supportingFiles", required = false) String[] supportingFiles, @PathVariable String documentId) {
+                                        @RequestParam(value = "supportingFiles", required = false) String[] supportingFiles, @PathVariable String documentId) {
         Document document = documentService.findById(documentId);
         List<MultiFile> multiFiles = document.getMultipleFiles();
-        if (supportingFiles == null){
+        if (supportingFiles == null) {
             supportingFiles = new String[]{""};
         }
         int supportingFilesNumber = supportingFiles != null ? supportingFiles.length : 0;
@@ -730,7 +730,7 @@ public class LecturerController {
 
         int total = supportingFilesNumber + filesNumber;
 
-        if(total < 4) {
+        if (total < 4) {
             if (supportingFiles != null) {
                 List<MultiFile> existedMultiFiles = document.getMultipleFiles();
                 for (MultiFile existedMultiFile : existedMultiFiles) {
@@ -815,13 +815,29 @@ public class LecturerController {
     /*
         Question ans
     */
-    @GetMapping({"/questions/list/{status}/{pageIndex}"})
-    public String viewListOfQuestions(@PathVariable(required = false) Integer pageIndex, final Model model, @PathVariable String status) {
-        List<Question> questions = questionService.findByLecturerMail(getLoggedInLecturerMail());
-        model.addAttribute("studentQuestions", questions);
+    @GetMapping({"/questions/list"})
+    public String viewListOfQuestions(
+            @RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+            @RequestParam(required = false, defaultValue = "all") String status,
+            @RequestParam(required = false, defaultValue = "") String search,
+            final Model model) {
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        QuestionAnswerEnum.Status findStatus = null;
+        if ("replied".equals(status)) {
+            findStatus = QuestionAnswerEnum.Status.REPLIED;
+        } else if ("wait-reply".equals(status)) {
+            findStatus = QuestionAnswerEnum.Status.CREATED;
+        }
+//        List<Question> questions = questionService.findByLecturerMail(getLoggedInLecturerMail());
+        Page<Question> questions = (loggedInEmail != null) ? questionService.findByLecturerAndSearch(loggedInEmail, search, findStatus, pageIndex, PAGE_SIZE) : null;
         // add log
 //        addUserLog("/my_library/my_questions/history");
+        model.addAttribute("studentQuestions", questions.getContent());
         model.addAttribute("status", status);
+        model.addAttribute("currentPage", pageIndex);
+        model.addAttribute("search", search);
+        model.addAttribute("totalPages", questions.getTotalPages());
+        model.addAttribute("totalItems", questions.getTotalElements());
         return "lecturer/document/lecturer_questions";
     }
 

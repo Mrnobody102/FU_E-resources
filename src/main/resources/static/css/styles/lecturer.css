@@ -454,3 +454,29 @@ label.error {
     font-weight: var(--font-medium);
     font-size: 1.5rem;
 }
+.number-count{
+    color: #888888;
+    font-size: var(--font-medium);
+    font-style: italic;
+}
+.count-courses{
+    margin-top: 2rem;
+    margin-left: 2rem;
+}
+.home__course-wrapper{
+    cursor: pointer;
+}
+.home__course-wrapper:hover .home__course-name{
+    color: var(--link-color);
+}
+.load-more-question-button{
+    display: flex;
+    justify-content: center;
+}
+.load-more-question-button i{
+    margin-right: 1.5rem;
+}
+.load-more-question-button button{
+    margin-top: 1.5rem;
+    padding: 1.8rem 2.3rem;
+}

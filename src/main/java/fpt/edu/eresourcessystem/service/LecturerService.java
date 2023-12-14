@@ -35,7 +35,7 @@ public interface LecturerService {
 
     boolean removeCourse(String lecturerId, ObjectId courseId);
 
-    Page<Course> findListManagingCourse(Lecturer lecturer, String status, int pageIndex, int pageSize);
+    Page<Course> findListManagingCourse(Lecturer lecturer, String search, String status, int pageIndex, int pageSize);
 
     Page<Document> findListDocuments(Lecturer lecturer, String status, int pageIndex, int pageSize);
 

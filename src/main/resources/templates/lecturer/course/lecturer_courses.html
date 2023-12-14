@@ -28,95 +28,74 @@
                     </div>
 
                     <div class="lec__courses-content main" id="main-lecturer">
-
-                        <div class="header__search">
-                            <!--Label-->
-                            <div class="search-label">
-                                <label th:for="search">Search course</label>
-                            </div>
-                            <!-- Input  -->
-                            <div class="header__search-input-wrap">
-                                <input type="text" class="header__search-input"
-                                       placeholder="Enter course ..."
-                                       name="search"
-                                       th:id="search" th:value="${search}">
-                                <!-- Header-search-history -->
-                                <div class="header__search-history">
-                                    <h3 class="header__search-history-heading">
-                                        Search history
-                                    </h3>
-                                    <ul class="header__search-history-list">
-
-                                        <li class="header__search-history-item">
-                                            <a href="">Software</a>
-                                        </li>
-                                    </ul>
+                        <form th:method="GET" th:action="@{/lecturer/courses/list}" id="form-get-manage-course">
+                            <div class="header__search">
+                                <!--Label-->
+                                <div class="search-label">
+                                    <label th:for="search-text">Search course</label>
                                 </div>
+                                <!-- Input  -->
+                                <div class="header__search-input-wrap">
+                                    <input type="text" class="header__search-input"
+                                           placeholder="Enter course name or course code ..."
+                                           id="search-text"
+                                           name="search"
+                                           th:value="${search}">
+                                    <input type="text" name="status" th:value="${status}" id="setStatus" hidden>
+                                    <input type="text" name="pageIndex" th:value="${currentPage}" id="pageIndex" hidden>
+                                    <!-- Header-search-history -->
+                                    <!--                                <div class="header__search-history">-->
+                                    <!--                                    <h3 class="header__search-history-heading">-->
+                                    <!--                                        Search history-->
+                                    <!--                                    </h3>-->
+                                    <!--                                    <ul class="header__search-history-list">-->
+
+                                    <!--                                        <li class="header__search-history-item">-->
+                                    <!--                                            <a href="">Software</a>-->
+                                    <!--                                        </li>-->
+                                    <!--                                    </ul>-->
+                                    <!--                                </div>-->
+                                </div>
+                                <button class="header__search-btn" type="button" id="button-form-get-manage-course" onclick="submitFormCourseManage(this)">
+                                    <i class="header__search-btn-icon fas fa-search"></i>
+                                </button>
                             </div>
-                            <!-- Select-find-scope -->
-                            <div class="header__search-select">
-                                <span class="header__search-select-label">All results</span>
-                                <i class="header__search-select-icon fas fa-angle-down"></i>
-                                <ul class="header__search-option">
-                                    <li class="header__search-option-item header__search-option-item--active">
-                                        <span class="">By Name</span>
-                                        <i class="fas fa-check"></i>
-                                    </li>
-                                    <li class="header__search-option-item">
-                                        <span class="">By Code</span>
-                                        <i class="fas fa-check"></i>
-                                    </li>
-                                </ul>
-                            </div>
-                            <button class="header__search-btn">
-                                <i class="header__search-btn-icon fas fa-search"></i>
-                            </button>
-                        </div>
+                        </form>
                         <div class="lec__navbar-favourite">
                             <ul class="lec__navbar-list border-bottom">
                                 <li class="lec__navbar-item"
-                                    th:classappend="${status == 'all' ? 'lec__navbar-active' : ''}">
-                                    <a th:href="@{/lecturer/courses/list/all/1}">
+                                    th:classappend="${status == 'all' ? 'lec__navbar-active' : ''}"
+                                    onclick="getAllCourse(this)">
+                                    <a>
                                         All courses
-                                        <th:block th:if="${status == 'all'}">
-                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
-                                        </th:block>
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
-                                    th:classappend="${status == 'new' ? 'lec__navbar-active' : ''}">
-                                    <a th:href="@{/lecturer/courses/list/new/1}">
+                                    th:classappend="${status == 'new' ? 'lec__navbar-active' : ''}"
+                                    onclick="getNewCourse(this)">
+                                    <a>
                                         New courses
-                                        <th:block th:if="${status == 'new'}">
-                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
-                                        </th:block>
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
-                                    th:classappend="${status == 'publish' ? 'lec__navbar-active' : ''}">
-                                    <a th:href="@{/lecturer/courses/list/publish/1}">
+                                    th:classappend="${status == 'publish' ? 'lec__navbar-active' : ''}"
+                                    onclick="getPublishCourse(this)">
+                                    <a>
                                         Published courses
-                                        <th:block th:if="${status == 'publish'}">
-                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
-                                        </th:block>
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
-                                    th:classappend="${status == 'draft' ? 'lec__navbar-active' : ''}">
-                                    <a th:href="@{/lecturer/courses/list/draft/1}">
+                                    th:classappend="${status == 'draft' ? 'lec__navbar-active' : ''}"
+                                    onclick="getDraftCourse(this)">
+                                    <a>
                                         Editing courses
-                                        <th:block th:if="${status == 'draft'}">
-                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
-                                        </th:block>
                                     </a>
                                 </li>
                                 <li class="lec__navbar-item"
-                                    th:classappend="${status == 'hide' ? 'lec__navbar-active' : ''}">
-                                    <a th:href="@{/lecturer/courses/list/hide/1}">
+                                    th:classappend="${status == 'hide' ? 'lec__navbar-active' : ''}"
+                                    onclick="getHideCourse(this)">
+                                    <a>
                                         Hidden courses
-                                        <th:block th:if="${status == 'hide'}">
-                                            <span th:text="'(' + ${courses.size() + ')'}"></span>
-                                        </th:block>
                                     </a>
                                 </li>
                             </ul>
@@ -125,12 +104,16 @@
                         <div class="lec__courses-list-view">
                             <div class="lec__view-saved-courses">
                                 <div class="lec__view-list-course-content">
-                                    <div class="view-block-list">
-                                        <ul class="home__course-list">
+                                    <div class="result-count">
+                                        <p class="number-count count-courses" th:if="${courses == null} OR ${courses.size()} ==0 ">Total course: 0 course.</p>
+                                        <p class="number-count count-courses" th:if="${courses ne null} AND ${totalItems} > 0 ">Total courses: <span th:text="${totalItems}"></span> course(s).</p>
+                                    </div>
+                                    <div class="view-block-list" >
+                                        <ul class="home__course-list" th:if="${courses ne null} AND ${courses.size()} > 0 ">
                                             <li class="home__course-item">
                                                 <div class="home__course-wrapper" th:each="course : ${courses}">
                                                     <h2 class="home__course-code" th:text="${course.courseCode}"
-                                                        href=""></h2>
+                                                        ></h2>
                                                     <a class="home__course-name" th:text="${course.courseName}"
                                                        th:href="@{'/lecturer/courses/' + ${course.id}}"></a>
                                                     <p class="home__course-description"
@@ -140,7 +123,7 @@
                                                             th:if="${course.librarian ne null}">
                                                             Created by:
                                                             <a class="home__course-lecturer-link"
-                                                               href="" th:text="${course.librarian.account.name}">
+                                                               th:text="${course.librarian.account.name}">
                                                             </a>
                                                         </li>
                                                         <li class="home__course-lecturer-item">
@@ -152,15 +135,15 @@
                                                                 </th:block>
                                                                 <th:block
                                                                         th:if="${course.status.toString().equals('PUBLISH')}">
-                                        <span class="text-success fw-bold">Publish</span>
+                                                                    <span class="text-success fw-bold">Publish</span>
                                                                 </th:block>
                                                                 <th:block
                                                                         th:if="${course.status.toString().equals('DRAFT')}">
-                                        <span class="text-warning fw-bold">Draft</span>
+                                                                    <span class="text-warning fw-bold">Draft</span>
                                                                 </th:block>
                                                                 <th:block
                                                                         th:if="${course.status.toString().equals('HIDE')}">
-                                        <span class="text-secondary fw-bold">Hidden</span>
+                                                                    <span class="text-secondary fw-bold">Hidden</span>
                                                                 </th:block>
                                                             </th:block>
                                                         </li>
@@ -169,28 +152,34 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <nav th:if="${totalPage ne null} AND ${totalPage} >1" aria-label="Page navigation example">
+                                    <nav th:if="${totalPages ne null} AND ${totalPages} >1" aria-label="Page navigation example">
                                         <ul class="pagination home-courses__pagination-distance">
                                             <li class="pagination-item"
                                                 th:classappend=" ${currentPage == 1} ? 'disabled' : ''">
-                                                <a class="pagination-item__link previous-page-stu-course-number" style="cursor: pointer">
+                                                <a th:page="${currentPage}-1" onclick="pagingInMyManageCourse(this)"
+                                                   class="pagination-item__link" style="cursor: pointer">
                                                     <i class="pagination-item__icon fas fa-angle-left"></i>
                                                 </a>
                                             </li>
 
-                                            <li th:each="pageIndex: ${pages}" class="pagination-item"
+                                            <li th:each="pageIndex: ${#numbers.sequence(1, totalPages)}" class="pagination-item"
                                                 th:classappend=" (${currentPage == pageIndex}) ? 'pagination-item--active' : '' ">
-                                                <th:block th:if="${pageIndex == -1}">
+                                                <th:block th:if="${currentPage - pageIndex == 3 }">
                                                     <span class="pagination-item__link">...</span>
                                                 </th:block>
-                                                <th:block th:if="${pageIndex != -1}">
-                                                    <a th:text="${pageIndex}" th:value="${pageIndex}"
-                                                       class="pagination-item__link page-stu-course-number" style="cursor: pointer"></a>
+                                                <th:block th:if="${currentPage - pageIndex <= 2} AND ${currentPage - pageIndex >= -2}">
+                                                    <a th:page="${pageIndex}" onclick="pagingInMyManageCourse(this)"
+                                                       th:text="${pageIndex}" th:value="${pageIndex}"
+                                                       class="pagination-item__link" style="cursor: pointer"></a>
+                                                </th:block>
+                                                <th:block th:if="${pageIndex - currentPage == 3 }">
+                                                    <span class="pagination-item__link">...</span>
                                                 </th:block>
                                             </li>
                                             <li  class="pagination-item"
-                                                 th:classappend="${currentPage == totalPage} ? 'disabled' : ''">
-                                                <a class="pagination-item__link next-page-stu-course-number" style="cursor: pointer">
+                                                 th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+                                                <a th:page="${currentPage}+1" onclick="pagingInMyManageCourse(this)"
+                                                   class="pagination-item__link" style="cursor: pointer">
                                                     <i class="pagination-item__icon fas fa-angle-right"></i>
                                                 </a>
                                             </li>
@@ -209,7 +198,9 @@
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 <!--jquery-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!--Bootstrap script-->
 <script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"
