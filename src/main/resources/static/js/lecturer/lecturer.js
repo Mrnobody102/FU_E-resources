@@ -1,3 +1,34 @@
+function getAllCourse(){
+    $("#setStatus").val("all");
+    $("#pageIndex").val("1");
+    $("#form-get-manage-course").submit();
+}
+function getNewCourse(){
+    $("#setStatus").val("new");
+    $("#pageIndex").val("1");
+    $("#form-get-manage-course").submit();
+}
+function getPublishCourse(){
+    $("#setStatus").val("publish");
+    $("#pageIndex").val("1");
+    $("#form-get-manage-course").submit();
+}
+function getDraftCourse(){
+    $("#setStatus").val("draft");
+    $("#pageIndex").val("1");
+    $("#form-get-manage-course").submit();
+}
+function getHideCourse(){
+    $("#setStatus").val("hide");
+    $("#pageIndex").val("1");
+    $("#form-get-manage-course").submit();
+}
+function pagingInMyManageCourse(clickedElement){
+    var page = $(clickedElement).attr('page');
+    $("#pageIndex").val(page);
+    $("#form-get-manage-course").submit();
+}
+
 function viewQuestionWaiting() {
     $(".lec__questions-list-view").css("display", "none");
     var divContent = $("#lec__view-waiting-for-reply-question").text().trim();
@@ -69,9 +100,29 @@ function viewAllQuestion() {
     $(".view-list").css("display", "none");
     $("#lec__questions-list-view").css("display", "block");
 }
-
+function submitFormCourseManage(e){
+    $("#pageIndex").val("1");
+    $("#form-get-manage-course").submit();
+}
 // Document scope
 $(document).ready(function() {
+    // $("#button-form-get-manage-course").on('click', function (e){
+    //     $("#pageIndex").val("1");
+    //     $("#form-get-manage-course").submit();
+    // })
+
+    $("#form-get-manage-course :input").keypress(function(event) {
+        // Kiểm tra xem phím được ấn có phải là Enter không (mã ASCII 13)
+        if (event.which === 13) {
+            $("#pageIndex").val("1");
+            $("#form-get-manage-course").submit();
+        }
+    });
+
+    // click div course auto click to course name
+    $('.home__course-wrapper').on('click', function() {
+        $(this).find('.home__course-name').click();
+    });
 
     // add click on <li> also -> click on <a>
     $('.lec__navbar-item').on('click', function() {

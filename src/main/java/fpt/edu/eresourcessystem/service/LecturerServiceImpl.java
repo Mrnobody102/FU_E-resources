@@ -131,22 +131,24 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public Page<Course> findListManagingCourse(Lecturer lecturer, String status, int pageIndex, int pageSize) {
-        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+    public Page<Course> findListManagingCourse(Lecturer lecturer, String search, String status, int pageIndex, int pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize,Sort.by(Sort.Direction.DESC, "lecturerCourseIds.createdDate"));
         Criteria criteria = new Criteria();
         // Sort by the "time" in descending order to get the most recent documents
         criteria.andOperator(
                 criteria.where("lecturer.id").is(lecturer.getId()),
                 status.equalsIgnoreCase("ALL") ? new Criteria() : criteria.where("status").is(status.toUpperCase()),
-                criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+                criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED),
+                // Add search conditions for courseCode or courseName using regex
+                new Criteria().orOperator(
+                        Criteria.where("courseCode").regex(search.trim(), "i"),
+                        Criteria.where("courseName").regex(search.trim(), "i")
+                )
         );
-        Query query = new Query(criteria).with(Sort.by(Sort.Order.desc("lecturerCourseIds.createdDate")));
-
-        // Use a Pageable to limit the result set to 5 documents
-
-        List<Course> results = mongoTemplate.find(query, Course.class);
-        return PageableExecutionUtils.getPage(results, pageable,
-                () -> mongoTemplate.count(query, Course.class));
+        Query query = new Query(criteria);
+        long total = mongoTemplate.count(query, Course.class);
+        List<Course> courses = mongoTemplate.find(query.with(pageable), Course.class);
+        return new PageImpl<>(courses, pageable, total);
     }
 
     @Override

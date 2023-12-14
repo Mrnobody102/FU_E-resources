@@ -105,20 +105,24 @@ public class LecturerController {
      * @param model     model
      * @return lecturer courses
      */
-    @GetMapping({"/courses/list/{status}/{pageIndex}"})
-    public String viewCourseManaged(@PathVariable(required = false) Integer pageIndex, final Model model, @PathVariable String status) {
+    @GetMapping({"/courses/list"})
+    public String viewCourseManaged(
+            @RequestParam(required = false, defaultValue = "") String search,
+            @RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+            @RequestParam(required = false, defaultValue = "all") String status,
+            final Model model) {
         // get account authorized
         Lecturer lecturer = getLoggedInLecturer();
         if (null == lecturer || "".equalsIgnoreCase(status)) {
             return "common/login";
         }
-        Page<Course> page = lecturerService.findListManagingCourse(lecturer, status, pageIndex, PAGE_SIZE);
-        List<Integer> pages = CommonUtils.pagingFormat(page.getTotalPages(), pageIndex);
-        model.addAttribute("pages", pages);
-        model.addAttribute("totalPage", page.getTotalPages());
+        Page<Course> page = lecturerService.findListManagingCourse(lecturer,search, status, pageIndex, PAGE_SIZE);
+        model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
         model.addAttribute("status", status);
-
+        model.addAttribute("currentPage", pageIndex);
+        model.addAttribute("search", search);
+        model.addAttribute("totalItems", page.getTotalElements());
         return "lecturer/course/lecturer_courses";
     }
 
