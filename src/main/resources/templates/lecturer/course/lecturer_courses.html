@@ -105,8 +105,8 @@
                             <div class="lec__view-saved-courses">
                                 <div class="lec__view-list-course-content">
                                     <div class="result-count">
-                                        <p class="number-count count-courses" th:if="${courses == null} OR ${courses.size()} ==0 ">Result: 0 course.</p>
-                                        <p class="number-count count-courses" th:if="${courses ne null} AND ${totalItems} > 0 ">Result: <span th:text="${totalItems}"></span> course(s).</p>
+                                        <p class="number-count count-courses" th:if="${courses == null} OR ${courses.size()} ==0 ">Total course: 0 course.</p>
+                                        <p class="number-count count-courses" th:if="${courses ne null} AND ${totalItems} > 0 ">Total courses: <span th:text="${totalItems}"></span> course(s).</p>
                                     </div>
                                     <div class="view-block-list" >
                                         <ul class="home__course-list" th:if="${courses ne null} AND ${courses.size()} > 0 ">

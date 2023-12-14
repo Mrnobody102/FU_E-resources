@@ -29,84 +29,66 @@
                     </div>
 
                     <div class="lec__courses-content main" id="main-lecturer">
-
-<!--                        <div class="header__search">-->
-<!--                            &lt;!&ndash;Label&ndash;&gt;-->
-<!--                            <div class="search-label">-->
-<!--                                <label th:for="search">Search documents</label>-->
-<!--                            </div>-->
-<!--                            &lt;!&ndash; Input  &ndash;&gt;-->
-<!--                            <div class="header__search-input-wrap">-->
-<!--                                <input type="text" class="header__search-input"-->
-<!--                                       placeholder="Enter course ..."-->
-<!--                                       name="search"-->
-<!--                                       th:id="search" th:value="${search}">-->
-<!--                                &lt;!&ndash; Header-search-history &ndash;&gt;-->
-<!--                                <div class="header__search-history">-->
-<!--                                    <h3 class="header__search-history-heading">-->
-<!--                                        Search history-->
-<!--                                    </h3>-->
-<!--                                    <ul class="header__search-history-list">-->
-
-<!--                                        <li class="header__search-history-item">-->
-<!--                                            <a href="">Software</a>-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            &lt;!&ndash; Select-find-scope &ndash;&gt;-->
-<!--                            <div class="header__search-select">-->
-<!--                                <span class="header__search-select-label">All results</span>-->
-<!--                                <i class="header__search-select-icon fas fa-angle-down"></i>-->
-<!--                                <ul class="header__search-option">-->
-<!--                                    <li class="header__search-option-item header__search-option-item&#45;&#45;active">-->
-<!--                                        <span class="">By Name</span>-->
-<!--                                        <i class="fas fa-check"></i>-->
-<!--                                    </li>-->
-<!--                                    <li class="header__search-option-item">-->
-<!--                                        <span class="">By Code</span>-->
-<!--                                        <i class="fas fa-check"></i>-->
-<!--                                    </li>-->
-<!--                                </ul>-->
-<!--                            </div>-->
-<!--                            <button class="header__search-btn">-->
-<!--                                <i class="header__search-btn-icon fas fa-search"></i>-->
-<!--                            </button>-->
-<!--                        </div>-->
+                        <form th:action="@{/lecturer/questions/list}" th:method="GET" id="getMyQuestion">
+                        <div class="header__search">
+                            <!--Label-->
+                            <div class="search-label">
+                                <label th:for="search">Search question</label>
+                            </div>
+                            <!-- Input  -->
+                            <input type="text" name="status" th:value="${status}" id="setStatus" hidden>
+                            <input type="text" name="pageIndex" th:value="${currentPage}" id="pageIndex" hidden>
+                            <div class="header__search-input-wrap">
+                                <input type="text" class="header__search-input"
+                                       placeholder="Enter question content ..."
+                                       name="search"
+                                       th:id="search-text" th:value="${search}">
+                            </div>
+                            <button class="header__search-btn" type="button" onclick="submitFormGetQuestion()">
+                                <i class="header__search-btn-icon fas fa-search"></i>
+                            </button>
+                        </div>
+                        </form>
                         <div class="lec__navbar-favourite">
                             <ul class="lec__navbar-list border-bottom">
-                                <li class="lec__navbar-item lec__navbar-active" onclick="viewAllQuestion(this)">
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status} == 'all' ? 'stu__navbar-active' : ''"
+                                    onclick="viewAllQuestion(this)">
                                     <a>
                                         All
                                     </a>
                                 </li>
-                                <li class="lec__navbar-item" onclick="viewQuestionWaiting(this)">
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status} == 'wait-reply' ? 'stu__navbar-active' : ''"
+                                    onclick="viewQuestionWaiting(this)">
                                     <a>
                                         Waiting for reply
                                     </a>
                                 </li>
-                                <li class="lec__navbar-item" onclick="viewQuestionReplied(this)">
+                                <li class="lec__navbar-item"
+                                    th:classappend="${status} == 'replied' ? 'stu__navbar-active' : ''"
+                                    onclick="viewQuestionReplied(this)">
                                     <a>
                                         Has been replied
                                     </a>
                                 </li>
                             </ul>
                         </div>
-                        <div class="lec__questions-list-view view-list" id="loading"  style="display:none;">
-                            <p th:id="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</p>
-                        </div>
-                        <div th:id="lec__view-waiting-for-reply-question" style="display: none" class="view-list lec__questions-list-view">
-                        </div>
-                        <div th:id="lec__view-replied-question" style="display: none" class="view-list lec__questions-list-view">
-                        </div>
+<!--                        <div class="lec__questions-list-view view-list" id="loading"  style="display:none;">-->
+<!--                            <p th:id="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</p>-->
+<!--                        </div>-->
+<!--                        <div th:id="lec__view-waiting-for-reply-question" style="display: none" class="view-list lec__questions-list-view">-->
+<!--                        </div>-->
+<!--                        <div th:id="lec__view-replied-question" style="display: none" class="view-list lec__questions-list-view">-->
+<!--                        </div>-->
                         <div class="lec__questions-list-view" th:id="lec__questions-list-view">
                             <div class="lec__view-my-questions">
-                                <div th:if="${param.search} AND ${studentQuestions == null} OR ${studentQuestions.size()} == 0"
-                                     class="list-content-not-found">
-                                     <p class="h3">No questions have been sent to you.</p>
+                                <div th:if="${param.search} AND ${studentQuestions == null} OR ${studentQuestions.size()} == 0">
+                                     <p class="number-count count-questions">Total question: 0 question</p>
                                 </div>
                                 <div class="lec__view-list-question"
                                      th:if="${studentQuestions ne null} AND ${studentQuestions.size()} > 0">
+                                    <p class="number-count count-questions">Total question: <span th:text="${totalItems}"></span> question(s).</p>
                                     <div class="view-question-list">
                                         <ul class="home__question-list">
                                             <li class="home__question-item">
@@ -116,7 +98,7 @@
                                                     <!--                              href=""></h2>-->
 
                                                     <span class="home__note-date"
-                                                          th:text="${studentQuestion.lastModifiedDate}"></span>
+                                                          th:text="${#temporals.format(studentQuestion.createdDate, 'dd-MM-yyyy HH:mm:ss')}"></span>
                                                     <br>
                                                     <a class="lec__question-title"
                                                        th:text="${studentQuestion.student.account.name}+' asked on '+${studentQuestion.documentId.title}"></a>
@@ -131,33 +113,39 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <!--                                    <nav th:if="${totalPage ne null} AND ${totalPage} >1" aria-label="Page navigation example">-->
-                                    <!--                                        <ul class="pagination home-courses__pagination-distance">-->
-                                    <!--                                            <li class="pagination-item"-->
-                                    <!--                                                th:classappend=" ${currentPage == 1} ? 'disabled' : ''">-->
-                                    <!--                                                <a class="pagination-item__link previous-page-stu-note-number" style="cursor: pointer">-->
-                                    <!--                                                    <i class="pagination-item__icon fas fa-angle-left"></i>-->
-                                    <!--                                                </a>-->
-                                    <!--                                            </li>-->
+                                    <nav th:if="${totalPages ne null} AND ${totalPages} >1" aria-label="Page navigation example">
+                                        <ul class="pagination home-courses__pagination-distance">
+                                            <li class="pagination-item"
+                                                th:classappend=" ${currentPage == 1} ? 'disabled' : ''">
+                                                <a th:page="${currentPage}-1" onclick="pagingInMyQuestion(this)"
+                                                   class="pagination-item__link" style="cursor: pointer">
+                                                    <i class="pagination-item__icon fas fa-angle-left"></i>
+                                                </a>
+                                            </li>
 
-                                    <!--                                            <li th:each="pageIndex: ${pages}" class="pagination-item"-->
-                                    <!--                                                th:classappend=" (${currentPage == pageIndex}) ? 'pagination-item&#45;&#45;active' : '' ">-->
-                                    <!--                                                <th:block th:if="${pageIndex == -1}">-->
-                                    <!--                                                    <span class="pagination-item__link">...</span>-->
-                                    <!--                                                </th:block>-->
-                                    <!--                                                <th:block th:if="${pageIndex != -1}">-->
-                                    <!--                                                    <a th:text="${pageIndex}" th:value="${pageIndex}"-->
-                                    <!--                                                       class="pagination-item__link page-stu-note-number" style="cursor: pointer"></a>-->
-                                    <!--                                                </th:block>-->
-                                    <!--                                            </li>-->
-                                    <!--                                            <li  class="pagination-item"-->
-                                    <!--                                                 th:classappend="${currentPage == totalPage} ? 'disabled' : ''">-->
-                                    <!--                                                <a class="pagination-item__link next-page-stu-note-number" style="cursor: pointer">-->
-                                    <!--                                                    <i class="pagination-item__icon fas fa-angle-right"></i>-->
-                                    <!--                                                </a>-->
-                                    <!--                                            </li>-->
-                                    <!--                                        </ul>-->
-                                    <!--                                    </nav>-->
+                                            <li th:each="pageIndex: ${#numbers.sequence(1, totalPages)}" class="pagination-item"
+                                                th:classappend=" (${currentPage == pageIndex}) ? 'pagination-item--active' : '' ">
+                                                <th:block th:if="${currentPage - pageIndex == 3 }">
+                                                    <span class="pagination-item__link">...</span>
+                                                </th:block>
+                                                <th:block th:if="${currentPage - pageIndex <= 2} AND ${currentPage - pageIndex >= -2}">
+                                                    <a th:page="${pageIndex}" onclick="pagingInMyQuestion(this)"
+                                                       th:text="${pageIndex}" th:value="${pageIndex}"
+                                                       class="pagination-item__link" style="cursor: pointer"></a>
+                                                </th:block>
+                                                <th:block th:if="${pageIndex - currentPage == 3 }">
+                                                    <span class="pagination-item__link">...</span>
+                                                </th:block>
+                                            </li>
+                                            <li  class="pagination-item"
+                                                 th:classappend="${currentPage == totalPages} ? 'disabled' : ''">
+                                                <a th:page="${currentPage}+1" onclick="pagingInMyQuestion(this)"
+                                                   class="pagination-item__link" style="cursor: pointer">
+                                                    <i class="pagination-item__icon fas fa-angle-right"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>

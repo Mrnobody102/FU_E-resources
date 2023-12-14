@@ -34,4 +34,5 @@ public interface QuestionService {
     boolean deleteQuestion(Question question);
 
     Page<Question> findByStudentAndSearch(Student student, String search, QuestionAnswerEnum.Status status, int pageIndex, Integer pageSize);
+    Page<Question> findByLecturerAndSearch(String lecturerEmail, String search, QuestionAnswerEnum.Status status, int pageIndex, Integer pageSize);
 }

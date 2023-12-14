@@ -7,6 +7,7 @@ import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.NotificationResponseDto;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
+import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
 import fpt.edu.eresourcessystem.service.s3.StorageService;
@@ -807,13 +808,29 @@ public class LecturerController {
     /*
         Question ans
     */
-    @GetMapping({"/questions/list/{status}/{pageIndex}"})
-    public String viewListOfQuestions(@PathVariable(required = false) Integer pageIndex, final Model model, @PathVariable String status) {
-        List<Question> questions = questionService.findByLecturerMail(getLoggedInLecturerMail());
-        model.addAttribute("studentQuestions", questions);
+    @GetMapping({"/questions/list"})
+    public String viewListOfQuestions(
+            @RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+            @RequestParam(required = false, defaultValue = "all") String status,
+            @RequestParam(required = false, defaultValue = "") String search,
+            final Model model) {
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        QuestionAnswerEnum.Status findStatus = null;
+        if("replied".equals(status)){
+            findStatus = QuestionAnswerEnum.Status.REPLIED;
+        } else if("wait-reply".equals(status)){
+            findStatus = QuestionAnswerEnum.Status.CREATED;
+        }
+//        List<Question> questions = questionService.findByLecturerMail(getLoggedInLecturerMail());
+        Page<Question> questions = (loggedInEmail != null) ? questionService.findByLecturerAndSearch(loggedInEmail, search, findStatus, pageIndex, PAGE_SIZE) : null;
         // add log
 //        addUserLog("/my_library/my_questions/history");
+        model.addAttribute("studentQuestions", questions.getContent());
         model.addAttribute("status", status);
+        model.addAttribute("currentPage", pageIndex);
+        model.addAttribute("search", search);
+        model.addAttribute("totalPages", questions.getTotalPages());
+        model.addAttribute("totalItems", questions.getTotalElements());
         return "lecturer/document/lecturer_questions";
     }
 

@@ -42,7 +42,7 @@
                     <span class="sidebar__link-floating">My documents</span>
                 </a>
 
-                <a th:href="@{/lecturer/questions/list/all/1}" class="sidebar__link"
+                <a th:href="@{/lecturer/questions/list}" class="sidebar__link"
                    th:classappend="${#strings.equals(activeLink, 'question-answer')} ? 'active-link' : ''">
                     <i class="fa-solid fa-question"></i>
                     <span class="sidebar__link-name">Question & Answer</span>
