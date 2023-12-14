@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Personal question&answer</title>
+    <title>All notifications</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -36,7 +36,7 @@
                         <div th:unless="${allNotificationNumber eq '0'}" class="d-flex justify-content-between mb-4">
                             <div class="d-flex">
                                 <input class="ms-3 me-3" type="checkbox" id="checkAll">
-                                <label style="padding-top: 6px" for="checkAll">Check all</label>
+                                <label style="padding-top: 6px" for="checkAll">Select all</label>
                             </div>
                             <div class="d-flex">
                                 <div class="btn btn--delete ps-3 pe-3 me-3"><div class="loading-animation"></div>Delete selected notifications</div>

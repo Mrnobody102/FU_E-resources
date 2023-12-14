@@ -81,4 +81,14 @@ public class Notification {
         this.notificationStatus = NotificationEnum.NotificationStatus.UNREAD;
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
+
+    public Notification(String fromAccount, String toAccount, String notificationContent, String linkToView){
+        this.fromAccount = fromAccount;
+        this.toAccount = toAccount;
+        this.notificationContent = notificationContent;
+        this.notificationStatus = NotificationEnum.NotificationStatus.UNREAD;
+        this.linkToView = linkToView;
+        this.notificationType = NotificationEnum.NotificationType.LECTURER_UPDATE_COURSE;
+        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+    }
 }

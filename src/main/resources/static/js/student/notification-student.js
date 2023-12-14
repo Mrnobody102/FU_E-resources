@@ -22,6 +22,14 @@ function onConnected() {
             notificationNumber.style.display = 'flex';
         }
     });
+    stompClient.subscribe('/user/notifications/course_change', function (result) {
+        numberChange = notificationCount;
+        notificationCount++;
+        if (notificationNumber) {
+            notificationNumber.innerText = notificationCount;
+            notificationNumber.style.display = 'flex';
+        }
+    });
 
     // stompClient.subscribe(`/user/public`, onMessageReceived);
 }

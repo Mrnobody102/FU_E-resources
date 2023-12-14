@@ -281,6 +281,20 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public void addStudentSaveToCourse(String courseId, String studentMail) {
+        Query query = new Query(Criteria.where("id").is(courseId));
+        Update update = new Update().push("students", studentMail);
+        mongoTemplate.updateFirst(query, update, Course.class);
+    }
+
+    @Override
+    public void removeStudentUnsaveFromCourse(String courseId, String studentMail) {
+        Query query = new Query(Criteria.where("id").is(courseId));
+        Update update = new Update().pull("students", studentMail);
+        mongoTemplate.updateFirst(query, update, Course.class);
+    }
+
+    @Override
     public List<Course> findByListId(List<String> courseIds) {
         Query query = new Query(Criteria.where("id").in(courseIds));
         List<Course> courses = mongoTemplate.find(query, Course.class);
@@ -381,7 +395,6 @@ public class CourseServiceImpl implements CourseService {
 
     public boolean removeLecture(String courseId) {
         Course course = courseRepository.findById(courseId).orElse(null);
-
         if (course == null) {
             return false;
         }

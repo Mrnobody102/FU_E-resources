@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -56,6 +57,7 @@ public class LecturerController {
     private final CourseLogService courseLogService;
     private final MultiFileService multiFileService;
     private final NotificationService notificationService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     private Lecturer getLoggedInLecturer() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -499,11 +501,12 @@ public class LecturerController {
                                      @RequestParam(value = "files", required = false) MultipartFile[] files) throws Exception {
         // set topic vào document
         Topic topic = topicService.findById(topicId);
+        Course course = topic.getCourse();
         documentDTO.setTopic(topic);
-        ResourceType resourceType = new ResourceType(respondResourceType, topic.getCourse());
+        ResourceType resourceType = new ResourceType(respondResourceType, course);
 
         // Thêm resource type
-        List<ResourceType> resourceTypesInCourse = topic.getCourse().getResourceTypes();
+        List<ResourceType> resourceTypesInCourse = course.getResourceTypes();
         boolean checkResourceTypeExist = true;
         ResourceType existedResourceType = null;
         for (ResourceType resourceTypeObject : resourceTypesInCourse) {
@@ -516,7 +519,7 @@ public class LecturerController {
         if (checkResourceTypeExist) {
             ResourceType addedResourceType = resourceTypeService.addResourceType(resourceType);
             documentDTO.setResourceType(addedResourceType);
-            courseService.addResourceTypeToCourse(topic.getCourse(), new ObjectId(addedResourceType.getId()));
+            courseService.addResourceTypeToCourse(course, new ObjectId(addedResourceType.getId()));
         } else {
             documentDTO.setResourceType(existedResourceType);
         }
@@ -597,7 +600,6 @@ public class LecturerController {
         topicService.addDocumentToTopic(topicId, new ObjectId(document.getId()));
 
         //add course log
-        Course course = topic.getCourse();
         addCourseLog(course.getId(),
                 course.getCourseCode(),
                 course.getCourseName(),
@@ -607,6 +609,19 @@ public class LecturerController {
                 document.getTitle(),
                 getLoggedInLecturer().getAccount().getEmail(),
                 null, null);
+
+        // Notify student that save this course
+        Notification notification;
+        for(String student: course.getStudents()){
+            notification = new Notification(
+                    getLoggedInLecturerMail(),
+                    student,
+                    getLoggedInLecturerMail() + " updated new document in " + course.getCourseName(),
+                    "/student/courses/" + course.getId()
+                    );
+            notificationService.addNotificationWhenUpdateDocument(notification);
+        }
+
 
         return "redirect:/lecturer/topics/" + topicId + "/documents/add?success";
     }

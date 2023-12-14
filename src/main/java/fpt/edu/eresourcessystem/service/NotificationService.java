@@ -21,6 +21,8 @@ public interface NotificationService {
 
     Notification addNotification(NotificationDto notificationDto);
 
+    Notification addNotificationWhenUpdateDocument(Notification notification);
+
     void markReadAll(String email);
 
     void deleteNotification(List<String> ids);

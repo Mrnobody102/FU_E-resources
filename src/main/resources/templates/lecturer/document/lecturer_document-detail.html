@@ -187,16 +187,22 @@
                                     <div class="supporting-file-label">Supporting files:</div>
                                     <div id="fileSupport">
                                         <div class="d-flex">
-                                            <div class="d-flex" th:each="supportingFile : ${document.multipleFiles}">
-                                                <div class="supporting-file-download"
-                                                     th:file-name="${supportingFile.cloudFileName}"
-                                                     onclick="downloadFile(this.getAttribute('file-name'))">
-                                                    <icon class="fa fa-download"></icon>
-                                                    <span th:text="${supportingFile.fileName}"></span>
-                                                    <icon class="fa fa-remove remove-file" style="display: none" onclick="removeFile(this.parentNode)"></icon>
+                                            <th:block th:if="${document.multipleFiles.size() > 0}">
+                                                <div class="d-flex" th:each="supportingFile : ${document.multipleFiles}">
+                                                    <div class="supporting-file-download"
+                                                         th:file-name="${supportingFile.cloudFileName}"
+                                                         onclick="downloadFile(this.getAttribute('file-name'))">
+                                                        <icon class="fa fa-download"></icon>
+                                                        <span th:text="${supportingFile.fileName}"></span>
+                                                        <icon class="fa fa-remove remove-file" style="display: none" onclick="removeFile(this.parentNode)"></icon>
+                                                    </div>
                                                 </div>
-
-                                            </div>
+                                            </th:block>
+                                            <th:block th:unless="${document.multipleFiles.size() > 0}">
+                                                <div id="noSupportingFile" class="p-3">
+                                                    No supporting files
+                                                </div>
+                                            </th:block>
                                         </div>
                                         <div id="addSupportFile" class="add-file" style="display: none">
                                             <icon class="fa fa-add pe-2"></icon>
@@ -205,8 +211,11 @@
                                         </div>
 
                                         <div class="ps-3 pb-4" id="saveUpdateFilesWrap" style="display: none">
-                                            <div id="saveUpdateFiles" class="btn btn-save ps-4 pe-4 pt-2 pb-2 mt-3" style="min-width: max-content" onclick="saveFiles()"><div class="loading-animation"></div>Save</div>
-                                            <div id="backUpdateFile" class="btn btn--back ps-4 pe-4 pt-2 pb-2 mt-3" onclick="backUpdateFiles()">Back</div>
+                                            <div id="saveUpdateFiles" class="btn btn-save ps-4 pe-4 pt-2 pb-2 mt-3" onclick="saveFiles()">
+                                                <span id="saveWithoutLoading">Save</span>
+                                                <span id="saveWithLoading" style="display: none;"> ◌ Saving...</span>
+                                            </div>
+                                            <div id="backUpdateFile" class="btn btn--back ps-4 pe-4 pt-2 pb-2 ms-3 mt-3" onclick="backUpdateFiles()">Back</div>
                                         </div>
                                     </div>
                                     <div id="updateSupportingFiles" class="btn btn--edit ps-3 pe-3 mt-3" onclick="updateFiles()">Update supporting files</div>

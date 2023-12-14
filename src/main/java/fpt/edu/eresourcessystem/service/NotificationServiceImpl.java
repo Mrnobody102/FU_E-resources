@@ -105,6 +105,13 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    public Notification addNotificationWhenUpdateDocument(Notification notification) {
+        Notification added = notificationRepository.insert(notification);
+        messagingTemplate.convertAndSendToUser(added.getToAccount(), "/notifications/course_change", new NotificationResponseDto(added));
+        return added;
+    }
+
+    @Override
     public void markReadAll(String email) {
         Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
                 .and("toAccount").is(email)

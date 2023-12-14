@@ -52,6 +52,10 @@ public interface CourseService {
 
     void addResourceTypeToCourse(Course course, ObjectId resourceTypeId);
 
+    void addStudentSaveToCourse(String courseId, String studentMail);
+
+    void removeStudentUnsaveFromCourse(String courseId, String studentMail);
+
     List<Course> findByListId(List<String> courseIds);
 
     Page<Course> findByCodeOrNameOrDescription(String code, String name, String description, int pageIndex, int pageSize);

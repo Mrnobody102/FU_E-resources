@@ -54,6 +54,11 @@ public class StudentRestController {
         return studentService.findByAccountId(loggedInAccount.getId());
     }
 
+    public String getLoggedInStudentMail() {
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return loggedInEmail;
+    }
+
     @PostMapping("/documents/{documentId}/save_document")
     @Transactional
     public ResponseEntity saveDocument(@PathVariable String documentId) {
@@ -175,6 +180,7 @@ public class StudentRestController {
         Student student = getLoggedInStudent();
         if (null != courseService.findByCourseId(courseId)) {
             boolean result = studentService.saveACourse(student.getId(), courseId);
+            courseService.addStudentSaveToCourse(courseId, getLoggedInStudentMail());
             if (result) {
                 // add log
                 addUserLog("/student/course/" + courseId + "/save_course");
@@ -195,6 +201,7 @@ public class StudentRestController {
         Student student = getLoggedInStudent();
         if (null != courseService.findByCourseId(courseId)) {
             boolean result = studentService.unsavedACourse(student.getId(), courseId);
+            courseService.removeStudentUnsaveFromCourse(courseId, getLoggedInStudentMail());
             if (result) {
                 // add log
                 addUserLog("/api/student/course/" + courseId + "/unsaved_course");

@@ -267,6 +267,10 @@ const saveUpdateFilesWrap = document.getElementById('saveUpdateFilesWrap');
 const saveUpdateFiles = document.getElementById('saveUpdateFiles');
 const backUpdateFile = document.getElementById('backUpdateFile');
 const newSupportFileInput = document.getElementById('newSupportFileInput');
+const noSupportingFile = document.getElementById('noSupportingFile');
+const saveWithLoading = document.getElementById('saveWithLoading');
+const saveWithoutLoading = document.getElementById('saveWithoutLoading');
+
 const removeFiles = document.getElementsByClassName('remove-file');
 const supportingFileDownload = document.getElementsByClassName('supporting-file-download');
 const loadingAnimation = document.querySelector('.loading-animation');
@@ -295,7 +299,12 @@ function handleFileSelection() {
 }
 
 function saveFiles() {
-    loadingAnimation.style.display = 'block';
+    if(listSupportingFiles.length == supportingFileElements.length && supportingFileElements == null){
+        return;
+    }
+
+    saveWithoutLoading.style.display = 'none';
+    saveWithLoading.style.display = 'inline';
 
     const formData = new FormData();
 
@@ -320,7 +329,6 @@ function saveFiles() {
         processData: false,
         contentType: false,
         success: function() {
-            loadingAnimation.style.display = 'none';
             window.location.reload();
         },
         error: function(error) {
@@ -333,10 +341,14 @@ function backUpdateFiles() {
     window.location.reload();
 }
 function updateFiles() {
+
     addSupportFile.style.display = 'block';
     updateSupportingFiles.style.display = 'none';
+    if(noSupportingFile != null){
+        noSupportingFile.style.display = 'none';
+    }
 
-    saveUpdateFilesWrap.style.display = 'block';
+    saveUpdateFilesWrap.style.display = 'inline-block';
     saveUpdateFiles.style.display = 'inline';
     backUpdateFile.style.display = 'inline';
 
