@@ -39,7 +39,7 @@ public class AnswerResponseDto {
         if(null != answer.getLecturer() && null !=answer.getLecturer().getAccount()) {
             this.lecturerName = answer.getLecturer().getAccount().getName();
         }
-        this.createdDate = answer.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        this.lastModifiedDate = answer.getLastModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.createdDate = answer.getCreatedDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        this.lastModifiedDate = answer.getLastModifiedDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
     }
 }

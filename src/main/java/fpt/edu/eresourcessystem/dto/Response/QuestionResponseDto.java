@@ -41,8 +41,8 @@ public class QuestionResponseDto {
             this.totalAnswers = 0;
         }
         this.lecturerEmail = question.getLecturer();
-        this.createdDate = question.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        this.lastModifiedDate = question.getLastModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.createdDate = question.getCreatedDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        this.lastModifiedDate = question.getLastModifiedDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
     }
 
     @Override

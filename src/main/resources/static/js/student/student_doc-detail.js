@@ -687,6 +687,7 @@ function loadMoreMyQuestion(skip, docId) {
     console.log(skip);
     console.log(docId)
     $("#load-more-my-question").addClass('disabled');
+    $("#loading-more-my-question").css("display", "inline");
     $.ajax({
             url: '/api/student/load_more_my_question?docId=' + docId + '&skip=' + skip,
             type: 'GET',
@@ -695,7 +696,7 @@ function loadMoreMyQuestion(skip, docId) {
                 $("#load-more-my-question").attr('current-count', skip + 10);
                 if (data.length < 10) {
                     $("#load-more-my-question").css('display', "none");
-                } else $("#load-more-my-question").removeClass('disabled');
+                }
                 var html = '';
                 $.each(data, function (index, question) {
                     if ($("#" + question.questionId).length > 0) {
@@ -795,6 +796,8 @@ function loadMoreMyQuestion(skip, docId) {
                             "                                            </div>";
                         $("#my-questions").append(html);
                     }
+                    $("#loading-more-my-question").css("display", "none");
+                    $("#load-more-my-question").removeClass('disabled');
                 })
 
             },
@@ -810,6 +813,7 @@ function loadMoreOtherQuestion(skip, docId) {
     console.log(skip);
     console.log(docId)
     $("#load-more-other-question").addClass('disabled');
+    $("#loading-more-other-question").css("display", "inline");
     $.ajax({
         url: '/api/student/load_more_other_question?docId=' + docId + '&skip=' + skip,
         type: 'GET',
@@ -818,7 +822,7 @@ function loadMoreOtherQuestion(skip, docId) {
             $("#load-more-other-question").attr('current-count', skip + 10);
             if (data.length < 10) {
                 $("#load-more-other-question").css('display', "none");
-            } else $("#load-more-other-question").removeClass('disabled');
+            }
             var html = '';
             $.each(data, function (index, question) {
                 var html = '';
@@ -846,7 +850,8 @@ function loadMoreOtherQuestion(skip, docId) {
                 html += "                                        </div>";
                 $("#other-question-content").append(html);
             })
-
+            $("#loading-more-other-question").css("display", "none");
+            $("#load-more-other-question").removeClass('disabled');
         },
         error: function (xhr, textStatus, errorThrown) {
         }
