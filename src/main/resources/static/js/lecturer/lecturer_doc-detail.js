@@ -260,3 +260,131 @@ $(document).ready(function () {
         $("#reply-content-" + replyId).css("display", "none");
     })
 })
+
+const addSupportFile = document.getElementById('addSupportFile');
+const updateSupportingFiles = document.getElementById('updateSupportingFiles');
+const saveUpdateFilesWrap = document.getElementById('saveUpdateFilesWrap');
+const saveUpdateFiles = document.getElementById('saveUpdateFiles');
+const backUpdateFile = document.getElementById('backUpdateFile');
+const newSupportFileInput = document.getElementById('newSupportFileInput');
+const removeFiles = document.getElementsByClassName('remove-file');
+const supportingFileDownload = document.getElementsByClassName('supporting-file-download');
+const loadingAnimation = document.querySelector('.loading-animation');
+
+const listSupportingFiles = [];
+
+const supportingFileElements = document.getElementsByClassName('supporting-file-download');
+for (let i = 0; i < supportingFileElements.length; i++) {
+    const fileName = supportingFileElements[i].getAttribute('file-name');
+    listSupportingFiles.push(fileName);
+}
+
+console.log(listSupportingFiles);
+
+newSupportFileInput.addEventListener('change', handleFileSelection);
+
+function handleFileSelection() {
+    const selectedFiles = newSupportFileInput.files;
+    const totalFiles = selectedFiles.length + listSupportingFiles.length;
+
+    if (totalFiles > 3) {
+        alert("Total number of files exceeds the limit of 3");
+        // Reset the file input by clearing the selected files
+        newSupportFileInput.value = null;
+    }
+}
+
+function saveFiles() {
+    loadingAnimation.style.display = 'block';
+
+    const formData = new FormData();
+
+    const documentId = document.getElementById('documentId').value;
+
+    // Thêm các tệp đã tải lên vào formData
+    const selectedFiles = newSupportFileInput.files;
+    for (let i = 0; i < selectedFiles.length; i++) {
+        formData.append('files', selectedFiles[i]);
+    }
+
+    // Thêm các phần tử trong listSupportingFiles vào formData
+    for (let i = 0; i < listSupportingFiles.length; i++) {
+        formData.append('supportingFiles', listSupportingFiles[i]);
+    }
+
+    // Gọi AJAX để gửi formData lên phía máy chủ
+    $.ajax({
+        url: '/lecturer/' + documentId + '/update_supporting_files',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function() {
+            loadingAnimation.style.display = 'none';
+            window.location.reload();
+        },
+        error: function(error) {
+            // Xử lý lỗi từ máy chủ
+            console.log(error);
+        }
+    });
+}
+function backUpdateFiles() {
+    window.location.reload();
+}
+function updateFiles() {
+    addSupportFile.style.display = 'block';
+    updateSupportingFiles.style.display = 'none';
+
+    saveUpdateFilesWrap.style.display = 'block';
+    saveUpdateFiles.style.display = 'inline';
+    backUpdateFile.style.display = 'inline';
+
+    for (let i = 0; i < removeFiles.length; i++) {
+        const removeFile = removeFiles[i];
+        removeFile.style.display = 'inline'; // Thiết lập thuộc tính "display" thành "block"
+    }
+    for (let i = 0; i < supportingFileDownload.length; i++) {
+        let supportingFile = supportingFileDownload[i];
+        console.log(supportingFileDownload[i]);
+        supportingFile.removeAttribute('onclick');
+        supportingFile.classList.add('supporting-file-when-updating');
+    }
+}
+function removeFile(element) {
+
+    const fileName = element.getAttribute('file-name');
+    const index = listSupportingFiles.indexOf(fileName);
+    if (index > -1) {
+        listSupportingFiles.splice(index, 1);
+    }
+
+    // Xóa phần tử khỏi DOM
+    element.remove();
+
+    console.log(listSupportingFiles);
+}
+
+function addFileInput() {
+    newSupportFileInput.style.display = 'block';
+}
+function downloadFile(fileName) {
+    $.ajax({
+        url: '/api/lecturer/download',
+        method: 'GET',
+        data: {fileName: fileName},
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function (data) {
+            var downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(data);
+            downloadLink.download = fileName;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+        },
+        error: function () {
+            console.log("Error when download file");
+        }
+    });
+}

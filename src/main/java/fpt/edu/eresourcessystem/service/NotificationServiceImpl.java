@@ -89,8 +89,11 @@ public class NotificationServiceImpl implements NotificationService {
         Notification added = notificationRepository.insert(new Notification(
                 notificationDto
         ));
-        if (notificationDto.getType().equals("1") || notificationDto.getType().equals("3")) {
+        if (notificationDto.getType().equals("1")) {
             messagingTemplate.convertAndSendToUser(added.getToAccount(), "/notifications/private", new NotificationResponseDto(added));
+        }
+        if (notificationDto.getType().equals("3")) {
+            messagingTemplate.convertAndSendToUser(added.getToAccount(), "/notifications/studentReply", new NotificationResponseDto(added));
         }
         if (notificationDto.getType().equals("2")) {
             messagingTemplate.convertAndSendToUser(added.getToAccount(), "/notifications/reply", new NotificationResponseDto(added));
@@ -107,7 +110,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .and("toAccount").is(email)
                 .and("notificationStatus").is(NotificationEnum.NotificationStatus.UNREAD));
         Update update = new Update().set("notificationStatus", NotificationEnum.NotificationStatus.READ);
-        mongoTemplate.updateFirst(query, update, Notification.class);
+        mongoTemplate.updateMulti(query, update, Notification.class);
     }
 
     @Override

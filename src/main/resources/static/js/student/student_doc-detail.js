@@ -2,9 +2,17 @@ let newEditor;
 // CK editor
 ClassicEditor
     .create(document.querySelector('#editor'), {
-        ckfinder: {
-            uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
-        },
+        toolbar: {
+            items: [
+                'undo', 'redo',
+                '|', 'highlight',
+                '|', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
+                '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                '|', 'link', 'uploadImage', 'blockQuote', 'codeBlock',
+                '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent'
+            ],
+            shouldNotGroupWhenFull: false
+        }
     })
     .then(editor => {
         newEditor = editor;
@@ -85,8 +93,12 @@ function viewSection(sectionId) {
     }
 }
 
-function sendMessage(qId, type) {
-    stompClient.send('/app/private', {}, JSON.stringify({questionId: qId, type: type}));
+function sendMessage(id, type) {
+    stompClient.send('/app/private', {}, JSON.stringify({questionId: id, type: type}));
+}
+
+function sendReply(id, type) {
+    stompClient.send('/app/studentReply', {}, JSON.stringify({answerId: id, type: type}));
 }
 
 function sendRealtimeQuestion(qId) {
@@ -282,7 +294,7 @@ function submitFormReplyQuestion(param) {
                 $('#exist-reply-form-button-' + param).css("display", "inline");
                 $('#sending-reply-' + param).css("display", "none");
                 $('#reply-form' + param).css("display", "none");
-                sendMessage(data.answerId, "3", data.answerContent);
+                sendReply(data.answerId, "3" , data.answerContent);
                 var html = "";
                 if (data.studentName == null) {
                     html = "<div class=\"reply-content border-bottom\">\n" +

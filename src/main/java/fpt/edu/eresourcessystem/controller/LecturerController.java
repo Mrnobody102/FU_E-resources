@@ -475,7 +475,6 @@ public class LecturerController {
                 .collect(Collectors.toList());
 
         model.addAttribute("resourceTypes", resourceTypes);
-//        System.out.println(DocumentEnum.DefaultTopicResourceTypes.values());
         return "lecturer/document/lecturer_add-document";
     }
 
@@ -486,7 +485,6 @@ public class LecturerController {
         model.addAttribute("resourceType", resourceType);
         List<Topic> topics = resourceType.getCourse().getTopics();
         model.addAttribute("topics", topics);
-//        System.out.println(DocumentEnum.DefaultTopicResourceTypes.values());
         return "lecturer/document/lecturer_add-document-to-resource-type";
     }
 
@@ -706,7 +704,7 @@ public class LecturerController {
                                         @RequestParam(value = "supportingFiles", required = false) String[] supportingFiles, @PathVariable String documentId) {
         Document document = documentService.findById(documentId);
         List<MultiFile> multiFiles = document.getMultipleFiles();
-        if (supportingFiles == null){
+        if (supportingFiles == null) {
             supportingFiles = new String[]{""};
         }
         int supportingFilesNumber = supportingFiles != null ? supportingFiles.length : 0;
@@ -714,7 +712,7 @@ public class LecturerController {
 
         int total = supportingFilesNumber + filesNumber;
 
-        if(total < 4) {
+        if (total < 4) {
             if (supportingFiles != null) {
                 List<MultiFile> existedMultiFiles = document.getMultipleFiles();
                 for (MultiFile existedMultiFile : existedMultiFiles) {
@@ -761,7 +759,7 @@ public class LecturerController {
             resourceTypeService.removeDocumentFromResourceType(document.getTopic().getId(), new ObjectId(documentId));
             documentService.softDelete(document);
 
-            //add course log
+            // Add course log
             Course course = document.getTopic().getCourse();
             addCourseLog(course.getId(),
                     course.getCourseCode(),
@@ -793,7 +791,6 @@ public class LecturerController {
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("documents", page.getContent());
         model.addAttribute("status", status);
-
         return "lecturer/document/lecturer_my-documents";
     }
 

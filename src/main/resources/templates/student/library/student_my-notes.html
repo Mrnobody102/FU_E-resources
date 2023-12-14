@@ -179,6 +179,7 @@
                                              th:each="documentNote : ${studentDocumentNotes}">
                                             <span class="stu__question-content stu__question-date"
                                                   th:text="${documentNote.lastModifiedDate}"></span>
+                                            <br>
                                             <a class="stu__question-title"
                                                th:text="'You noted on '+${documentNote.documentTitle}"></a>
 

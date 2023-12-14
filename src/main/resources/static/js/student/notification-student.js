@@ -93,7 +93,6 @@ $(document).ready(function () {
     } else {
         notificationNumber.style.display = 'flex';
     }
-    console.log("changE" + numberChange)
     connect();
     readyStudent();
 });

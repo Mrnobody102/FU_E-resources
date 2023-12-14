@@ -22,6 +22,14 @@ function onConnected() {
             notificationNumber.style.display = 'flex';
         }
     });
+    stompClient.subscribe('/user/notifications/studentReply', function (responseData) {
+        numberChange = notificationCount;
+        notificationCount++;
+        if (notificationNumber) {
+            notificationNumber.innerText = notificationCount;
+            notificationNumber.style.display = 'flex';
+        }
+    });
     stompClient.subscribe('/user/notifications/question', function (question) {
 
         question = JSON.parse(question.body); // Parse the data if it's a string

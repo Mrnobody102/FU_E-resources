@@ -1,6 +1,7 @@
 package fpt.edu.eresourcessystem.controller;
 
 import fpt.edu.eresourcessystem.dto.FeedbackDto;
+import fpt.edu.eresourcessystem.dto.Response.NotificationResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.dto.StudentNoteDto;
 import fpt.edu.eresourcessystem.dto.UserLogDto;
@@ -48,10 +49,10 @@ public class StudentController {
     private final AnswerService answerService;
     private final UserLogService userLogService;
     private final FeedbackService feedbackService;
+    private final NotificationService notificationService;
 
     private Student getLoggedInStudent() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println(loggedInEmail);
         if (null == loggedInEmail || "anonymousUser".equals(loggedInEmail)) {
             return null;
         }
@@ -59,6 +60,11 @@ public class StudentController {
         if (loggedInAccount != null) {
             return studentService.findByAccountId(loggedInAccount.getId());
         } else return null;
+    }
+
+    private String getLoggedInStudentMail() {
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return loggedInEmail;
     }
 
     /*
@@ -483,6 +489,14 @@ public class StudentController {
         } else {
             return "redirect:/login"; // Redirect to the login page if the user is not logged in
         }
+    }
+
+    @GetMapping({"/notifications"})
+    public String getNotifications(final Model model) {
+        String studentMail = getLoggedInStudentMail();
+        List<NotificationResponseDto> notificationResponseDtos = notificationService.findAllByToAccount(studentMail);
+        model.addAttribute("notifications", notificationResponseDtos);
+        return "student/student_notifications";
     }
 
 }

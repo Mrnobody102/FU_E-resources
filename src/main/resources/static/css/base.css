@@ -636,7 +636,7 @@ li {
     width: 100%;
 }
 textarea.form-control {
-    min-height: calc(15em + (.75rem + 2px));
+    min-height: calc(10em + (.75rem + 2px));
 }
 
 .border-color-primary {

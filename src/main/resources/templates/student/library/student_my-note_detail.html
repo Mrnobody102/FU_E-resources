@@ -42,8 +42,8 @@
                             <span> &gt; <a th:href="@{/student/my_library/my_notes/1}">My notes</a></span>
                             <span> &gt; Edit my note</span>
                         </div>
-                        <div>
-                            <form class="form-student-add-notes" method="post" role="form"
+                        <div class="ms-3">
+                            <form class="form-student-add-notes" method="post" role="form" style="width: 90%"
                                   th:action="@{'/student/my_note/student_notes/update'}"
                                   th:object="${studentNote}"
                                   th:id="add-form" enctype="multipart/form-data">
@@ -137,9 +137,17 @@
     // CK editor
     ClassicEditor
         .create(document.querySelector('#editor'), {
-            ckfinder: {
-                uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
-            },
+            toolbar: {
+                items: [
+                    'undo', 'redo',
+                    '|', 'highlight',
+                    '|', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
+                    '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                    '|', 'link', 'uploadImage', 'blockQuote', 'codeBlock',
+                    '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent'
+                ],
+                shouldNotGroupWhenFull: false
+            }
         })
         .then(editor => {
             newEditor = editor;
