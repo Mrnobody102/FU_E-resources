@@ -120,7 +120,7 @@ public class LecturerController {
         if (null == lecturer || "".equalsIgnoreCase(status)) {
             return "common/login";
         }
-        Page<Course> page = lecturerService.findListManagingCourse(lecturer,search, status, pageIndex, PAGE_SIZE);
+        Page<Course> page = lecturerService.findListManagingCourse(lecturer, search, status, pageIndex, PAGE_SIZE);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("courses", page.getContent());
         model.addAttribute("status", status);
@@ -427,7 +427,7 @@ public class LecturerController {
     }
 
     @GetMapping({"/documents/{documentId}"})
-    public String viewDocument(@PathVariable(required = false) String documentId,
+    public String viewDocument(@PathVariable String documentId,
                                @RequestParam(required = false) String questionId,
                                final Model model) throws IOException {
         Document document = documentService.findById(documentId);
@@ -436,21 +436,16 @@ public class LecturerController {
             return "exception/404";
         } else {
             // get list question
-            List<QuestionResponseDto> questions = questionService.findByDocumentLimitAndSkip(document, 5, 0);
+            List<QuestionResponseDto> questions = new ArrayList<>();
             if (null != questionId) {
                 QuestionResponseDto question = new QuestionResponseDto(questionService.findById(questionId));
                 if (question != null) {
-                    boolean check = false;
-                    for (int i = 0; i < questions.size(); i++) {
-                        if (questions.get(i).getQuestionId().equals(questionId)) {
-                            check = true;
-                            break;
-                        }
-                    }
-                    if (check) {
-                        questions.add(new QuestionResponseDto(questionService.findById(questionId)));
-                    }
+                    questions.add(new QuestionResponseDto(questionService.findById(questionId)));
+                } else {
+                    questions = questionService.findByDocumentLimitAndSkip(document, 5, 0);
                 }
+            } else {
+                questions = questionService.findByDocumentLimitAndSkip(document, 5, 0);
             }
 
             if (document.isDisplayWithFile() == true) {
@@ -617,13 +612,13 @@ public class LecturerController {
 
         // Notify student that save this course
         Notification notification;
-        for(String student: course.getStudents()){
+        for (String student : course.getStudents()) {
             notification = new Notification(
                     getLoggedInLecturerMail(),
                     student,
                     getLoggedInLecturerMail() + " updated new document in " + course.getCourseName(),
                     "/student/courses/" + course.getId()
-                    );
+            );
             notificationService.addNotificationWhenUpdateDocument(notification);
         }
 
@@ -724,10 +719,10 @@ public class LecturerController {
     @PostMapping("/{documentId}/update_supporting_files")
     @Transactional
     public String updateSupportingFiles(@RequestParam(value = "files", required = false) MultipartFile[] files,
-                              @RequestParam(value = "supportingFiles", required = false) String[] supportingFiles, @PathVariable String documentId) {
+                                        @RequestParam(value = "supportingFiles", required = false) String[] supportingFiles, @PathVariable String documentId) {
         Document document = documentService.findById(documentId);
         List<MultiFile> multiFiles = document.getMultipleFiles();
-        if (supportingFiles == null){
+        if (supportingFiles == null) {
             supportingFiles = new String[]{""};
         }
         int supportingFilesNumber = supportingFiles != null ? supportingFiles.length : 0;
@@ -735,7 +730,7 @@ public class LecturerController {
 
         int total = supportingFilesNumber + filesNumber;
 
-        if(total < 4) {
+        if (total < 4) {
             if (supportingFiles != null) {
                 List<MultiFile> existedMultiFiles = document.getMultipleFiles();
                 for (MultiFile existedMultiFile : existedMultiFiles) {
@@ -828,9 +823,9 @@ public class LecturerController {
             final Model model) {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         QuestionAnswerEnum.Status findStatus = null;
-        if("replied".equals(status)){
+        if ("replied".equals(status)) {
             findStatus = QuestionAnswerEnum.Status.REPLIED;
-        } else if("wait-reply".equals(status)){
+        } else if ("wait-reply".equals(status)) {
             findStatus = QuestionAnswerEnum.Status.CREATED;
         }
 //        List<Question> questions = questionService.findByLecturerMail(getLoggedInLecturerMail());
