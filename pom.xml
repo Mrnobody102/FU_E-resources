@@ -304,6 +304,12 @@
             <artifactId>google-cloud-speech</artifactId>
             <version>4.25.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>transcribe</artifactId>
+            <version>2.17.77</version> <!-- Phiên bản mới nhất của AWS SDK Transcribe -->
+        </dependency>
         <!--Mockito-->
         <dependency>
             <groupId>org.mockito</groupId>

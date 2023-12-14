@@ -12,4 +12,5 @@ import java.util.List;
 public interface NotificationRepository extends MongoRepository<Notification, String> {
     Notification findByIdAndDeleteFlg(String id,  CommonEnum.DeleteFlg flg);
     List<Notification> findByToAccountAndNotificationStatusAndDeleteFlg(String toAccount);
+    void deleteByIdIn(List<String> ids);
 }

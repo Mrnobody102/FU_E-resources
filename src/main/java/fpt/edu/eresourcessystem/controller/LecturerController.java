@@ -4,6 +4,7 @@ import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.FeedbackDto;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
+import fpt.edu.eresourcessystem.dto.Response.NotificationResponseDto;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -13,7 +14,6 @@ import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.tika.exception.TikaException;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -35,8 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
-import static fpt.edu.eresourcessystem.utils.CommonUtils.convertToPlainText;
-import static fpt.edu.eresourcessystem.utils.CommonUtils.extractTextFromFile;
+import static fpt.edu.eresourcessystem.utils.CommonUtils.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -55,6 +54,7 @@ public class LecturerController {
     private final StorageService storageService;
     private final CourseLogService courseLogService;
     private final MultiFileService multiFileService;
+    private final NotificationService notificationService;
 
     private Lecturer getLoggedInLecturer() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -121,22 +121,6 @@ public class LecturerController {
 
         return "lecturer/course/lecturer_courses";
     }
-
-//    @GetMapping({"/courses/{courseId}/update"})
-//    public String updateCourseProcess(@PathVariable(required = false) String courseId, final Model model) {
-//        if (null == courseId) {
-//            courseId = "";
-//        }
-//        Course course = courseService.findByCourseId(courseId);
-//        if (null == course) {
-//            return "redirect:lecturer/courses/update?error";
-//        } else {
-//            List<Account> lecturers = accountService.findAllLecturer();
-//            model.addAttribute("lecturers", lecturers);
-//            model.addAttribute("course", course);
-//            return "lecturer/course/lecturer_update-course";
-//        }
-//    }
 
     @PostMapping("/courses/{courseID}/changeStatus")
     @Transactional
@@ -513,7 +497,7 @@ public class LecturerController {
                                      @RequestParam(value = "topicId") String topicId,
                                      @RequestParam(value = "respondResourceType") String respondResourceType,
                                      @RequestParam(value = "file", required = false) MultipartFile file,
-                                     @RequestParam(value = "files", required = false) MultipartFile[] files) throws IOException, TikaException, SAXException {
+                                     @RequestParam(value = "files", required = false) MultipartFile[] files) throws Exception {
         // set topic vào document
         Topic topic = topicService.findById(topicId);
         documentDTO.setTopic(topic);
@@ -563,6 +547,7 @@ public class LecturerController {
                     id = "uploadToCloud";
                     try {
                         String link = storageService.uploadFile(file);
+
                         documentDTO.setCloudFileLink(link);
                         documentDTO.setFileName(filename);
                         documentDTO.setSuffix(fileExtension);
@@ -651,7 +636,7 @@ public class LecturerController {
                                         @RequestParam(value = "deleteCurrentFile", required = false) String deleteCurrentFile,
                                         @RequestParam(value = "file", required = false) MultipartFile file,
                                         @RequestParam(value = "files", required = false) MultipartFile[] files)
-            throws IOException, TikaException, SAXException {
+            throws Exception {
         Document checkExist = documentService.findById(document.getId());
         if (null == checkExist) {
             return "redirect:/lecturer/documents/" + document.getId() + "/update?error";
@@ -670,6 +655,7 @@ public class LecturerController {
                     String fileExtension = StringUtils.getFilenameExtension(filename);
                     DocumentEnum.DocumentFormat docType = DocumentEnum.DocumentFormat.getDocType(fileExtension);
                     checkExist.setFileName(file.getOriginalFilename());
+
                     if (docType != DocumentEnum.DocumentFormat.OTHER) {
                         checkExist.setContent(extractTextFromFile(file.getInputStream()));
                     } else {
@@ -720,10 +706,10 @@ public class LecturerController {
     @PostMapping("/{documentId}/update_supporting_files")
     @Transactional
     public String updateSupportingFiles(@RequestParam(value = "files", required = false) MultipartFile[] files,
-                                        @RequestParam(value = "supportingFiles", required = false) String[] supportingFiles, @PathVariable String documentId) {
+                              @RequestParam(value = "supportingFiles", required = false) String[] supportingFiles, @PathVariable String documentId) {
         Document document = documentService.findById(documentId);
         List<MultiFile> multiFiles = document.getMultipleFiles();
-        if (supportingFiles == null) {
+        if (supportingFiles == null){
             supportingFiles = new String[]{""};
         }
         int supportingFilesNumber = supportingFiles != null ? supportingFiles.length : 0;
@@ -731,7 +717,7 @@ public class LecturerController {
 
         int total = supportingFilesNumber + filesNumber;
 
-        if (total < 4) {
+        if(total < 4) {
             if (supportingFiles != null) {
                 List<MultiFile> existedMultiFiles = document.getMultipleFiles();
                 for (MultiFile existedMultiFile : existedMultiFiles) {
@@ -777,6 +763,7 @@ public class LecturerController {
             topicService.removeDocumentFromTopic(document.getTopic().getId(), new ObjectId(documentId));
             resourceTypeService.removeDocumentFromResourceType(document.getTopic().getId(), new ObjectId(documentId));
             documentService.softDelete(document);
+
             //add course log
             Course course = document.getTopic().getCourse();
             addCourseLog(course.getId(),
@@ -876,6 +863,14 @@ public class LecturerController {
             }
         }
         return "redirect:/student";
+    }
+
+    @GetMapping({"/notifications"})
+    public String getNotifications(final Model model) {
+        String lecturerMail = getLoggedInLecturerMail();
+        List<NotificationResponseDto> notificationResponseDtos = notificationService.findAllByToAccount(lecturerMail);
+        model.addAttribute("notifications", notificationResponseDtos);
+        return "lecturer/lecturer_notifications";
     }
 
 }

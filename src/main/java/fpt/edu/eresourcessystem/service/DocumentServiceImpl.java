@@ -231,6 +231,7 @@ public class DocumentServiceImpl implements DocumentService {
             // Soft delete
             document.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
             documentRepository.save(document);
+            esDocumentRepository.delete(new EsDocument(document));
             return true;
         }
         return false;

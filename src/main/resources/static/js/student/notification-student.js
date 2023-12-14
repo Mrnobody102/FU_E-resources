@@ -51,7 +51,13 @@ function getStudentNotifications(param) {
                         data.forEach(function (notification) {
                             var li = $('<li class="header__notify-item header__notify-item--seen"></li>');
                             var a = $('<a class="header__notify-link"></a>').attr('href', '/notifications/' + notification.id);
-                            var img = $('<img src="/images/notification_icon/answer.png" alt="" class="header__notify-img">');
+                            var img;
+                            if(notification.type === 'LECTURER_REPLY_ON_DOCUMENT') {
+                                img = $('<img src="/images/notification_icon/answer.png" alt="" class="header__notify-img">');
+                            }
+                            if(notification.type === 'LECTURER_UPDATE_COURSE') {
+                                img = $('<img src="/images/notification_icon/course.png" alt="" class="header__notify-img">');
+                            }
                             var info = $('<div class="header__notify-info"></div>');
                             var name = $('<span class="header__notify-name"></span>').text(notification.notificationContent);
                             var description = $('<span class="header__notify-description"></span>').text(notification.lastModifiedDate);

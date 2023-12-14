@@ -459,7 +459,7 @@ public class StudentController {
     public String processFeedbackForm(@ModelAttribute("feedback") @Valid FeedbackDto feedback,
                                       BindingResult result) {
         if (result.hasErrors()) {
-            return "student/feedback/student_feedback-add"; // Return to the form with validation errors
+            return "student/feedback/student_feedback-add?error"; // Return to the form with validation errors
         }
 
         // Get the logged-in user (you need to implement your user authentication mechanism)
@@ -476,7 +476,10 @@ public class StudentController {
             feedback.setStatus("Pending");
             Feedback feedback1 = feedbackService.saveFeedback(new Feedback(feedback));
 
-            return "redirect:/student/feedbacks/add"; // Redirect to a success page
+            if (loggedInUser.getRole().equals(AccountEnum.Role.LECTURER))
+                    return "redirect:/lecturer/feedbacks/add?success"; // Redirect to a success page
+            else
+                return "redirect:/student/feedbacks/add?success"; // Redirect to a success page
         } else {
             return "redirect:/login"; // Redirect to the login page if the user is not logged in
         }

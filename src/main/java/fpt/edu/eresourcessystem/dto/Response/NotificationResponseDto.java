@@ -13,14 +13,17 @@ import lombok.Setter;
 public class NotificationResponseDto {
     private String id;
     private String notificationContent;
-    private String questionContent;
+    private String type;
+    private String status;
     private String lastModifiedDate;
     private String link;
 
     public NotificationResponseDto(Notification notification) {
         this.id = notification.getId();
+        this.type = notification.getNotificationType().toString();
+        this.status = notification.getNotificationStatus().toString();
         this.notificationContent = notification.getNotificationContent();
         this.link = notification.getLinkToView();
-        this.lastModifiedDate = notification.getLastModifiedDate();
+        this.lastModifiedDate = notification.getCreatedDate();
     }
 }

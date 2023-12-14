@@ -291,6 +291,16 @@ li {
     color: white;
 }
 
+.btn--delete {
+    background-color: #d23535;
+    color: white;
+}
+
+.btn--delete:hover {
+    background-color: #b61c1c;
+    color: white;
+}
+
 /* Select  */
 
 .select {
@@ -730,4 +740,24 @@ textarea.form-control {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.loading-animation {
+    display: none;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: loading 1s infinite;
+}
+
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

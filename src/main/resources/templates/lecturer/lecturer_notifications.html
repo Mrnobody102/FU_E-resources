@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Lecturer | Student questions </title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fragment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/lecturer.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles/student.css}"/>
+
+</head>
+<body class="app_container">
+<!-- Header -->
+<div th:replace="~{fragments/header::headerLecturerSection}"></div>
+<div class="main_content">
+    <div class="container-content-wrapper">
+        <!--  Main-->
+        <div class="container-content">
+            <div class="main-content lec__course">
+                <div class="lec__course-content d-flex">
+                    <div class="lec__sidebar">
+                        <div th:replace="~{fragments/sidebar:: lecturerSidebar('notifications')}"></div>
+                    </div>
+                    <div class="lec__courses-content main" id="main-lecturer">
+                        <div class="d-flex justify-content-between mb-4">
+                            <div class="d-flex">
+                                <input class="ms-3 me-3" type="checkbox" id="checkAll">
+                                <label style="padding-top: 6px" for="checkAll">Check all</label>
+                            </div>
+                            <div class="d-flex">
+                                <div class="btn btn--delete ps-3 pe-3 me-3"><div class="loading-animation"></div>Delete selected notifications</div>
+                                <a href="/notifications/mark_read_all" class="btn btn--edit ps-3 pe-3">Mark all
+                                    notifications as read</a>
+                            </div>
+                        </div>
+
+                        <ul th:each="notification : ${notifications}">
+                            <li class="header__notify-item"
+                                th:classappend="${notification.status eq 'UNREAD'? 'header__notify-item--seen' : ''}">
+                                <input class="ms-3 me-3" type="checkbox" th:value="${notification.id}" th:name="'checkbox-' + ${notification.id}">
+                                <a th:href="'/notifications/' + ${notification.id}" class="header__notify-link">
+                                    <img src="/images/notification_icon/question.png" alt="" class="header__notify-img">
+                                    <div class="header__notify-info">
+                                        <span class="header__notify-name"
+                                              th:text="${notification.notificationContent}"></span>
+                                        <span class="header__notify-description"
+                                              th:text="${notification.lastModifiedDate}">
+                                        </span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
+<!--jquery-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!--Bootstrap script-->
+<script th:src="@{/assets/bootstrap-dist/js/bootstrap.bundle.min.js}"
+
+        crossorigin="anonymous"></script>
+<!--Custom script-->
+<script th:src="@{/js/lecturer/lecturer.js}"></script>
+<script>
+    const checkAllCheckbox = document.getElementById('checkAll');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    checkAllCheckbox.addEventListener('change', function () {
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = checkAllCheckbox.checked;
+        });
+    });
+
+    const deleteButton = document.querySelector('.btn--delete');
+    const loadingAnimation = deleteButton.querySelector('.loading-animation');
+
+    deleteButton.addEventListener('click', function () {
+        loadingAnimation.style.display = 'block';
+        const selectedNotifications = Array.from(checkboxes)
+            .filter(function (checkbox) {
+                return checkbox.checked;
+            })
+            .map(function (checkbox) {
+                return checkbox.value;
+            });
+
+        if (selectedNotifications.length > 0) {
+            $.ajax({
+                url: '/notifications/delete',
+                method: 'POST',
+                data: JSON.stringify(selectedNotifications),
+                contentType: 'application/json',
+                success: function (response) {
+                    loadingAnimation.style.display = 'none';
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>
+
+

@@ -53,6 +53,12 @@
                 <span>Other</span>
             </h3>
             <div class="sidebar__list">
+                <a th:href="@{/lecturer/notifications}" class="sidebar__link"
+                   th:classappend="${#strings.equals(activeLink, 'notifications')} ? 'active-link' : ''">
+                    <i title="Notifications" class="fa-solid fa-bell"></i>
+                    <span class="sidebar__link-name">All notifications</span>
+                    <span class="sidebar__link-floating">All notifications</span>
+                </a>
                 <a th:href="@{/lecturer/feedbacks/add}" class="sidebar__link"
                    th:classappend="${#strings.equals(activeLink, 'feedback')} ? 'active-link' : ''">
                     <i title="Feedback" class="fa-solid fa-comment"></i>
@@ -105,51 +111,60 @@
                     <span class="sidebar__link-floating">Courses</span>
                 </a>
             </div>
-            <h3 class="sidebar__title">
-                <span>Library</span>
-            </h3>
+            <div th:if="${loggedInUser.role.toString().equals('STUDENT')}">
+                <h3 class="sidebar__title">
+                    <span>Library</span>
+                </h3>
 
-            <div class="sidebar__list border-bottom">
-                <a th:href="@{/student/my_library}" class="sidebar__link"
-                th:classappend="${#strings.equals(activeLink, 'my-favourite')} ? 'active-link' : ''">
-                    <i class="fa-solid fa-book"></i>
-                    <span class="sidebar__link-name">My favourites</span>
-                    <span class="sidebar__link-floating">My favourites</span>
-                </a>
+                <div class="sidebar__list border-bottom">
+                    <a th:href="@{/student/my_library}" class="sidebar__link"
+                       th:classappend="${#strings.equals(activeLink, 'my-favourite')} ? 'active-link' : ''">
+                        <i class="fa-solid fa-book"></i>
+                        <span class="sidebar__link-name">My favourites</span>
+                        <span class="sidebar__link-floating">My favourites</span>
+                    </a>
 
-                <a th:href="@{/student/my_library/my_notes/1}" class="sidebar__link"
-                   th:classappend="${#strings.equals(activeLink, 'my-note')} ? 'active-link' : ''">
-                    <i class="fa-solid fa-file"></i>
-                    <span class="sidebar__link-name">My notes</span>
-                    <span class="sidebar__link-floating">My notes</span>
-                </a>
+                    <a th:href="@{/student/my_library/my_notes/1}" class="sidebar__link"
+                       th:classappend="${#strings.equals(activeLink, 'my-note')} ? 'active-link' : ''">
+                        <i class="fa-solid fa-file"></i>
+                        <span class="sidebar__link-name">My notes</span>
+                        <span class="sidebar__link-floating">My notes</span>
+                    </a>
 
-                <a th:href="@{/student/my_library/my_questions/history}" class="sidebar__link"
-                   th:classappend="${#strings.equals(activeLink, 'my-question')} ? 'active-link' : ''">
-                    <i class="fa-solid fa-question"></i>
-                    <span class="sidebar__link-name">My questions</span>
-                    <span class="sidebar__link-floating">My questions</span>
-                </a>
+                    <a th:href="@{/student/my_library/my_questions/history}" class="sidebar__link"
+                       th:classappend="${#strings.equals(activeLink, 'my-question')} ? 'active-link' : ''">
+                        <i class="fa-solid fa-question"></i>
+                        <span class="sidebar__link-name">My questions</span>
+                        <span class="sidebar__link-floating">My questions</span>
+                    </a>
 
-                <a href="#" class="sidebar__link d-none"
-                   th:classappend="${#strings.equals(activeLink, 'my-request')} ? 'active-link' : ''">
-                    <i class="fa-solid fa-paper-plane"></i>
-                    <span class="sidebar__link-name">My requests</span>
-                    <span class="sidebar__link-floating">My requests</span>
-                </a>
+                    <a href="#" class="sidebar__link d-none"
+                       th:classappend="${#strings.equals(activeLink, 'my-request')} ? 'active-link' : ''">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span class="sidebar__link-name">My requests</span>
+                        <span class="sidebar__link-floating">My requests</span>
+                    </a>
+                </div>
+                <h3 class="sidebar__title">
+                    <span>Other</span>
+                </h3>
+                <div class="sidebar__list">
+                    <a th:href="@{/student/notifications}" class="sidebar__link"
+                       th:classappend="${#strings.equals(activeLink, 'notifcations')} ? 'active-link' : ''">
+                        <i title="Feedback" class="fa-solid fa-bell"></i>
+                        <span class="sidebar__link-name">Notifications</span>
+                        <span class="sidebar__link-floating">Notifications</span>
+                    </a>
+                    <a th:href="@{/student/feedbacks/add}" class="sidebar__link"
+                       th:classappend="${#strings.equals(activeLink, 'send-feedback')} ? 'active-link' : ''">
+                        <i title="Feedback" class="fa-solid fa-comment"></i>
+                        <span class="sidebar__link-name">Feedback</span>
+                        <span class="sidebar__link-floating">Feedback</span>
+
+                    </a>
+                </div>
             </div>
-            <h3 class="sidebar__title">
-                <span>Other</span>
-            </h3>
-            <div class="sidebar__list">
-                <a th:href="@{/student/feedbacks/add}" class="sidebar__link"
-                   th:classappend="${#strings.equals(activeLink, 'send-feedback')} ? 'active-link' : ''">
-                    <i title="Feedback" class="fa-solid fa-comment"></i>
-                    <span class="sidebar__link-name">Feedback</span>
-                    <span class="sidebar__link-floating">Feedback</span>
 
-                </a>
-            </div>
         </div>
     </nav>
 </div>

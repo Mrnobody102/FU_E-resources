@@ -53,6 +53,10 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
 
     @Override
     public TrainingType updateTrainingType(TrainingType trainingType) {
+        if (trainingType == null) {
+            throw new IllegalArgumentException("TrainingType cannot be null");
+        }
+
         TrainingType existingTrainingType = trainingTypeRepository.findById(trainingType.getId())
                 .orElseThrow(() -> new RuntimeException("Training type not found"));
 
@@ -61,6 +65,7 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
 
         return trainingTypeRepository.save(existingTrainingType);
     }
+
 
     @Override
     public TrainingType addCourseToTrainingType(String trainingTypeId, Course course) {
@@ -87,24 +92,6 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
         return false;
     }
 
-    @Override
-    public List<TrainingType> findPaginated(int start, int length) {
-        Pageable pageable = PageRequest.of(start / length, length); // Calculate the page number based on start and length
-        Page<TrainingType> page = trainingTypeRepository.findAll(pageable);
-        return page.getContent();
-    }
 
-    @Override
-    public long getTotalTrainingTypesCount() {
-        return trainingTypeRepository.count();
-    }
-
-    @Override
-    public Page<TrainingType> findAllWithFilter(String search, Pageable pageable) {
-        if (search == null) {
-            search = "";
-        }
-        return trainingTypeRepository.findByTrainingTypeNameContainingIgnoreCase(search, pageable);
-    }
 
 }

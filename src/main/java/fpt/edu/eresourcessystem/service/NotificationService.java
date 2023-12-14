@@ -4,9 +4,6 @@ import fpt.edu.eresourcessystem.dto.NotificationDto;
 import fpt.edu.eresourcessystem.dto.Response.NotificationResponseDto;
 import fpt.edu.eresourcessystem.enums.NotificationEnum;
 import fpt.edu.eresourcessystem.model.Notification;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -20,6 +17,13 @@ public interface NotificationService {
 
     List<NotificationResponseDto> findAllByToAccount(String email);
 
+    List<NotificationResponseDto> findUnreadByToAccount(String email);
+
     Notification addNotification(NotificationDto notificationDto);
+
+    void markReadAll(String email);
+
+    void deleteNotification(List<String> ids);
+
     void updateNotificationStatus(NotificationEnum.NotificationStatus oldStatus, NotificationEnum.NotificationStatus newStatus);
 }

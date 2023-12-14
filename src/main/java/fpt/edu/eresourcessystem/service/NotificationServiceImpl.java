@@ -5,7 +5,6 @@ import fpt.edu.eresourcessystem.dto.Response.NotificationResponseDto;
 import fpt.edu.eresourcessystem.enums.CommonEnum;
 import fpt.edu.eresourcessystem.enums.NotificationEnum;
 import fpt.edu.eresourcessystem.model.Notification;
-import fpt.edu.eresourcessystem.model.Question;
 import fpt.edu.eresourcessystem.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -59,9 +58,23 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public List<NotificationResponseDto> findAllByToAccount(String email) {
         Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+                .and("toAccount").is(email))
+                .with(Sort.by(Sort.Order.desc("createdDate")));
+        List<Notification> notifications = mongoTemplate.find(query, Notification.class);
+        if (null != notifications) {
+            List<NotificationResponseDto> responseList = notifications.stream()
+                    .map(entity -> new NotificationResponseDto(entity))
+                    .collect(Collectors.toList());
+            return responseList;
+        } else return null;
+    }
+
+    @Override
+    public List<NotificationResponseDto> findUnreadByToAccount(String email) {
+        Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
                 .and("toAccount").is(email)
                 .and("notificationStatus").is(NotificationEnum.NotificationStatus.UNREAD))
-                .with(Sort.by(Sort.Order.desc("lastModifiedDate")));
+                .with(Sort.by(Sort.Order.desc("createdDate")));
         List<Notification> notifications = mongoTemplate.find(query, Notification.class);
         if (null != notifications) {
             List<NotificationResponseDto> responseList = notifications.stream()
@@ -86,6 +99,20 @@ public class NotificationServiceImpl implements NotificationService {
             messagingTemplate.convertAndSendToUser(added.getToAccount(), "/notifications/feedback", new NotificationResponseDto(added));
         }
         return added;
+    }
+
+    @Override
+    public void markReadAll(String email) {
+        Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+                .and("toAccount").is(email)
+                .and("notificationStatus").is(NotificationEnum.NotificationStatus.UNREAD));
+        Update update = new Update().set("notificationStatus", NotificationEnum.NotificationStatus.READ);
+        mongoTemplate.updateFirst(query, update, Notification.class);
+    }
+
+    @Override
+    public void deleteNotification(List<String> ids) {
+        notificationRepository.deleteByIdIn(ids);
     }
 
     @Override

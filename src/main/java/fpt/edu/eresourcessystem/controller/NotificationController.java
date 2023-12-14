@@ -10,12 +10,15 @@ import fpt.edu.eresourcessystem.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -101,6 +104,19 @@ public class NotificationController {
         notification.setNotificationStatus(NotificationEnum.NotificationStatus.READ);
         notificationService.updateNotification(notification);
         return "redirect:" + notification.getLinkToView();
+    }
+
+    @GetMapping("/notifications/mark_read_all")
+    public String markReadAll() {
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        notificationService.markReadAll(loggedInEmail);
+        return "redirect:/lecturer/notifications";
+    }
+
+    @PostMapping("/notifications/delete")
+    public String deleteNotifications(@RequestBody List<String> notificationIds) {
+        notificationService.deleteNotification(notificationIds);
+        return "redirect:/lecturer/notifications";
     }
 
 

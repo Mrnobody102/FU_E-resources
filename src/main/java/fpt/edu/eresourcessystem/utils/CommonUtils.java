@@ -1,27 +1,20 @@
 package fpt.edu.eresourcessystem.utils;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
-import org.apache.tika.io.TikaInputStream;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
-import org.apache.tika.parser.html.HtmlParser;
-import org.apache.tika.parser.microsoft.ooxml.OOXMLParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
-import org.apache.tika.parser.txt.TXTParser;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 public class CommonUtils {
@@ -65,4 +58,5 @@ public class CommonUtils {
 
         return sb.toString();
     }
+
 }
