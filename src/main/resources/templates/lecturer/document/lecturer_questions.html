@@ -124,7 +124,7 @@
                                                     <p class="lecturer-content-view-brief">
                                                         <span th:text="${studentQuestion.content}"></span>
                                                         <a class="link-view-detailed"
-                                                           th:href="@{'/lecturer/documents/' + ${studentQuestion.documentId.id} + '#' + ${studentQuestion.id}}">view <i
+                                                           th:href="@{'/lecturer/documents/' + ${studentQuestion.documentId.id} + '?questionId='+ ${studentQuestion.id} +'#' + ${studentQuestion.id}}">view <i
                                                                 class="fa-solid fa-arrow-right"></i></a>
                                                     </p>
                                                 </div>

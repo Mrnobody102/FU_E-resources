@@ -3,79 +3,100 @@ function viewOtherDocument(param) {
 }
 
 function viewAllQuestion() {
-    $(".stu__questions-list-view").css("display", "none");
-    $("#stu__view-question-history").css("display", "block");
+    $("#setStatus").val("all");
+    $("#pageIndex").val("1");
+    $("#getMyQuestion").submit();
 }
 
 function viewQuestionWaiting() {
-    $(".stu__questions-list-view").css("display", "none");
-    var divContent = $("#stu__view-waiting-for-reply-question").text().trim();
-    if (divContent.length == 0) {
-        $("#loading").css("display", "block");
-        $.ajax({
-            type: 'GET',
-            url: '/api/student/my_question/new_question',
-            dataType: 'json',
-            success: function (data) {
-                console.log(data.length)
-                var html = "";
-                for (let i = 0; i < data.length; i++) {
-                    html += "<div class=stu__question-content-wrapper>\n" +
-                        "                        <span class=\"stu__question-content stu__question-date\">" + data[i].lastModifiedDate + "</span><br>\n" +
-                        "                    <a class=\"stu__question-title\">You asked on" + data[i].documentTitle + "</a>\n" +
-                        "                    <p class=\"student-content-view-brief\"><span>" + data[i].questionContent + "</span>\n" +
-                        "                        <a class=\"link-view-detailed\"\n" +
-                        "                              href=\"/student/documents/" + data[i].documentId + "#" + data[i].questionId + "\">view <i\n" +
-                        "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
-                        "                    </div>";
+    $("#setStatus").val("wait-reply");
+    $("#pageIndex").val("1");
+    $("#getMyQuestion").submit();
+}
 
-                }
-                $("#stu__view-waiting-for-reply-question").html(html);
-                $("#loading").css("display", "none");
-                $("#stu__view-waiting-for-reply-question").css("display", "block");
-            },
-            error: function (xhr) {
-                // Handle errors
-            }
-        });
-    } else $("#stu__view-waiting-for-reply-question").css("display", "block");
+function viewNewReplyQuestion(){
+    $("#setStatus").val("new-reply");
+    $("#pageIndex").val("1");
+    $("#getMyQuestion").submit();
+}
+function pagingInMyQuestion(clickedElement){
+    var page = $(clickedElement).attr('page');
+    $("#pageIndex").val(page);
+    $("#getMyQuestion").submit();
 
 }
 
-function viewNewReplyQuestion() {
 
-    $(".stu__questions-list-view").css("display", "none");
-    var divContent = $("#stu__view-new-reply-question").text().trim();
-    if (divContent.length == 0) {
-        $("#loading").css("display", "block");
-        $.ajax({
-            type: 'GET',
-            url: '/api/student/my_question/new_replies',
-            dataType: 'json',
-            success: function (data) {
-                console.log(data.length)
-                var html = "";
-                for (let i = 0; i < data.length; i++) {
-                    html += "<div class=stu__question-content-wrapper>\n" +
-                        "                        <span class=\"stu__question-content stu__question-date\">" + data[i].lastModifiedDate + "</span><br>\n" +
-                        "                    <a class=\"stu__question-title\">New reply for your question at " + data[i].documentTitle + "</a>\n" +
-                        "                    <p class=\"student-content-view-brief\"><span>" + data[i].questionContent + "</span>\n" +
-                        "                        <a class=\"link-view-detailed\"\n" +
-                        "                              href=\"/student/documents/" + data[i].documentId + "#" + data[i].questionId + "\">view <i\n" +
-                        "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
-                        "                    </div>";
-                }
-                $("#stu__view-new-reply-question").html(html);
-                $("#loading").css("display", "none");
-                $("#stu__view-new-reply-question").css("display", "block");
-            },
-            error: function (xhr) {
-                // Handle errors
-            }
-        });
-    } else $("#stu__view-new-reply-question").css("display", "block");
+// function viewQuestionWaiting() {
+//     var search = $("#search-text").val();
+//     $(".stu__questions-list-view").css("display", "none");
+//     var divContent = $("#stu__view-waiting-for-reply-question").text().trim();
+//     if (divContent.length == 0) {
+//         $("#loading").css("display", "block");
+//         $.ajax({
+//             type: 'GET',
+//             url: '/api/student/my_question/new_question'+'?search='+search + '&status=wait-reply',
+//             dataType: 'json',
+//             success: function (data) {
+//                 console.log(data.length)
+//                 var html = "";
+//                 for (let i = 0; i < data.length; i++) {
+//                     html += "<div class=stu__question-content-wrapper>\n" +
+//                         "                        <span class=\"stu__question-content stu__question-date\">" + data[i].lastModifiedDate + "</span><br>\n" +
+//                         "                    <a class=\"stu__question-title\">You asked on" + data[i].documentTitle + "</a>\n" +
+//                         "                    <p class=\"student-content-view-brief\"><span>" + data[i].questionContent + "</span>\n" +
+//                         "                        <a class=\"link-view-detailed\"\n" +
+//                         "                              href=\"/student/documents/" + data[i].documentId + "#" + data[i].questionId + "\">view <i\n" +
+//                         "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
+//                         "                    </div>";
+//
+//                 }
+//                 $("#stu__view-waiting-for-reply-question").html(html);
+//                 $("#loading").css("display", "none");
+//                 $("#stu__view-waiting-for-reply-question").css("display", "block");
+//             },
+//             error: function (xhr) {
+//                 // Handle errors
+//             }
+//         });
+//     } else $("#stu__view-waiting-for-reply-question").css("display", "block");
+//
+// }
 
-}
+// function viewNewReplyQuestion() {
+//
+//     $(".stu__questions-list-view").css("display", "none");
+//     var divContent = $("#stu__view-new-reply-question").text().trim();
+//     if (divContent.length == 0) {
+//         $("#loading").css("display", "block");
+//         $.ajax({
+//             type: 'GET',
+//             url: '/api/student/my_question/new_replies',
+//             dataType: 'json',
+//             success: function (data) {
+//                 console.log(data.length)
+//                 var html = "";
+//                 for (let i = 0; i < data.length; i++) {
+//                     html += "<div class=stu__question-content-wrapper>\n" +
+//                         "                        <span class=\"stu__question-content stu__question-date\">" + data[i].lastModifiedDate + "</span><br>\n" +
+//                         "                    <a class=\"stu__question-title\">New reply for your question at " + data[i].documentTitle + "</a>\n" +
+//                         "                    <p class=\"student-content-view-brief\"><span>" + data[i].questionContent + "</span>\n" +
+//                         "                        <a class=\"link-view-detailed\"\n" +
+//                         "                              href=\"/student/documents/" + data[i].documentId + "#" + data[i].questionId + "\">view <i\n" +
+//                         "                            class=\"fa-solid fa-arrow-right\"></i></a></p>\n" +
+//                         "                    </div>";
+//                 }
+//                 $("#stu__view-new-reply-question").html(html);
+//                 $("#loading").css("display", "none");
+//                 $("#stu__view-new-reply-question").css("display", "block");
+//             },
+//             error: function (xhr) {
+//                 // Handle errors
+//             }
+//         });
+//     } else $("#stu__view-new-reply-question").css("display", "block");
+//
+// }
 
 function viewTopicDocument(param) {
     if ($("#list-doc-of-topic-" + param).css('display') !== 'none') {
@@ -237,6 +258,15 @@ $(document).ready(function () {
         const pageIndex = $(".pagination-item--active .page-stu-note-number").text();
         const currentPage = parseInt(pageIndex);
         window.location.href = "/student/my_library/my_notes/" + (currentPage + 1) + "?search=" + search + "&filter=" + filter;
+    });
+
+
+    // add click on <li> also -> click on <a>
+    $('.stu__navbar-favourite-item').on('click', function() {
+        var link = $(this).find('a');
+        if (link.length > 0) {
+            link[0].click();
+        }
     });
 
 

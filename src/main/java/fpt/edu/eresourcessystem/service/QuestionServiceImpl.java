@@ -6,6 +6,7 @@ import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.repository.QuestionRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -31,6 +32,44 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> findByDocId(Document document) {
         List<Question> questions = questionRepository.findByDocumentIdAndDeleteFlg(document, PRESERVED);
+        return questions;
+    }
+
+    @Override
+    public List<QuestionResponseDto> findByStudentLimitAndSkip(Student student, Document document, int limit, int skip) {
+        Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+                .and("student").is(student)
+                .and("documentId").is(document))
+                .skip(skip)
+                .limit(limit)
+                .with(Sort.by(Sort.Order.desc("createdDate")));
+        List<QuestionResponseDto> questions = mongoTemplate.find(query, Question.class).stream().map(
+                o -> new QuestionResponseDto(o)).toList();
+        return questions;
+    }
+
+    @Override
+    public List<QuestionResponseDto> findByDocumentLimitAndSkip(Document document, int limit, int skip) {
+        Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+                .and("documentId").is(document))
+                .skip(skip)
+                .limit(limit)
+                .with(Sort.by(Sort.Order.desc("createdDate")));
+        List<QuestionResponseDto> questions = mongoTemplate.find(query, Question.class).stream().map(
+                o -> new QuestionResponseDto(o)).toList();
+        return questions;
+    }
+
+    @Override
+    public List<QuestionResponseDto> findByOtherStudentLimitAndSkip(Student student, Document document, int limit, int skip) {
+        Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
+                .and("student").ne(student)
+                .and("documentId").is(document))
+                .skip(skip)
+                .limit(limit)
+                .with(Sort.by(Sort.Order.desc("createdDate")));
+        List<QuestionResponseDto> questions = mongoTemplate.find(query, Question.class).stream().map(
+                o -> new QuestionResponseDto(o)).toList();
         return questions;
     }
 
@@ -151,5 +190,25 @@ public class QuestionServiceImpl implements QuestionService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Page<Question> findByStudentAndSearch(Student student, String search, QuestionAnswerEnum.Status status, int pageIndex, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex-1, pageSize);
+        Criteria criteria = new Criteria();
+        criteria.and("student").is(student);
+        if (search != null && !search.isEmpty()) {
+            Criteria regexCriteria = Criteria.where("content").regex(search, "i");
+            criteria.andOperator(regexCriteria);
+        }
+        if (status != null) {
+            criteria.and("status").is(status);
+        }
+        Query query = new Query(criteria);
+        query.fields().include("id", "documentId", "createdDate", "content");
+        long total = mongoTemplate.count(query, Question.class);
+        System.out.println(total);
+        List<Question> courses = mongoTemplate.find(query.with(pageable), Question.class);
+        return new PageImpl<>(courses, pageable, total);
     }
 }

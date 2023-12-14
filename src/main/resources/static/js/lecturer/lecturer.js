@@ -73,6 +73,16 @@ function viewAllQuestion() {
 // Document scope
 $(document).ready(function() {
 
+    // add click on <li> also -> click on <a>
+    $('.lec__navbar-item').on('click', function() {
+        $(".lec__navbar-item").removeClass("lec__navbar-active");
+        $(this).addClass("lec__navbar-active");
+        var link = $(this).find('a');
+        if (link.length > 0) {
+            link[0].click();
+        }
+    });
+
     $(".page-course-number").click(function () {
 
         var search = $("#search-text").val();

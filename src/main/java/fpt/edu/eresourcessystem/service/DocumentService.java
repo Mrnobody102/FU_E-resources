@@ -53,4 +53,6 @@ public interface DocumentService {
 
 
     void removeMultiFile(String docId, ObjectId multiFileId);
+
+    Page<Document> findByListDocumentIdAndSearch(String search, List<String> documentIds, int pageIndex, int pageSize);
 }

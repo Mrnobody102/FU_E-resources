@@ -446,7 +446,7 @@ stu__navbar-view-doc-item:hover a{
     padding-bottom: 4px;
     font-weight: var(--font-medium);
 }
-.doc-info-rating{
+.doc-info-resource-type{
     margin-left: 0.7rem;
     margin-right: 0.7rem;
 }
@@ -566,4 +566,34 @@ stu__navbar-view-doc-item:hover a{
 .links-container {
     display: flex;
     align-items: center;
+}
+.number-count{
+    color: #888888;
+    font-size: var(--font-medium);
+    font-style: italic;
+}
+.count-questions{
+    margin-left: 2rem;
+}
+.stu__note-in-doc-textarea{
+    margin-left: 2rem;
+}
+.count-courses{
+    margin-top: 2rem;
+    margin-left: 2rem;
+}
+.view-list-document-saved{
+    margin-bottom: 2rem;
+}
+.load-more-question-button{
+    display: flex;
+    justify-content: center;
+}
+#load-more-my-question{
+    margin-top: 1.5rem;
+    padding: 1.8rem 2.3rem;
+}
+#load-more-other-question{
+    margin-top: 1.5rem;
+    padding: 1.8rem 2.3rem;
 }
