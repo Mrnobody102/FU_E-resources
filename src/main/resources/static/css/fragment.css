@@ -885,7 +885,8 @@
     border-radius: 5px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .16);
     margin-left: 0.5rem;
-    height: 24rem;
+    height: 18rem;
+    cursor: pointer;
 }
 .home__course-wrapper-inline:first-child{
     margin-left: 0rem;
@@ -909,8 +910,11 @@
     font-weight: bold;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 1;
     overflow: hidden;
+}
+.home__course-wrapper-inline:hover .home__course-name-inline{
+    color: var(--link-color);
 }
 .home__note-title{
     font-size: var(--medium-font-size);
