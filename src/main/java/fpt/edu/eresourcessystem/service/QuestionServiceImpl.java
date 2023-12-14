@@ -194,7 +194,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Page<Question> findByStudentAndSearch(Student student, String search, QuestionAnswerEnum.Status status, int pageIndex, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageIndex-1, pageSize);
+        Pageable pageable = PageRequest.of(pageIndex-1, pageSize, Sort.by(Sort.Direction.DESC, "createdDate"));
         Criteria criteria = new Criteria();
         criteria.and("student").is(student);
         if (search != null && !search.isEmpty()) {
@@ -208,7 +208,7 @@ public class QuestionServiceImpl implements QuestionService {
         query.fields().include("id", "documentId", "createdDate", "content");
         long total = mongoTemplate.count(query, Question.class);
         System.out.println(total);
-        List<Question> courses = mongoTemplate.find(query.with(pageable), Question.class);
-        return new PageImpl<>(courses, pageable, total);
+        List<Question> questions = mongoTemplate.find(query.with(pageable), Question.class);
+        return new PageImpl<>(questions, pageable, total);
     }
 }
