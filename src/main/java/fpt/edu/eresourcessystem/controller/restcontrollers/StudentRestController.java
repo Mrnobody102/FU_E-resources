@@ -12,8 +12,11 @@ import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.service.*;
+import fpt.edu.eresourcessystem.service.s3.StorageService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -41,6 +44,7 @@ public class StudentRestController {
     private final AccountService accountService;
     private final TopicService topicService;
     private final SimpMessagingTemplate messagingTemplate;
+    private final StorageService storageService;
     private final LecturerService lecturerService;
 
     private void addUserLog(String url) {
@@ -52,6 +56,11 @@ public class StudentRestController {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Account loggedInAccount = accountService.findByEmail(loggedInEmail);
         return studentService.findByAccountId(loggedInAccount.getId());
+    }
+
+    public String getLoggedInStudentMail() {
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return loggedInEmail;
     }
 
     @PostMapping("/documents/{documentId}/save_document")
@@ -175,6 +184,7 @@ public class StudentRestController {
         Student student = getLoggedInStudent();
         if (null != courseService.findByCourseId(courseId)) {
             boolean result = studentService.saveACourse(student.getId(), courseId);
+            courseService.addStudentSaveToCourse(courseId, getLoggedInStudentMail());
             if (result) {
                 // add log
                 addUserLog("/student/course/" + courseId + "/save_course");
@@ -195,6 +205,7 @@ public class StudentRestController {
         Student student = getLoggedInStudent();
         if (null != courseService.findByCourseId(courseId)) {
             boolean result = studentService.unsavedACourse(student.getId(), courseId);
+            courseService.removeStudentUnsaveFromCourse(courseId, getLoggedInStudentMail());
             if (result) {
                 // add log
                 addUserLog("/api/student/course/" + courseId + "/unsaved_course");
@@ -446,5 +457,14 @@ public class StudentRestController {
             return new ResponseEntity<>(questions, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/download")
+    public ResponseEntity<byte[]> downloadFile(@RequestParam("fileName") String fileName) {
+        byte[] content = storageService.downloadFile(fileName);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", fileName);
+        return new ResponseEntity<>(content, headers, HttpStatus.OK);
     }
 }

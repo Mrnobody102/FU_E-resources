@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Personal question&answer</title>
+    <title>All notifications</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -29,144 +29,41 @@
             <div class="main-content stu_course-saved">
                 <div class="stu_course-saved-content d-flex">
                     <div class="stu_sidebar">
-                        <div th:replace="~{fragments/sidebar:: studentSidebar('my-question')}"></div>
+                        <div th:replace="~{fragments/sidebar:: studentSidebar('notifications')}"></div>
                     </div>
 
                     <div class="stu_courses-content main" id="main">
-                        <div class="header__search">
-                            <!--Label-->
-                            <div class="search-label">
-                                <label th:for="search">Search questions, answers</label>
+                        <div th:unless="${allNotificationNumber eq '0'}" class="d-flex justify-content-between mb-4">
+                            <div class="d-flex">
+                                <input class="ms-3 me-3" type="checkbox" id="checkAll">
+                                <label style="padding-top: 6px" for="checkAll">Select all</label>
                             </div>
-                            <!-- Input  -->
-                            <div class="header__search-input-wrap">
-                                <input type="text" class="header__search-input"
-                                       placeholder="Enter course ..."
-                                       name="search"
-                                       th:id="search-text" th:value="${search}">
-                                <!-- Header-search-history -->
-                                <div class="header__search-history">
-                                    <h3 class="header__search-history-heading">
-                                        Search history
-                                    </h3>
-                                    <ul class="header__search-history-list">
-
-                                        <li class="header__search-history-item">
-                                            <a href="">Software</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                            <div class="d-flex">
+                                <div class="btn btn--delete ps-3 pe-3 me-3"><div class="loading-animation"></div>Delete selected notifications</div>
+                                <a href="/notifications/mark_read_all" class="btn btn--edit ps-3 pe-3">Mark all
+                                    notifications as read</a>
                             </div>
-                            <!-- Select-find-scope -->
-                            <!--                            <div class="header__search-select">-->
-                            <!--                                <span class="header__search-select-label">By date</span>-->
-                            <!--                                <i class="header__search-select-icon fas fa-angle-down"></i>-->
-                            <!--                                <ul class="header__search-option">-->
-                            <!--                                    <li class="header__search-option-item header__search-option-item&#45;&#45;active">-->
-                            <!--                                        <span class="">Unread</span>-->
-                            <!--                                        <i class="fas fa-check"></i>-->
-                            <!--                                    </li>-->
-                            <!--                                </ul>-->
-                            <!--                            </div>-->
-                            <button class="header__search-btn">
-                                <i class="header__search-btn-icon fas fa-search"></i>
-                            </button>
                         </div>
-                        <div class="stu__navbar-favourite">
-                            <ul class="stu__navbar-favourite-list border-bottom">
-                                <li class="stu__navbar-favourite-item stu__navbar-active"
-                                    onclick="viewAllQuestion(this)">
-                                    <a>
-                                        My questions & answers history
-                                    </a>
-                                </li>
-                                <li class="stu__navbar-favourite-item" onclick="viewQuestionWaiting(this)">
-                                    <a>
-                                        Waiting for reply
-                                    </a>
-                                </li>
-                                <!--                                <li class="stu__navbar-favourite-item ">-->
-                                <!--                                    <a>-->
-                                <!--                                        Has been replied-->
-                                <!--                                    </a>-->
-                                <!--                                </li>-->
-                                <li class="stu__navbar-favourite-item" onclick="viewNewReplyQuestion(this)">
-                                    <a>
-                                        New replies
-                                    </a>
-                                </li>
-                            </ul>
+                        <div th:if="${allNotificationNumber eq '0'}" class="text-center d-flex justify-content-between mb-4" style="font-size: 1.5rem">
+                                You have no notifications!
                         </div>
-                        <div class="view-question-list view-list" id="loading"  style="display:none;">
-                            <p th:id="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</p>
-                        </div>
-                        <div th:id="stu__view-waiting-for-reply-question" style="display: none" class="view-list stu__questions-list-view">
-                        </div>
-                        <div th:id="stu__view-new-reply-question" style="display: none" class="view-list stu__questions-list-view">
-                        </div>
-                        <div th:id="stu__view-question-history" class="stu__questions-list-view">
-                            <div class="stu__question-content">
-                                <div th:if="${param.search} AND ${studentQuestions == null} OR ${studentQuestions.size()} == 0"
-                                     class="list-content-not-found">
-                                    <p class="h3">You didn't ask any question.</p>
-                                </div>
-                                <div class="stu__view-list-question-content"
-                                     th:if="${studentQuestions ne null} AND ${studentQuestions.size()} > 0">
-                                    <div class="view-question-list">
-                                        <div class="stu__question-content-wrapper"
-                                             th:each="studentQuestion : ${studentQuestions}">
-                                            <span class="stu__question-content stu__question-date"
-                                                  th:text="${studentQuestion.lastModifiedDate}"></span><br>
-                                            <a class="stu__question-title"
-                                               th:text="'You asked on '+${studentQuestion.documentId.title}"></a>
-
-                                            <p class="student-content-view-brief"><span
-                                                    th:text="${studentQuestion.content}"></span>
-                                                <a class="link-view-detailed"
-                                                      th:href="@{'/student/documents/' + ${studentQuestion.documentId.id} + '#' + ${studentQuestion.id}}"><span>view </span> <i
-                                                        class="fa-solid fa-arrow-right"></i></a></p>
-
-                                            <!--                                                    <div class="home__note-item stu__list-answers"-->
-                                            <!--                                                         th:each="answer : ${studentQuestion.answers}">-->
-                                            <!--                                                        <a class="stu__question-title"-->
-                                            <!--                                                           th:text="${answer.student.account.name}"-->
-                                            <!--                                                           th:href="@{'/student/documents/' + ${answer.documentId.id}+ '#question'}">-->
-                                            <!--                                                        </a><span class="home__note-date" th:text="${answer.lastModifiedDate}"></span>-->
-                                            <!--                                                        <p class="home__note-description"-->
-                                            <!--                                                           th:text="${answer.answer}"></p>-->
-                                            <!--                                                    </div>-->
-                                        </div>
+                        <ul th:each="notification : ${notifications}">
+                            <li class="header__notify-item"
+                                th:classappend="${notification.status eq 'UNREAD'? 'header__notify-item--seen' : ''}">
+                                <input class="ms-3 me-3" type="checkbox" th:value="${notification.id}" th:name="'checkbox-' + ${notification.id}">
+                                <a th:href="'/notifications/' + ${notification.id}" class="header__notify-link">
+                                    <img th:if="${notification.type eq 'LECTURER_REPLY_ON_DOCUMENT'}" src="/images/notification_icon/question.png" alt="" class="header__notify-img">
+                                    <img th:if="${notification.type eq 'LECTURER_UPDATE_COURSE'}" src="/images/notification_icon/course.png" alt="" class="header__notify-img">
+                                    <div class="header__notify-info">
+                                        <span class="header__notify-name"
+                                              th:text="${notification.notificationContent}"></span>
+                                        <span class="header__notify-description"
+                                              th:text="${notification.lastModifiedDate}">
+                                        </span>
                                     </div>
-                                    <!--                                    <nav th:if="${totalPage ne null} AND ${totalPage} >1" aria-label="Page navigation example">-->
-                                    <!--                                        <ul class="pagination home-courses__pagination-distance">-->
-                                    <!--                                            <li class="pagination-item"-->
-                                    <!--                                                th:classappend=" ${currentPage == 1} ? 'disabled' : ''">-->
-                                    <!--                                                <a class="pagination-item__link previous-page-stu-note-number" style="cursor: pointer">-->
-                                    <!--                                                    <i class="pagination-item__icon fas fa-angle-left"></i>-->
-                                    <!--                                                </a>-->
-                                    <!--                                            </li>-->
-
-                                    <!--                                            <li th:each="pageIndex: ${pages}" class="pagination-item"-->
-                                    <!--                                                th:classappend=" (${currentPage == pageIndex}) ? 'pagination-item&#45;&#45;active' : '' ">-->
-                                    <!--                                                <th:block th:if="${pageIndex == -1}">-->
-                                    <!--                                                    <span class="pagination-item__link">...</span>-->
-                                    <!--                                                </th:block>-->
-                                    <!--                                                <th:block th:if="${pageIndex != -1}">-->
-                                    <!--                                                    <a th:text="${pageIndex}" th:value="${pageIndex}"-->
-                                    <!--                                                       class="pagination-item__link page-stu-note-number" style="cursor: pointer"></a>-->
-                                    <!--                                                </th:block>-->
-                                    <!--                                            </li>-->
-                                    <!--                                            <li  class="pagination-item"-->
-                                    <!--                                                 th:classappend="${currentPage == totalPage} ? 'disabled' : ''">-->
-                                    <!--                                                <a class="pagination-item__link next-page-stu-note-number" style="cursor: pointer">-->
-                                    <!--                                                    <i class="pagination-item__icon fas fa-angle-right"></i>-->
-                                    <!--                                                </a>-->
-                                    <!--                                            </li>-->
-                                    <!--                                        </ul>-->
-                                    <!--                                    </nav>-->
-                                </div>
-                            </div>
-                        </div>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -185,5 +82,45 @@
         crossorigin="anonymous"></script>
 <!--Custom script-->
 <script th:src="@{/js/student/student.js}"></script>
+<script>
+    const checkAllCheckbox = document.getElementById('checkAll');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    checkAllCheckbox.addEventListener('change', function () {
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = checkAllCheckbox.checked;
+        });
+    });
+
+    const deleteButton = document.querySelector('.btn--delete');
+    const loadingAnimation = deleteButton.querySelector('.loading-animation');
+
+    deleteButton.addEventListener('click', function () {
+        loadingAnimation.style.display = 'block';
+        const selectedNotifications = Array.from(checkboxes)
+            .filter(function (checkbox) {
+                return checkbox.checked;
+            })
+            .map(function (checkbox) {
+                return checkbox.value;
+            });
+
+        if (selectedNotifications.length > 0) {
+            $.ajax({
+                url: '/notifications/delete',
+                method: 'POST',
+                data: JSON.stringify(selectedNotifications),
+                contentType: 'application/json',
+                success: function (response) {
+                    loadingAnimation.style.display = 'none';
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>

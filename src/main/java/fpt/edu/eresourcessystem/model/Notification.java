@@ -56,16 +56,8 @@ public class Notification {
         this.fromAccount = notificationDto.getFrom();
         this.toAccount = notificationDto.getTo();
         this.notificationType = NotificationEnum.NotificationType.getType(notificationDto.getType());
-//        if (NotificationEnum.NotificationType.getType(notificationDto.getType())
-//                == NotificationEnum.NotificationType.ASSIGN_LECTURER_TO_COURSE
-//                || NotificationEnum.NotificationType.getType(notificationDto.getType())
-//                == NotificationEnum.NotificationType.REMOVE_LECTURER_FROM_COURSE) {
-//            this.course = notificationDto.getCourse();
-//            this.notificationContent = notificationDto.getFrom()
-//                    + NotificationEnum.NotificationType.getStringType(notificationDto.getType())
-//                    + notificationDto.getCourse().getCourseCode();
-//        }
         if (NotificationEnum.NotificationType.getType(notificationDto.getType()) == NotificationEnum.NotificationType.STUDENT_ASK_ON_DOCUMENT
+                || NotificationEnum.NotificationType.getType(notificationDto.getType()) == NotificationEnum.NotificationType.STUDENT_REPLY_ON_DOCUMENT
                 || NotificationEnum.NotificationType.getType(notificationDto.getType()) == NotificationEnum.NotificationType.LECTURER_REPLY_ON_DOCUMENT) {
             this.document = notificationDto.getDocument();
             // question
@@ -79,8 +71,24 @@ public class Notification {
             this.notificationContent = notificationDto.getFrom()
                     + NotificationEnum.NotificationType.getStringType(notificationDto.getType());
         }
+        if (NotificationEnum.NotificationType.getType(notificationDto.getType())
+                == NotificationEnum.NotificationType.LECTURER_UPDATE_COURSE) {
+            this.course = notificationDto.getCourse();
+            this.notificationContent = "Lecturer "
+                    + NotificationEnum.NotificationType.getStringType(notificationDto.getType()) + notificationDto.getCourse().getCourseCode();
+        }
         this.linkToView = notificationDto.getLink();
         this.notificationStatus = NotificationEnum.NotificationStatus.UNREAD;
+        this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
+    }
+
+    public Notification(String fromAccount, String toAccount, String notificationContent, String linkToView){
+        this.fromAccount = fromAccount;
+        this.toAccount = toAccount;
+        this.notificationContent = notificationContent;
+        this.notificationStatus = NotificationEnum.NotificationStatus.UNREAD;
+        this.linkToView = linkToView;
+        this.notificationType = NotificationEnum.NotificationType.LECTURER_UPDATE_COURSE;
         this.deleteFlg = CommonEnum.DeleteFlg.PRESERVED;
     }
 }

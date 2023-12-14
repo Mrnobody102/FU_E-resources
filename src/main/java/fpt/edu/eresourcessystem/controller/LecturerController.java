@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.controller;
 import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
 import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.FeedbackDto;
+import fpt.edu.eresourcessystem.dto.Response.NotificationResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.NotificationResponseDto;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -56,6 +58,7 @@ public class LecturerController {
     private final CourseLogService courseLogService;
     private final MultiFileService multiFileService;
     private final NotificationService notificationService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     private Lecturer getLoggedInLecturer() {
         String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -481,7 +484,6 @@ public class LecturerController {
                 .collect(Collectors.toList());
 
         model.addAttribute("resourceTypes", resourceTypes);
-//        System.out.println(DocumentEnum.DefaultTopicResourceTypes.values());
         return "lecturer/document/lecturer_add-document";
     }
 
@@ -492,7 +494,6 @@ public class LecturerController {
         model.addAttribute("resourceType", resourceType);
         List<Topic> topics = resourceType.getCourse().getTopics();
         model.addAttribute("topics", topics);
-//        System.out.println(DocumentEnum.DefaultTopicResourceTypes.values());
         return "lecturer/document/lecturer_add-document-to-resource-type";
     }
 
@@ -505,11 +506,12 @@ public class LecturerController {
                                      @RequestParam(value = "files", required = false) MultipartFile[] files) throws Exception {
         // set topic vào document
         Topic topic = topicService.findById(topicId);
+        Course course = topic.getCourse();
         documentDTO.setTopic(topic);
-        ResourceType resourceType = new ResourceType(respondResourceType, topic.getCourse());
+        ResourceType resourceType = new ResourceType(respondResourceType, course);
 
         // Thêm resource type
-        List<ResourceType> resourceTypesInCourse = topic.getCourse().getResourceTypes();
+        List<ResourceType> resourceTypesInCourse = course.getResourceTypes();
         boolean checkResourceTypeExist = true;
         ResourceType existedResourceType = null;
         for (ResourceType resourceTypeObject : resourceTypesInCourse) {
@@ -522,7 +524,7 @@ public class LecturerController {
         if (checkResourceTypeExist) {
             ResourceType addedResourceType = resourceTypeService.addResourceType(resourceType);
             documentDTO.setResourceType(addedResourceType);
-            courseService.addResourceTypeToCourse(topic.getCourse(), new ObjectId(addedResourceType.getId()));
+            courseService.addResourceTypeToCourse(course, new ObjectId(addedResourceType.getId()));
         } else {
             documentDTO.setResourceType(existedResourceType);
         }
@@ -603,7 +605,6 @@ public class LecturerController {
         topicService.addDocumentToTopic(topicId, new ObjectId(document.getId()));
 
         //add course log
-        Course course = topic.getCourse();
         addCourseLog(course.getId(),
                 course.getCourseCode(),
                 course.getCourseName(),
@@ -613,6 +614,19 @@ public class LecturerController {
                 document.getTitle(),
                 getLoggedInLecturer().getAccount().getEmail(),
                 null, null);
+
+        // Notify student that save this course
+        Notification notification;
+        for(String student: course.getStudents()){
+            notification = new Notification(
+                    getLoggedInLecturerMail(),
+                    student,
+                    getLoggedInLecturerMail() + " updated new document in " + course.getCourseName(),
+                    "/student/courses/" + course.getId()
+                    );
+            notificationService.addNotificationWhenUpdateDocument(notification);
+        }
+
 
         return "redirect:/lecturer/topics/" + topicId + "/documents/add?success";
     }
@@ -660,7 +674,6 @@ public class LecturerController {
                     String fileExtension = StringUtils.getFilenameExtension(filename);
                     DocumentEnum.DocumentFormat docType = DocumentEnum.DocumentFormat.getDocType(fileExtension);
                     checkExist.setFileName(file.getOriginalFilename());
-
                     if (docType != DocumentEnum.DocumentFormat.OTHER) {
                         checkExist.setContent(extractTextFromFile(file.getInputStream()));
                     } else {
@@ -769,7 +782,7 @@ public class LecturerController {
             resourceTypeService.removeDocumentFromResourceType(document.getTopic().getId(), new ObjectId(documentId));
             documentService.softDelete(document);
 
-            //add course log
+            // Add course log
             Course course = document.getTopic().getCourse();
             addCourseLog(course.getId(),
                     course.getCourseCode(),
@@ -801,7 +814,6 @@ public class LecturerController {
         model.addAttribute("totalPage", page.getTotalPages());
         model.addAttribute("documents", page.getContent());
         model.addAttribute("status", status);
-
         return "lecturer/document/lecturer_my-documents";
     }
 

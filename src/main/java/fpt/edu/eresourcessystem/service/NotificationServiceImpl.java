@@ -89,8 +89,11 @@ public class NotificationServiceImpl implements NotificationService {
         Notification added = notificationRepository.insert(new Notification(
                 notificationDto
         ));
-        if (notificationDto.getType().equals("1") || notificationDto.getType().equals("3")) {
+        if (notificationDto.getType().equals("1")) {
             messagingTemplate.convertAndSendToUser(added.getToAccount(), "/notifications/private", new NotificationResponseDto(added));
+        }
+        if (notificationDto.getType().equals("3")) {
+            messagingTemplate.convertAndSendToUser(added.getToAccount(), "/notifications/studentReply", new NotificationResponseDto(added));
         }
         if (notificationDto.getType().equals("2")) {
             messagingTemplate.convertAndSendToUser(added.getToAccount(), "/notifications/reply", new NotificationResponseDto(added));
@@ -102,12 +105,19 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    public Notification addNotificationWhenUpdateDocument(Notification notification) {
+        Notification added = notificationRepository.insert(notification);
+        messagingTemplate.convertAndSendToUser(added.getToAccount(), "/notifications/course_change", new NotificationResponseDto(added));
+        return added;
+    }
+
+    @Override
     public void markReadAll(String email) {
         Query query = new Query(Criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
                 .and("toAccount").is(email)
                 .and("notificationStatus").is(NotificationEnum.NotificationStatus.UNREAD));
         Update update = new Update().set("notificationStatus", NotificationEnum.NotificationStatus.READ);
-        mongoTemplate.updateFirst(query, update, Notification.class);
+        mongoTemplate.updateMulti(query, update, Notification.class);
     }
 
     @Override

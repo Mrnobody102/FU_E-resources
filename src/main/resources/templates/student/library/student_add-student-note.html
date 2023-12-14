@@ -42,8 +42,8 @@
                             <span> &gt; <a th:href="@{/student/my_library/my_notes/1}">My notes</a></span>
                             <span> &gt; Add new notes</span>
                         </div>
-                        <div>
-                            <form class="form-student-add-notes" method="post" role="form"
+                        <div class="ms-3">
+                            <form class="form-student-add-notes" method="post" role="form" style="width: 90%"
                                   th:action="@{/student/my_note/student_notes/add}"
                                   th:object="${studentNote}"
                                   th:id="add-new-mmy-note" enctype="multipart/form-data">
@@ -70,13 +70,6 @@
                                     <textarea id="editor"
                                               th:field="*{editorContent}" minlength="1"></textarea>
                                 </div>
-                                <!--                <div id="uploadFileInput" class="mt-2">-->
-                                <!--                  <div class="d-flex justify-content-between lecturer__input-doc">-->
-                                <!--                    <label th:for="file" class="lecturer_input-label-doc">File Upload:</label>-->
-                                <!--                  </div>-->
-                                <!--                  <input type="file" th:name="file" id="fileUploadInput"-->
-                                <!--                         class="file-input form-control student__input-note" style="font-size: 1.3rem">-->
-                                <!--                </div>-->
                                 <div class="stu__save-note">
                                     <button type="button" class="btn btn-save student_btn-save"
                                             onclick="submitFormCreateNote()">Add note
@@ -127,9 +120,17 @@
     // CK editor
     ClassicEditor
         .create(document.querySelector('#editor'), {
-            ckfinder: {
-                uploadUrl: '/ckfinder/connector/?command=QuickUpload&type=Files&responseType=json'
-            },
+            toolbar: {
+                items: [
+                    'undo', 'redo',
+                    '|', 'highlight',
+                    '|', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
+                    '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                    '|', 'link', 'blockQuote', 'codeBlock',
+                    '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent'
+                ],
+                shouldNotGroupWhenFull: false
+            }
         })
         .then(editor => {
             newEditor = editor;

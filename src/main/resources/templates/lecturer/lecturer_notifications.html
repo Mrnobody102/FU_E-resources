@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Lecturer | Student questions </title>
+    <title>Lecturer | All notifications </title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/assets/bootstrap-dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/assets/fontawesome-6.4.2/css/all.css}"/>
@@ -27,17 +27,20 @@
                     <div class="lec__sidebar">
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar('notifications')}"></div>
                     </div>
-                    <div class="lec__courses-content main" id="main-lecturer">
+                    <div th:unless="${allNotificationNumber eq '0'}"  class="lec__courses-content main" id="main-lecturer">
                         <div class="d-flex justify-content-between mb-4">
                             <div class="d-flex">
                                 <input class="ms-3 me-3" type="checkbox" id="checkAll">
-                                <label style="padding-top: 6px" for="checkAll">Check all</label>
+                                <label style="padding-top: 6px" for="checkAll">Select all</label>
                             </div>
                             <div class="d-flex">
                                 <div class="btn btn--delete ps-3 pe-3 me-3"><div class="loading-animation"></div>Delete selected notifications</div>
                                 <a href="/notifications/mark_read_all" class="btn btn--edit ps-3 pe-3">Mark all
                                     notifications as read</a>
                             </div>
+                        </div>
+                        <div th:if="${allNotificationNumber eq '0'}" class="text-center d-flex justify-content-between mb-4" style="font-size: 1.5rem">
+                            You have no notifications!
                         </div>
 
                         <ul th:each="notification : ${notifications}">

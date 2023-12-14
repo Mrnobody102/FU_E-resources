@@ -64,9 +64,7 @@
 <!--jquery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!--Notification-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script th:src="@{/js/librarian/notification-librarian.js}"></script>
+
 </body>
 
 <!--ADMIN HEADER-->
@@ -81,28 +79,28 @@
                     <img alt="" th:src="@{/images/fptUniversityLogo.png}">
                 </div>
             </a>
-            <ul class="header__navbar-list  grid__column-9">
+            <ul class="header__navbar-list grid__column-9">
                 <li class="header__navbar-item header__notify-appearance d-none"
                     th:notification-email="${loggedInUser.email}"
-                    onclick="getNotifications(this.getAttribute('notification-email'))">
+                    onclick="getAdminNotifications(this.getAttribute('notification-email'))">
                     <th:block th:unless="${notificationNumber == null}">
-                        <p class="notification-number" id="notification-number-admin" th:text="${notificationNumber}"></p>
+                        <p style="display: none" class="notification-number" id="notification-number-admin" th:text="${notificationNumber}"></p>
                     </th:block>
                     <a class="header__navbar-item-link">
                         <i class="header__navbar-icon fas fa-bell"></i>
+                        <!--                            Notifications-->
                     </a>
-
                     <!--Notifications Header-->
                     <div class="header__notify header__bridge" id="notificationBoxAdmin" style="z-index: 1111">
-                        <header class="header__notify-header">
-                            <h3>Received Notifications</h3>
-                        </header>
+                        <div class="header__notify-header">
+                            <h3 class="d-flex justify-content-between" style="margin-top:0; margin-right: 10px"><span>Received Notifications</span><span style="cursor: pointer"><i class="fa-solid fa-remove"></i></span></h3>
+                        </div>
                         <div th:unless="${notificationNumber == null}">
                             <ul class="header__notify-list">
 
                             </ul>
                             <footer class="header__notify-footer">
-                                <a href="" class="header__notify-footer-btn">See all</a>
+                                <a href="/lecturer/notifications" class="header__notify-footer-btn">See all</a>
                             </footer>
                         </div>
                         <div th:if="${notificationNumber == null}">
@@ -132,10 +130,6 @@
 </header>
 <!--jquery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!--Notification-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script th:src="@{/js/admin/notification-admin.js}"></script>
 </body>
 
 <!--LECTURER HEADER-->
@@ -170,9 +164,9 @@
                         </a>
                         <!--Notifications Header-->
                         <div class="header__notify header__bridge" id="notificationBoxLecturer" style="z-index: 1111">
-                            <header class="header__notify-header">
-                                <h3>Received Notifications</h3>
-                            </header>
+                            <div class="header__notify-header">
+                                <h3 class="d-flex justify-content-between" style="margin-top:0; margin-right: 10px"><span>Received Notifications</span><span style="cursor: pointer"><i class="fa-solid fa-remove"></i></span></h3>
+                            </div>
                             <div th:unless="${notificationNumber == null}">
                                 <ul class="header__notify-list">
 
@@ -277,15 +271,15 @@
                         </a>
                         <!--Notifications Header-->
                         <div class="header__notify header__bridge" id="notificationBoxStudent">
-                            <header class="header__notify-header">
-                                <h3>Received Notifications</h3>
-                            </header>
+                            <div class="header__notify-header">
+                                <h3 class="d-flex justify-content-between" style="margin-top:0; margin-right: 10px"><span>Received Notifications</span><span style="cursor: pointer"><i class="fa-solid fa-remove"></i></span></h3>
+                            </div>
                             <div th:unless="${notificationNumber == null}">
                                 <ul class="header__notify-list">
-
+                                    <div>...</div>
                                 </ul>
                                 <footer class="header__notify-footer">
-                                    <a href="" class="header__notify-footer-btn">See all</a>
+                                    <a href="/student/notifications" class="header__notify-footer-btn">See all</a>
                                 </footer>
                             </div>
                             <div th:if="${notificationNumber == null}">
