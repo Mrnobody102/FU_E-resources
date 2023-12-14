@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Data
@@ -40,8 +41,8 @@ public class QuestionResponseDto {
             this.totalAnswers = 0;
         }
         this.lecturerEmail = question.getLecturer();
-        this.createdDate = question.getCreatedDate();
-        this.lastModifiedDate = question.getLastModifiedDate();
+        this.createdDate = question.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.lastModifiedDate = question.getLastModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     @Override

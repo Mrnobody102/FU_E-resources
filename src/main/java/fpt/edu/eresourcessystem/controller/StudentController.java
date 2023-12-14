@@ -164,7 +164,6 @@ public class StudentController {
 
         List<QuestionResponseDto> myQuestionResponseDtos = new ArrayList<>();
         if(null != questionId){
-
             myQuestionResponseDtos.add(new QuestionResponseDto(questionService.findById(questionId)));
         }else {
             questionService.findByStudentLimitAndSkip(student,document,3, 0);

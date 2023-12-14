@@ -10,6 +10,7 @@ import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -47,11 +48,11 @@ public class Answer {
     @CreatedBy
     private String createdBy;
     @CreatedDate
-    private String createdDate;
+    private LocalDateTime createdDate;
     @LastModifiedBy
     private String lastModifiedBy;
     @LastModifiedDate
-    private String lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
     public Answer(AnswerDto answerDTO) {
         this.id = answerDTO.getId();
         this.answer = answerDTO.getAnswer();

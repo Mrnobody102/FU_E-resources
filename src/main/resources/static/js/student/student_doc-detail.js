@@ -722,16 +722,14 @@ function loadMoreMyQuestion(skip, docId) {
                             "                                                <div class=\"edit-question-div\" id=\"update-question" + question.questionId + "\" style=\"display: none\">\n" +
                             "                                                    <label id=\"update-question-error" + question.questionId + "\"\n" +
                             "                                                           class=\"display-none\">Please enter something to update.</label>\n" +
-                            "                                                    <input class=\"update-question\"\n" +
-                            "                                                           value=\"" + question.questionContent + "\"\n" +
-                            "                                                           id=\"update-question-content-" + question.questionId + "\">\n" +
+                            "                                                    <textarea class=\"update-question\" id=\"update-question-content-" + question.questionId + "\">"+ question.questionContent +"</textarea>\n" +
                             "                                                    <button id=\"close-update-question-" + question.questionId + "\"\n" +
                             "                                                            type=\"button\" title=\"exist\"\n" +
                             "                                                            question-id=\"" + question.questionId + "\" onclick=existFormEditQuestion(\"" + question.questionId + "\") class=\"exist-form-edit-question btn-danger\"><i\n" +
                             "                                                            class=\"fa-solid fa-xmark\"></i> Close\n" +
                             "                                                    </button>\n" +
                             "                                                    <a type=\"button\" class=\"display-none\" title=\"Sending\"\n" +
-                            "                                                       th:id=\"sending-update-question" + question.questionId + "\"><i class=\"fas fa-spinner fa-spin\"></i>\n" +
+                            "                                                       id=\"sending-update-question" + question.questionId + "\"><i class=\"fas fa-spinner fa-spin\"></i>\n" +
                             "                                                        Sending...</a> <button type=\"button\" title=\"Edit\"\n" +
                             "                                                            id=\"send-update-question-" + question.questionId + "\"\n" +
                             "                                                            question-id=\"" + question.questionId + "\" onclick=submitFormEditQuestion(\"" + question.questionId + "\")\n" +

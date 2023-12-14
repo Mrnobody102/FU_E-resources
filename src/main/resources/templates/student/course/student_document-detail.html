@@ -378,9 +378,9 @@
                                                     <label th:id="'update-question-error'+ ${myQuestion.questionId}"
                                                            class="display-none">Please enter something to
                                                         update.</label>
-                                                    <input class="update-question"
-                                                           th:value="${myQuestion.questionContent}"
-                                                           th:id="'update-question-content-'+ ${myQuestion.questionId}">
+                                                    <textarea class="update-question"
+                                                           th:text="${myQuestion.questionContent}"
+                                                              th:id="'update-question-content-'+ ${myQuestion.questionId}"></textarea>
                                                     <button th:id="'close-update-question-'+ ${myQuestion.questionId}"
                                                             type="button" title="exist"
                                                             th:question-id="${myQuestion.questionId}"
@@ -540,7 +540,7 @@
                                     </div>
 
                                     <div class="load-more-question-button">
-                                        <div>
+                                        <div th:if="${questions ne null} AND ${questions.size()} > 0">
                                             <button class="btn btn--primary" id="load-more-other-question"
                                                     th:current-count="${questions.size()}"
                                                     th:docId="${document.id}"
