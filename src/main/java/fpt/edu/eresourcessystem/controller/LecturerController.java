@@ -5,6 +5,7 @@ import fpt.edu.eresourcessystem.dto.DocumentDto;
 import fpt.edu.eresourcessystem.dto.FeedbackDto;
 import fpt.edu.eresourcessystem.dto.Response.NotificationResponseDto;
 import fpt.edu.eresourcessystem.dto.Response.QuestionResponseDto;
+import fpt.edu.eresourcessystem.dto.Response.NotificationResponseDto;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -25,6 +26,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -567,6 +569,7 @@ public class LecturerController {
                 // Handle each uploaded file
                 if (!supportFile.isEmpty()) {
                     try {
+
                         // Get the original file name
                         String originalFileName = supportFile.getOriginalFilename();
                         // Generate a unique file name
@@ -701,10 +704,10 @@ public class LecturerController {
     @PostMapping("/{documentId}/update_supporting_files")
     @Transactional
     public String updateSupportingFiles(@RequestParam(value = "files", required = false) MultipartFile[] files,
-                                        @RequestParam(value = "supportingFiles", required = false) String[] supportingFiles, @PathVariable String documentId) {
+                              @RequestParam(value = "supportingFiles", required = false) String[] supportingFiles, @PathVariable String documentId) {
         Document document = documentService.findById(documentId);
         List<MultiFile> multiFiles = document.getMultipleFiles();
-        if (supportingFiles == null) {
+        if (supportingFiles == null){
             supportingFiles = new String[]{""};
         }
         int supportingFilesNumber = supportingFiles != null ? supportingFiles.length : 0;
@@ -712,7 +715,7 @@ public class LecturerController {
 
         int total = supportingFilesNumber + filesNumber;
 
-        if (total < 4) {
+        if(total < 4) {
             if (supportingFiles != null) {
                 List<MultiFile> existedMultiFiles = document.getMultipleFiles();
                 for (MultiFile existedMultiFile : existedMultiFiles) {
