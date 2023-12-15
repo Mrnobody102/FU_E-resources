@@ -77,7 +77,7 @@
                                 </div>
 
 
-                                <div class="stu_save-course-link stu_save-doc-link">
+                                <div th:if="${loggedInUser.role.toString().equals('STUDENT')}" class="stu_save-course-link stu_save-doc-link">
                                     <p><a class="unsaved-doc" th:if="${saved ne null} AND ${saved} == true"
                                           th:attr="docId=${document.getId}">
                                         <i class="fa-solid fa-bookmark"></i>
@@ -226,7 +226,7 @@
                                 </div>
 
 
-                                <div class="stu__navbar-view-doc">
+                                <div class="stu__navbar-view-doc" th:if="${loggedInUser.role.toString().equals('STUDENT')}">
                                     <ul class="stu__navbar-view-doc-list border-bottom">
                                         <li class="stu__navbar-view-doc-item" id="link-view-question">
                                             <a href="#question" onclick="viewSection('question')">
@@ -241,7 +241,7 @@
                                     </ul>
                                 </div>
                                 <!--Note section-->
-                                <div th:href="@{'/student/documents/'+${document.id}+'#note'}" id="note"
+                                <div th:if="${loggedInUser.role.toString().equals('STUDENT')}" th:href="@{'/student/documents/'+${document.id}+'#note'}" id="note"
                                      class="section-view">
                                     <div class="stu__note-in-doc-view">
                                         <!--                                        <div class="stu__note-in-doc-content" th:if="${note ne null}">-->

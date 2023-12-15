@@ -37,7 +37,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static fpt.edu.eresourcessystem.constants.Constants.PAGE_SIZE;
+import static fpt.edu.eresourcessystem.constants.Constants.*;
 import static fpt.edu.eresourcessystem.utils.CommonUtils.*;
 
 @Controller
@@ -198,6 +198,10 @@ public class LecturerController {
         topic = topicService.addTopic(topic);
         courseService.addTopic(topic);
         Course course = courseService.findByCourseId(topic.getCourse().getId());
+        if (course.getStatus() == CourseEnum.Status.NEW){
+            course.setStatus(CourseEnum.Status.DRAFT);
+            courseService.updateCourse(course);
+        }
         List<Topic> topics = course.getTopics();
         Topic modelTopic = new Topic();
         modelTopic.setCourse(course);
@@ -531,25 +535,20 @@ public class LecturerController {
             // Xử lý file
             // thêm check file trước khi add
             String message = "";
-            if (file != null && !file.isEmpty() && file.getSize() < 104857600) {
+            if (file != null && !file.isEmpty() && file.getSize() < MAX_SIZE_FILE) {
 
                 String filename = file.getOriginalFilename();
                 String fileExtension = StringUtils.getFilenameExtension(filename);
                 DocumentEnum.DocumentFormat docType = DocumentEnum.DocumentFormat.getDocType(fileExtension);
 
-                if (docType != DocumentEnum.DocumentFormat.OTHER) {
-                    documentDTO.setContent(extractTextFromFile(file.getInputStream()));
-                } else {
-                    documentDTO.setContent(null);
-                }
-                if (file.getSize() < 1048576 && docType != DocumentEnum.DocumentFormat.MS_DOC
-                        && docType != DocumentEnum.DocumentFormat.OTHER && docType != DocumentEnum.DocumentFormat.AUDIO) {
+                documentDTO.setContent(extractTextFromFile(file.getInputStream()));
+                if (file.getSize() < DATABASE_MAX_SIZE_FILE && docType != DocumentEnum.DocumentFormat.MS_DOC
+                        && docType != DocumentEnum.DocumentFormat.AUDIO) {
                     id = documentService.addFile(file);
                 } else {
                     id = "uploadToCloud";
                     try {
                         String link = storageService.uploadFile(file);
-
                         documentDTO.setCloudFileLink(link);
                         documentDTO.setFileName(filename);
                         documentDTO.setSuffix(fileExtension);
@@ -568,23 +567,29 @@ public class LecturerController {
         List<MultiFile> multiFiles = new ArrayList<>();
         // Check if files were uploaded
         if (files != null && files.length > 0 && files.length < 4) {
+            String link;
+            MultiFile multiFile;
             for (MultipartFile supportFile : files) {
                 // Handle each uploaded file
-                if (!supportFile.isEmpty()) {
+                if (!supportFile.isEmpty() && supportFile.getSize() < MAX_SIZE_SUPPORTING_FILE) {
                     try {
-
                         // Get the original file name
                         String originalFileName = supportFile.getOriginalFilename();
+                        String fileExtension = StringUtils.getFilenameExtension(originalFileName);
                         // Generate a unique file name
-                        String uniqueFileName = System.currentTimeMillis() + "_" + FilenameUtils.getBaseName(originalFileName) + "." + FilenameUtils.getExtension(originalFileName);
-                        // Process the uploaded file as needed
-                        String link = storageService.uploadFileWithName(supportFile, uniqueFileName);
-                        MultiFile multiFile = new MultiFile(originalFileName, uniqueFileName, link);
-                        MultiFile addedFile = multiFileService.addMultiFile(multiFile);
-                        multiFiles.add(addedFile);
+                        if (DocumentEnum.DocumentSupportFilesFormat.getDocType(fileExtension) == DocumentEnum.DocumentSupportFilesFormat.ACCEPT) {
+                            String uniqueFileName = System.currentTimeMillis() + "_" + FilenameUtils.getBaseName(originalFileName) + "." + FilenameUtils.getExtension(originalFileName);
+                            // Process the uploaded file as needed
+                            link = storageService.uploadFileWithName(supportFile, uniqueFileName);
+                            multiFile = new MultiFile(originalFileName, uniqueFileName, link);
+                            multiFiles.add(multiFileService.addMultiFile(multiFile));
+                        } else {
+                            return "exception/404";
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         // Handle any exceptions that occur during file upload
+                        return "exception/404";
                     }
                 }
             }
@@ -621,8 +626,6 @@ public class LecturerController {
             );
             notificationService.addNotificationWhenUpdateDocument(notification);
         }
-
-
         return "redirect:/lecturer/topics/" + topicId + "/documents/add?success";
     }
 
@@ -664,18 +667,14 @@ public class LecturerController {
                 checkExist.setContent(convertToPlainText(document.getEditorContent()));
                 documentService.updateDocument(checkExist, null, id);
             } else {
-                if (file != null && !file.isEmpty() && file.getSize() < 104857600) {
+                if (file != null && !file.isEmpty() && file.getSize() < MAX_SIZE_FILE) {
                     String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
                     String fileExtension = StringUtils.getFilenameExtension(filename);
                     DocumentEnum.DocumentFormat docType = DocumentEnum.DocumentFormat.getDocType(fileExtension);
                     checkExist.setFileName(file.getOriginalFilename());
-                    if (docType != DocumentEnum.DocumentFormat.OTHER) {
-                        checkExist.setContent(extractTextFromFile(file.getInputStream()));
-                    } else {
-                        checkExist.setContent(null);
-                    }
-                    if (file.getSize() < 1048576 && docType != DocumentEnum.DocumentFormat.MS_DOC
-                            && docType != DocumentEnum.DocumentFormat.OTHER && docType != DocumentEnum.DocumentFormat.AUDIO) {
+                    checkExist.setContent(extractTextFromFile(file.getInputStream()));
+                    if (file.getSize() < DATABASE_MAX_SIZE_FILE && docType != DocumentEnum.DocumentFormat.MS_DOC
+                            && docType != DocumentEnum.DocumentFormat.AUDIO) {
                         checkExist.setCloudFileLink(null);
                         id = documentService.addFile(file);
                     } else {
@@ -748,17 +747,23 @@ public class LecturerController {
             }
 
             if (files != null && filesNumber > 0) {
+                String uniqueFileName, link;
+                MultiFile multiFile;
                 for (MultipartFile file : files) {
-                    // Get the original file name
-                    String originalFileName = file.getOriginalFilename();
-                    // Generate a unique file name
-                    String uniqueFileName = System.currentTimeMillis() + "_" + FilenameUtils.getBaseName(originalFileName) + "." + FilenameUtils.getExtension(originalFileName);
-                    // Process the uploaded file as needed
-                    String link = storageService.uploadFileWithName(file, uniqueFileName);
-                    MultiFile multiFile = new MultiFile(originalFileName, uniqueFileName, link);
-                    MultiFile addedFile = multiFileService.addMultiFile(multiFile);
-                    // push file mới vào doc
-                    multiFiles.add(addedFile);
+                    if(file.getSize() < MAX_SIZE_SUPPORTING_FILE){
+                        // Get the original file name
+                        String originalFileName = file.getOriginalFilename();
+                        String fileExtension = StringUtils.getFilenameExtension(originalFileName);
+                        if(DocumentEnum.DocumentSupportFilesFormat.getDocType(fileExtension) == DocumentEnum.DocumentSupportFilesFormat.ACCEPT) {
+                            // Generate a unique file name
+                            uniqueFileName = System.currentTimeMillis() + "_" + FilenameUtils.getBaseName(originalFileName) + "." + FilenameUtils.getExtension(originalFileName);
+                            // Process the uploaded file as needed
+                            link = storageService.uploadFileWithName(file, uniqueFileName);
+                            multiFile = new MultiFile(originalFileName, uniqueFileName, link);
+                            // push file mới vào doc
+                            multiFiles.add(multiFileService.addMultiFile(multiFile));
+                        }
+                    }
                 }
             }
 

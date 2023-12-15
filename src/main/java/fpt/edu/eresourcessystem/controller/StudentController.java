@@ -12,6 +12,7 @@ import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import fpt.edu.eresourcessystem.service.*;
+import fpt.edu.eresourcessystem.service.elasticsearch.EsDocumentService;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,7 @@ public class StudentController {
     private final TopicService topicService;
 //    private final CourseLogService courseLogService;
     private final DocumentService documentService;
+    private final EsDocumentService esDocumentService;
     private final StudentNoteService studentNoteService;
     private final DocumentNoteService documentNoteService;
     private final QuestionService questionService;
@@ -438,7 +440,7 @@ public class StudentController {
                                    @RequestParam(required = false, defaultValue = "all") String filter,
                                    final Model model) {
         Iterable<EsDocument> esDocuments;
-        esDocuments = documentService.searchDocument(search.trim());
+        esDocuments = esDocumentService.searchDocument(search);
 //        if (null == filter || "all".equals(filter)) {
 //            esDocuments = documentService.searchDocument(search);
 //        }

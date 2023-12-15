@@ -167,7 +167,7 @@
 
                                         </span>
                                         </a></p>
-                                    <div class="stu_save-course-link">
+                                    <div th:if="${loggedInUser.role.toString().equals('STUDENT')}" class="stu_save-course-link">
                                         <p><a class="unsaved-course" th:if="${saved ne null} AND ${saved} == true"
                                               th:attr="courseId=${course.getId}">
                                             <i class="fa-solid fa-bookmark"></i>

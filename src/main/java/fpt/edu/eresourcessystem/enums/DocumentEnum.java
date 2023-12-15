@@ -54,15 +54,9 @@ public class DocumentEnum {
         MD,
         HTML,
         TXT,
-
         VIDEO,
-
         AUDIO,
-
         IMAGE,
-        OTHER,
-
-
         UNKNOWN;
 
         public static DocumentFormat getDocType(String suffixName) {
@@ -75,7 +69,6 @@ public class DocumentEnum {
                 case "m4a", "flac", "mp3", "wav", "wma", "aac" -> AUDIO;
                 case "mp4", "mov", "avi", "flv", "mkv", "webm" -> VIDEO;
                 case "jpg", "jpeg", "gif", "png", "svg" -> IMAGE;
-                case "exe", "psd", "eps", "jar", "zip", "rar" -> OTHER;
 
                 default -> DocumentFormat.UNKNOWN;
             };
@@ -83,40 +76,22 @@ public class DocumentEnum {
     }
 
     public enum DocumentSupportFilesFormat {
-        PDF,
-        MS_DOC,
-        MD,
-        HTML,
-        TXT,
-
-        VIDEO,
-
-        AUDIO,
-
-        IMAGE,
-
-        OTHER,
-
-
-        UNKNOWN;
+        ACCEPT,
+        NOT_ACCEPT;
 
         public static DocumentSupportFilesFormat getDocType(String suffixName) {
             return switch (suffixName) {
-                case "pdf" -> PDF;
-                case "doc", "xls", "docx", "ppt", "pptx", "xlsx" -> MS_DOC;
-                case "md" -> MD;
-                case "html" -> HTML;
-                case "txt" -> TXT;
-
-                case "m4a", "flac", "mp3", "wav", "wma", "aac" -> AUDIO;
-
-                case "mp4", "mov", "avi", "flv", "mkv", "webm" -> VIDEO;
-
-                case "jpg", "jpeg", "gif", "png", "svg" -> IMAGE;
-
-                case "exe", "psd", "eps", "jar", "zip", "rar" -> OTHER;
-
-                default -> UNKNOWN;
+                case "pdf", "md", "html", "txt",
+                        "doc", "xls", "docx", "ppt", "pptx", "xlsx",
+                        "m4a", "flac", "mp3", "wav", "wma", "aac",
+                        "mp4", "mov", "avi", "flv", "mkv", "webm",
+                        "jpg", "jpeg", "gif", "png", "svg",
+                        "exe", "psd", "eps", "jar", "zip", "rar",
+                        "java", "c", "cpp", "cc", "cxx", "cs", "py", "js", "rb", "swift",
+                        "go", "php", "css", "ts",
+                        "ai", "indd", "prproj", "aep", "xd", "fla",
+                        "aup", "puppet", "dn", "muse", "abr" -> ACCEPT;
+                default -> NOT_ACCEPT;
             };
         }
     }

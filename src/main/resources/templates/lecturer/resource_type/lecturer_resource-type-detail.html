@@ -49,7 +49,7 @@
                                 <p th:text="${course.courseCode} + ' - ' + ${course.courseName}"></p>
                             </div>
                             <div class="d-inline-block">
-                                <a class="btn btn--hover"
+                                <a class="btn btn--hover" th:if="${course.topics.size() > 0}"
                                    th:href="@{'/lecturer/resource_types/' + ${resourceType.id} +'/documents/add'}">
                                     + Add document
                                 </a>

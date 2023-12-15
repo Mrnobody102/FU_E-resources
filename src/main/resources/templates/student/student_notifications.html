@@ -95,7 +95,9 @@
     const deleteButton = document.querySelector('.btn--delete');
     const loadingAnimation = deleteButton.querySelector('.loading-animation');
 
+
     deleteButton.addEventListener('click', function () {
+
         loadingAnimation.style.display = 'block';
         const selectedNotifications = Array.from(checkboxes)
             .filter(function (checkbox) {
@@ -112,7 +114,6 @@
                 data: JSON.stringify(selectedNotifications),
                 contentType: 'application/json',
                 success: function (response) {
-                    loadingAnimation.style.display = 'none';
                     window.location.reload();
                 },
                 error: function (error) {

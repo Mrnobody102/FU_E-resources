@@ -128,6 +128,7 @@
     cursor: pointer;
     color: blue;
     text-decoration: underline;
+    display: none;
 }
 .read-more:hover {
     color: darkblue;

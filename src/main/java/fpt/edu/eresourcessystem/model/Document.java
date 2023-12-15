@@ -58,6 +58,8 @@ public class Document {
     private List<String> notes;
     private List<String> questions;
 
+    private DocumentEnum.DocumentStatusEnum status;
+
     @DocumentReference(lazy = true)
     private List<Rate> rates;
 

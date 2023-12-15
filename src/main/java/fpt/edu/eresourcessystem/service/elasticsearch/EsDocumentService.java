@@ -5,17 +5,21 @@ import java.util.Optional;
 
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsDocumentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
 
+
 @Service
+@RequiredArgsConstructor
 public class EsDocumentService {
 
     private final EsDocumentRepository documentRepository;
+    private final ElasticsearchTemplate elasticsearchTemplate;
+    private final EsDocumentRepository esDocumentRepository;
 
-    @Autowired
-    public EsDocumentService(EsDocumentRepository documentRepository) {
-        this.documentRepository = documentRepository;
+    public Iterable<EsDocument> searchDocument(String searchTerm) {
+        return esDocumentRepository.search(searchTerm);
     }
 
     public EsDocument save(EsDocument document) {

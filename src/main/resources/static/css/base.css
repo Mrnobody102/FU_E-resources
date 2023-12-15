@@ -22,6 +22,7 @@
     --background-btn-color: #0d55c5;
     --second-background-btn-color-hover: #efdada;
     --second-background-btn-color: #efdddd;
+    --draft-background-btn-color: #c04710;
     --add-btn-color: #358f10;
     --edit-btn-color: #358f10;
     --delete-btn-color: #358f10;
@@ -241,6 +242,17 @@ li {
 }
 
 .btn-save:hover {
+    background-color: var(--primary-btn-color);
+    color: white;
+}
+
+.btn-draft {
+    background-color: var(--draft-background-btn-color);
+    color: white;
+    margin-top: 1rem;
+}
+
+.btn-draft:hover {
     background-color: var(--primary-btn-color);
     color: white;
 }

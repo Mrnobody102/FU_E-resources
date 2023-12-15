@@ -25,8 +25,6 @@ public interface DocumentService {
 
     Page<Document> filterAndSearchDocument(String course, String topic, String title, String description, int pageIndex, int pageSize);
 
-    Iterable<EsDocument> searchDocument(String search);
-
     GridFSFile getGridFSFile(ObjectId id) throws IOException;
 
     byte[] getGridFSFileContent(ObjectId id) throws IOException;

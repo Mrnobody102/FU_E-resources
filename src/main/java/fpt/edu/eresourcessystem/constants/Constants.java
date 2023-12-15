@@ -15,5 +15,9 @@ public class Constants {
     public static final String SAMPLE_LECTURER = "lecturer";
     public static final String SAMPLE_STUDENT = "student";
 
+    public static final long DATABASE_MAX_SIZE_FILE = 1048576;
+    public static final long MAX_SIZE_FILE = 104857600;
+    public static final long MAX_SIZE_SUPPORTING_FILE = 52428800;
+
 
 }

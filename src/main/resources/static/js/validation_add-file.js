@@ -14,7 +14,8 @@ let files = null;
 let isSupportFileUploading = false;
 
 const allowedFormats = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'java',
-    'md', 'html', 'txt', 'm4a', 'flac', 'mp3', 'wav', 'wma', 'aac', 'ogg',
+    'md', 'html', 'txt', 'm4a', 'flac',
+    'mp3', 'wav', 'wma', 'aac', 'ogg',
     'mp4', 'mov', 'avi', 'flv', 'mkv', 'webm',
     'jpg', 'jpeg', 'gif', 'png', 'svg'];
 
@@ -22,14 +23,44 @@ const supportFileFormats = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx',
     'md', 'html', 'txt', 'm4a', 'flac', 'mp3', 'wav', 'wma', 'aac',
     'mp4', 'mov', 'avi', 'flv', 'mkv', 'webm',
     'jpg', 'jpeg', 'gif', 'png', 'svg',
-    'exe', 'psd', 'eps', 'jar', 'zip', 'rar'];
+    'exe', 'psd', 'eps', 'jar', 'zip', 'rar',
+    'java', 'c', 'cpp', 'cc', 'cxx', 'cs', 'py', 'js', 'rb', 'swift', 'go', 'php', 'css', 'ts',
+    'ai', 'indd', 'prproj', 'aep', 'xd', 'fla', 'aup', 'puppet', 'dn', 'muse', 'abr'];
 
 cancelButton.addEventListener('click', function () {
     if (isUploading) {
         isUploading = false;
         file = null;
         fileInput.value = '';
-        document.getElementById('previewContainer').innerHTML = 'File will be previewed here.';
+        document.getElementById('previewContainer').innerHTML = '<i>File will be previewed here.</i>\n' +
+            '                                            <br>\n' +
+            '                                            <br>\n' +
+            '                                            <span>File formats that allow display as content:</span>\n' +
+            '                                            <br>\n' +
+            '                                            <i>\n' +
+            '                                                <b>- Document:</b> .pdf, .doc, .docx, .ppt, .pptx, .txt, .html, .md\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Image:</b> .jpg, .jpeg, .gif, .png, .svg\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Video:</b> .mp4, .webm, .mov, .avi, .flv, .mkv\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Audio:</b> .mp3, .flac, .aac, .wav\n' +
+            '                                                <br>\n' +
+            '                                            </i>\n' +
+            '\n' +
+            '                                            <br>\n' +
+            '\n' +
+            '                                            <span>Previewable file formats:</span>\n' +
+            '                                            <i>\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Document:</b> .pdf, .txt, .html, .md\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Image:</b> .jpg, .jpeg, .gif, .png, .svg\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Video:</b> .mp4, .webm, .mov, .avi, .flv, .mkv\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Audio:</b> .mp3, .flac, .aac, .wav\n' +
+            '                                            </i>';
     } else {
         console.log('Không có tệp tin đang được tải lên để hủy');
     }
@@ -51,7 +82,35 @@ fileInput.addEventListener('change', function (event) {
     if(file == null) {
         isUploading = false;
         fileInput.value = '';
-        document.getElementById('previewContainer').innerHTML = 'File will be previewed here.';
+        document.getElementById('previewContainer').innerHTML = '<i>File will be previewed here.</i>\n' +
+            '                                            <br>\n' +
+            '                                            <br>\n' +
+            '                                            <span>File formats that allow display as content:</span>\n' +
+            '                                            <br>\n' +
+            '                                            <i>\n' +
+            '                                                <b>- Document:</b> .pdf, .doc, .docx, .ppt, .pptx, .txt, .html, .md\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Image:</b> .jpg, .jpeg, .gif, .png, .svg\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Video:</b> .mp4, .webm, .mov, .avi, .flv, .mkv\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Audio:</b> .mp3, .flac, .aac, .wav\n' +
+            '                                                <br>\n' +
+            '                                            </i>\n' +
+            '\n' +
+            '                                            <br>\n' +
+            '\n' +
+            '                                            <span>Previewable file formats:</span>\n' +
+            '                                            <i>\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Document:</b> .pdf, .txt, .html, .md\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Image:</b> .jpg, .jpeg, .gif, .png, .svg\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Video:</b> .mp4, .webm, .mov, .avi, .flv, .mkv\n' +
+            '                                                <br>\n' +
+            '                                                <b>- Audio:</b> .mp3, .flac, .aac, .wav\n' +
+            '                                            </i>';
     }
     var fileSizeInMB = file.size / (1024 * 1024); // Chuyển đổi kích thước tệp tin thành Megabyte
     if (fileSizeInMB > 100) {
@@ -100,7 +159,35 @@ fileInput.addEventListener('change', function (event) {
                     }
                 } else {
                     preview = document.createElement('span');
-                    preview.textContent = 'This file cannot be previewed.';
+                    preview.innerHTML = '<b>This file format is not support to preview.</b>\n' +
+                        '                                            <br>\n' +
+                        '                                            <br>\n' +
+                        '                                            <span>File formats that allow display as content:</span>\n' +
+                        '                                            <br>\n' +
+                        '                                            <i>\n' +
+                        '                                                <b>- Document:</b> .pdf, .doc, .docx, .ppt, .pptx, .txt, .html, .md\n' +
+                        '                                                <br>\n' +
+                        '                                                <b>- Image:</b> .jpg, .jpeg, .gif, .png, .svg\n' +
+                        '                                                <br>\n' +
+                        '                                                <b>- Video:</b> .mp4, .webm, .mov, .avi, .flv, .mkv\n' +
+                        '                                                <br>\n' +
+                        '                                                <b>- Audio:</b> .mp3, .flac, .aac, .wav\n' +
+                        '                                                <br>\n' +
+                        '                                            </i>\n' +
+                        '\n' +
+                        '                                            <br>\n' +
+                        '\n' +
+                        '                                            <span>Previewable file formats:</span>\n' +
+                        '                                            <i>\n' +
+                        '                                                <br>\n' +
+                        '                                                <b>- Document:</b> .pdf, .txt, .html, .md\n' +
+                        '                                                <br>\n' +
+                        '                                                <b>- Image:</b> .jpg, .jpeg, .gif, .png, .svg\n' +
+                        '                                                <br>\n' +
+                        '                                                <b>- Video:</b> .mp4, .webm, .mov, .avi, .flv, .mkv\n' +
+                        '                                                <br>\n' +
+                        '                                                <b>- Audio:</b> .mp3, .flac, .aac, .wav\n' +
+                        '                                            </i>';
                 }
                 document.getElementById('previewContainer').appendChild(preview);
             }

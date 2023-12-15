@@ -63,19 +63,23 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="lecturer_input-label"><label th:for="topicTitle">Title:</label></td>
+                                                    <td class="lecturer_input-label"><label
+                                                            th:for="topicTitle">Title:</label></td>
                                                     <td><input type="text"
-                                                               class="lecturer_input form-control" th:field="*{topicTitle}"
+                                                               class="lecturer_input form-control"
+                                                               th:field="*{topicTitle}"
                                                                placeholder="Enter topic title" required>
                                                         <p class="text-danger" th:errors="*{topicTitle}"
                                                            th:if="${#fields.hasErrors('topicTitle')}"></p>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="lecturer_input-label" ><label th:for="topicDescription">Description:</label></td>
+                                                    <td class="lecturer_input-label"><label th:for="topicDescription">Description:</label>
+                                                    </td>
                                                     <td><textarea
-                                                               class="lecturer_textarea form-control" th:field="*{topicDescription}"
-                                                                  placeholder="Enter description"></textarea>
+                                                            class="lecturer_textarea form-control"
+                                                            th:field="*{topicDescription}"
+                                                            placeholder="Enter description"></textarea>
                                                         <p class="text-danger" th:errors="*{topicDescription}"
                                                            th:if="${#fields.hasErrors('topicDescription')}"></p>
                                                     </td>
@@ -85,10 +89,12 @@
                                                     <td>
                                                         <button type="submit" class="btn btn-save">Save</button>
                                                         <th:block th:if="${param.success}">
-                                                            <a class="btn btn--back" href="javascript:void(0);" onclick="history.go(-2);">Back</a>
+                                                            <a class="btn btn--back" href="javascript:void(0);"
+                                                               onclick="history.go(-2);">Back</a>
                                                         </th:block>
                                                         <th:block th:unless="${param.success}">
-                                                            <a class="btn btn--back" href="javascript:void(0);" onclick="history.go(-1);">Back</a>
+                                                            <a class="btn btn--back" href="javascript:void(0);"
+                                                               onclick="history.go(-1);">Back</a>
                                                         </th:block>
                                                     </td>
                                                 </tr>
@@ -136,7 +142,9 @@
 
 
 <!--jquery-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script
         src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -152,7 +160,7 @@
 <script th:src="@{/js/validation.js}"></script>
 
 <script th:inline="javascript">
-     validate_addTopic();
+    validate_addTopic();
 
     var successParam = [[${param.success}]];
     if (successParam) {

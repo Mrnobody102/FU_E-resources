@@ -65,14 +65,14 @@
 
                             <button type="button" id="changeCourseStatus" class="border-0 ms-3">Change</button>
                         <form method="post" th:action="@{'/lecturer/courses/' + ${course.id} + '/changeStatus'}"
-                              style="display:none;" id="courseStatusSelect">
-                            <select th:name="status">
+                              style="display:none" id="courseStatusSelect">
+                            <select style="height: 30px;" th:name="status">
                                 <option
                                         th:each="status:${courseStatus}"
                                         th:value="${status}"
                                         th:text="${status.getDisplayValue()}"></option>
                             </select>
-                            <button type="submit" class="border-0 ms-3">Save</button>
+                            <button type="submit" class="btn btn-save border-0" style="margin: 0 0 0 2rem; height: 30px">Save</button>
                         </form>
                         <div class="add-lick-course-detail">
                             <div class="d-inline-block">
@@ -108,7 +108,8 @@
                                 <div class="topic-list-content">
                                     <div class="topic-view-list">
                                         <!--Topic view-->
-                                        <div id="topics" class="topic-item pt-2 pb-3 border-bottom" th:each="topic : ${topics}">
+                                        <div id="topics" class="topic-item pt-2 pb-3 border-bottom"
+                                             th:each="topic : ${topics}">
                                             <div class="topic-title">
                                                 <h3 class="topic-info-title d-flex justify-content-between">
                                                     <a th:href="@{'/lecturer/topics/' + ${topic.id}}"
@@ -132,32 +133,33 @@
                                                 </h3>
                                             </div>
                                             <!--Document view list-->
-<!--                                            <div class="lecturer__list-">-->
+                                            <!--                                            <div class="lecturer__list-">-->
 
-<!--                                            </div>-->
-<!--                                            <div class="d-flex align-items-center document-view-info border-bottom"-->
-<!--                                                 th:each="document : ${topic.getDocuments()}">-->
-<!--                                                <div class="doc-info-head" style="max-width: 75%">-->
-<!--                                                    <p class="doc-info-title"><a-->
-<!--                                                            th:href="@{'/lecturer/documents/' + ${document.id}}">-->
-<!--                                                        <span th:text="${document.title}"></span></a>-->
-<!--                                                    </p>-->
-<!--                                                    <p class="doc-info-description">-->
-<!--                                                        <span th:text="${document.description}"></span>-->
-<!--                                                    </p>-->
-<!--                                                </div>-->
-<!--                                                <div style="margin-left: 5%">-->
-<!--                                                    <a class="lec__edit-topic-icon"-->
-<!--                                                       th:href="@{'/lecturer/documents/' + ${document.id} +'/update'}">-->
-<!--                                                        <i-->
-<!--                                                                class="fa-regular fa-edit"></i> </a>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
+                                            <!--                                            </div>-->
+                                            <!--                                            <div class="d-flex align-items-center document-view-info border-bottom"-->
+                                            <!--                                                 th:each="document : ${topic.getDocuments()}">-->
+                                            <!--                                                <div class="doc-info-head" style="max-width: 75%">-->
+                                            <!--                                                    <p class="doc-info-title"><a-->
+                                            <!--                                                            th:href="@{'/lecturer/documents/' + ${document.id}}">-->
+                                            <!--                                                        <span th:text="${document.title}"></span></a>-->
+                                            <!--                                                    </p>-->
+                                            <!--                                                    <p class="doc-info-description">-->
+                                            <!--                                                        <span th:text="${document.description}"></span>-->
+                                            <!--                                                    </p>-->
+                                            <!--                                                </div>-->
+                                            <!--                                                <div style="margin-left: 5%">-->
+                                            <!--                                                    <a class="lec__edit-topic-icon"-->
+                                            <!--                                                       th:href="@{'/lecturer/documents/' + ${document.id} +'/update'}">-->
+                                            <!--                                                        <i-->
+                                            <!--                                                                class="fa-regular fa-edit"></i> </a>-->
+                                            <!--                                                </div>-->
+                                            <!--                                            </div>-->
                                             <!--End Document view-->
                                         </div>
                                         <!--End Topic view-->
                                         <!--Rs type view-->
-                                        <div id="resourceTypes" class="topic-item pt-2 pb-3 border-bottom" th:each="rtype : ${resourceTypes}">
+                                        <div id="resourceTypes" class="topic-item pt-2 pb-3 border-bottom"
+                                             th:each="rtype : ${resourceTypes}">
                                             <div class="topic-title">
                                                 <h3 class="topic-info-title d-flex justify-content-between">
                                                     <a th:href="@{'/lecturer/resource_types/' + ${rtype.id}}"
@@ -165,7 +167,7 @@
                                                     <div style="flex: 1; display: flex; justify-content: center; min-width: fit-content">
                                                         <div>
 
-                                                            <a class="lec__add-doc-icon"
+                                                            <a class="lec__add-doc-icon" th:if="${course.topics.size() > 0}"
                                                                th:href="@{'/lecturer/resource_types/' + ${rtype.id} +'/documents/add'}">
                                                                 + <span>Add
                                                                 document </span></a>
@@ -219,7 +221,9 @@
 <!-- Footer -->
 <div class="row" th:replace="~{fragments/footer :: footerSection}"></div>
 <!--jquery-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script
         src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -230,10 +234,9 @@
         crossorigin="anonymous"></script>
 <script src="/js/lecturer/lecturer.js"></script>
 <script>
+    let content = document.getElementById("content");
     function toggleContent() {
-        var content = document.getElementById("content");
-        var button = document.getElementById("readMoreBtn");
-
+        let button = document.getElementById("readMoreBtn");
         if (content.classList.contains("doc-info-description")) {
             content.classList.remove("doc-info-description");
             content.classList.add("full-content");
@@ -245,6 +248,11 @@
         }
     }
 
+    if (content.scrollHeight > content.clientHeight) {
+        let button = document.getElementById("readMoreBtn");
+        button.style.display = 'inline-block';
+    }
+
     // Get the button and select element
     const button = document.getElementById('changeCourseStatus');
     const select = document.getElementById('courseStatusSelect');
@@ -252,7 +260,7 @@
     // Add event listener to the button
     button.addEventListener('click', function () {
         // Toggle the visibility of the select element
-        select.style.display = select.style.display === 'none' ? 'block' : 'none';
+        select.style.display = select.style.display === 'none' ? 'flex' : 'none';
     });
 
     // $('#topicSelection').addEventListener('click', function () {

@@ -108,11 +108,6 @@ public class DocumentServiceImpl implements DocumentService {
         return page;
     }
 
-    @Override
-    public Iterable<EsDocument> searchDocument(String search) {
-        return esDocumentRepository.search(search);
-    }
-
     public String addFile(MultipartFile upload) throws IOException {
 
         //define additional metadata

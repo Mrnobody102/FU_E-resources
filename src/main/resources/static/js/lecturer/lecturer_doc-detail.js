@@ -294,8 +294,11 @@ function handleFileSelection() {
     const totalFiles = selectedFiles.length + listSupportingFiles.length;
 
     if (totalFiles > 3) {
-        alert("Total number of files exceeds the limit of 3");
-        // Reset the file input by clearing the selected files
+        Swal.fire(
+            'Error!',
+            'Total number of files exceeds the limit of 3!',
+            'error'
+        );
         newSupportFileInput.value = null;
     }
 }
@@ -305,6 +308,7 @@ function saveFiles() {
         return;
     }
 
+    overlay.style.display = 'block';
     saveWithoutLoading.style.display = 'none';
     saveWithLoading.style.display = 'inline';
 

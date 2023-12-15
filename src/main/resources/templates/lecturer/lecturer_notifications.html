@@ -27,8 +27,8 @@
                     <div class="lec__sidebar">
                         <div th:replace="~{fragments/sidebar:: lecturerSidebar('notifications')}"></div>
                     </div>
-                    <div th:unless="${allNotificationNumber eq '0'}"  class="lec__courses-content main" id="main-lecturer">
-                        <div class="d-flex justify-content-between mb-4">
+                    <div class="lec__courses-content main" id="main-lecturer">
+                        <div th:unless="${allNotificationNumber eq '0'}"   class="d-flex justify-content-between mb-4">
                             <div class="d-flex">
                                 <input class="ms-3 me-3" type="checkbox" id="checkAll">
                                 <label style="padding-top: 6px" for="checkAll">Select all</label>
@@ -42,7 +42,6 @@
                         <div th:if="${allNotificationNumber eq '0'}" class="text-center d-flex justify-content-between mb-4" style="font-size: 1.5rem">
                             You have no notifications!
                         </div>
-
                         <ul th:each="notification : ${notifications}">
                             <li class="header__notify-item"
                                 th:classappend="${notification.status eq 'UNREAD'? 'header__notify-item--seen' : ''}">
