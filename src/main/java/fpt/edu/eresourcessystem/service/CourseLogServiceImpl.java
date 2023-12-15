@@ -19,6 +19,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service("courseLogService")
 public class CourseLogServiceImpl implements CourseLogService {
@@ -71,8 +72,8 @@ public class CourseLogServiceImpl implements CourseLogService {
     @Override
     public List<CourseLog> findByCourseCodeOrCodeName(String search) {
         Criteria criteria = new Criteria().orOperator(
-                Criteria.where("course.code").regex(search, "i"),
-                Criteria.where("course.name").regex(search, "i")
+                Criteria.where("course.code").regex(Pattern.quote(search), "i"),
+                Criteria.where("course.name").regex(Pattern.quote(search), "i")
         );
         Query query = new Query(criteria);
         return mongoTemplate.find(query, CourseLog.class);
@@ -85,10 +86,10 @@ public class CourseLogServiceImpl implements CourseLogService {
 
         // Match on email, coursename, courseCode, or objectName containing the search string
         criteria.orOperator(
-                Criteria.where("email").regex(search, "i"),
-                Criteria.where("courseName").regex(search, "i"),
-                Criteria.where("courseCode").regex(search, "i"),
-                Criteria.where("objectName").regex(search, "i")
+                Criteria.where("email").regex(Pattern.quote(search), "i"),
+                Criteria.where("courseName").regex(Pattern.quote(search), "i"),
+                Criteria.where("courseCode").regex(Pattern.quote(search), "i"),
+                Criteria.where("objectName").regex(Pattern.quote(search), "i")
         );
 
         // Match on createdDate greater than or equal to start date and less than or equal to end date
@@ -120,10 +121,10 @@ public class CourseLogServiceImpl implements CourseLogService {
 
         // Match on email, coursename, courseCode, or objectName containing the search string
         criteria.orOperator(
-                Criteria.where("email").regex(search, "i"),
-                Criteria.where("courseName").regex(search, "i"),
-                Criteria.where("courseCode").regex(search, "i"),
-                Criteria.where("objectName").regex(search, "i")
+                Criteria.where("email").regex(Pattern.quote(search), "i"),
+                Criteria.where("courseName").regex(Pattern.quote(search), "i"),
+                Criteria.where("courseCode").regex(Pattern.quote(search), "i"),
+                Criteria.where("objectName").regex(Pattern.quote(search), "i")
         );
         Query query = new Query(criteria);
         List<CourseLog> result = mongoTemplate.find(query, CourseLog.class, "course_log");

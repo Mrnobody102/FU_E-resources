@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 //@AllArgsConstructor
@@ -141,8 +142,8 @@ public class LecturerServiceImpl implements LecturerService {
                 criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED),
                 // Add search conditions for courseCode or courseName using regex
                 new Criteria().orOperator(
-                        Criteria.where("courseCode").regex(search.trim(), "i"),
-                        Criteria.where("courseName").regex(search.trim(), "i")
+                        Criteria.where("courseCode").regex(Pattern.quote(search), "i"),
+                        Criteria.where("courseName").regex(Pattern.quote(search), "i")
                 )
         );
         Query query = new Query(criteria);
@@ -217,8 +218,8 @@ public class LecturerServiceImpl implements LecturerService {
         if (searchValue != null && !searchValue.isEmpty()) {
             // Tìm các tài khoản phù hợp
             Criteria criteria = new Criteria().orOperator(
-                    Criteria.where("name").regex(searchValue, "i"),
-                    Criteria.where("email").regex(searchValue, "i")
+                    Criteria.where("name").regex(Pattern.quote(searchValue), "i"),
+                    Criteria.where("email").regex(Pattern.quote(searchValue), "i")
             );
             Query accountQuery = new Query(criteria);
             List<Account> matchingAccounts = mongoTemplate.find(accountQuery, Account.class);
@@ -285,8 +286,8 @@ public class LecturerServiceImpl implements LecturerService {
         // Tìm các tài khoản phù hợp
         List<Account> matchingAccounts = mongoTemplate.find(
                 Query.query(new Criteria().orOperator(
-                        Criteria.where("name").regex(searchValue, "i"),
-                        Criteria.where("email").regex(searchValue, "i")
+                        Criteria.where("name").regex(Pattern.quote(searchValue), "i"),
+                        Criteria.where("email").regex(Pattern.quote(searchValue), "i")
                 )), Account.class);
 
         // Lấy danh sách ID tài khoản
@@ -301,7 +302,7 @@ public class LecturerServiceImpl implements LecturerService {
 
     public Page<LecturerDto> findAllLecturersWithSearch(String searchValue, Pageable pageable) {
         // Step 1: Query the associated "account" documents based on the email field
-        Query accountQuery = new Query(Criteria.where("email").regex(searchValue, "i"));
+        Query accountQuery = new Query(Criteria.where("email").regex(Pattern.quote(searchValue), "i"));
         List<Account> matchingAccounts = mongoTemplate.find(accountQuery, Account.class);
         List<String> accountIds = matchingAccounts.stream()
                 .map(Account::getId)

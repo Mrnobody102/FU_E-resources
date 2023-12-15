@@ -14,6 +14,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static fpt.edu.eresourcessystem.enums.CommonEnum.DeleteFlg.PRESERVED;
@@ -192,7 +193,7 @@ public class QuestionServiceImpl implements QuestionService {
         Criteria criteria = new Criteria();
         criteria.and("student").is(student);
         if (search != null && !search.isEmpty()) {
-            Criteria regexCriteria = Criteria.where("content").regex(search, "i");
+            Criteria regexCriteria = Criteria.where("content").regex(Pattern.quote(search), "i");
             criteria.andOperator(regexCriteria);
         }
         if (status != null) {
@@ -212,7 +213,7 @@ public class QuestionServiceImpl implements QuestionService {
         Criteria criteria = new Criteria();
         criteria.and("lecturer").is(lecturerEmail);
         if (search != null && !search.isEmpty()) {
-            Criteria regexCriteria = Criteria.where("content").regex(search, "i");
+            Criteria regexCriteria = Criteria.where("content").regex(Pattern.quote(search), "i");
             criteria.andOperator(regexCriteria);
         }
         if (status != null) {

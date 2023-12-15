@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service("userLogService")
 public class UserLogServiceImpl implements UserLogService{
@@ -45,8 +46,8 @@ public class UserLogServiceImpl implements UserLogService{
     @Override
     public List<UserLog> searchLog(String email, String role, LocalDateTime startDate, LocalDateTime endDate) {
         Criteria criteria = Criteria.where("time").gte(startDate).lte(endDate)
-                .and("email").regex(email, "i")
-                .and("role").regex(email, "i");
+                .and("email").regex(Pattern.quote(email), "i")
+                .and("role").regex(Pattern.quote(email), "i");
 
         Query query = new Query(criteria);
         return mongoTemplate.find(query, UserLog.class);
@@ -71,7 +72,7 @@ public class UserLogServiceImpl implements UserLogService{
     public List<Course> findStudentRecentView(String email) {
         String urlPrefix = "/student/courses/";
         Criteria criteria = Criteria.where("email").is(email)
-                .and("url").regex("^" + urlPrefix)
+                .and("url").regex(Pattern.quote("^" + urlPrefix))
                 .and("createdDate").exists(true);
 
         // Sort by the "time" in descending order to get the most recent documents
