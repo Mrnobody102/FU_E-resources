@@ -617,14 +617,16 @@ public class LecturerController {
 
         // Notify student that save this course
         Notification notification;
-        for (String student : course.getStudents()) {
-            notification = new Notification(
-                    getLoggedInLecturerMail(),
-                    student,
-                    getLoggedInLecturerMail() + " updated new document in " + course.getCourseName(),
-                    "/student/courses/" + course.getId()
-            );
-            notificationService.addNotificationWhenUpdateDocument(notification);
+        if(course.getStudents() != null){
+            for (String student : course.getStudents()) {
+                notification = new Notification(
+                        getLoggedInLecturerMail(),
+                        student,
+                        getLoggedInLecturerMail() + " updated new document in " + course.getCourseName(),
+                        "/student/courses/" + course.getId()
+                );
+                notificationService.addNotificationWhenUpdateDocument(notification);
+            }
         }
         return "redirect:/lecturer/topics/" + topicId + "/documents/add?success";
     }

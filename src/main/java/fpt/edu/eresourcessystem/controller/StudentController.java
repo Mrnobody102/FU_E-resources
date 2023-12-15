@@ -10,13 +10,16 @@ import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.enums.DocumentEnum;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
+import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import fpt.edu.eresourcessystem.service.*;
+import fpt.edu.eresourcessystem.service.elasticsearch.EsCourseService;
 import fpt.edu.eresourcessystem.service.elasticsearch.EsDocumentService;
 import fpt.edu.eresourcessystem.utils.CommonUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -40,6 +43,7 @@ import static fpt.edu.eresourcessystem.constants.UrlConstants.*;
 public class StudentController {
     private final AccountService accountService;
     private final CourseService courseService;
+    private final EsCourseService esCourseService;
     private final StudentService studentService;
     private final TopicService topicService;
 //    private final CourseLogService courseLogService;
@@ -437,20 +441,17 @@ public class StudentController {
 
     @GetMapping({"/search"})
     public String getSearchResults(@RequestParam(required = false, value = "search") String search,
-                                   @RequestParam(required = false, defaultValue = "all") String filter,
+                                   @RequestParam(required = false, defaultValue = "document") String filter,
                                    final Model model) {
-        Iterable<EsDocument> esDocuments;
-        esDocuments = esDocumentService.searchDocument(search);
-//        if (null == filter || "all".equals(filter)) {
-//            esDocuments = documentService.searchDocument(search);
-//        }
-//        else if ("e_resource".equals(filter)) {
-//            page = courseService.findByCourseNameLike(search, pageIndex, PAGE_SIZE);
-//        } else {
-//            page = courseService.findByCourseCodeLike(search, pageIndex, PAGE_SIZE);
-//        }
+        if ("document".equals(filter)) {
+            Iterable<EsDocument> esDocuments = esDocumentService.searchDocument(search);
+            model.addAttribute("foundDocuments", esDocuments);
+        } else {
+            SearchPage<EsCourse> esCourses = esCourseService.searchCourse(search);
+            model.addAttribute("foundDocuments", esCourses);
+        }
 
-        model.addAttribute("foundDocuments", esDocuments);
+
         model.addAttribute("search", search);
         return "student/student_search-results";
     }

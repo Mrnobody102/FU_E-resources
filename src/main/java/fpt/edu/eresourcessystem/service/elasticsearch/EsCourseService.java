@@ -3,6 +3,9 @@ package fpt.edu.eresourcessystem.service.elasticsearch;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsCourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -10,26 +13,31 @@ import java.util.Optional;
 @Service
 public class EsCourseService {
 
-    private final EsCourseRepository courseRepository;
+    private final EsCourseRepository esCourseRepository;
+
+    public SearchPage<EsCourse> searchCourse(String searchTerm) {
+        Pageable pageable = PageRequest.of(0, 10);
+        return esCourseRepository.search(searchTerm, pageable);
+    }
 
     @Autowired
-    public EsCourseService(EsCourseRepository courseRepository) {
-        this.courseRepository = courseRepository;
+    public EsCourseService(EsCourseRepository esCourseRepository) {
+        this.esCourseRepository = esCourseRepository;
     }
 
     public EsCourse save(EsCourse course) {
-        return courseRepository.save(course);
+        return esCourseRepository.save(course);
     }
 
     public void delete(EsCourse course) {
-        courseRepository.delete(course);
+        esCourseRepository.delete(course);
     }
 
     public Optional<EsCourse> findOne(String id) {
-        return courseRepository.findById(id);
+        return esCourseRepository.findById(id);
     }
 
     public Iterable<EsCourse> findAll() {
-        return courseRepository.findAll();
+        return esCourseRepository.findAll();
     }
 }

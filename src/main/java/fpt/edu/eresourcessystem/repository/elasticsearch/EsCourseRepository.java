@@ -13,5 +13,5 @@ public interface EsCourseRepository extends ElasticsearchRepository<EsCourse, St
             "{\"match_phrase\": {\"name.keyword\": \"?0\"}}, " +
             "{\"match_phrase\": {\"description.keyword\": \"?0\"}}" +
             "]}}")
-    SearchPage<EsCourse> customSearch(String search, Pageable pageable);
+    SearchPage<EsCourse> search(String search, Pageable pageable);
 }

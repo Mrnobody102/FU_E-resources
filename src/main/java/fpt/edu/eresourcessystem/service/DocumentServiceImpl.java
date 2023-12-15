@@ -310,7 +310,6 @@ public class DocumentServiceImpl implements DocumentService {
         Query query = new Query(criteria);
         query.fields().include("id", "title", "description", "createdDate", "resourceTypes");
         long total = mongoTemplate.count(query, Document.class);
-        System.out.println(total);
         List<Document> documents = mongoTemplate.find(query.with(pageable), Document.class);
         return new PageImpl<>(documents, pageable, total);
     }

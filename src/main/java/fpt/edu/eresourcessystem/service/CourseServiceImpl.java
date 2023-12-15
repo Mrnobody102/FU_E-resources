@@ -50,17 +50,18 @@ public class CourseServiceImpl implements CourseService {
                 return null;
             } else {
                 Course result = courseRepository.save(course);
+                ResourceType resourceType;
                 List<ResourceType> resourceTypes = new ArrayList<>();
                 List<String> defaultRt = Arrays.stream(DocumentEnum.DefaultTopicResourceTypes.values())
                         .map(DocumentEnum.DefaultTopicResourceTypes::getDisplayValue)
                         .collect(Collectors.toList());
                 for (String rt : defaultRt) {
-                    ResourceType resourceType = new ResourceType(rt, result);
-                    ResourceType addedResourceType = resourceTypeService.addResourceType(resourceType);
-                    resourceTypes.add(addedResourceType);
+                    resourceType = new ResourceType(rt, result);
+                    resourceTypes.add(resourceTypeService.addResourceType(resourceType));
                 }
                 result.setResourceTypes(resourceTypes);
-                courseRepository.save(result);
+                Course newCourse = courseRepository.save(result);
+                esCourseRepository.save(new EsCourse(newCourse));
                 return result;
             }
         }
@@ -77,7 +78,9 @@ public class CourseServiceImpl implements CourseService {
             savedCourse.setDescription(course.getDescription());
             savedCourse.setTrainingType(course.getTrainingType());
             savedCourse.setStatus(course.getStatus());
-            return courseRepository.save(savedCourse);
+            Course updatedCourse = courseRepository.save(savedCourse);
+            esCourseRepository.save(new EsCourse(updatedCourse));
+            return updatedCourse;
         }
         return null;
     }
@@ -111,6 +114,7 @@ public class CourseServiceImpl implements CourseService {
             // SOFT DELETE Course
             course.setDeleteFlg(CommonEnum.DeleteFlg.DELETED);
             courseRepository.save(course);
+            esCourseRepository.delete(new EsCourse(course));
             return true;
         }
         return false;
@@ -406,7 +410,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public SearchPage<EsCourse> searchCourse(String search, int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex, pageSize);
-        return esCourseRepository.customSearch(search, pageable);
+        return esCourseRepository.search(search, pageable);
     }
 
     @Override
@@ -415,8 +419,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Page<Course> findByListCourseIdAndSearch(String search, List<String> courseIds,  int pageIndex, int pageSize) {
-        Pageable pageable = PageRequest.of(pageIndex-1, pageSize);
+    public Page<Course> findByListCourseIdAndSearch(String search, List<String> courseIds, int pageIndex, int pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         Criteria criteria = new Criteria();
         criteria.and("id").in(courseIds);
         if (search != null && !search.isEmpty()) {

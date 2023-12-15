@@ -1,13 +1,13 @@
 package fpt.edu.eresourcessystem.service.elasticsearch;
 
-import java.util.List;
-import java.util.Optional;
-
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsDocumentRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 public class EsDocumentService {
 
     private final EsDocumentRepository documentRepository;
-    private final ElasticsearchTemplate elasticsearchTemplate;
     private final EsDocumentRepository esDocumentRepository;
 
     public Iterable<EsDocument> searchDocument(String searchTerm) {
-        return esDocumentRepository.search(searchTerm);
+        Pageable pageable = PageRequest.of(0, 10);
+        return esDocumentRepository.search(searchTerm, pageable);
     }
 
     public EsDocument save(EsDocument document) {
