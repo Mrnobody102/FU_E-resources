@@ -39,11 +39,14 @@
         #lecturerEmail {
             width: 40%;
         }
+
         .lib_show-all-btn {
-            float: right; margin-right: 40%;
+            float: right;
+            margin-right: 40%;
             background-color: #0a429d;
             color: white;
         }
+
         .a-link {
             color: #0a53be;
         }
@@ -100,7 +103,8 @@
                                 <td th:unless="${checkLecturerCourse}">
                                     <form id="addLecturerForm" method="post" th:field="*{accounts}"
                                           th:action="@{'/librarian/courses/' + ${course.getId()} + '/add-lecture'}">
-                                        <button type="button" onclick="confirmAddLecturer()" class="btn lib_show-all-btn ">Add
+                                        <button type="button" onclick="confirmAddLecturer()"
+                                                class="btn lib_show-all-btn ">Add
                                         </button>
                                         <input class="lib_input form-control mt-1 " type="text" id="lecturerEmail"
                                                name="lecturerEmail" placeholder="Email"/>
@@ -129,6 +133,48 @@
 
                     </div>
                 </div>
+            </div>
+            <div class="table-view">
+                <div class="table-name h3 italic">
+                    Management history
+                </div>
+                <table class="table table-striped table-sm" id="coursesTable" style="width: auto">
+                    <thead>
+                    <tr class="table-head">
+                        <th>STT</th>
+                        <th>Lecturer Name</th>
+                        <th>Lecturer Email</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <!--                        <th></th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${checkLecturerCourse}">
+                        <td> 1</td>
+                        <td><a class="a-link" th:href="@{'/librarian/courses/' + ${course.getId}}"
+                               th:text="${course.lecturer.account.name} == null ? ${course.lecturer.account.username}: ${course.lecturer.account.name}"></a></td>
+                        <td><a class="a-link" th:href="@{'/librarian/lectures/' + ${course.lecturer.id}}"
+                               th:text="${course.lecturer.account.email}"></a></td>
+                        <td><span class="code-archive-except"
+                                  th:text="${#temporals.format(currentLecturerCourse.id.createdDate, 'dd-MM-yyyy')}"></span>
+                        </td>
+                        <td><span class="code-archive-except text-success bold">Current</span></td>
+                    </tr>
+                    <th:block th:each="lecturerCourse, iterStat  : ${lecturerCourses}">
+                        <tr>
+                            <td th:text="${checkLecturerCourse} ? ${iterStat.index +2} : ${iterStat.index +1}"></td>
+                            <td><a class="a-link" th:href="@{'/librarian/lectures/' + ${lecturerCourse.lecturerId}}"
+                                   th:text="${lecturerCourse.lecturerName}"></a></td>
+                            <td><a class="a-link" th:href="@{'/librarian/lectures/' + ${lecturerCourse.lecturerId}}"
+                                   th:text="${lecturerCourse.lecturerEmail}"></a></td>
+                            <td><span class="code-archive-except" th:text="${lecturerCourse.startDate}"></span></td>
+                            <td><span class="code-archive-except" th:text="${lecturerCourse.endDate}"></span></td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+
             </div>
         </div>
     </div>

@@ -313,3 +313,6 @@ label.error {
 .form-chose-export-type button{
     margin-left: 1rem;
 }
+.remove-lecturer{
+    padding: 0.5rem;
+}
