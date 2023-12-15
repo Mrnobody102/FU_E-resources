@@ -32,6 +32,7 @@ import org.xml.sax.SAXException;
 import javax.print.Doc;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service("documentService")
@@ -307,8 +308,8 @@ public class DocumentServiceImpl implements DocumentService {
         criteria.and("id").in(documentIds);
         if (search != null && !search.isEmpty()) {
             Criteria regexCriteria = new Criteria().orOperator(
-                    Criteria.where("title").regex(search, "i"),
-                    Criteria.where("description").regex(search, "i")
+                    Criteria.where("title").regex(Pattern.quote(search), "i"),
+                    Criteria.where("description").regex(Pattern.quote(search), "i")
             );
             criteria.andOperator(regexCriteria);
         }

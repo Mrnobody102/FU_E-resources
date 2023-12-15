@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service("courseService")
@@ -328,8 +329,8 @@ public class CourseServiceImpl implements CourseService {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         Criteria criteria = new Criteria();
         criteria.orOperator(
-                Criteria.where("courseCode").regex(courseCode.trim(), "i"),
-                Criteria.where("courseName").regex(courseName.trim(), "i")
+                Criteria.where("courseCode").regex(Pattern.quote(courseCode.trim()), "i"),
+                Criteria.where("courseName").regex(Pattern.quote(courseName.trim()), "i")
         );
         criteria.and("status").is(CourseEnum.Status.PUBLISH);
         criteria.and("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED);
@@ -346,7 +347,7 @@ public class CourseServiceImpl implements CourseService {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         Criteria criteria = new Criteria();
         criteria.orOperator(
-                Criteria.where("courseName").regex(courseName.trim(), "i"),
+                Criteria.where("courseName").regex(Pattern.quote(courseName.trim()), "i"),
                 criteria.where("status").is(CourseEnum.Status.PUBLISH),
                 criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
         );
@@ -363,7 +364,7 @@ public class CourseServiceImpl implements CourseService {
         Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
         Criteria criteria = new Criteria();
         criteria.orOperator(
-                Criteria.where("courseCode").regex(courseCode.trim(), "i"),
+                Criteria.where("courseCode").regex(Pattern.quote(courseCode.trim()), "i"),
                 criteria.where("status").is(CourseEnum.Status.PUBLISH),
                 criteria.where("deleteFlg").is(CommonEnum.DeleteFlg.PRESERVED)
         );
@@ -420,8 +421,8 @@ public class CourseServiceImpl implements CourseService {
         criteria.and("id").in(courseIds);
         if (search != null && !search.isEmpty()) {
             Criteria regexCriteria = new Criteria().orOperator(
-                    Criteria.where("courseName").regex(search, "i"),
-                    Criteria.where("courseCode").regex(search, "i")
+                    Criteria.where("courseName").regex(Pattern.quote(search), "i"),
+                    Criteria.where("courseCode").regex(Pattern.quote(search), "i")
             );
             criteria.andOperator(regexCriteria);
         }
