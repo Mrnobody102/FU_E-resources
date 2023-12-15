@@ -9,6 +9,8 @@ import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository("esDocumentRepository")
 public interface EsDocumentRepository extends ElasticsearchRepository<EsDocument, String> {
 
@@ -26,7 +28,7 @@ public interface EsDocumentRepository extends ElasticsearchRepository<EsDocument
             "{\"regexp\": {\"content\": \".*?0.*\"}}]" +
             "}}")
     Page<EsDocument> search(String search, Pageable pageable);
-    default Iterable<EsDocument> findBySearchTerm(String searchTerm, Pageable pageable) {
+    default Page<EsDocument> findBySearchTerm(String searchTerm, Pageable pageable) {
         String[] words = searchTerm.toLowerCase().trim().split("\\s+");
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
         for (String word : words) {

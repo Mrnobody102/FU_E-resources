@@ -3,6 +3,7 @@ package fpt.edu.eresourcessystem.service.elasticsearch;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsCourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.SearchPage;
@@ -15,8 +16,8 @@ public class EsCourseService {
 
     private final EsCourseRepository esCourseRepository;
 
-    public SearchPage<EsCourse> searchCourse(String searchTerm) {
-        Pageable pageable = PageRequest.of(0, 10);
+    public Page<EsCourse> searchCourse(String searchTerm, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
         return esCourseRepository.search(searchTerm, pageable);
     }
 

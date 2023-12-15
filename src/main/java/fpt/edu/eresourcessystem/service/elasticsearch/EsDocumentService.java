@@ -3,10 +3,12 @@ package fpt.edu.eresourcessystem.service.elasticsearch;
 import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import fpt.edu.eresourcessystem.repository.elasticsearch.EsDocumentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -17,8 +19,8 @@ public class EsDocumentService {
     private final EsDocumentRepository documentRepository;
     private final EsDocumentRepository esDocumentRepository;
 
-    public Iterable<EsDocument> searchDocument(String searchTerm) {
-        Pageable pageable = PageRequest.of(0, 10);
+    public Page<EsDocument> searchDocument(String searchTerm, int skip) {
+        Pageable pageable = PageRequest.of(skip, 10);
         return esDocumentRepository.search(searchTerm, pageable);
     }
 

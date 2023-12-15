@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 
 import java.io.Serializable;
 
-@Document(indexName = "documents")
+@Document(indexName = "courses")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

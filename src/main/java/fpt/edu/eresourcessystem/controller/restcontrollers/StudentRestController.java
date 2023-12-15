@@ -11,9 +11,15 @@ import fpt.edu.eresourcessystem.dto.UserLogDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.QuestionAnswerEnum;
 import fpt.edu.eresourcessystem.model.*;
+import fpt.edu.eresourcessystem.model.elasticsearch.EsCourse;
+import fpt.edu.eresourcessystem.model.elasticsearch.EsDocument;
 import fpt.edu.eresourcessystem.service.*;
+import fpt.edu.eresourcessystem.service.elasticsearch.EsCourseService;
+import fpt.edu.eresourcessystem.service.elasticsearch.EsDocumentService;
 import fpt.edu.eresourcessystem.service.s3.StorageService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,8 +42,10 @@ import java.util.stream.Collectors;
 public class StudentRestController {
     private final StudentService studentService;
     private final DocumentService documentService;
+    private final EsDocumentService esDocumentService;
     private final DocumentNoteService documentNoteService;
     private final CourseService courseService;
+    private final EsCourseService esCourseService;
     private final QuestionService questionService;
     private final AnswerService answerService;
     private final UserLogService userLogService;
@@ -459,6 +467,27 @@ public class StudentRestController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping(value = "/search_document", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<EsDocument>> loadDocument(@RequestParam String search,
+                                                                           @RequestParam int skip) {
+
+        Page<EsDocument> esDocuments = esDocumentService.searchDocument(search, skip);
+        if(null != esDocuments){
+            return new ResponseEntity<>(esDocuments.stream().toList(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping(value = "/search_course", produces = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<EsCourse>> loadCourse(@RequestParam String search,
+                                                                    @RequestParam int skip) {
+        Page<EsCourse> esCourses = esCourseService.searchCourse(search, skip);
+        if(null != esCourses){
+            return new ResponseEntity<>(esCourses.stream().toList(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @GetMapping("/download")
     public ResponseEntity<byte[]> downloadFile(@RequestParam("fileName") String fileName) {
         byte[] content = storageService.downloadFile(fileName);
@@ -467,4 +496,6 @@ public class StudentRestController {
         headers.setContentDispositionFormData("attachment", fileName);
         return new ResponseEntity<>(content, headers, HttpStatus.OK);
     }
+
+
 }

@@ -46,7 +46,7 @@ public class StudentController {
     private final EsCourseService esCourseService;
     private final StudentService studentService;
     private final TopicService topicService;
-//    private final CourseLogService courseLogService;
+    //    private final CourseLogService courseLogService;
     private final DocumentService documentService;
     private final EsDocumentService esDocumentService;
     private final StudentNoteService studentNoteService;
@@ -80,7 +80,7 @@ public class StudentController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         Account loggedInUser = accountService.findByEmail(currentPrincipalName);
-        UserLog userLog = new UserLog(new UserLogDto(url,getLoggedInStudent().getAccount().getEmail(),AccountEnum.Role.STUDENT ));
+        UserLog userLog = new UserLog(new UserLogDto(url, getLoggedInStudent().getAccount().getEmail(), AccountEnum.Role.STUDENT));
         userLog = userLogService.addUserLog(userLog);
         System.out.println(userLog);
         return userLog;
@@ -103,6 +103,7 @@ public class StudentController {
 
     /**
      * Display 5 recent course
+     *
      * @param account account
      * @return recent courses
      */
@@ -151,7 +152,7 @@ public class StudentController {
         }
         if (document.isDisplayWithFile() == true) {
             String data;
-            if(document.getCloudFileLink() != null) {
+            if (document.getCloudFileLink() != null) {
                 data = document.getCloudFileLink();
             } else {
                 byte[] file = documentService.getGridFSFileContent(document.getContentId());
@@ -169,13 +170,13 @@ public class StudentController {
         } else model.addAttribute("documentNote", new DocumentNote());
 
         List<QuestionResponseDto> myQuestionResponseDtos = new ArrayList<>();
-        if(null != questionId){
+        if (null != questionId) {
             myQuestionResponseDtos.add(new QuestionResponseDto(questionService.findById(questionId)));
-        }else {
-            questionService.findByStudentLimitAndSkip(student,document,3, 0);
+        } else {
+            questionService.findByStudentLimitAndSkip(student, document, 3, 0);
         }
 
-        List<QuestionResponseDto> questionResponseDtos = questionService.findByOtherStudentLimitAndSkip(student,document,3, 0);
+        List<QuestionResponseDto> questionResponseDtos = questionService.findByOtherStudentLimitAndSkip(student, document, 3, 0);
         System.out.println(questionResponseDtos.size());
         //        // get others doc
 //        if (null != document.getTopic()) {
@@ -353,10 +354,10 @@ public class StudentController {
         StudentNote studentNote = studentNoteService.findById(studentNoteId);
         System.out.println(studentNoteId);
         System.out.println(studentNote);
-        if(null == studentNoteId){
+        if (null == studentNoteId) {
             return "exception/404";
 
-        }else {
+        } else {
             model.addAttribute("studentNote", studentNote);
             System.out.println(studentNote);
             return "student/library/student_my-note_detail";
@@ -367,7 +368,7 @@ public class StudentController {
     @PostMapping("/my_note/student_notes/update")
     @Transactional
     public String updateMyNote(@ModelAttribute StudentNote studentNote,
-                            BindingResult result) {
+                               BindingResult result) {
         Student student = getLoggedInStudent();
         StudentNote checkExist = studentNoteService.findById(studentNote.getId());
         if (null == student) {
@@ -381,10 +382,10 @@ public class StudentController {
         studentNote = studentNoteService.updateStudentNote(checkExist);
         if (null != studentNote) {
             // add log
-            addUserLog("/student/my_note/student_notes/" + studentNote.getId()+ "?success");
-            return "redirect:/student/my_note/student_notes/"+ studentNote.getId() + SUCCESS_PARAM;
+            addUserLog("/student/my_note/student_notes/" + studentNote.getId() + "?success");
+            return "redirect:/student/my_note/student_notes/" + studentNote.getId() + SUCCESS_PARAM;
         } else {
-            return "redirect:/student/my_note/student_notes/"+ studentNote.getId() + "?error";
+            return "redirect:/student/my_note/student_notes/" + studentNote.getId() + "?error";
         }
     }
 
@@ -401,7 +402,7 @@ public class StudentController {
         boolean checkDeleted = studentNoteService.softDeleteStudentNote(checkExist);
         if (checkDeleted) {
             // add log
-            addUserLog("/student/my_note/student_notes/delete/" + studentNoteId+ "?success");
+            addUserLog("/student/my_note/student_notes/delete/" + studentNoteId + "?success");
             return "redirect:/student/my_note/student_notes/add" + SUCCESS_PARAM;
         } else {
             return "redirect:/student/my_note/student_notes/" + studentNoteId + "?error";
@@ -413,12 +414,12 @@ public class StudentController {
     public String viewMyQuestions(@RequestParam(required = false, defaultValue = "1") int pageIndex,
                                   @RequestParam(required = false, defaultValue = "") String search,
                                   @RequestParam(required = false, defaultValue = "all") String status,
-                                    final Model model) {
+                                  final Model model) {
         Student student = getLoggedInStudent();
         QuestionAnswerEnum.Status findStatus = null;
-        if("new-reply".equals(status)){
+        if ("new-reply".equals(status)) {
             findStatus = QuestionAnswerEnum.Status.REPLIED;
-        } else if("wait-reply".equals(status)){
+        } else if ("wait-reply".equals(status)) {
             findStatus = QuestionAnswerEnum.Status.CREATED;
         }
         Page<Question> questions = (student != null) ? questionService.findByStudentAndSearch(student, search, findStatus, pageIndex, PAGE_SIZE) : null;
@@ -441,17 +442,9 @@ public class StudentController {
 
     @GetMapping({"/search"})
     public String getSearchResults(@RequestParam(required = false, value = "search") String search,
-                                   @RequestParam(required = false, defaultValue = "document") String filter,
                                    final Model model) {
-        if ("document".equals(filter)) {
-            Iterable<EsDocument> esDocuments = esDocumentService.searchDocument(search);
-            model.addAttribute("foundDocuments", esDocuments);
-        } else {
-            SearchPage<EsCourse> esCourses = esCourseService.searchCourse(search);
-            model.addAttribute("foundDocuments", esCourses);
-        }
-
-
+        List<EsDocument> esDocuments = esDocumentService.searchDocument(search, 0).stream().toList();
+        model.addAttribute("foundDocuments", esDocuments);
         model.addAttribute("search", search);
         return "student/student_search-results";
     }
@@ -485,7 +478,7 @@ public class StudentController {
             Feedback feedback1 = feedbackService.saveFeedback(new Feedback(feedback));
 
             if (loggedInUser.getRole().equals(AccountEnum.Role.LECTURER))
-                    return "redirect:/lecturer/feedbacks/add?success"; // Redirect to a success page
+                return "redirect:/lecturer/feedbacks/add?success"; // Redirect to a success page
             else
                 return "redirect:/student/feedbacks/add?success"; // Redirect to a success page
         } else {

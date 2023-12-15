@@ -410,7 +410,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public SearchPage<EsCourse> searchCourse(String search, int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex, pageSize);
-        return esCourseRepository.search(search, pageable);
+        return esCourseRepository.customSearch(search, pageable);
     }
 
     @Override
