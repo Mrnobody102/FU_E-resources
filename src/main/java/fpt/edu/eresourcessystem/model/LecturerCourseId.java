@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 
@@ -21,8 +22,8 @@ public class LecturerCourseId {
     @NotNull
     private String courseId;
 
-    private LocalDate createdDate;
-    private LocalDate lastModifiedDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
 
     @Override
     public boolean equals(Object o) {

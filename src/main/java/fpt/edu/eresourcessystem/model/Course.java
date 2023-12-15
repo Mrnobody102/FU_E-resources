@@ -53,7 +53,7 @@ public class Course {
 
     @NotNull
     private CourseEnum.Status status;
-    private List<LecturerCourseId> lecturerCourseIds;
+//    private List<LecturerCourseId> lecturerCourseIds;
 
     // Delete flag
     private CommonEnum.DeleteFlg deleteFlg;

@@ -388,8 +388,7 @@ public class CourseServiceImpl implements CourseService {
             course.setStatus(CourseEnum.Status.NEW);
             return courseRepository.save(course);
         } else {
-            // Xử lý trường hợp không tìm thấy khóa học với courseId
-            return null; // hoặc throw một exception tùy ý
+            return null;
         }
     }
 

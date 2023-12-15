@@ -4,6 +4,7 @@ package fpt.edu.eresourcessystem.controller;
 import fpt.edu.eresourcessystem.controller.advices.GlobalControllerAdvice;
 import fpt.edu.eresourcessystem.dto.CourseDto;
 import fpt.edu.eresourcessystem.dto.AccountDto;
+import fpt.edu.eresourcessystem.dto.Response.LecturerCourseResponseDto;
 import fpt.edu.eresourcessystem.enums.AccountEnum;
 import fpt.edu.eresourcessystem.enums.CourseEnum;
 import fpt.edu.eresourcessystem.model.*;
@@ -22,6 +23,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -161,7 +163,7 @@ public class LibrarianController {
                         lecturerCourseId.setLecturerId(foundLecturer.getId());
                         // set course Id that added
                         lecturerCourseId.setCourseId(result.getId());
-                        lecturerCourseId.setCreatedDate(LocalDate.now());
+                        lecturerCourseId.setCreatedDate(LocalDateTime.now());
 
                         // save new lecturer manage to the course
                         LecturerCourse lecturerCourse = new LecturerCourse();
@@ -172,10 +174,10 @@ public class LibrarianController {
                         if (null != addLecturerCourseResult) {
 
                             // add lecturer to  course
-                            List<LecturerCourseId> lecturerCourseIds = new ArrayList<>();
-                            lecturerCourseIds.add(addLecturerCourseResult.getId());
-
-                            result.setLecturerCourseIds(lecturerCourseIds);
+//                            List<LecturerCourseId> lecturerCourseIds = new ArrayList<>();
+//                            lecturerCourseIds.add(addLecturerCourseResult.getId());
+//
+//                            result.setLecturerCourseIds(lecturerCourseIds);
                             result.setLecturer(foundLecturer);
                             // update course lecturers
 
@@ -288,10 +290,17 @@ public class LibrarianController {
     @GetMapping({"/courses/{courseId}"})
     public String showCourseDetail(@PathVariable String courseId, final Model model) {
         Course course = courseService.findByCourseId(courseId);
+        System.out.println(course.getLecturer());
         List<Account> accounts = accountService.findAllLecturer();
         boolean checkLecturerCourse = course.getLecturer().getId() != null;
-
+        // find course's management history
+        List<LecturerCourseResponseDto>  lecturerCourses = lecturerCourseService.findCourseManageHistory(courseId);
+        LecturerCourse currentLecturerCourse = lecturerCourseService.findCurrentLecturer(courseId);
+        System.out.println(currentLecturerCourse);
         model.addAttribute("course", course);
+        model.addAttribute("lecturerCourses", lecturerCourses);
+        model.addAttribute("currentLecturerCourse", currentLecturerCourse);
+        System.out.println("303---" + currentLecturerCourse.getId().getCreatedDate());
         model.addAttribute("checkLecturerCourse", checkLecturerCourse);
         model.addAttribute("accounts", accounts);
         return "librarian/course/librarian_course-detail";
@@ -359,6 +368,18 @@ public class LibrarianController {
         Course course = courseService.findByCourseId(courseId);
         boolean removed1 = courseService.removeLecture(courseId);
         boolean removed = lecturerService.removeCourse(course.getLecturer().getId(), new ObjectId(courseId));
+        if(removed1 || removed){
+            // update old lecturer course
+            LecturerCourse oldLecturerCourse = lecturerCourseService.findCurrentLecturer(courseId);
+            LecturerCourse newLecturerCourse = new LecturerCourse();
+            if(null != oldLecturerCourse){
+                LecturerCourseId lecturerCourseId = oldLecturerCourse.getId();
+                lecturerCourseId.setLastModifiedDate(LocalDateTime.now());
+                newLecturerCourse.setId(lecturerCourseId);
+                lecturerCourseService.delete(oldLecturerCourse);
+                lecturerCourseService.add(newLecturerCourse);
+            }
+        }
         if (removed1 && removed) {
             return "redirect:/librarian/courses/{courseId}/add-lecture?success";
         } else {
@@ -372,10 +393,10 @@ public class LibrarianController {
      */
 
     @PostMapping({"/courses/{courseId}/add-lecture"})
+    @Transactional
     public String addLecturer(@PathVariable String courseId,
                               @RequestParam String lecturerEmail) throws MessagingException {
         Account account = accountService.findByEmail(lecturerEmail);
-
         Lecturer savedLecturer;
         if (account == null) {
             AccountDto accountDto = new AccountDto();
@@ -405,13 +426,21 @@ public class LibrarianController {
         if (course == null) {
             return "redirect:/courses/" + courseId + "/add-lecture?error";
         } else {
+//
+//
+//            // update old lecturer course
+//            LecturerCourse oldLecturerCourse = lecturerCourseService.findCurrentLecturer(courseId);
+//            if(null != oldLecturerCourse && null != savedLecturer && !oldLecturerCourse.getId().equals(savedLecturer.getId())){
+//                oldLecturerCourse.getId().setLastModifiedDate(LocalDate.now());
+//            }
+//            lecturerCourseService.update(oldLecturerCourse);
             // Add log lecturer_course
             // create new lecturerCourseId
             LecturerCourseId lecturerCourseId = new LecturerCourseId();
             lecturerCourseId.setLecturerId(savedLecturer.getId());
             // set course Id that added
             lecturerCourseId.setCourseId(course.getId());
-            lecturerCourseId.setCreatedDate(LocalDate.now());
+            lecturerCourseId.setCreatedDate(LocalDateTime.now());
 
             // save new lecturer manage to the course
             LecturerCourse lecturerCourse = new LecturerCourse();
@@ -422,10 +451,10 @@ public class LibrarianController {
             if (null != addLecturerCourseResult) {
 
                 // add lecturer to  course
-                List<LecturerCourseId> lecturerCourseIds = new ArrayList<>();
-                lecturerCourseIds.add(addLecturerCourseResult.getId());
-
-                course.setLecturerCourseIds(lecturerCourseIds);
+//                List<LecturerCourseId> lecturerCourseIds = new ArrayList<>();
+//                lecturerCourseIds.add(addLecturerCourseResult.getId());
+//
+//                course.setLecturerCourseIds(lecturerCourseIds);
                 course.setLecturer(savedLecturer);
                 // update course lecturers
       //          course = courseService.updateCourse(course);
