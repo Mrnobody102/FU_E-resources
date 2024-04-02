@@ -4,8 +4,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 752040696938-m73c0dav2e7sup2cc7lrutehu9bug6un.apps.googleusercontent.com
-            client-secret: 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
+            client-id:
+            client-secret:
             scope:
               - email
               - profile
@@ -13,8 +13,8 @@ spring:
 cloud:
   aws:
     credentials:
-      access-key: AKIAYLUUFKHYRZ3U3LNL
-      secret-key: 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
+      access-key:
+      secret-key:
     region:
       static: ap-southeast-1
     stack:
