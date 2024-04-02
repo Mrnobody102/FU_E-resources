@@ -92,7 +92,7 @@ public class LecturerController {
     }
 
     @GetMapping
-    public String getLecturerHome(@ModelAttribute Account account, final Model model) {
+    public String getLecturerHome(@ModelAttribute @Valid Account account, final Model model) {
         Lecturer lecturer = getLoggedInLecturer();
         List<Course> recentCourses = courseService.findNewCoursesByLecturer(lecturer);
 //        List<Course> recentCourses = courseService.findByListId(courseLogs);
@@ -152,7 +152,6 @@ public class LecturerController {
                 getLoggedInLecturer().getAccount().getEmail(),
                 oldContent, status);
         return "redirect:/lecturer/courses/" + courseID;
-
     }
 
     @GetMapping({"/courses/{courseId}/{getBy}", "/courses/{courseId}"})
@@ -498,7 +497,7 @@ public class LecturerController {
 
     @PostMapping("/documents/add")
     @Transactional
-    public String addDocumentProcess(@ModelAttribute DocumentDto documentDTO,
+    public String addDocumentProcess(@ModelAttribute @Valid DocumentDto documentDTO,
                                      @RequestParam(value = "topicId") String topicId,
                                      @RequestParam(value = "respondResourceType") String respondResourceType,
                                      @RequestParam(value = "file", required = false) MultipartFile file,
@@ -651,7 +650,7 @@ public class LecturerController {
 
     @PostMapping("/documents/update")
     @Transactional
-    public String updateDocumentProcess(@ModelAttribute DocumentDto document,
+    public String updateDocumentProcess(@ModelAttribute @Valid DocumentDto document,
                                         @RequestParam(value = "deleteCurrentFile", required = false) String deleteCurrentFile,
                                         @RequestParam(value = "file", required = false) MultipartFile file,
                                         @RequestParam(value = "files", required = false) MultipartFile[] files)
